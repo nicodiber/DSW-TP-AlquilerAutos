@@ -21,7 +21,7 @@
 
 El propósito de este proyecto es proporcionar una plataforma integral y fácil de usar donde ofertar autos en alquiler en distintas sucursales, teniendo en cuenta las características del vehículo (tipo del auto, gama del auto, marca del auto y modelo del auto) y la cantidad de días del alquiler.
 
-(agregar link del modelo de dominio del draw.io)
+![modelo-dominio](https://github.com/nicodiber/DSW-TP-AlquilerAutos/assets/71459973/9f5feb65-eef2-4d89-9d4d-c7cd9a3b88f9)
 
 | Requerimiento  | Detalle                                                                 |
 | -------------- | ----------------------------------------------------------------------- |
