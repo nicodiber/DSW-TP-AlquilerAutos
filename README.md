@@ -1,6 +1,4 @@
-# DSW-TP-AlquilerAutos
-
-# TP Desarrollo De Software 2024
+# Proyecto - Desarrollo De Software 2024
 
 ![logo-utn](https://frro.cvg.utn.edu.ar/pluginfile.php/1/theme_snap/logo/1710991180/logo-utn-siglas.png)
 
