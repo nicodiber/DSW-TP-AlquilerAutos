@@ -1,5 +1,5 @@
 {
-  "name": "dsw-2024",
+  "name": "dsw-tp-alquilerautos",
   "version": "1.0.0",
   "description": "Primer entrega del TP-AlquilerAutos DSW2024",
   "main": "src/index.js",
@@ -7,7 +7,7 @@
     "start": "node src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "UTN FRRO. Legajos integrantes: 47.792 - 47.863 - 47.898 - 47.960",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.2",

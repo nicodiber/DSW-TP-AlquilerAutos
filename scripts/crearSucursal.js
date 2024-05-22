@@ -1,7 +1,7 @@
 const axios = require('axios');
 const readline = require('readline');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -25,7 +25,7 @@ rl.question('Ingrese la denominación de la nueva sucursal: ', (denominacionSucu
                 horarioCierreSucursal
               };
 
-              axios.post(apiUrl, nuevaSucursal)
+              axios.post(endpointUrl, nuevaSucursal)
                 .then(response => {
                   console.log('Sucursal creada:', response.data);
                   rl.close();

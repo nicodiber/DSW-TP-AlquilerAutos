@@ -1,7 +1,7 @@
 const axios = require('axios');
 const readline = require('readline');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 });
 
 rl.question('Ingrese el ID de la sucursal que desea actualizar: ', (sucursalId) => {
-  const url = `${apiUrl}/${sucursalId}`;
+  const url = `${endpointUrl}/${sucursalId}`;
 
   // Verificar si la sucursal con el ID proporcionado existe
   axios.get(url)

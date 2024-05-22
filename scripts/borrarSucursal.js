@@ -1,7 +1,7 @@
 const axios = require('axios');
 const readline = require('readline');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 });
 
 rl.question('Ingrese el ID de la sucursal que desea borrar: ', (sucursalId) => {
-  axios.delete(`${apiUrl}/${sucursalId}`)
+  axios.delete(`${endpointUrl}/${sucursalId}`)
     .then(() => {
       console.log(`Sucursal con ID ${sucursalId} ha sido borrada`);
       rl.close();

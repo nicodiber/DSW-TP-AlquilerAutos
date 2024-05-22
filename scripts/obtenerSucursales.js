@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
-axios.get(apiUrl)
+axios.get(endpointUrl)
   .then(response => {
     console.log('Todas las sucursales:', response.data);
   })

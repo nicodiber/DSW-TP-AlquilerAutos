@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
-axios.delete(apiUrl)
+axios.delete(endpointUrl)
   .then(() => {
     console.log('Todas las sucursales han sido borradas');
   })

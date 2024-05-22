@@ -1,7 +1,7 @@
 const axios = require('axios');
 const readline = require('readline');
 
-const apiUrl = 'http://localhost:3000/sucursales';
+const endpointUrl = 'http://localhost:3000/sucursales';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 });
 
 rl.question('Ingrese el ID de la sucursal que desea obtener: ', (sucursalId) => {
-  axios.get(`${apiUrl}/${sucursalId}`)
+  axios.get(`${endpointUrl}/${sucursalId}`)
     .then(response => {
       console.log(`Sucursal con ID ${sucursalId}:`, response.data);
       rl.close();
