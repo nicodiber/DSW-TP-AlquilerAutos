@@ -1,0 +1,16 @@
+{
+  "name": "dsw-2024",
+  "version": "1.0.0",
+  "description": "Primer entrega del TP-AlquilerAutos DSW2024",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2"
+  }
+}
