@@ -10,8 +10,8 @@ import { provideHttpClient } from '@angular/common/http';  //para poder hacer la
 
 //componentes
 import { AppComponent } from './app.component';
-import { ListarConductoresComponent } from './components/listar-conductores/listar-conductores.component';
-import { CrearConductorComponent } from './components/crear-conductor/crear-conductor.component';
+import { ListarConductoresComponent } from './components/listarConductores/listarConductores.component';
+import { CrearConductorComponent } from './components/crearConductor/crearConductor.component';
 
 
 @NgModule({

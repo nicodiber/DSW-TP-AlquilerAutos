@@ -4,16 +4,16 @@
             <div class="card">
                 <div class="card-body text-center">
                     <span class="titulo">LISTADO DE CONDUCTORES</span>
-                    <button class="btn btn-success float-end" routerLink="/crear-conductor">NUEVO</button>
-                    <table *ngIf="listConductores.length > 0"class="table table-striped mt-3">
+                    <button class="btn btn-success float-end" routerLink="/crearConductor">NUEVO</button>
+                    <table *ngIf="listConductores.length > 0" class="table table-striped mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">DNI</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Apellido</th>
                                 <th scope="col">Fecha de Nacimiento</th>
-                                <th scope="col">Licencia de Conductor</th>
-                                <th scope="col">Fecha de Otorgamiento de Licencia</th>
+                                <th scope="col">N° Licencia</th>
+                                <th scope="col">Fecha de Otorgamiento</th>
                                 <th scope="col">Telefono</th>
                                 <th scope="col">Mail</th>
                                 <th scope="col"></th>
@@ -22,21 +22,21 @@
                         <tbody>
                             <tr *ngFor="let conductor of listConductores">
                                 <td>{{ conductor.dniPasaporte }}</td>
-                                <td>{{ conductor.apellidoConductor }}</td>
                                 <td>{{ conductor.nombreConductor }}</td>
-                                <td>{{ conductor.fechaNacimientoConductor }}</td>
+                                <td>{{ conductor.apellidoConductor }}</td>
+                                <td>{{ formatDateToDDMMYYYY(conductor.fechaNacimientoConductor) }}</td>
                                 <td>{{ conductor.licenciaConductor }}</td>
-                                <td>{{ conductor.fechaOtorgamientoLicencia }}</td>
+                                <td>{{ formatDateToDDMMYYYY(conductor.fechaOtorgamientoLicencia) }}</td>
                                 <td>{{ conductor.nroTelefonoConductor }}</td>
                                 <td>{{ conductor.mailConductor }}</td>
                                 <td>
-                                    <i [routerLink]="['/editar-conductor', conductor._id]"class="fas fa-edit text-primary"></i>
+                                    <i [routerLink]="['/editarConductor', conductor._id]" class="fas fa-edit text-primary"></i>
                                     <i (click)="eliminarConductor(conductor._id)" class="fas fa-trash text-danger"></i>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listConductores.length == 0">No hay conductores para mostrar</h5>
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listConductores.length === 0">No hay conductores para mostrar</h5>
                 </div>
             </div>
         </div>

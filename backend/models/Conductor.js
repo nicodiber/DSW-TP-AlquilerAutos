@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-const ConductorSchema = mongoose.Schema({
+const ConductorSchema = new mongoose.Schema({
+    _id: {
+        type: Number,
+        required: true
+    },
     dniPasaporte: {
         type: String,
         required: true
@@ -33,6 +37,6 @@ const ConductorSchema = mongoose.Schema({
         type: String,
         required: true
     },
-}, { collection: 'conductores' }); //ACA HICE LA CORRECION DE MONGO para que acceda a la tabla conductores y no cree una conductors
+}, { collection: 'conductores' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 
 module.exports = mongoose.model('Conductor', ConductorSchema);

@@ -16,19 +16,19 @@ export class ConductorService {
     return this.http.get(this.url);
   }
 
-  eliminarConductor(id: string): Observable<any>{
-    return this.http.delete(this.url + id);
+  eliminarConductor(_id: number): Observable<any>{
+    return this.http.delete(this.url + _id);
   }
 
   guardarConductor(conductor: conductor): Observable<any>{
     return this.http.post(this.url, conductor);
   }
 
-  editarConductor(id: string, conductor: conductor):Observable<any>{
-    return this.http.put(this.url + id, conductor);
+  editarConductor(_id: string, conductor: conductor):Observable<any>{
+    return this.http.put(this.url + _id, conductor);
   }
 
-  obtenerConductor(id: string): Observable<any> {
-    return this.http.get(this.url + id);
+  obtenerConductor(_id: string): Observable<any> {
+    return this.http.get(this.url + _id);
   }
 }

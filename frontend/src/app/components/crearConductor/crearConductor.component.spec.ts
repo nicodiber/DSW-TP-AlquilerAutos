@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrearConductorComponent } from './crear-conductor.component';
+import { CrearConductorComponent } from './crearConductor.component';
 
 describe('CrearConductorComponent', () => {
   let component: CrearConductorComponent;
