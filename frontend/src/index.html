@@ -1,20 +1,595 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-  <meta charset="utf-8">
-  <title>Cliente</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <title>Nebarent - Alquiler de vehículos Argentina</title>
+    <base href="/">
+    <link rel="icon" href="images/icon.png" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Nebarent - Rental de automóviles Argentina" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- CSS Files -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="css/mdb.min.css" rel="stylesheet" type="text/css" id="mdb">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/coloring.css" rel="stylesheet" type="text/css">
+    <!-- Color Scheme -->
+    <link id="colors" href="css/colors/scheme-01.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-  <app-root></app-root>
+    <app-root>
+    <div id="wrapper">
+        
+        <!-- page preloader begin -->
+        <div id="de-preloader"></div>
+        <!-- page preloader close -->
+
+        <!-- header begin -->
+        <header class="transparent header-light scroll-light has-topbar">
+            <div id="topbar" class="topbar-dark text-light">
+                <div class="container">
+                    <div class="topbar-left xs-hide">
+                        <div class="topbar-widget">
+                            <div class="topbar-widget"><a href="#"><i class="fa fa-phone"></i>+54 341 544-2171</a></div>
+                            <div class="topbar-widget"><a href="#"><i class="fa fa-envelope"></i>contacto@nebarent.com</a></div>
+                            <div class="topbar-widget"><a href="#"><i class="fa fa-clock-o"></i>Lun - Vie 08:00 a 18:00 hs</a></div>
+                        </div>
+                    </div>
+                
+                    <div class="topbar-right">
+                        <div class="social-icons">
+                            <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                            <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
+                        </div>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <div class="de-flex-col">
+                                    <!-- logo begin -->
+                                    <div id="logo">
+                                        <a href="index.html">
+                                            <img class="logo-1" src="images/logo-light.png" alt="">
+                                            <img class="logo-2" src="images/logo.png" alt="">
+                                        </a>
+                                    </div>
+                                    <!-- logo close -->
+                                </div>
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" href="index.html">Inicio</a></li>
+                                    <li><a class="menu-item" href="about.html">Nosotros</a></li>
+                                    <li><a class="menu-item" href="/listarModelos">Vehículos</a></li>
+                                    <li><a class="menu-item" href="account-dashboard.html">Cuenta</a></li>
+                                </ul>
+                            </div>
+                            <div class="de-flex-col">
+                                <div class="menu_side_area">
+                                    <a href="contact.html" class="btn-main">Contacto</a>
+                                    <span id="menu-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header close -->
+        <!-- content begin -->
+        <div class="no-bottom no-top" id="content">
+            <div id="top"></div>
+            <section id="section-hero" aria-label="section" class="full-height vertical-center" data-bgimage="url(images/background/7.jpg) bottom">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="spacer-double sm-hide"></div>
+                        <div class="col-lg-6">
+                            <h4><span class="id-color">Plan your trip now</span></h4>
+                            <div class="spacer-10"></div>
+                            <h1>Explore the world with comfortable car</h1>
+                            <p class="lead">Embark on unforgettable adventures and discover the world in unparalleled comfort and style with our fleet of exceptionally comfortable cars.</p>
+
+                            <a class="btn-main" href="#">Choose a Car</a>&nbsp;&nbsp;&nbsp;<a class="btn-main btn-black" href="#">Get the App</a>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <img src="images/misc/car-2.png" class="img-fluid" alt="">
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-cars" class="no-top">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <h2>Our Vehicle Fleet</h2>
+                            <p>Driving your dreams to reality with an exquisite fleet of versatile vehicles for unforgettable journeys.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div id="items-carousel" class="owl-carousel wow fadeIn">
+
+                            <div class="col-lg-12">
+                                <div class="de-item mb30">
+                                    <div class="d-img">
+                                        <img src="images/cars/jeep-renegade.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4>Jeep Renegade</h4>
+
+                                            <div class="d-atr-group">
+                                                <span class="d-atr"><img src="images/icons/1.svg" alt="">5</span>
+                                                <span class="d-atr"><img src="images/icons/2.svg" alt="">2</span>
+                                                <span class="d-atr"><img src="images/icons/3.svg" alt="">4</span>
+                                                <span class="d-atr"><img src="images/icons/4.svg" alt="">SUV</span>
+                                            </div>
+                                            <div class="d-price">
+                                                Daily rate from <span>$265</span>
+                                                <a class="btn-main" href="car-single.html">Rent Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="de-item mb30">
+                                    <div class="d-img">
+                                        <img src="images/cars/ford-raptor.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4>Ford Raptor</h4>
+
+                                            <div class="d-atr-group">
+                                                <span class="d-atr"><img src="images/icons/1.svg" alt="">5</span>
+                                                <span class="d-atr"><img src="images/icons/2.svg" alt="">2</span>
+                                                <span class="d-atr"><img src="images/icons/3.svg" alt="">4</span>
+                                                <span class="d-atr"><img src="images/icons/4.svg" alt="">Truck</span>
+                                            </div>
+                                            <div class="d-price">
+                                                Daily rate from <span>$147</span>
+                                                <a class="btn-main" href="car-single.html">Rent Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="de-item mb30">
+                                    <div class="d-img">
+                                        <img src="images/cars/mini-cooper.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4>Mini Cooper</h4>
+
+                                            <div class="d-atr-group">
+                                                <span class="d-atr"><img src="images/icons/1.svg" alt="">5</span>
+                                                <span class="d-atr"><img src="images/icons/2.svg" alt="">2</span>
+                                                <span class="d-atr"><img src="images/icons/3.svg" alt="">4</span>
+                                                <span class="d-atr"><img src="images/icons/4.svg" alt="">Hatchback</span>
+                                            </div>
+                                            <div class="d-price">
+                                                Daily rate from <span>$238</span>
+                                                <a class="btn-main" href="car-single.html">Rent Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="de-item mb30">
+                                    <div class="d-img">
+                                        <img src="images/cars/vw-polo.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4>VW Polo</h4>
+
+                                            <div class="d-atr-group">
+                                                <span class="d-atr"><img src="images/icons/1.svg" alt="">5</span>
+                                                <span class="d-atr"><img src="images/icons/2.svg" alt="">2</span>
+                                                <span class="d-atr"><img src="images/icons/3.svg" alt="">4</span>
+                                                <span class="d-atr"><img src="images/icons/4.svg" alt="">Hatchback</span>
+                                            </div>
+                                            <div class="d-price">
+                                                Daily rate from <span>$106</span>
+                                                <a class="btn-main" href="car-single.html">Rent Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section aria-label="section" id="section-img-with-faq" style="max-width: 1300px; margin: 0 auto; border: 1px solid #dddddd; border-radius: 10px;">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-6" style="padding: 0px 40px;">
+                            
+                            <h2>Preguntas frecuentes</h2>
+                            <div class="spacer-10"></div>
+                            
+                            <div class="row">
+                                <div class="wow fadeInUp">
+                                    <div class="accordion secondary">
+                                        <div class="accordion-section">
+                                            <div class="accordion-section-title" data-tab="#accordion-1">
+                                                How do I get started with Car Rental?
+                                            </div>
+                                            <div class="accordion-section-content" id="accordion-1">
+                                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                    provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                                    dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+                                            </div>
+                                            <div class="accordion-section-title" data-tab="#accordion-2">
+                                                Can I rent a car with a debit card?
+                                            </div>
+                                            <div class="accordion-section-content" id="accordion-2">
+                                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                    provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                                    dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+                                            </div>
+                                            <div class="accordion-section-title" data-tab="#accordion-3">
+                                                What kind of Car Rental do I need?
+                                            </div>
+                                            <div class="accordion-section-content" id="accordion-3">
+                                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                    provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                                    dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+                                            </div>
+                                            <div class="accordion-section-title" data-tab="#accordion-4">
+                                                Lorem ipsum now?
+                                            </div>
+                                            <div class="accordion-section-content" id="accordion-4">
+                                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                    provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                                    dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-container col-md-6 pull-right" data-bgimage="url(images/background/6.jpg) center" style="background-size: cover !important; border-radius: 10px 0px 0px 10px !important;"></div>
+            </section>
+
+            <section aria-label="section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <h2>Our Features</h2>
+                            <p>Discover a world of convenience, safety, and customization, paving the way for unforgettable
+                                adventures and seamless mobility solutions.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-3">
+                            <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".5s">
+                                <i class="fa bg-color fa-trophy"></i>
+                                <div class="d-inner">
+                                    <h4>First class services</h4>
+                                    Where luxury meets exceptional care, creating unforgettable moments and exceeding your every
+                                    expectation.
+                                </div>
+                            </div>
+                            <div class="box-icon s2 p-small mb20 wow fadeInL fadeInRight" data-wow-delay=".75s">
+                                <i class="fa bg-color fa-road"></i>
+                                <div class="d-inner">
+                                    <h4>24/7 road assistance</h4>
+                                    Reliable support when you need it most, keeping you on the move with confidence and peace of
+                                    mind.
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="col-lg-6">
+                            <img src="images/misc/car.png" alt="" class="img-fluid wow fadeInUp">
+                        </div>
+            
+                        <div class="col-lg-3">
+                            <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1s">
+                                <i class="fa bg-color fa-tag"></i>
+                                <div class="d-inner">
+                                    <h4>Quality at Minimum Expense</h4>
+                                    Unlocking affordable brilliance with elevating quality while minimizing costs for maximum value.
+                                </div>
+                            </div>
+                            <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1.25s">
+                                <i class="fa bg-color fa-map-pin"></i>
+                                <div class="d-inner">
+                                    <h4>Free Pick-Up & Drop-Off</h4>
+                                    Enjoy free pickup and drop-off services, adding an extra layer of ease to your car rental
+                                    experience.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="text-light jarallax" aria-label="section">
+                <img src="images/background/3.jpg" alt="" class="jarallax-img">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h1>Let's Your Adventure Begin</h1>
+                            <div class="spacer-20"></div>
+                        </div>
+                        <div class="col-md-3">                     
+                            <h2 class="wow fadeInUp timer" data-to="520" data-speed="3000">0</h2>                      
+                            <h4>First Class Services</h4>
+                            <p>Where luxury meets exceptional care, creating unforgettable moments and exceeding your every
+                                expectation.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h2 class="wow fadeInUp timer" data-to="10" data-speed="3000">0</h2>
+                            <h4>24/7 road assistance</h4>
+                            <p>Reliable support when you need it most, keeping you on the move with confidence and peace of mind.
+                            </p>
+                        </div>
+                        <div class="col-md-3">
+                            <h2 class="wow fadeInUp timer" data-to="740" data-speed="3000">0</h2>  
+                            <h4>Free Pick-Up & Drop-Off</h4>
+                            <p>Enjoy free pickup and drop-off services, adding an extra layer of ease to your car rental experience.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+            <section aria-label="section" class="pt40 pb40 text-light" data-bgcolor="#181818">
+                <div class="wow fadeInRight d-flex">
+                  <div class="de-marquee-list">
+                    <div class="d-item">
+                      <span class="d-item-txt">SUV</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Hatchback</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Crossover</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Convertible</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Sedan</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Sports Car</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Coupe</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Minivan</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Station Wagon</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Truck</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Minivans</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Exotic Cars</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                     </div>
+                  </div>
+
+                  <div class="de-marquee-list">
+                    <div class="d-item">
+                      <span class="d-item-txt">SUV</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Hatchback</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Crossover</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Convertible</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Sedan</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Sports Car</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Coupe</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Minivan</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Station Wagon</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Truck</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Minivans</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                      <span class="d-item-txt">Exotic Cars</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                     </div>
+                  </div>
+                </div>
+            </section>
+            
+        </div>
+        <!-- content close -->
+        <a href="#" id="back-to-top"></a>
+        <!-- footer begin -->
+        <footer class="text-light">
+            <div class="container">
+                <div class="row g-custom-x">
+                    <div class="col-lg-3">
+                        <h5>Contacto</h5>
+                        <div class="widget">
+                            <address class="s1">
+                                <span><i class="id-color fa fa-map-marker fa-lg"></i>Rosario, Santa Fe, Argentina</span>
+                                <span><i class="id-color fa fa-phone fa-lg"></i>+54 341 544-2171</span>
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i>contacto@nebarent.com</span>
+                                <span><i class="id-color fa fa-facebook fa-lg"></i>NebarentArgentina</span>
+                                <span><i class="id-color fa fa-instagram fa-lg"></i>@Nebarent</span>
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h5>Enlaces</h5>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="widget">
+                                    <ul>
+                                        <li><a href="index.html">Inicio</a></li>
+                                        <li><a href="about.html">Nosotros</a></li>
+                                        <li><a href="/listarModelos">Vehículos</a></li>
+                                        <li><a href="account-dashboard.html">Cuenta</a></li>
+                                        <li><a href="contact.html">Contacto</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="widget">
+                            <div class="owl-carousel owl-theme" id="testimonial-carousel-1-col">
+                                <div class="item">
+                                    <div class="de_testi type-2">
+                                        <blockquote>
+                                            <h4>Gran experiencia</h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                                aliqua.</p>
+                                            <div class="de_testi_by">
+                                                <span>Agustín</span>
+                                            </div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="de_testi type-2">
+                                        <blockquote>
+                                            <h4>Lo mejor sin dudas</h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                                aliqua.</p>
+                                            <div class="de_testi_by">
+                                                <span>Romina</span>
+                                            </div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="de_testi type-2">
+                                        <blockquote>
+                                            <h4>Súper recomendado</h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                                aliqua.</p>
+                                            <div class="de_testi_by">
+                                                <span>Miguel Ángel</span>
+                                            </div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="de_testi type-2">
+                                        <blockquote>
+                                            <h4>Excelente servicio!</h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                            <div class="de_testi_by">
+                                                <span>Roberto</span>
+                                            </div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="de-flex">
+                                <div class="de-flex-col">Copyright © 2024 - Nebarent</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer close -->
+    </div>
+    </app-root>
+    
+    <!-- Javascript Files
+    ================================================== -->
+    <script src="js/plugins.js"></script>
+    <script src="js/designesia.js"></script>
+
 </body>
 
 </html>

@@ -1,15 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//componentes
+// Componentes
 import { ListarConductoresComponent } from './components/listarConductores/listarConductores.component';
 import { CrearConductorComponent } from './components/crearConductor/crearConductor.component';
 
-const routes: Routes = [
-  {path: '', component: ListarConductoresComponent},
-  {path: 'crearConductor', component: CrearConductorComponent},
-  {path: 'editarConductor/:id', component: CrearConductorComponent}, //reutilizo codigo de crear xq es similar 
-  {path: '**', redirectTo: '', pathMatch: 'full'} //para redireccionar al inicio en caso de q ponga otra ruta 
+import { ListarModelosComponent } from './components/listarModelos/listarModelos.component';
+import { DetallarModeloComponent } from './components/detallarModelo/detallarModelo.component';
+import { CrearModeloComponent } from './components/crearModelo/crearModelo.component';
+
+const routes: Routes = [ 
+  { path: 'listarModelos', component: ListarModelosComponent },
+  { path: 'modelo/:id', component: DetallarModeloComponent },
+  { path: 'crearModelo', component: CrearModeloComponent },
+  { path: 'editarModelo:id', component: CrearModeloComponent },
+
+  { path: 'listarConductores', component: ListarConductoresComponent },
+  { path: 'crearConductor', component: CrearConductorComponent },
+  { path: 'editarConductor/:id', component: CrearConductorComponent },
+
+  { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
+
 ];
 
 @NgModule({

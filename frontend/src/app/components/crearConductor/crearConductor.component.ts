@@ -46,13 +46,7 @@ export class CrearConductorComponent implements OnInit {
     const year = date.getUTCFullYear();
     return `${year}-${month}-${day}`;
   }
-  /*
-  // Función para convertir de 'dd-MM-yyyy' a objeto Date
-  parseDateFromDDMMYYYY(dateStr: string): Date {
-    const [day, month, year] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day); // El mes en JavaScript comienza en 0
-  }
-  */
+
   agregarConductor() {
     if (this.conductorForm.invalid) {
       console.log('Formulario inválido');

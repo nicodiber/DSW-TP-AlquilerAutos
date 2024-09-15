@@ -1,0 +1,126 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo"> Alta de Modelo </span>
+                    <form class="mt-3" [formGroup]="modeloForm" (ngSubmit)="agregarModelo()">
+                        <div class="mb-3">
+                            <input type="text" formControlName="nombreModelo" class="form-control form-control-lg"
+                                placeholder="Nombre del Modelo">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('nombreModelo')?.hasError('required') && modeloForm.get('nombreModelo')?.touched">
+                                <span>El Nombre del Modelo <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <select formControlName="tipoModelo" class="form-control form-control-lg" placeholder="Hola">
+                                <option value="">Seleccione un tipo de modelo</option>
+                                <option *ngFor="let tipo of tipos" [value]="tipo._id">{{ tipo.tipoVehiculo }}</option>
+                            </select>
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('tipoModelo')?.hasError('required') && modeloForm.get('tipoModelo')?.touched">
+                                <span>Debe seleccionar un tipo de modelo</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="anioModelo" class="form-control form-control-lg"
+                                placeholder="Año del Modelo">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('anioModelo')?.hasError('required') && modeloForm.get('anioModelo')?.touched">
+                                <span>El Año del Modelo <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="colorModelo" class="form-control form-control-lg"
+                                placeholder="Color del Modelo">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('colorModelo')?.hasError('required') && modeloForm.get('colorModelo')?.touched">
+                                <span>El Color <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="dimensionesModelo" class="form-control form-control-lg"
+                                placeholder="Dimensiones del Modelo">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('dimensionesModelo')?.hasError('required') && modeloForm.get('dimensionesModelo')?.touched">
+                                <span>Las Dimensiones <strong>son obligatorias</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="cantidadAsientosModelo"
+                                class="form-control form-control-lg" placeholder="Cantidad de Asientos">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('cantidadAsientosModelo')?.hasError('required') && modeloForm.get('cantidadAsientosModelo')?.touched">
+                                <span>La Cantidad de Asientos <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="cantidadPuertasModelo"
+                                class="form-control form-control-lg" placeholder="Cantidad de Puertas">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('cantidadPuertasModelo')?.hasError('required') && modeloForm.get('cantidadPuertasModelo')?.touched">
+                                <span>La Cantidad de Puertas <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="motorModelo" class="form-control form-control-lg"
+                                placeholder="Motor">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('motorModelo')?.hasError('required') && modeloForm.get('motorModelo')?.touched">
+                                <span>El Motor <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="cajaTransmisionModelo"
+                                class="form-control form-control-lg" placeholder="Caja de Transmisión">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('cajaTransmisionModelo')?.hasError('required') && modeloForm.get('cajaTransmisionModelo')?.touched">
+                                <span>La Caja de Transmisión <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="tipoCombustibleModelo"
+                                class="form-control form-control-lg" placeholder="Tipo de Combustible">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('tipoCombustibleModelo')?.hasError('required') && modeloForm.get('tipoCombustibleModelo')?.touched">
+                                <span>El Tipo de Combustible <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="capacidadTanqueCombustibleModelo"
+                                class="form-control form-control-lg"
+                                placeholder="Capacidad del Tanque de Combustible (en litros)">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('capacidadTanqueCombustibleModelo')?.hasError('required') && modeloForm.get('capacidadTanqueCombustibleModelo')?.touched">
+                                <span>La Capacidad del Tanque <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="capacidadBaulModelo"
+                                class="form-control form-control-lg" placeholder="Capacidad del Baúl (en litros)">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('capacidadBaulModelo')?.hasError('required') && modeloForm.get('capacidadBaulModelo')?.touched">
+                                <span>La Capacidad del Baúl <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="precioModelo" class="form-control form-control-lg"
+                                placeholder="Precio del Modelo">
+                            <div class="text-danger"
+                                *ngIf="modeloForm.get('precioModelo')?.hasError('required') && modeloForm.get('precioModelo')?.touched">
+                                <span>El Precio <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" routerLink="/"
+                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="submit" [disabled]="modeloForm.invalid"
+                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
