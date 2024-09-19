@@ -106,7 +106,7 @@
             </section>
             <!-- section close -->
 
-            <section id="section-car-details"> <!-- AGREGAR ACÁ: *ngIf="modelo" -->
+            <section id="section-car-details">
                 <div class="container">
                     <div class="row g-6">
                         <div class="col-lg-6" style="width: 50% !important;">
@@ -125,80 +125,72 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-6" style="width: 50% !important;">
+                        <div class="col-lg-6" *ngIf="!modelo"><p> No existe tal Modelo </p></div>
+                        <div class="col-lg-6" *ngIf="modelo" style="width: 50% !important;">
                             <div class="splitted-container" style="display: flex;">
                                 <div class="col-lg-9">
                                     <h3>{{ modelo.nombreModelo }}</h3>
-                                    <p>The BMW M2 is the high-performance version of the 2 Series 2-door coupé. The
-                                        first generation of the M2 is the F87 coupé and is powered by turbocharged.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                    aliqua, quis nostrud exercitation ullamco.</p>
                                 </div>
-                                <div class="col-lg-3 de-price text-center" style="align-content: center !important;">
+                                <div class="col-lg-3 de-price text-center" style="align-content: center !important; margin-left: 15px !important;">
                                     Precio diario
                                     <h3>${{ modelo.precioModelo }}</h3>
                                 </div>
                             </div>
                             <div class="spacer-10"></div>
 
-                            <h4>Specifications</h4>
+                            <h4>Especificaciones</h4>
                             <div class="de-spec">
                                 <div class="d-row">
                                     <span class="d-title">Tipo de Vehículo</span>
                                     <span class="d-value">{{ modelo.tipoModelo.tipoVehiculo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Seat</span>
-                                    <span class="d-value">2 seats</span>
+                                    <span class="d-title">Año</span>
+                                    <span class="d-value">{{ modelo.anioModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Door</span>
-                                    <span class="d-value">2 doors</span>
+                                    <span class="d-title">Color</span>
+                                    <span class="d-value">{{ modelo.colorModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Luggage</span>
-                                    <span class="d-value">150</span>
+                                    <span class="d-title">Dimensiones</span>
+                                    <span class="d-value">{{ modelo.dimensionesModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Fuel Type</span>
-                                    <span class="d-value">Hybird</span>
+                                    <span class="d-title">Cantidad de Asientos</span>
+                                    <span class="d-value">{{ modelo.cantidadAsientosModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Engine</span>
-                                    <span class="d-value">3000</span>
+                                    <span class="d-title">Cantidad de Puertas</span>
+                                    <span class="d-value">{{ modelo.cantidadPuertasModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Year</span>
-                                    <span class="d-value">2020</span>
+                                    <span class="d-title">Motor</span>
+                                    <span class="d-value">{{ modelo.motorModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Mileage</span>
-                                    <span class="d-value">200</span>
+                                    <span class="d-title">Caja de Transmisión</span>
+                                    <span class="d-value">{{ modelo.cajaTransmisionModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Transmission</span>
-                                    <span class="d-value">Automatic</span>
+                                    <span class="d-title">Tipo de Combustible</span>
+                                    <span class="d-value">{{ modelo.tipoCombustibleModelo }}</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Drive</span>
-                                    <span class="d-value">4WD</span>
+                                    <span class="d-title">Capacidad del Tanque</span>
+                                    <span class="d-value">{{ modelo.capacidadTanqueCombustibleModelo }} l.</span>
                                 </div>
                                 <div class="d-row">
-                                    <span class="d-title">Fuel Economy</span>
-                                    <span class="d-value">18.5</span>
-                                </div>
-                                <div class="d-row">
-                                    <span class="d-title">Exterior Color</span>
-                                    <span class="d-value">Blue Metalic</span>
-                                </div>
-                                <div class="d-row">
-                                    <span class="d-title">Interior Color</span>
-                                    <span class="d-value">Black</span>
+                                    <span class="d-title">Capacidad del Baúl</span>
+                                    <span class="d-value">{{ modelo.capacidadBaulModelo }}</span>
                                 </div>
                             </div>
 
                             <div class="spacer-single"></div>
                         </div>
-
+                        
                         <div class="col-lg-12">
                             <div class="de-box mb25">
                                 <form name="contactForm" id='contact_form' method="post">
@@ -365,6 +357,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </section>

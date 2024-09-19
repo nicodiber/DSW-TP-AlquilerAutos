@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const modeloController = require('../controllers/modeloController');
 
-// api/modeloes
+// api/modelos
 router.post('/', modeloController.crearModelo);
 router.get('/', modeloController.obtenerModelos);
 router.put('/:id', modeloController.actualizarModelo);

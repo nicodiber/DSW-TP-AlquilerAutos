@@ -9,10 +9,8 @@ import { modelo } from '../models/modelo';
 export class ModeloService {
   url = 'http://localhost:4000/api/modelos/';
 
-  
   constructor(private http: HttpClient) { }
-
-  //el get devuelve un observable y se usa para hacer peticiones asincronas
+  
   obtenerModelos(): Observable<any>{
     return this.http.get(this.url);
   }

@@ -7,7 +7,7 @@ import { conductor } from '../models/conductor';
   providedIn: 'root'
 })
 export class ConductorService {
-    url = 'http://localhost:4000/api/conductores/';
+  url = 'http://localhost:4000/api/conductores/';
 
   constructor(private http: HttpClient) { }
 

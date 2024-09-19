@@ -29,17 +29,4 @@ export class ListarModelosComponent implements OnInit {
       }
     });
   }
-
-  eliminarModelo(id: any) {
-    this._modeloService.eliminarModelo(id).subscribe({
-      next: (data) => {
-        this.toastr.success('El modelo fue eliminado con éxito', 'Modelo Eliminado');
-        this.obtenerModelos(); // Recargar la lista después de eliminar
-      },
-      error: (error) => {
-        console.log(error);
-        this.toastr.error('Error al eliminar modelo', 'Error');
-      }
-    });
-  }
 }

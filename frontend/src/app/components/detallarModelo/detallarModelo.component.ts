@@ -12,21 +12,16 @@ export class DetallarModeloComponent implements OnInit {
   modelo: any;
 
   constructor(private route: ActivatedRoute, private modeloService: ModeloService) {}
-
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');  // Asegúrate de que 'id' no sea null o undefined
+      const id = params.get('id');
       if (id) {
         this.modeloService.obtenerModelo(id).subscribe(data => {
           this.modelo = data;
         }, error => {
-          console.error('Error al cargar el modelo', error);
+          console.error('Error al obtener los datos del modelo:', error);
         });
-      } else {
-        console.error('No se encontró un id válido en la URL');
       }
     });
-
   }
-
 }
