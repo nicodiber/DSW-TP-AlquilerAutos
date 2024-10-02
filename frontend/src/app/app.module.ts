@@ -18,6 +18,7 @@ import { CrearConductorComponent } from './components/crearConductor/crearConduc
 import { ListarModelosComponent } from './components/listarModelos/listarModelos.component';
 import { DetallarModeloComponent } from './components/detallarModelo/detallarModelo.component';
 import { CrearModeloComponent } from './components/crearModelo/crearModelo.component';
+import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { CrearModeloComponent } from './components/crearModelo/crearModelo.compo
     ListarModelosComponent,
     DetallarModeloComponent,
     CrearModeloComponent,
+    AdminMenuComponent,
   ],
   imports: [
     BrowserModule,

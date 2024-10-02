@@ -3,14 +3,27 @@ const { getNextSequenceValue } = require('../config/db');
 
 exports.crearUsuario = async (req, res) => {
   try {
-    const _id = await getNextSequenceValue('usuarioId');
-    let usuario = new Usuario({ ...req.body, _id });
+    const _id = await getNextSequenceValue('usuarioId'); 
+    const { nombre, apellido, email, contraseña, licenciaConductor, telefono, direccion, dni, rol } = req.body;
+
+    let usuario = new Usuario({
+      _id,
+      nombre,
+      apellido,
+      email,
+      contraseña,
+      licenciaConductor,
+      telefono,
+      direccion,
+      dni,
+      rol
+    });
 
     await usuario.save();
-    res.send(usuario);
+    res.json(usuario);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error');
+    res.status(500).send('Hubo un error al crear el usuario');
   }
 };
 
@@ -20,80 +33,67 @@ exports.obtenerUsuarios = async (req, res) => {
     res.json(usuarios);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error');
+    res.status(500).send('Hubo un error al obtener los usuarios');
   }
 };
 
+
 exports.actualizarUsuario = async (req, res) => {
   try {
-    const {
-      mailUsuario,
-      contraseñaUsuario,
-      cuilUsuario,
-      nombreUsuario,
-      apellidoUsuario,
-      situacionFiscalUsuario,
-      provinciaUsuario,
-      ciudadUsuario,
-      codigoPostalUsuario,
-      telefonoUsuario
-    } = req.body;
+    const { nombre, apellido, email, contraseña, licenciaConductor, telefono, direccion, dni, rol } = req.body;
 
     let usuario = await Usuario.findById(req.params.id);
 
     if (!usuario) {
-      res.status(404).json({ msg: 'No existe ese usuario' });
-      return;
+      return res.status(404).json({ msg: 'No existe ese usuario' });
     }
 
-    usuario.mailUsuario = mailUsuario;
-    usuario.contraseñaUsuario = contraseñaUsuario;
-    usuario.cuilUsuario = cuilUsuario;
-    usuario.nombreUsuario = nombreUsuario;
-    usuario.apellidoUsuario = apellidoUsuario;
-    usuario.situacionFiscalUsuario = situacionFiscalUsuario;
-    usuario.provinciaUsuario = provinciaUsuario;
-    usuario.ciudadUsuario = ciudadUsuario;
-    usuario.codigoPostalUsuario = codigoPostalUsuario;
-    usuario.telefonoUsuario = telefonoUsuario;
+
+    usuario.nombre = nombre;
+    usuario.apellido = apellido;
+    usuario.email = email;
+    usuario.contraseña = contraseña;
+    usuario.licenciaConductor = licenciaConductor;
+    usuario.telefono = telefono;
+    usuario.direccion = direccion;
+    usuario.dni = dni;
+    usuario.rol = rol;
 
     usuario = await Usuario.findOneAndUpdate({ _id: req.params.id }, usuario, { new: true });
     res.json(usuario);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error');
+    res.status(500).send('Hubo un error al actualizar el usuario');
   }
 };
 
 exports.obtenerUsuario = async (req, res) => {
   try {
-    let usuario = await Usuario.findById(req.params.id);
+    const usuario = await Usuario.findById(req.params.id);
 
     if (!usuario) {
-      res.status(404).json({ msg: 'No existe ese usuario' });
-      return;
+      return res.status(404).json({ msg: 'No existe ese usuario' });
     }
 
     res.json(usuario);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error');
+    res.status(500).send('Hubo un error al obtener el usuario');
   }
 };
 
 exports.eliminarUsuario = async (req, res) => {
   try {
-    let usuario = await Usuario.findById(req.params.id);
+    const usuario = await Usuario.findById(req.params.id);
 
     if (!usuario) {
-      res.status(404).json({ msg: 'No existe ese usuario' });
-      return;
+      return res.status(404).json({ msg: 'No existe ese usuario' });
     }
 
     await Usuario.findOneAndDelete({ _id: req.params.id });
     res.json({ msg: 'Usuario eliminado con éxito' });
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error');
+    res.status(500).send('Hubo un error al eliminar el usuario');
   }
 };

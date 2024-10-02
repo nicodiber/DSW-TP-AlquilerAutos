@@ -5,46 +5,51 @@ const UsuarioSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  mailUsuario: {
+  nombre: {
     type: String,
     required: true
   },
-  contraseñaUsuario: {
+  apellido: {
     type: String,
     required: true
   },
-  cuilUsuario: {
+  email: {
+    type: String,
+    required: true,
+    unique: true                                      // El email debe ser único y el que va a usar para inciar sesion
+  },
+  contraseña: {
+    type: String,
+    required: true
+  },
+  licenciaConductor: {
+      type: String,
+    },
+  telefono: {
+    type: String,
+    required: true
+  },
+  direccion: {
+    type: String,
+    required: true
+  },
+  dni: {
     type: Number,
     required: true
   },
-  nombreUsuario: {
+  rol: {
     type: String,
-    required: true
+    enum: ['usuario', 'administrador', 'trabajador'],     //se definen solo estas 3 opciones por ahora
+    default: 'usuario'
   },
-  apellidoUsuario: {
-    type: String,
-    required: true
+  fechaRegistro: {
+    type: Date,
+    default: Date.now
   },
-  situacionFiscalUsuario: {
-    type: String,
-    required: true
-  },
-  provinciaUsuario: {
-    type: String,
-    required: true
-  },
-  ciudadaUsuario: {
-    type: String,
-    required: true
-  },
-  codigoPostalUsuario: {
-    type: String,
-    required: true
-  },
-  telefonoUsuario: {
-    type: String,
-    required: true
-  }
+  alquileres: [{
+    type: mongoose.Schema.Types.Number,
+    ref: 'Alquiler'                                     // Referencia a la colección de alquileres
+  }]
 }, { collection: 'usuarios' });
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

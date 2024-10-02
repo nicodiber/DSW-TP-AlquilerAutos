@@ -14,10 +14,19 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/conductores', require('./routes/conductor'));
-app.use('/api/sucursales', require('./routes/sucursal'));
 app.use('/api/tipos', require('./routes/tipo'));
-app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/modelos', require('./routes/modelo'));
+
+app.use('/api/usuarios', require('./routes/usuario'));
+
+app.use('/api/sucursales', require('./routes/sucursal'));
+
+app.use('/api/autos', require('./routes/auto'));
+app.use('/api/categorias', require('./routes/categoria'));
+app.use('/api/marcas', require('./routes/marca'));
+
+app.use('/api/alquileres', require('./routes/alquiler'));
+
 
 app.listen(4000, () => {
     console.log('El servidor está corriendo perfectamente');

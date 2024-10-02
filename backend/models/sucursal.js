@@ -5,11 +5,15 @@ const SucursalSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  denominacionSucursal: {
+  nombreSucursal: {
     type: String,
     required: true
   },
-  nroTelefonoSucursal: {
+  telefonoSucursal: {
+    type: String,
+    required: true
+  },
+  direccionSucursal: {
     type: String,
     required: true
   },
@@ -21,10 +25,6 @@ const SucursalSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  direccionSucursal: {
-    type: String,
-    required: true
-  },
   horarioAperturaSucursal: {
     type: String,
     required: true
@@ -32,7 +32,16 @@ const SucursalSchema = new mongoose.Schema({
   horarioCierreSucursal: {
     type: String,
     required: true
-  }
+  },
+  trabajadores: [{
+    type: mongoose.Schema.Types.Number,
+    ref: 'Usuario',
+    required: true                                      // Referencia a la colección de usuarios, donde incluyen a los trabajadores
+  }],
+  autos: [{
+    type: mongoose.Schema.Types.Number,
+    ref: 'Auto',                                     // Referencia a la colección de autos que hay en dicha sucursal
+  }],
 }, { collection: 'sucursales' });
 
 module.exports = mongoose.model('Sucursal', SucursalSchema);
