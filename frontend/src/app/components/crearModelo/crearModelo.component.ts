@@ -4,7 +4,8 @@ import { modelo } from '../../models/modelo';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr'; 
 import { ModeloService } from '../../services/modelo.service';
-import { TipoService } from '../../services/tipo.service';
+import { CategoriaService } from '../../services/categoria.service';
+import { MarcaService } from '../../services/marca.service';
 
 @Component({
   selector: 'app-crearModelo',
@@ -20,34 +21,42 @@ export class CrearModeloComponent implements OnInit {
               private router: Router,
               private toastr: ToastrService,
               private _modeloService: ModeloService,
-              private _tipoService: TipoService,
+              private _categoriaService: CategoriaService,
+              private _marcaService: MarcaService,
               private aRouter: ActivatedRoute) {
     this.modeloForm = this.fb.group({
       nombreModelo: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]+$')]], // Alfanumérico con espacios
-      tipoModelo: ['', [Validators.required]], // Debe seleccionar un tipo de modelo
-      anioModelo: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]], // Año válido
-      colorModelo: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]], // Solo letras
-      dimensionesModelo: ['', [Validators.required]],
-      cantidadAsientosModelo: ['', [Validators.required, Validators.min(1)]], // Al menos 1 asiento
-      cantidadPuertasModelo: ['', [Validators.required, Validators.min(2)]], // Al menos 2 puertas
-      motorModelo: ['', [Validators.required]],
-      cajaTransmisionModelo: ['', [Validators.required]],
-      tipoCombustibleModelo: ['', [Validators.required]],
-      capacidadTanqueCombustibleModelo: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro
-      capacidadBaulModelo: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro de capacidad de baúl
-      precioModelo: ['', [Validators.required, Validators.min(0)]], // Precio mayor o igual a 0
+      categoriaModelo: ['', [Validators.required]], // Debe seleccionar uno
+      marcaModelo: ['', [Validators.required]], // Debe seleccionar uno
+      precioXdia: ['', [Validators.required, Validators.min(0)]], // Precio mayor o igual a 0
+      anio: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]], // Año válido
+      color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]], // Solo letras
+      dimensiones: ['', [Validators.required]],
+      cantidadAsientos: ['', [Validators.required, Validators.min(1)]], // Al menos 1 asiento
+      cantidadPuertas: ['', [Validators.required, Validators.min(2)]], // Al menos 2 puertas
+      motor: ['', [Validators.required]],
+      cajaTransmision: ['', [Validators.required]],
+      tipoCombustible: ['', [Validators.required]],
+      capacidadTanqueCombustible: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro
+      capacidadBaul: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro de capacidad de baúl
     });
     this.id = this.aRouter.snapshot.paramMap.get('id');
   }
 
-  tipos: any[] = [];
+  categorias: any[] = [];
+  marcas: any[] = [];
 
   ngOnInit(): void {
     this.esEditar();
 
     // Obtener los tipos de modelo desde el servicio
-    this._tipoService.obtenerTipos().subscribe((data: any[]) => {
-      this.tipos = data;
+    this._categoriaService.obtenerCategorias().subscribe((data: any[]) => {
+      this.categorias = data;
+    });
+
+    // Obtener los tipos de modelo desde el servicio
+    this._marcaService.obtenerMarcas().subscribe((data: any[]) => {
+      this.marcas = data;
     });
   }
 
@@ -60,18 +69,19 @@ export class CrearModeloComponent implements OnInit {
     console.log('Formulario válido, enviando datos');
     const MODELO: modelo = {
       nombreModelo: this.modeloForm.get('nombreModelo')?.value,
-      tipoModelo: this.modeloForm.get('tipoModelo')?.value,
-      anioModelo: this.modeloForm.get('anioModelo')?.value,
-      colorModelo: this.modeloForm.get('colorModelo')?.value,
-      dimensionesModelo: this.modeloForm.get('dimensionesModelo')?.value,
-      cantidadAsientosModelo: this.modeloForm.get('cantidadAsientosModelo')?.value,
-      cantidadPuertasModelo: this.modeloForm.get('cantidadPuertasModelo')?.value,
-      motorModelo: this.modeloForm.get('motorModelo')?.value,
-      cajaTransmisionModelo: this.modeloForm.get('cajaTransmisionModelo')?.value,
-      tipoCombustibleModelo: this.modeloForm.get('tipoCombustibleModelo')?.value,
-      capacidadTanqueCombustibleModelo: this.modeloForm.get('capacidadTanqueCombustibleModelo')?.value,
-      capacidadBaulModelo: this.modeloForm.get('capacidadBaulModelo')?.value,
-      precioModelo: this.modeloForm.get('precioModelo')?.value,
+      categoriaModelo: this.modeloForm.get('categoriaModelo')?.value,
+      marcaModelo: this.modeloForm.get('marcaModelo')?.value,
+      precioXdia: this.modeloForm.get('precioXdia')?.value,
+      anio: this.modeloForm.get('anio')?.value,
+      color: this.modeloForm.get('color')?.value,
+      dimensiones: this.modeloForm.get('dimensiones')?.value,
+      cantidadAsientos: this.modeloForm.get('cantidadAsientos')?.value,
+      cantidadPuertas: this.modeloForm.get('cantidadPuertas')?.value,
+      motor: this.modeloForm.get('motor')?.value,
+      cajaTransmision: this.modeloForm.get('cajaTransmision')?.value,
+      tipoCombustible: this.modeloForm.get('tipoCombustible')?.value,
+      capacidadTanqueCombustible: this.modeloForm.get('capacidadTanqueCombustible')?.value,
+      capacidadBaul: this.modeloForm.get('capacidadBaul')?.value,
     };
 
     if (this.id !== null) {
@@ -103,18 +113,19 @@ export class CrearModeloComponent implements OnInit {
       this._modeloService.obtenerModelo(this.id).subscribe(data => {
         this.modeloForm.setValue({
           nombreModelo: data.nombreModelo,
-          tipoModelo: data.tipoModelo,
-          anioModelo: data.anioModelo,
-          colorModelo: data.colorModelo,
-          dimensionesModelo: data.dimensionesModelo,
-          cantidadAsientosModelo: data.cantidadAsientosModelo,
-          cantidadPuertasModelo: data.cantidadPuertasModelo,
-          motorModelo: data.motorModelo,
-          cajaTransmisionModelo: data.cajaTransmisionModelo,
-          tipoCombustibleModelo: data.tipoCombustibleModelo,
-          capacidadTanqueCombustibleModelo: data.capacidadTanqueCombustibleModelo,
-          capacidadBaulModelo: data.capacidadBaulModelo,
-          precioModelo: data.precioModelo,
+          categoriaModelo: data.categoriaModelo,
+          marcaModelo: data.marcaModelo,
+          precioXdia: data.precioXdia,
+          anio: data.anio,
+          color: data.color,
+          dimensiones: data.dimensiones,
+          cantidadAsientos: data.cantidadAsientos,
+          cantidadPuertas: data.cantidadPuertas,
+          motor: data.motor,
+          cajaTransmision: data.cajaTransmision,
+          tipoCombustible: data.tipoCombustible,
+          capacidadTanqueCombustible: data.capacidadTanqueCombustible,
+          capacidadBaul: data.capacidadBaul,
         });
       });
     }

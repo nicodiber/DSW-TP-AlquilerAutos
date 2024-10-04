@@ -53,7 +53,7 @@ describe('ListarModelosComponent', () => {
   });
 
   it('should set listModelos when obtenerModelos returns data', () => {
-    const modelosMock = [{ nombreModelo: 'Ejemplo', tipoModelo: { "_id": 1, "tipoVehiculo": "Sedan", "precioTipo": 5000 }, anioModelo: 2020, colorModelo: 'Rojo', dimensionesModelo: '2200x1400x1100', cantidadAsientosModelo: 5, cantidadPuertasModelo: 4, motorModelo: '1.8 Turbo', cajaTransmisionModelo: 'Manual', tipoCombustibleModelo: 'Diesel', capacidadTanqueCombustibleModelo: 50, capacidadBaulModelo: 110, precioModelo: 100000 }];
+    const modelosMock = [{ nombreModelo: 'Ejemplo', categoriaModelo: { "_id": 1, "nombreCategoria": "Sedan" }, marcaModelo: { "_id": 1, "nombreMarca": "Chevrolet" }, precioXdia: 45000, anio: 2020, color: 'Rojo', dimensiones: '2200x1400x1100', cantidadAsientos: 5, cantidadPuertas: 4, motor: '1.8 Turbo', cajaTransmision: 'Manual', tipoCombustible: 'Diesel', capacidadTanqueCombustible: 50, capacidadBaul: 110 }];
     component.ngOnInit();
     const req = httpTestingController.expectOne('/api/modelos');
     expect(req.request.method).toBe('GET');

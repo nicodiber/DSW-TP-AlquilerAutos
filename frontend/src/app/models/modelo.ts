@@ -1,35 +1,39 @@
-import { tipo } from './tipo';
+import { categoria } from './categoria';
+import { marca } from './marca';
 
 export class modelo {
     _id?: number; // El campo _id es opcional para la creación de nuevos objetos.
     nombreModelo: string; 
-    tipoModelo: tipo; 
-    anioModelo: number; 
-    colorModelo: string; 
-    dimensionesModelo: string; 
-    cantidadAsientosModelo: number; 
-    cantidadPuertasModelo: number; 
-    motorModelo: string; 
-    cajaTransmisionModelo: string; 
-    tipoCombustibleModelo: string; 
-    capacidadTanqueCombustibleModelo: number; 
-    capacidadBaulModelo: number; 
-    precioModelo: number; 
+    categoriaModelo: categoria; 
+    marcaModelo: marca;
+    precioXdia: number; 
+    anio: number; 
+    color: string; 
+    dimensiones: string; 
+    cantidadAsientos: number; 
+    cantidadPuertas: number; 
+    motor: string; 
+    cajaTransmision: string; 
+    tipoCombustible: string; 
+    capacidadTanqueCombustible: number; 
+    capacidadBaul: number; 
+    
 
-    constructor(nombreModelo: string, tipoModelo: tipo, anioModelo: number, colorModelo: string, dimensionesModelo: string, cantidadAsientosModelo: number, cantidadPuertasModelo: number, motorModelo: string, cajaTransmisionModelo: string, tipoCombustibleModelo: string, capacidadTanqueCombustibleModelo: number, capacidadBaulModelo: number, precioModelo: number, _id?: number) {
+    constructor(nombreModelo: string, categoriaModelo: categoria, marcaModelo: marca, precioXdia: number, anio: number, color: string, dimensiones: string, cantidadAsientos: number, cantidadPuertas: number, motor: string, cajaTransmision: string, tipoCombustible: string, capacidadTanqueCombustible: number, capacidadBaul: number, _id?: number) {
         this.nombreModelo = nombreModelo;
-        this.tipoModelo = tipoModelo;
-        this.anioModelo = anioModelo;
-        this.colorModelo = colorModelo;
-        this.dimensionesModelo = dimensionesModelo;
-        this.cantidadAsientosModelo = cantidadAsientosModelo;
-        this.cantidadPuertasModelo = cantidadPuertasModelo;
-        this.motorModelo = motorModelo;
-        this.cajaTransmisionModelo = cajaTransmisionModelo;
-        this.tipoCombustibleModelo = tipoCombustibleModelo;
-        this.capacidadTanqueCombustibleModelo = capacidadTanqueCombustibleModelo;
-        this.capacidadBaulModelo = capacidadBaulModelo;
-        this.precioModelo = precioModelo;
+        this.categoriaModelo = categoriaModelo;
+        this.marcaModelo = marcaModelo;
+        this.precioXdia = precioXdia;
+        this.anio = anio;
+        this.color = color;
+        this.dimensiones = dimensiones;
+        this.cantidadAsientos = cantidadAsientos;
+        this.cantidadPuertas = cantidadPuertas;
+        this.motor = motor;
+        this.cajaTransmision = cajaTransmision;
+        this.tipoCombustible = tipoCombustible;
+        this.capacidadTanqueCombustible = capacidadTanqueCombustible;
+        this.capacidadBaul = capacidadBaul;
 
         if (_id !== undefined) {
             this._id = _id;

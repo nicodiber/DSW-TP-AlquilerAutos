@@ -12,9 +12,6 @@ import { provideHttpClient } from '@angular/common/http';  //para poder hacer la
 // Componentes
 import { AppComponent } from './app.component';
 
-import { ListarConductoresComponent } from './components/listarConductores/listarConductores.component';
-import { CrearConductorComponent } from './components/crearConductor/crearConductor.component';
-
 import { ListarModelosComponent } from './components/listarModelos/listarModelos.component';
 import { DetallarModeloComponent } from './components/detallarModelo/detallarModelo.component';
 import { CrearModeloComponent } from './components/crearModelo/crearModelo.component';
@@ -24,8 +21,6 @@ import { AdminMenuComponent } from './components/admin-menu/admin-menu.component
 @NgModule({
   declarations: [
     AppComponent,
-    ListarConductoresComponent,
-    CrearConductorComponent,
     ListarModelosComponent,
     DetallarModeloComponent,
     CrearModeloComponent,

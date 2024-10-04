@@ -13,17 +13,15 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas
-app.use('/api/conductores', require('./routes/conductor'));
-app.use('/api/tipos', require('./routes/tipo'));
-app.use('/api/modelos', require('./routes/modelo'));
-
 app.use('/api/usuarios', require('./routes/usuario'));
 
 app.use('/api/sucursales', require('./routes/sucursal'));
 
-app.use('/api/autos', require('./routes/auto'));
+app.use('/api/modelos', require('./routes/modelo'));
 app.use('/api/categorias', require('./routes/categoria'));
 app.use('/api/marcas', require('./routes/marca'));
+
+app.use('/api/autos', require('./routes/auto'));
 
 app.use('/api/alquileres', require('./routes/alquiler'));
 

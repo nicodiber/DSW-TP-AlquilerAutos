@@ -9,55 +9,61 @@ const ModeloSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tipoModelo: {
-        type: mongoose.Schema.Types.Number, // El tipo debe coincidir con el _id de la colección tipos
-        ref: 'Tipo', // Hace referencia a la colección 'tipos'
+    marcaModelo: {
+        type: mongoose.Schema.Types.Number, // la marca debe coincidir con el _id de la colección marcas
+        ref: 'Marca', // Hace referencia a la colección 'marcas'
         required: true
     },
-    anioModelo: {
+    categoriaModelo: {
+        type: mongoose.Schema.Types.Number, // la categoria debe coincidir con el _id de la colección categorias
+        ref: 'Categoria', // Hace referencia a la colección 'categorias'
+        required: true
+    },
+    precioXdia: {
         type: Number,
         required: true
     },
-    colorModelo: {
+    anio: {
+        type: Number,
+        required: true
+    },
+    color: {
         type: String,
         required: true
     },
-    dimensionesModelo: {
+    dimensiones: {
         type: String,
         required: true
     },
-    cantidadAsientosModelo: {
+    cantidadAsientos: {
         type: Number,
         required: true
     },
-    cantidadPuertasModelo: {
+    cantidadPuertas: {
         type: Number,
         required: true
     },
-    motorModelo: {
+    motor: {
         type: String,
         required: true
     },
-    cajaTransmisionModelo: {
+    cajaTransmision: {
         type: String,
         required: true
     },
-    tipoCombustibleModelo: {
+    tipoCombustible: {
         type: String,
         required: true
     },
-    capacidadTanqueCombustibleModelo: {
+    capacidadTanqueCombustible: {
         type: Number,
         required: true
     },
-    capacidadBaulModelo: {
+    capacidadBaul: {
         type: Number,
         required: true
-    },
-    precioModelo: {
-        type: Number,
-        required: true
-    },
+    }
+    
 }, { collection: 'modelos' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 
 module.exports = mongoose.model('Modelo', ModeloSchema);

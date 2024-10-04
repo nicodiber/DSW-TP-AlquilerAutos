@@ -6,17 +6,8 @@ const AutoSchema = new mongoose.Schema({
         required: true
     },
     modeloAuto: {
-        type: String,
-        required: true
-    },
-    marcaAuto: {
-        type: mongoose.Schema.Types.Number, // la marca debe coincidir con el _id de la colección marcas
-        ref: 'Marca', // Hace referencia a la colección 'marcas'
-        required: true
-    },
-    categoriaAuto: {
-        type: mongoose.Schema.Types.Number, // la categoria debe coincidir con el _id de la colección categorias
-        ref: 'Categoria', // Hace referencia a la colección 'categorias'
+        type: mongoose.Schema.Types.Number,
+        ref: 'Modelo',
         required: true
     },
     sucursalAuto: {
@@ -24,8 +15,9 @@ const AutoSchema = new mongoose.Schema({
         ref: 'Sucursal', // Hace referencia a la colección 'sucursales' donde estaría almacenado el auto
         required: true
     },
-    precioXdia: {
-        type: Number,
+    historialMantenimiento: {
+        type: mongoose.Schema.Types.Number,
+        ref: 'Mantenimiento',
         required: true
     },
     estadoAuto: {
@@ -33,47 +25,10 @@ const AutoSchema = new mongoose.Schema({
         enum: ['disponible', 'alquilado', 'mantenimiento'],  // Definir los estados permitidos
         required: true
     },
-    anioAuto: {
-        type: Number,
-        required: true
-    },
     matriculaAuto: {
         type: String,
         required: true
-    },
-    colorAuto: {
-        type: String,
-        required: true
-    },
-    dimensiones: {
-        type: String,
-        required: true
-    },
-    cantidadAsientos: {
-        type: Number,
-        required: true
-    },
-    cantidadPuertas: {
-        type: Number,
-        required: true
-    },
-    motor: {
-        type: String,
-        required: true
-    },
-    cajaTransmision: {
-        type: String,
-        required: true
-    },
-    tipoCombustible: {
-        type: String,
-        required: true
-    },
-    capacidadBaul: {
-        type: Number,
-        required: true
-    },
-    
+    }
 }, { collection: 'autos' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 
 module.exports = mongoose.model('Auto', AutoSchema);

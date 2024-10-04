@@ -16,9 +16,10 @@ exports.crearModelo = async (req, res) => {
 
 exports.obtenerModelos = async (req, res) => {
   try {
-    // Usamos populate para obtener los detalles del tipo asociado
-    const modelos = await Modelo.find().populate('tipoModelo');
+    // Usamos populate para obtener los detalles de la categoria asociada
+    const modelos = await Modelo.find().populate('categoriaModelo');
     res.json(modelos);
+    // FALTA TRAER  LAS MARCAS, YA TRAEMOS CATEGORIA
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -27,7 +28,7 @@ exports.obtenerModelos = async (req, res) => {
 
 exports.actualizarModelo = async (req, res) => {
   try {
-    const { nombreModelo, tipoModelo, anioModelo, colorModelo, dimensionesModelo,  cantidadAsientosModelo, cantidadPuertasModelo, motorModelo, cajaTransmisionModelo, tipoCombustibleModelo, capacidadTanqueCombustibleModelo, capacidadBaulModelo, precioModelo } = req.body;
+    const { nombreModelo, marcaModelo, categoriaModelo, precioXdia, anio, color, dimensiones,  cantidadAsientos, cantidadPuertas, motor, cajaTransmision, tipoCombustible, capacidadTanqueCombustible, capacidadBaul } = req.body;
     let modeloExistente = await Modelo.findById(req.params.id);
 
     if (!modeloExistente) {
@@ -36,18 +37,20 @@ exports.actualizarModelo = async (req, res) => {
 
     // Actualizamos los campos del modelo
     modeloExistente.nombreModelo = nombreModelo;
-    modeloExistente.tipoModelo = tipoModelo; // Actualizamos también el tipo
-    modeloExistente.anioModelo = anioModelo;
-    modeloExistente.colorModelo = colorModelo;
-    modeloExistente.dimensionesModelo = dimensionesModelo;
-    modeloExistente.cantidadAsientosModelo = cantidadAsientosModelo;
-    modeloExistente.cantidadPuertasModelo = cantidadPuertasModelo;
-    modeloExistente.motorModelo = motorModelo;
-    modeloExistente.cajaTransmisionModelo = cajaTransmisionModelo;
-    modeloExistente.tipoCombustibleModelo = tipoCombustibleModelo;
-    modeloExistente.capacidadTanqueCombustibleModelo = capacidadTanqueCombustibleModelo;
-    modeloExistente.capacidadBaulModelo = capacidadBaulModelo;
-    modeloExistente.precioModelo = precioModelo;
+    modeloExistente.marcaModelo = marcaModelo;
+    modeloExistente.categoriaModelo = categoriaModelo;
+    modeloExistente.precioXdia = precioXdia;
+    modeloExistente.anio = anio;
+    modeloExistente.color = color;
+    modeloExistente.dimensiones = dimensiones;
+    modeloExistente.cantidadAsientos = cantidadAsientos;
+    modeloExistente.cantidadPuertas = cantidadPuertas;
+    modeloExistente.motor = motor;
+    modeloExistente.cajaTransmision = cajaTransmision;
+    modeloExistente.tipoCombustible = tipoCombustible;
+    modeloExistente.capacidadTanqueCombustible = capacidadTanqueCombustible;
+    modeloExistente.capacidadBaul = capacidadBaul;
+
     
     modeloExistente = await Modelo.findOneAndUpdate(
       { _id: req.params.id },
@@ -63,8 +66,8 @@ exports.actualizarModelo = async (req, res) => {
 
 exports.obtenerModelo = async (req, res) => {
   try {
-    let modeloEncontrado = await Modelo.findById(req.params.id).populate('tipoModelo');
-
+    let modeloEncontrado = await Modelo.findById(req.params.id).populate('categoriaModelo');
+    // FALTA TRAER  LA MARCA, YA TRAEMOS CATEGORIA
     if (!modeloEncontrado) {
       return res.status(404).json({ msg: 'No existe ese modelo' });
     }
