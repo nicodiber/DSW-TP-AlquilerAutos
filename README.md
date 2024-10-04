@@ -20,7 +20,7 @@ _Sistema de gestión de alquileres de autos "Nebarent"_
 
 El propósito de este proyecto es proporcionar una plataforma integral y fácil de usar donde ofertar autos en alquiler en distintas sucursales, teniendo en cuenta las características del vehículo (ej. categoría, gama, marca y modelo, entre otros) y la cantidad de días del alquiler.
 
-![modelo-dominio](https://raw.githubusercontent.com/nicodiber/DSW-TP-AlquilerAutos/refs/heads/main/assets/modelo-dominio.png)
+![modelo-dominio](assets\modelo-dominio.png)
 
 | Requerimiento     | Detalle                                                                                                                                                                                                                                                                                                                              |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
