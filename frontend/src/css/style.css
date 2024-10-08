@@ -2755,13 +2755,6 @@ input[type="checkbox"] {
 
     /* form style */
     /* ------------------------------ */
-
-
-    .de_form input[type="radio"], 
-    .de_form input[type="checkbox"] {
-    /* hide the inputs */
-    display:none;
-    }
     
     .de_form input[type="radio"] + label:before{
     content:"\f111";
@@ -4143,12 +4136,6 @@ hr {
 
 #form-create-item textarea {
     height: 45px;
-}
-
-.de_form input[type="radio"], 
-.de_form input[type="checkbox"] {
-/* hide the inputs */
-display:none;
 }
 
 .de_form input[type="radio"] + label:before{
