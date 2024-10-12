@@ -1,0 +1,11 @@
+<div class="admin-container">
+    <h1>Bienvenido {{ usuario.rol }} {{ usuario.nombre }} {{ usuario.apellido }} </h1>
+
+    <button (click)="irAGestionarUsuarios()" class="gestion-button">
+        Gestión de Usuarios
+    </button>
+
+    <button (click)="cerrarSesion()" class="logout-button">
+        Cerrar Sesión
+    </button>
+</div>

@@ -1,0 +1,51 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
+                    <span class="titulo">LISTADO DE TODOS LOS USUARIOS</span>
+                    <button class="btn btn-success float-end" routerLink="/crear-admin-trabajador">NUEVO ADMIN - TRABAJADOR</button>
+                    <table *ngIf="listaUsuarios.length > 0" class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre y Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">DNI</th>
+                                <th scope="col">Domicilio</th>
+                                <th scope="col">Fecha de Registro</th>
+                                <th scope="col">Alquileres</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of listaUsuarios">
+                                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                                <td>{{ usuario.email }}</td>
+                                <td>{{ usuario.rol }}</td>
+                                <td>{{ usuario.telefono }}</td>
+                                <td>{{ usuario.dni }}</td>
+                                <td>{{ usuario.direccion }}</td>
+                                <td>{{ formatDateToDDMMYYYY(usuario.fechaRegistro) }}</td>
+                                <td>
+                                    <a *ngIf="usuario.rol === 'usuario'" [routerLink]="['/ver-alquileres', usuario._id]">Ver Alquileres</a>
+                                </td>
+                                <td>
+                                <td>
+                                    <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'"
+                                        [routerLink]="['/editar-admin-trabajador', usuario._id]" class="fas fa-edit text-primary"></i>
+                                    <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'" (click)="deleteUsuario(usuario._id)"
+                                        class="fas fa-trash text-danger"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaUsuarios.length == 0">No hay usuarios
+                        para mostrar</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

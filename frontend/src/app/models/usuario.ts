@@ -5,26 +5,26 @@ export class usuario {
     nombre: string; 
     apellido: string; 
     email: string; 
-    contrasena: string; 
+    password: string; 
     rol: string; 
     telefono: string; 
     dni: number; 
     direccion: string;
-    licenciaConducir: string;
-    fechaRegistro: Date;
-    alquileres: alquiler; 
+    licenciaConductor: string;
+    fechaRegistro?: Date;
+    alquileres?: alquiler []; 
     
 
-    constructor(nombre: string, apellido: string, email: string, contrasena: string, rol: string, telefono: string, dni: number, direccion: string, licenciaConducir: string, fechaRegistro: Date, alquileres: alquiler, _id?: number) {
+    constructor(nombre: string, apellido: string, email: string, password: string, rol: string, telefono: string, dni: number, direccion: string, licenciaConductor: string, fechaRegistro: Date, alquileres: alquiler[], _id?: number) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.contrasena = contrasena;
+        this.password = password;
         this.rol = rol;
         this.telefono = telefono;
         this.dni = dni;
         this.direccion = direccion;
-        this.licenciaConducir = licenciaConducir;
+        this.licenciaConductor = licenciaConductor;
         this.fechaRegistro = fechaRegistro;
         this.alquileres = alquileres;
 

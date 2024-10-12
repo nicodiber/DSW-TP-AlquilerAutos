@@ -1,0 +1,96 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo"> {{ titulo | uppercase }}</span>
+                    <form class="mt-3" [formGroup]="usuarioForm" (ngSubmit)="agregarUsuario()">
+                        <div class="mb-3">
+                            <input type="text" formControlName="nombre" class="form-control form-control-lg"
+                                placeholder="Nombre">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('nombre')?.hasError('required') && usuarioForm.get('nombre')?.touched">
+                                <span>El nombre <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="apellido" class="form-control form-control-lg"
+                                placeholder="Apellido">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('apellido')?.hasError('required') && usuarioForm.get('apellido')?.touched">
+                                <span>El apellido <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" formControlName="email" class="form-control form-control-lg"
+                                placeholder="E-Mail">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('email')?.hasError('required') && usuarioForm.get('email')?.touched">
+                                <span>El email <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" formControlName="password" class="form-control form-control-lg"
+                                placeholder="Contraseña">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('password')?.hasError('required') && usuarioForm.get('password')?.touched">
+                                <span>La contraseña <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="licenciaConductor" class="form-control form-control-lg"
+                                placeholder="Licencia de Conductor">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('licenciaConductor')?.hasError('required') && usuarioForm.get('licenciaConductor')?.touched">
+                                <span>La licencia de conductor <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="telefono" class="form-control form-control-lg"
+                                placeholder="Telefono">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('telefono')?.hasError('required') && usuarioForm.get('telefono')?.touched">
+                                <span>El numero de telefono <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="dni" class="form-control form-control-lg"
+                                placeholder="DNI">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('dni')?.hasError('required') && usuarioForm.get('dni')?.touched">
+                                <span> el documento <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="direccion" class="form-control form-control-lg"
+                                placeholder="Direccion">
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('direccion')?.hasError('required') && usuarioForm.get('direccion')?.touched">
+                                <span> La direccion <strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Selecciona el Rol de Usuario</label>
+                            <div>
+                                <input type="radio" formControlName="rol" id="rolAdmin" value="administrador">
+                                <label for="rolAdmin" class="form-check-label">Administrador</label>
+                            </div>
+                            <div>
+                                <input type="radio" formControlName="rol" id="rolTrabajador" value="trabajador">
+                                <label for="rolTrabajador" class="form-check-label">Trabajador</label>
+                            </div>
+                            <div class="text-danger" *ngIf="usuarioForm.get('rol')?.hasError('required') && usuarioForm.get('rol')?.touched">
+                                <span> El rol <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button routerLink="/listarUsuarios" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="submit" [disabled]="usuarioForm.invalid"
+                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

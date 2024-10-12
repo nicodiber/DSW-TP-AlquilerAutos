@@ -18,7 +18,7 @@ const UsuarioSchema = new mongoose.Schema({
     required: true,
     unique: true                                      // El email debe ser único y el que va a usar para inciar sesion
   },
-  contraseña: {
+  password: {
     type: String,
     required: true
   },
