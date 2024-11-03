@@ -22,6 +22,13 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-crear.component';
+import { SucursalListarComponent } from './components/sucursal-listar/sucursal-listar.component';
+import { SucursalEditarComponent } from './components/sucursal-editar/sucursal-editar.component';
+import { SucursalEliminarComponent } from './components/sucursal-eliminar/sucursal-eliminar.component';
+import { AlquilerCrearComponent } from './components/alquiler-crear/alquiler-crear.component';
+import { AlquilerEditarComponent } from './components/alquiler-editar/alquiler-editar.component';
+import { AlquilerEliminarComponent } from './components/alquiler-eliminar/alquiler-eliminar.component';
+import { AlquilerListarComponent } from './components/alquiler-listar/alquiler-listar.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +44,13 @@ import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-cre
     ListarUsuariosComponent,
     CrearAdminTrabajadorComponent,
     SucursalCrearComponent,
+    SucursalListarComponent,
+    SucursalEditarComponent,
+    SucursalEliminarComponent,
+    AlquilerCrearComponent,
+    AlquilerEditarComponent,
+    AlquilerEliminarComponent,
+    AlquilerListarComponent,
   ],
   imports: [
     BrowserModule,
