@@ -10,20 +10,24 @@ export class SucursalService {
   url = 'http://localhost:4000/api/sucursales/';
 
   constructor(private http: HttpClient) { }
-  
-  obtenerSucursales(): Observable<any>{
+
+  // Obtiene todas las sucursales
+  obtenerSucursales(): Observable<any> {
     return this.http.get(this.url);
   }
 
-  eliminarSucursal(_id: number): Observable<any>{
+  // Elimina una sucursal por su ID
+  eliminarSucursal(_id: number): Observable<any> {
     return this.http.delete(this.url + _id);
   }
 
-  guardarSucursal(sucursal: sucursal): Observable<any>{
+  // Guarda una nueva sucursal
+  guardarSucursal(sucursal: sucursal): Observable<any> {
     return this.http.post(this.url, sucursal);
   }
 
-  editarSucursal(_id: string, sucursal: sucursal):Observable<any>{
+  // Edita una sucursal existente
+  editarSucursal(_id: string, sucursal: sucursal): Observable<any> {
     return this.http.put(this.url + _id, sucursal);
   }
 

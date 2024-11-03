@@ -153,7 +153,7 @@ exports.asignarAuto = async (req, res) => {
       return res.status(404).json({ msg: 'El auto no existe' });
     }
 
-    // Valida que el auto no esté asignado a otra sucursal
+    // Validación que auto no esté asignado a otra sucursal
     const autoAsignado = await Sucursal.findOne({ autos: idAuto });
     if (autoAsignado) {
       return res.status(400).json({ msg: 'El auto ya está asignado a otra sucursal' });
