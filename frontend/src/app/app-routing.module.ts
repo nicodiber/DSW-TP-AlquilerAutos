@@ -47,7 +47,6 @@ const routes: Routes = [
   { path: 'alquiler-editar', component: AlquilerEditarComponent },
   { path: 'alquiler-eliminar', component: AlquilerEliminarComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
-
 ];
 
 @NgModule({
