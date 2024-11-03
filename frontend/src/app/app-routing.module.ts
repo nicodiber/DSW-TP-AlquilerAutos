@@ -14,6 +14,12 @@ import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usu
 import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-crear.component';
 import { SucursalListarComponent } from './components/sucursal-listar/sucursal-listar.component';
+import { SucursalEditarComponent } from './components/sucursal-editar/sucursal-editar.component';
+import { SucursalEliminarComponent } from './components/sucursal-eliminar/sucursal-eliminar.component';
+import { AlquilerCrearComponent } from './components/alquiler-crear/alquiler-crear.component';
+import { AlquilerListarComponent } from './components/alquiler-listar/alquiler-listar.component';
+import { AlquilerEditarComponent } from './components/alquiler-editar/alquiler-editar.component';
+import { AlquilerEliminarComponent } from './components/alquiler-eliminar/alquiler-eliminar.component';
 
 const routes: Routes = [
   {
@@ -34,6 +40,12 @@ const routes: Routes = [
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
   { path: 'sucursal-crear', component: SucursalCrearComponent },
   { path: 'sucursal-listar', component: SucursalListarComponent },
+  { path: 'sucursal-editar', component: SucursalEditarComponent },
+  { path: 'sucursal-eliminar', component: SucursalEliminarComponent },
+  { path: 'alquiler-crear', component: AlquilerCrearComponent },
+  { path: 'alquiler-listar', component: AlquilerListarComponent },
+  { path: 'alquiler-editar', component: AlquilerEditarComponent },
+  { path: 'alquiler-eliminar', component: AlquilerEliminarComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
 
 ];
