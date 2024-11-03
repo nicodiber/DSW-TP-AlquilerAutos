@@ -9,15 +9,15 @@ exports.crearSucursal = async (req, res) => {
     const _id = await getNextSequenceValue('sucursalId');
      const {
       nombreSucursal, telefonoSucursal, direccionSucursal,
-      provinciaSucursal, ciudadSucursal, horarioAperturaSucursal,
-      horarioCierreSucursal,
+      provinciaSucursal, ciudadSucursal, horaAperturaSucursal,
+      horaCierreSucursal,
     } = req.body;
     
     let sucursal = new Sucursal({
       _id,
       nombreSucursal, telefonoSucursal, direccionSucursal,
-      provinciaSucursal, ciudadSucursal, horarioAperturaSucursal,
-      horarioCierreSucursal,
+      provinciaSucursal, ciudadSucursal, horaAperturaSucursal,
+      horaCierreSucursal,
     });
 
     await sucursal.save();
@@ -42,8 +42,8 @@ exports.actualizarSucursal = async (req, res) => {
   try {
     const {
       nombreSucursal, telefonoSucursal, direccionSucursal,
-      provinciaSucursal, ciudadSucursal, horarioAperturaSucursal,
-      horarioCierreSucursal, trabajadores, autos
+      provinciaSucursal, ciudadSucursal, horaAperturaSucursal,
+      horaCierreSucursal, trabajadores, autos
     } = req.body;
 
     let sucursal = await Sucursal.findById(req.params.id);
@@ -57,8 +57,8 @@ exports.actualizarSucursal = async (req, res) => {
     sucursal.direccionSucursal = direccionSucursal;
     sucursal.provinciaSucursal = provinciaSucursal;
     sucursal.ciudadSucursal = ciudadSucursal;
-    sucursal.horarioAperturaSucursal = horarioAperturaSucursal;
-    sucursal.horarioCierreSucursal = horarioCierreSucursal;
+    sucursal.horaAperturaSucursal = horaAperturaSucursal;
+    sucursal.horaCierreSucursal = horaCierreSucursal;
     sucursal.trabajadores = trabajadores || sucursal.trabajadores; 
     sucursal.autos = autos || sucursal.autos;
 
@@ -153,10 +153,11 @@ exports.asignarAuto = async (req, res) => {
       return res.status(404).json({ msg: 'El auto no existe' });
     }
 
-    /* Aca verifica que no este ese auto asignado a otra sucursal, pero nose los conflictos que maneja a la hora de alojarlo en dicha sucursal
-    if (sucursal.autos.includes(idAuto)) {
-      return res.status(400).json({ msg: 'El auto ya está asignado a esta sucursal' });
-    }*/
+    // Valida que el auto no esté asignado a otra sucursal
+    const autoAsignado = await Sucursal.findOne({ autos: idAuto });
+    if (autoAsignado) {
+      return res.status(400).json({ msg: 'El auto ya está asignado a otra sucursal' });
+    }
 
     // Agregar el auto al array
     sucursal.autos.push(idAuto);
