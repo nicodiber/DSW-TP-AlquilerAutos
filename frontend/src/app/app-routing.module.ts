@@ -12,14 +12,18 @@ import { TareasTrabajadorComponent } from './components/usuario/tareas-trabajado
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajador/crear-admin-trabajador.component';
+import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-crear.component';
+import { SucursalListarComponent } from './components/sucursal-listar/sucursal-listar.component';
 
-const routes: Routes = [ 
-  { path: '', component: LayoutComponent, children: [
-    { path: 'listarModelos', component: ListarModelosComponent },
-    { path: 'modelo/:id', component: DetallarModeloComponent },
-    { path: 'crearModelo', component: CrearModeloComponent },
-    { path: 'editarModelo/:id', component: CrearModeloComponent },
-  ]},
+const routes: Routes = [
+  {
+    path: '', component: LayoutComponent, children: [
+      { path: 'listarModelos', component: ListarModelosComponent },
+      { path: 'modelo/:id', component: DetallarModeloComponent },
+      { path: 'crearModelo', component: CrearModeloComponent },
+      { path: 'editarModelo/:id', component: CrearModeloComponent },
+    ]
+  },
   { path: 'loginUsuario', component: LoginPageComponent },
   { path: 'registrar', component: RegisterPageComponent },
   { path: 'tareas-admin', component: TareasAdminComponent },
@@ -28,12 +32,14 @@ const routes: Routes = [
   { path: 'crearModelo', component: CrearAdminTrabajadorComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
+  { path: 'sucursal-crear', component: SucursalCrearComponent },
+  { path: 'sucursal-listar', component: SucursalListarComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],    
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
