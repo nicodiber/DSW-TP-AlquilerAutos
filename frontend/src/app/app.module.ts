@@ -22,6 +22,7 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-crear.component';
+import { SucursalListarComponent } from './components/sucursal-listar/sucursal-listar.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-cre
     ListarUsuariosComponent,
     CrearAdminTrabajadorComponent,
     SucursalCrearComponent,
+    SucursalListarComponent,
   ],
   imports: [
     BrowserModule,
