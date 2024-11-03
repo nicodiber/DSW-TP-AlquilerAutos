@@ -21,6 +21,7 @@ import { TareasTrabajadorComponent } from './components/usuario/tareas-trabajado
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajador/crear-admin-trabajador.component';
+import { SucursalCrearComponent } from './components/sucursal-crear/sucursal-crear.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CrearAdminTrabajadorComponent } from './components/crear-admin-trabajad
     RegisterPageComponent,
     ListarUsuariosComponent,
     CrearAdminTrabajadorComponent,
+    SucursalCrearComponent,
   ],
   imports: [
     BrowserModule,
