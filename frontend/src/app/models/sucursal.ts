@@ -11,11 +11,11 @@ export class sucursal {
     ciudadSucursal: string; 
     horaAperturaSucursal: Date; 
     horaCierreSucursal: Date; 
-    trabajadores: usuario; 
-    autos: auto; 
+    trabajadores: usuario[]; 
+    autos: auto[]; 
     
 
-    constructor(nombreSucursal: string, telefonoSucursal: string, direccionSucursal: string, paisSucursal: string, provinciaSucursal: string, ciudadSucursal: string, horaAperturaSucursal: Date, horaCierreSucursal: Date, trabajadores: usuario, autos: auto, _id?: number) {
+    constructor(nombreSucursal: string, telefonoSucursal: string, direccionSucursal: string, paisSucursal: string, provinciaSucursal: string, ciudadSucursal: string, horaAperturaSucursal: Date, horaCierreSucursal: Date, trabajadores: usuario[], autos: auto[], _id?: number) {
         this.nombreSucursal = nombreSucursal;
         this.telefonoSucursal = telefonoSucursal;
         this.direccionSucursal = direccionSucursal;

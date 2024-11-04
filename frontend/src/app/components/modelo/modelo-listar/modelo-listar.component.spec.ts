@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ListarModelosComponent } from './listarModelos.component';
-import { ModeloService } from '../../services/modelo.service';
+import { ListarModelosComponent } from './modelo-listar.component';
+import { ModeloService } from '../../../services/modelo.service';
 import { ToastrService } from 'ngx-toastr';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { of } from 'rxjs';

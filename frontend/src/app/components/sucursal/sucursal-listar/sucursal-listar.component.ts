@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SucursalService } from '../../services/sucursal.service';
-import { sucursal } from '../../models/sucursal';
+import { SucursalService } from '../../../services/sucursal.service';
+import { sucursal } from '../../../models/sucursal';
 
 @Component({
   selector: 'app-sucursal-listar',
@@ -14,7 +14,19 @@ export class SucursalListarComponent implements OnInit {
   constructor(private sucursalService: SucursalService) { }
 
   ngOnInit(): void {
-    this.obtenerSucursales(); // Llama al método para obtener las sucursales al inicializar el componente
+    // this.obtenerSucursales(); // Llama al método para obtener las sucursales al inicializar el componente
+    this.sucursalService.obtenerSucursales().subscribe(
+            (data: sucursal[]) => {
+                this.sucursales = data.map(sucursal => ({
+                    ...sucursal,
+                    trabajadores: sucursal.trabajadores || [], // Inicializa como array
+                    autos: sucursal.autos || [] // Inicializa como array
+                }));
+            },
+            error => {
+                console.error('Error al obtener sucursales:', error);
+            }
+        );
   }
 
   obtenerSucursales(): void {

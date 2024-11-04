@@ -17,6 +17,10 @@ const SucursalSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  paisSucursal: {
+    type: String,
+    required: true
+  },
   provinciaSucursal: {
     type: String,
     required: true

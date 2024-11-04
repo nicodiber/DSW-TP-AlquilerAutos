@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { usuario } from '../../models/usuario';
-import { UsuarioService } from '../../services/usuario.service';
+import { usuario } from '../../../models/usuario';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-listar-usuarios',

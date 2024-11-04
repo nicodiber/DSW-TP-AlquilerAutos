@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrearModeloComponent } from './crearModelo.component';
+import { CrearModeloComponent } from './modelo-crear.component';
 
 describe('CrearConductorComponent', () => {
   let component: CrearModeloComponent;

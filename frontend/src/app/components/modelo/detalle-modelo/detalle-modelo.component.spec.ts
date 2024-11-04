@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DetallarModeloComponent } from './detallarModelo.component';
+import { DetallarModeloComponent } from './detalle-modelo.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { ModeloService } from '../../services/modelo.service';
+import { ModeloService } from '../../../services/modelo.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DetallarModeloComponent', () => {

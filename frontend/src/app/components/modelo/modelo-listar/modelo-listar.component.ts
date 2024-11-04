@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriaService } from '../../services/categoria.service';
-import { MarcaService } from '../../services/marca.service';
-import { ModeloService } from '../../services/modelo.service';
-import { categoria } from '../../models/categoria';
-import { marca } from '../../models/marca';
-import { modelo } from '../../models/modelo';
+import { CategoriaService } from '../../../services/categoria.service';
+import { MarcaService } from '../../../services/marca.service';
+import { ModeloService } from '../../../services/modelo.service';
+import { categoria } from '../../../models/categoria';
+import { marca } from '../../../models/marca';
+import { modelo } from '../../../models/modelo';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-listarModelos',
-  templateUrl: './listarModelos.component.html',
-  styleUrls: ['./listarModelos.component.css']
+  selector: 'app-modelo-listar',
+  templateUrl: './modelo-listar.component.html',
+  styleUrls: ['./modelo-listar.component.css']
 })
 export class ListarModelosComponent implements OnInit {
   listCategorias: categoria[] = [];

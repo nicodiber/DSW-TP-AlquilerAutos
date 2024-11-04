@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SucursalService } from '../../services/sucursal.service';
-import { sucursal } from '../../models/sucursal';
+import { SucursalService } from '../../../services/sucursal.service';
+import { sucursal } from '../../../models/sucursal';
 
 @Component({
   selector: 'app-sucursal-editar',

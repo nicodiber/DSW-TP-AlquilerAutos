@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SucursalService } from '../../services/sucursal.service';
+import { SucursalService } from '../../../services/sucursal.service';
 
 @Component({
   selector: 'app-sucursal-eliminar',

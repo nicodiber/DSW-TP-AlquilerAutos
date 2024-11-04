@@ -33,7 +33,6 @@
                                     <a *ngIf="usuario.rol === 'usuario'" [routerLink]="['/ver-alquileres', usuario._id]">Ver Alquileres</a>
                                 </td>
                                 <td>
-                                <td>
                                     <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'"
                                         [routerLink]="['/editar-admin-trabajador', usuario._id]" class="fas fa-edit text-primary"></i>
                                     <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'" (click)="deleteUsuario(usuario._id)"

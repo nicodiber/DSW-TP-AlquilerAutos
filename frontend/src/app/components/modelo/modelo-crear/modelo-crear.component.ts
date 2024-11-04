@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { modelo } from '../../models/modelo';
+import { modelo } from '../../../models/modelo';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr'; 
-import { ModeloService } from '../../services/modelo.service';
-import { CategoriaService } from '../../services/categoria.service';
-import { MarcaService } from '../../services/marca.service';
+import { ModeloService } from '../../../services/modelo.service';
+import { CategoriaService } from '../../../services/categoria.service';
+import { MarcaService } from '../../../services/marca.service';
 
 @Component({
-  selector: 'app-crearModelo',
-  templateUrl: './crearModelo.component.html',
-  styleUrls: ['./crearModelo.component.css']
+  selector: 'app-modelo-crear',
+  templateUrl: './modelo-crear.component.html',
+  styleUrls: ['./modelo-crear.component.css']
 })
 export class CrearModeloComponent implements OnInit {
   modeloForm: FormGroup;

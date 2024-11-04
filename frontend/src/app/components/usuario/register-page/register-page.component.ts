@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';  // Cambia la ruta según tu estructura
+import { AuthService } from '../../../services/auth.service';  // Cambia la ruta según tu estructura
 
 @Component({
   selector: 'app-registrarse',

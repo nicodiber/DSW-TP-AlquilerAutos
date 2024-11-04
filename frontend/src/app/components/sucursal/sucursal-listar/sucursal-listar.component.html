@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Sucursales - Renta de Autos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Lista de Sucursales</h2>
+        <table class="table table-striped mt-5">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Sucursal</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>País</th>
+                    <th>Provincia</th>
+                    <th>Ciudad</th>
+                    <th>Hora Apertura</th>
+                    <th>Hora Cierre</th>
+                    <th>Trabajadores</th>
+                    <th>Autos</th>
+                </tr>
+            </thead>
+            <tbody id="sucursalesTableBody">
+                <tr *ngFor="let sucursal of sucursales">
+                    <td>{{ sucursal._id }}</td>
+                    <td>{{ sucursal.nombreSucursal }}</td>
+                    <td>{{ sucursal.telefonoSucursal }}</td>
+                    <td>{{ sucursal.direccionSucursal }}</td>
+                    <td>{{ sucursal.paisSucursal }}</td>
+                    <td>{{ sucursal.provinciaSucursal }}</td>
+                    <td>{{ sucursal.ciudadSucursal }}</td>
+                    <td>{{ sucursal.horaAperturaSucursal }}</td>
+                    <td>{{ sucursal.horaCierreSucursal }}</td>
+    
+                    <!-- Mostrar nombres de los trabajadores -->
+                    <td>
+                        <ul>
+                            <li *ngFor="let trabajador of sucursal.trabajadores">{{ trabajador.nombre }} {{ trabajador.apellido }}</li>
+                        </ul>
+                    </td>
+    
+                    <!-- Mostrar detalles de los autos -->
+                    <td>
+                        <ul>
+                            <li *ngFor="let auto of sucursal.autos">{{ auto.matricula }}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/js/listar-sucursales.js"></script>
+</body>
+
+</html>

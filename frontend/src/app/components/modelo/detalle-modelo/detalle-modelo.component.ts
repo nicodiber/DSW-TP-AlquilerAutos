@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModeloService } from '../../services/modelo.service';
+import { ModeloService } from '../../../services/modelo.service';
 import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
-  selector: 'app-detallarModelo',
-  templateUrl: './detallarModelo.component.html',
-  styleUrls: ['./detallarModelo.component.css']
+  selector: 'app-detalle-modelo',
+  templateUrl: './detalle-modelo.component.html',
+  styleUrls: ['./detalle-modelo.component.css']
 })
 export class DetallarModeloComponent implements OnInit {
   modelo: any;
