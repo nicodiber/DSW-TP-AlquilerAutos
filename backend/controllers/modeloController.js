@@ -1,5 +1,7 @@
 const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
+const multer = require('multer');
+const path = require('path');
 
 exports.crearModelo = async (req, res) => {
   try {
@@ -94,3 +96,49 @@ exports.eliminarModelo = async (req, res) => {
     res.status(500).send('Hubo un error');
   }
 };
+
+
+/* MULTER */
+
+// Configuración de almacenamiento de multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '../../assets/modelo-dominio.png'); // Carpeta donde se almacenarán las imágenes
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nombre de archivo único
+    }
+});
+
+// Crear el middleware de multer
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // Limitar tamaño a 5MB por imagen
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif/;
+        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = fileTypes.test(file.mimetype);
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb(new Error('Solo se permiten imágenes con extensiones JPEG, JPG, PNG o GIF'));
+        }
+    }
+}).array('images', 5); // Permite hasta 5 imágenes
+
+// Ruta para crear un modelo con subida de imágenes
+app.post('/api/modelos', upload, async (req, res) => {
+    try {
+        const modeloData = req.body;
+        const images = req.files.map(file => file.path); // Obtiene las rutas de las imágenes subidas
+
+        // Guardar el modelo junto con las rutas de las imágenes
+        const nuevoModelo = new Modelo({ ...modeloData, images });
+        await nuevoModelo.save();
+
+        res.status(201).json(nuevoModelo);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al crear el modelo', error: error.message });
+    }
+});

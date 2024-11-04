@@ -20,7 +20,12 @@ export class ListarModelosComponent implements OnInit {
   categoriasSeleccionadas: number | null = null;
   marcasSeleccionadas: number[] = [];
 
-  constructor(private _categoriaService: CategoriaService, private _marcaService: MarcaService, private _modeloService: ModeloService, private toastr: ToastrService) {}
+  constructor(
+    private _categoriaService: CategoriaService,
+    private _marcaService: MarcaService,
+    private _modeloService: ModeloService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.obtenerCategorias();
@@ -29,70 +34,62 @@ export class ListarModelosComponent implements OnInit {
   }
 
   obtenerCategorias() {
-    this._categoriaService.obtenerCategorias().subscribe({
-      next: (data) => {
-        this.listCategorias = data;
-      },
-      error: (error) => {
-        console.log(error);
-        this.toastr.error('Error al cargar las categorias', 'Error');
-      }
+    this._categoriaService.obtenerCategorias().subscribe(data => {
+      this.listCategorias = data;
     });
   }
 
   obtenerMarcas() {
-    this._marcaService.obtenerMarcas().subscribe({
-      next: (data) => {
-        this.listMarcas = data;
-      },
-      error: (error) => {
-        console.log(error);
-        this.toastr.error('Error al cargar las marcas', 'Error');
-      }
+    this._marcaService.obtenerMarcas().subscribe(data => {
+      this.listMarcas = data;
     });
   }
 
   obtenerModelos() {
-    this._modeloService.obtenerModelos().subscribe({
-      next: (data) => {
-        this.listModelos = data;
-        this.modelosFiltrados = data; // Inicialmente mostramos todos los modelos
-      },
-      error: (error) => {
-        console.log(error);
-        this.toastr.error('Error al cargar los modelos', 'Error');
-      }
+    this._modeloService.obtenerModelos().subscribe(data => {
+      this.listModelos = data;
+      console.log("Modelos obtenidos desde el servicio:", this.listModelos);
+      this.filtrarModelos();
     });
   }
 
-  toggleCategoria(categoriaId: number) {
-    this.categoriasSeleccionadas = categoriaId; // Solo una categoría puede estar seleccionada
-    this.filtrarModelos(); // Aplica el filtro con la categoría seleccionada
-  }
-
-  toggleMarca(marca: any, event: any) {
-    const marcaId = marca._id;
-    if (event.target.checked) {
-        // Si el checkbox está marcado, lo añadimos a la lista
-        this.marcasSeleccionadas.push(marcaId);
-    } else {
-        // Si no, lo eliminamos de la lista
-        this.marcasSeleccionadas = this.marcasSeleccionadas.filter(id => id !== marcaId);
-    }
-    // Filtramos los modelos
+  // Método para manejar la selección y deselección de categorías
+  seleccionarCategoria(idCategoria: number) {
+    // Si la categoría ya está seleccionada, deseleccionar estableciendo null
+    this.categoriasSeleccionadas = this.categoriasSeleccionadas === idCategoria ? null : idCategoria;
     this.filtrarModelos();
   }
 
-  filtrarModelos() {
-    if ((this.categoriasSeleccionadas !== null && this.categoriasSeleccionadas !== -1) || this.marcasSeleccionadas.length > 0) {
-        this.modelosFiltrados = this.listModelos.filter(modelo => 
-            (modelo.categoriaModelo._id === this.categoriasSeleccionadas) || 
-            (modelo.marcaModelo?._id !== undefined && 
-            this.marcasSeleccionadas.includes(modelo.marcaModelo._id))
-        );
+  // Método para manejar la selección de marcas con checkboxes
+  toggleMarca(idMarca: number) {
+    const index = this.marcasSeleccionadas.indexOf(idMarca);
+    if (index > -1) {
+      this.marcasSeleccionadas.splice(index, 1);
     } else {
-        this.modelosFiltrados = this.listModelos; // Si no hay categorías seleccionadas, mostramos todos los modelos
+      this.marcasSeleccionadas.push(idMarca);
     }
+    this.filtrarModelos();
+  }
+
+  resetFiltros() {
+    this.categoriasSeleccionadas = null;
+    this.marcasSeleccionadas = [];
+    this.filtrarModelos();
+  }
+
+
+  // Lógica de filtrado que considera categoría y marcas seleccionadas
+  filtrarModelos() {
+    this.modelosFiltrados = this.listModelos.filter(modelo => {
+      const modeloCategoriaId = modelo.categoriaModelo?._id;  // ?. significa encadenamiento opcional, para evitar errores cuando la propiedad podría ser null o undefined
+      const modeloMarcaId = modelo.marcaModelo; // Usar directamente el valor numérico de marcaModelo
+
+      // (condicion) ? valor_si_cumple : valor_si_nocumple
+      const categoriaCoincide = this.categoriasSeleccionadas ? modeloCategoriaId === this.categoriasSeleccionadas : true;
+      const marcaCoincide = this.marcasSeleccionadas.length > 0 ? this.marcasSeleccionadas.includes(modeloMarcaId as number) : true;
+
+      return categoriaCoincide && marcaCoincide;
+    });
   }
 
 }

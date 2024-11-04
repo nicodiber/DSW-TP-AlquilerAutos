@@ -32,7 +32,7 @@
                                 <div class="de_form">
                                     <div class="de_radio">
                                         <input id="radio_categoria_{{ categoria._id }}" name="radio_categoria" type="radio"
-                                            (change)="toggleCategoria(categoria._id ?? -1)"
+                                            (click)="seleccionarCategoria(categoria._id ?? -1)"
                                             [checked]="categoriasSeleccionadas === (categoria._id ?? -1)" /> <!--  -1 evita que undefined cause problemas en la comparación -->
                                         <label for="radio_categoria_{{ categoria._id }}"> {{ categoria.nombreCategoria }}</label>
                                     </div>
@@ -51,7 +51,7 @@
                                 <div class="de_form">
                                     <div class="de_checkbox">
                                         <input id="checkbox_marca_{{ marca._id }}" name="checkbox_marca" type="checkbox"
-                                            (change)="toggleMarca(marca, $event)"
+                                            (change)="toggleMarca(marca._id ?? -1)"
                                             [checked]="marcasSeleccionadas.includes(marca._id ?? -1)" /> <!--  -1 evita que undefined cause problemas en la comparación -->
                                         <label for="checkbox_marca_{{ marca._id }}"> {{ marca.nombreMarca }}</label>
                                     </div>
@@ -63,12 +63,15 @@
 
                 <div class="col-lg-9" style="width: 75% !important;">
                     <div class="row">
-                        <div class="col-xl-4 col-lg-6" *ngIf="listModelos.length === 0">
-                            <p>No hay modelos disponibles.</p>
+                        <div class="col-xl-6 col-lg-6" *ngIf="listModelos.length === 0">
+                            <h4>¡No hay modelos disponibles!</h4>
                         </div>
-                        <div class="col-xl-4 col-lg-6" *ngIf="listModelos.length > 0" style="display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; padding: 0px !important;">
-                            <div *ngIf="modelosFiltrados.length === 0"><p>No hay modelos coincidentes.</p></div>
-                            <div class="de-item mb30" *ngFor="let modelo of modelosFiltrados" style="margin: 0px 8px 24px 8px !important;">
+                        <div class="col-xl-6 col-lg-6 no-encontrado" *ngIf="modelosFiltrados.length === 0">
+                            <h4>¡No hay modelos coincidentes!</h4>
+                            <button class="btn-main btn-black" (click)="resetFiltros()">Reiniciar filtros</button>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="listModelos.length > 0">
+                            <div class="de-item mb30 modelo-item" *ngFor="let modelo of modelosFiltrados" style="margin: 0px 8px 24px 8px !important;">
                                 <div class="d-img">
                                     <img src="../../../images/cars/jeep-renegade.jpg" class="img-fluid" alt="">
                                 </div>
@@ -79,7 +82,6 @@
                                         <div class="d-atr-group">
                                             <span class="d-atr"><img src="../../../images/icons/1.svg" alt="">{{ modelo.cantidadAsientos }}</span>
                                             <span class="d-atr"><img src="../../../images/icons/3.svg" alt="">{{ modelo.cantidadPuertas }}</span>
-                                            <span class="d-atr"><img src="../../../images/icons/2.svg" alt="">{{ modelo.capacidadBaul }} lts.</span>
                                             <span class="d-atr"><img src="../../../images/icons/4.svg" alt="">Categoria: {{ modelo.categoriaModelo.nombreCategoria }}</span>
                                         </div>
                                         <div class="d-price">
