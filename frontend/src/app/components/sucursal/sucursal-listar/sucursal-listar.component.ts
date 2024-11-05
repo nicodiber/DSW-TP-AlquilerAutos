@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SucursalService } from '../../../services/sucursal.service';
+import { ToastrService } from 'ngx-toastr';
 import { sucursal } from '../../../models/sucursal';
+import { SucursalService } from '../../../services/sucursal.service';
 
 @Component({
   selector: 'app-sucursal-listar',
@@ -8,36 +9,30 @@ import { sucursal } from '../../../models/sucursal';
   styleUrls: ['./sucursal-listar.component.css']
 })
 export class SucursalListarComponent implements OnInit {
-  sucursales: sucursal[] = []; // Propiedad para almacenar las sucursales
-  error: string | null = null; // Propiedad para almacenar errores
+  listaSucursales: sucursal[] = [];
 
-  constructor(private sucursalService: SucursalService) { }
+  constructor(private _sucursalService: SucursalService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    // this.obtenerSucursales(); // Llama al método para obtener las sucursales al inicializar el componente
-    this.sucursalService.obtenerSucursales().subscribe(
-            (data: sucursal[]) => {
-                this.sucursales = data.map(sucursal => ({
-                    ...sucursal,
-                    trabajadores: sucursal.trabajadores || [], // Inicializa como array
-                    autos: sucursal.autos || [] // Inicializa como array
-                }));
-            },
-            error => {
-                console.error('Error al obtener sucursales:', error);
-            }
-        );
+    this.getSucursales();
   }
 
-  obtenerSucursales(): void {
-    this.sucursalService.obtenerSucursales().subscribe(
-      (data: sucursal[]) => {
-        this.sucursales = data; // Asigna la respuesta a la propiedad sucursales
-      },
-      (error) => {
-        this.error = 'Error al obtener las sucursales'; // Manejo de errores
-        console.error(error); // Muestra el error en la consola
-      }
-    );
+  getSucursales() {
+    this._sucursalService.obtenerSucursales().subscribe(data => {
+      console.log(data);
+      this.listaSucursales = data;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  deleteSucursal(id: any) {
+    this._sucursalService.eliminarSucursal(id).subscribe(data => {
+      this.toastr.success('La sucursal fue eliminada con éxito', 'Sucursal Eliminada');
+      this.getSucursales();
+    }, error => {
+      console.log(error);
+    });
   }
 }
