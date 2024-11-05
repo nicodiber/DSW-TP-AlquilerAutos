@@ -31,23 +31,11 @@ const SucursalSchema = new mongoose.Schema({
   },
   horaAperturaSucursal: {
     type: String,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v);  // Valida formato HH:MM
-      },
-      message: props => `${props.value} no es un horario válido (use formato HH:MM)`
-    }
+    required: true
   },
   horaCierreSucursal: {
     type: String,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v);  // Valida formato HH:MM
-      },
-      message: props => `${props.value} no es un horario válido (use formato HH:MM)`
-    }
+    required: true
   },
   trabajadores: [{
     type: mongoose.Schema.Types.Number,
