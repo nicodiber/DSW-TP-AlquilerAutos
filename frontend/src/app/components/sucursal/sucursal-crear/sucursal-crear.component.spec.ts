@@ -10,7 +10,7 @@ describe('SucursalCrearComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SucursalCrearComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SucursalCrearComponent);
     component = fixture.componentInstance;
