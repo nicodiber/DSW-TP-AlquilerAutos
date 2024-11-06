@@ -1,3 +1,9 @@
 .owl-carousel .item img{
   object-fit: contain !important;
+  height: 400px !important;
+  width: 100% !important;
+}
+
+#section-car-details .owl-item{
+  height: 400px !important;
 }

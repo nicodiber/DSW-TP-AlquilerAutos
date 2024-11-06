@@ -55,10 +55,10 @@ exports.crearModeloConImagenes = async (req, res) => {
 
 exports.obtenerModelos = async (req, res) => {
   try {
-    // Usamos populate para obtener los detalles de la categoria asociada
-    const modelos = await Modelo.find().populate('categoriaModelo');
+    // Usamos populate para obtener los detalles de la categoria y marca asociada
+    const modelos = await Modelo.find().populate('categoriaModelo').populate('marcaModelo');
     res.json(modelos);
-    // FALTA TRAER LAS MARCAS, YA TRAEMOS CATEGORIA
+
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -104,8 +104,8 @@ exports.actualizarModelo = async (req, res) => {
 
 exports.obtenerModelo = async (req, res) => {
   try {
-    let modeloEncontrado = await Modelo.findById(req.params.id).populate('categoriaModelo');
-    // FALTA TRAER LA MARCA, YA TRAEMOS CATEGORIA
+    let modeloEncontrado = await Modelo.findById(req.params.id).populate('categoriaModelo').populate('marcaModelo');
+    
     if (!modeloEncontrado) {
       return res.status(404).json({ msg: 'No existe ese modelo' });
     }

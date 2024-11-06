@@ -6618,7 +6618,7 @@ header.smaller{
 
 .de-price{
     background: rgba(0, 0, 0, .05);
-    padding: 20px 0 10px 0;
+    padding: 10px;
     font-size: 18px;
     border-radius:6px;
     -moz-border-radius:6px;
@@ -11169,10 +11169,6 @@ a.img-icon-zoom {
     margin: 0 2px 0 2px;
 }
 
-a.img-icon-zoom {
-    background:/* url(../images_02/icon-zoom.png) center no-repeat;*/
-}
-
 .pf_full_width {
     width: 100%;
 }
@@ -11193,8 +11189,6 @@ a.img-icon-zoom {
 .pf_full_width.pf_2_cols .item {
     width: 49.9%;
 }
-
-.gallery_border {}
 
 .pf_full_width.gallery_border .item,
 .pf_full_width.gallery_border.pf_2_cols .item,
@@ -11821,7 +11815,7 @@ i.bg-color-secondary {
 }
 .de-spec .d-row{
     border-bottom: solid 1px #ddd;
-    padding: 2px 0;
+    padding: 4px 0;
 }
 .dark-scheme .de-spec .d-row{
     border-bottom-color: rgba(255, 255, 255, .3);
@@ -13151,9 +13145,9 @@ i.big {
 
 /* Adicional */
 #section-car-details .owl-item, #section-car-details .owl-item img{
-    height: 500px;
+    height: 400px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 10px; 
 }
 @media (max-width: 768px){
     #section-car-details .owl-item, #section-car-details .owl-item img{
@@ -13181,7 +13175,7 @@ i.big {
 }
 
 .owl-thumbs img{
-    padding:3px;
+    padding:10px !important;
 }
 
 #slider-carousel .owl-thumbs{

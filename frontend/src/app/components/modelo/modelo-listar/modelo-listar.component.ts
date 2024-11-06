@@ -61,7 +61,7 @@ export class ListarModelosComponent implements OnInit {
   }
 
   // Método para manejar la selección de marcas con checkboxes
-  toggleMarca(idMarca: number) {
+  checkMarca(idMarca: number) {
     const index = this.marcasSeleccionadas.indexOf(idMarca);
     if (index > -1) {
       this.marcasSeleccionadas.splice(index, 1);
@@ -82,7 +82,7 @@ export class ListarModelosComponent implements OnInit {
   filtrarModelos() {
     this.modelosFiltrados = this.listModelos.filter(modelo => {
       const modeloCategoriaId = modelo.categoriaModelo?._id;  // ?. significa encadenamiento opcional, para evitar errores cuando la propiedad podría ser null o undefined
-      const modeloMarcaId = modelo.marcaModelo; // Usar directamente el valor numérico de marcaModelo
+      const modeloMarcaId = modelo.marcaModelo?._id;
 
       // (condicion) ? valor_si_cumple : valor_si_nocumple
       const categoriaCoincide = this.categoriasSeleccionadas ? modeloCategoriaId === this.categoriasSeleccionadas : true;

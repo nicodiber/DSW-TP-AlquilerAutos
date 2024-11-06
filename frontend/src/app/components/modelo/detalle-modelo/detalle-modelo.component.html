@@ -37,19 +37,39 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6">
                     <div class="splitted-container" style="display: flex;">
                         <div class="col-lg-9">
                             <h3>{{ modelo.nombreModelo }}</h3>
-                            <p>El precio expuesto a continuación se refiere al precio diario, el mismo será utilizado para calcular tu precio total de alquiler.</p>
+
+                            <div class="categoria-marca">
+                                <div>
+                                    <div style="display: flex !important;">
+                                        <div style="width: 130px !important;">
+                                            <span class="d-value"> Categoría: </span><span class="d-value">{{ modelo.categoriaModelo.nombreCategoria
+                                                }}</span>
+                                        </div>
+                                        <div style="width: 130px !important;">
+                                            <span class="d-value"> Marca: </span><span class="d-value">{{ modelo.marcaModelo.nombreMarca }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="spacer-10"></div>
+
+                            <p style="color: rgba(0,0,0,.5);">El precio expuesto se utiliza para calcular el precio total de alquiler.</p>
                         </div>
+
                         <div class="col-lg-3 de-price text-center" style="align-content: center !important; margin-left: 15px !important;">
                             Precio diario
                             <h3>${{ modelo.precioXdia }}</h3>
                         </div>
                     </div>
-                    <div class="spacer-10"></div>
 
+                    <div class="spacer-10"></div>
+                    
                     <h4>Especificaciones</h4>
                     <div class="de-spec">
                         <div class="d-row">

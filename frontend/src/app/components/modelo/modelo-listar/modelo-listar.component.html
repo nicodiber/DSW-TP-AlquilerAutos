@@ -51,7 +51,7 @@
                                 <div class="de_form">
                                     <div class="de_checkbox">
                                         <input id="checkbox_marca_{{ marca._id }}" name="checkbox_marca" type="checkbox"
-                                            (change)="toggleMarca(marca._id ?? -1)"
+                                            (change)="checkMarca(marca._id ?? -1)"
                                             [checked]="marcasSeleccionadas.includes(marca._id ?? -1)" /> <!--  -1 evita que undefined cause problemas en la comparación -->
                                         <label for="checkbox_marca_{{ marca._id }}"> {{ marca.nombreMarca }}</label>
                                     </div>
