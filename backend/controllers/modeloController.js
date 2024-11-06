@@ -1,7 +1,5 @@
 const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
-const multer = require('multer');
-const path = require('path');
 
 exports.crearModelo = async (req, res) => {
   try {
@@ -16,12 +14,51 @@ exports.crearModelo = async (req, res) => {
   }
 };
 
+// Nueva función para crear un modelo con imágenes
+exports.crearModeloConImagenes = async (req, res) => {
+  try {
+    console.log('req.body:', req.body); // Verifica que `req.body` contenga los campos de texto
+    console.log('req.files:', req.files); // Verifica que `req.files` contenga las imágenes
+
+    const _id = await getNextSequenceValue('modeloId');
+
+    // Dado que los campos de texto de `req.body` vienen como strings, necesitamos convertir algunos a su tipo correcto
+    const modeloData = {
+      nombreModelo: req.body.nombreModelo,
+      categoriaModelo: req.body.categoriaModelo,
+      marcaModelo: req.body.marcaModelo,
+      precioXdia: parseFloat(req.body.precioXdia),
+      anio: parseInt(req.body.anio),
+      color: req.body.color,
+      dimensiones: req.body.dimensiones,
+      cantidadAsientos: parseInt(req.body.cantidadAsientos),
+      cantidadPuertas: parseInt(req.body.cantidadPuertas),
+      motor: req.body.motor,
+      cajaTransmision: req.body.cajaTransmision,
+      tipoCombustible: req.body.tipoCombustible,
+      capacidadTanqueCombustible: parseFloat(req.body.capacidadTanqueCombustible),
+      capacidadBaul: parseFloat(req.body.capacidadBaul),
+      images: req.files['images'] ? req.files['images'].map(file => `/uploads/${file.filename}`) : []
+    };
+
+    // Crea el modelo con los datos procesados
+    const nuevoModelo = new Modelo({ ...modeloData, _id });
+    await nuevoModelo.save();
+
+    res.status(201).json(nuevoModelo);
+  } catch (error) {
+    console.log('Error al crear el modelo:', error);
+    res.status(500).json({ message: 'Hubo un error', error: error.message });
+  }
+};
+
+
 exports.obtenerModelos = async (req, res) => {
   try {
     // Usamos populate para obtener los detalles de la categoria asociada
     const modelos = await Modelo.find().populate('categoriaModelo');
     res.json(modelos);
-    // FALTA TRAER  LAS MARCAS, YA TRAEMOS CATEGORIA
+    // FALTA TRAER LAS MARCAS, YA TRAEMOS CATEGORIA
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -30,7 +67,7 @@ exports.obtenerModelos = async (req, res) => {
 
 exports.actualizarModelo = async (req, res) => {
   try {
-    const { nombreModelo, marcaModelo, categoriaModelo, precioXdia, anio, color, dimensiones,  cantidadAsientos, cantidadPuertas, motor, cajaTransmision, tipoCombustible, capacidadTanqueCombustible, capacidadBaul } = req.body;
+    const { nombreModelo, marcaModelo, categoriaModelo, precioXdia, anio, color, dimensiones, cantidadAsientos, cantidadPuertas, motor, cajaTransmision, tipoCombustible, capacidadTanqueCombustible, capacidadBaul } = req.body;
     let modeloExistente = await Modelo.findById(req.params.id);
 
     if (!modeloExistente) {
@@ -53,7 +90,6 @@ exports.actualizarModelo = async (req, res) => {
     modeloExistente.capacidadTanqueCombustible = capacidadTanqueCombustible;
     modeloExistente.capacidadBaul = capacidadBaul;
 
-    
     modeloExistente = await Modelo.findOneAndUpdate(
       { _id: req.params.id },
       modeloExistente,
@@ -69,7 +105,7 @@ exports.actualizarModelo = async (req, res) => {
 exports.obtenerModelo = async (req, res) => {
   try {
     let modeloEncontrado = await Modelo.findById(req.params.id).populate('categoriaModelo');
-    // FALTA TRAER  LA MARCA, YA TRAEMOS CATEGORIA
+    // FALTA TRAER LA MARCA, YA TRAEMOS CATEGORIA
     if (!modeloEncontrado) {
       return res.status(404).json({ msg: 'No existe ese modelo' });
     }
@@ -96,49 +132,3 @@ exports.eliminarModelo = async (req, res) => {
     res.status(500).send('Hubo un error');
   }
 };
-
-
-/* MULTER */
-
-// Configuración de almacenamiento de multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, '../../assets/modelo-dominio.png'); // Carpeta donde se almacenarán las imágenes
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Nombre de archivo único
-    }
-});
-
-// Crear el middleware de multer
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Limitar tamaño a 5MB por imagen
-    fileFilter: (req, file, cb) => {
-        const fileTypes = /jpeg|jpg|png|gif/;
-        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = fileTypes.test(file.mimetype);
-
-        if (mimetype && extname) {
-            return cb(null, true);
-        } else {
-            cb(new Error('Solo se permiten imágenes con extensiones JPEG, JPG, PNG o GIF'));
-        }
-    }
-}).array('images', 5); // Permite hasta 5 imágenes
-
-// Ruta para crear un modelo con subida de imágenes
-app.post('/api/modelos', upload, async (req, res) => {
-    try {
-        const modeloData = req.body;
-        const images = req.files.map(file => file.path); // Obtiene las rutas de las imágenes subidas
-
-        // Guardar el modelo junto con las rutas de las imágenes
-        const nuevoModelo = new Modelo({ ...modeloData, images });
-        await nuevoModelo.save();
-
-        res.status(201).json(nuevoModelo);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al crear el modelo', error: error.message });
-    }
-});

@@ -1,0 +1,3 @@
+.owl-carousel .item img{
+  object-fit: contain !important;
+}

@@ -17,9 +17,10 @@ export class modelo {
     tipoCombustible: string; 
     capacidadTanqueCombustible: number; 
     capacidadBaul: number; 
+    images: string[] = [];
     
 
-    constructor(nombreModelo: string, categoriaModelo: categoria, marcaModelo: marca | number, precioXdia: number, anio: number, color: string, dimensiones: string, cantidadAsientos: number, cantidadPuertas: number, motor: string, cajaTransmision: string, tipoCombustible: string, capacidadTanqueCombustible: number, capacidadBaul: number, _id?: number) {
+    constructor(nombreModelo: string, categoriaModelo: categoria, marcaModelo: marca | number, precioXdia: number, anio: number, color: string, dimensiones: string, cantidadAsientos: number, cantidadPuertas: number, motor: string, cajaTransmision: string, tipoCombustible: string, capacidadTanqueCombustible: number, capacidadBaul: number, _id?: number, images: string[] = []) {
         this.nombreModelo = nombreModelo;
         this.categoriaModelo = categoriaModelo;
         this.marcaModelo = marcaModelo;
@@ -34,6 +35,7 @@ export class modelo {
         this.tipoCombustible = tipoCombustible;
         this.capacidadTanqueCombustible = capacidadTanqueCombustible;
         this.capacidadBaul = capacidadBaul;
+        this.images = images;
 
         if (_id !== undefined) {
             this._id = _id;

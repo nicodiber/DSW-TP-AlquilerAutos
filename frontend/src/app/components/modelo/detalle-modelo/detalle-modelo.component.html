@@ -20,24 +20,24 @@
 
     <section id="section-car-details">
         <div class="container">
-            <div class="row g-6">
-                <div class="col-lg-6" style="width: 50% !important;">
-                    <div id="slider-carousel" class="owl-carousel"> <!-- DEFINIR MANEJO DE IMAGENES -->
-                        <div class="item">
-                            <img src="../../../images/car-single/1.jpg" alt="">
+            <div class="row g-6" *ngIf="modelo">
+                <div class="col-lg-6">
+                    <div id="slider-carousel" class="owl-carousel">
+                        <div class="item" *ngIf="modelo.images[0]">
+                            <img [src]="'http://localhost:4000' + modelo.images[0]" alt="">
                         </div>
-                        <div class="item">
-                            <img src="../../../images/car-single/2.jpg" alt="">
+                        <div class="item" *ngIf="modelo.images[1]">
+                            <img [src]="'http://localhost:4000' + modelo.images[1]" alt="">
                         </div>
-                        <div class="item">
-                            <img src="../../../images/car-single/3.jpg" alt="">
+                        <div class="item" *ngIf="modelo.images[2]">
+                            <img [src]="'http://localhost:4000' + modelo.images[2]" alt="">
                         </div>
-                        <div class="item">
-                            <img src="../../../images/car-single/4.jpg" alt="">
+                        <div class="item" *ngIf="modelo.images[3]">
+                            <img [src]="'http://localhost:4000' + modelo.images[3]" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6" *ngIf="modelo" style="width: 50% !important;">
+                <div class="col-lg-6" style="width: 50% !important;">
                     <div class="splitted-container" style="display: flex;">
                         <div class="col-lg-9">
                             <h3>{{ modelo.nombreModelo }}</h3>

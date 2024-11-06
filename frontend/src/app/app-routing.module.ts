@@ -35,7 +35,6 @@ const routes: Routes = [
   { path: 'tareas-admin', component: TareasAdminComponent },
   { path: 'tareas-admin', component: TareasAdminComponent },
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
-  { path: 'crear-modelo', component: CrearAdminTrabajadorComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
   { path: 'sucursal-crear', component: SucursalCrearComponent },

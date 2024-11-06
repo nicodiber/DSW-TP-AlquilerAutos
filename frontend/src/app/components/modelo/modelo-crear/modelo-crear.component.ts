@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { modelo } from '../../../models/modelo';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr'; 
 import { ModeloService } from '../../../services/modelo.service';
@@ -16,6 +15,9 @@ export class CrearModeloComponent implements OnInit {
   modeloForm: FormGroup;
   titulo = 'Crear Modelo';
   id: string | null;
+  selectedFiles: File[] = []; // Nueva propiedad para almacenar las imágenes
+  categorias: any[] = [];
+  marcas: any[] = [];
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -25,69 +27,73 @@ export class CrearModeloComponent implements OnInit {
               private _marcaService: MarcaService,
               private aRouter: ActivatedRoute) {
     this.modeloForm = this.fb.group({
-      nombreModelo: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]+$')]], // Alfanumérico con espacios
-      categoriaModelo: ['', [Validators.required]], // Debe seleccionar uno
-      marcaModelo: ['', [Validators.required]], // Debe seleccionar uno
-      precioXdia: ['', [Validators.required, Validators.min(0)]], // Precio mayor o igual a 0
-      anio: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]], // Año válido
-      color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]], // Solo letras
+      nombreModelo: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]+$')]],
+      categoriaModelo: ['', [Validators.required]],
+      marcaModelo: ['', [Validators.required]],
+      precioXdia: ['', [Validators.required, Validators.min(0)]],
+      anio: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       dimensiones: ['', [Validators.required]],
-      cantidadAsientos: ['', [Validators.required, Validators.min(1)]], // Al menos 1 asiento
-      cantidadPuertas: ['', [Validators.required, Validators.min(2)]], // Al menos 2 puertas
+      cantidadAsientos: ['', [Validators.required, Validators.min(1)]],
+      cantidadPuertas: ['', [Validators.required, Validators.min(2)]],
       motor: ['', [Validators.required]],
       cajaTransmision: ['', [Validators.required]],
       tipoCombustible: ['', [Validators.required]],
-      capacidadTanqueCombustible: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro
-      capacidadBaul: ['', [Validators.required, Validators.min(1)]], // Al menos 1 litro de capacidad de baúl
+      capacidadTanqueCombustible: ['', [Validators.required, Validators.min(1)]],
+      capacidadBaul: ['', [Validators.required, Validators.min(1)]],
     });
     this.id = this.aRouter.snapshot.paramMap.get('id');
   }
 
-  categorias: any[] = [];
-  marcas: any[] = [];
-
   ngOnInit(): void {
     this.esEditar();
-
-    // Obtener los tipos de modelo desde el servicio
     this._categoriaService.obtenerCategorias().subscribe((data: any[]) => {
       this.categorias = data;
     });
-
-    // Obtener los tipos de modelo desde el servicio
     this._marcaService.obtenerMarcas().subscribe((data: any[]) => {
       this.marcas = data;
     });
   }
 
+  // Método para manejar la selección de archivos
+  onFileSelected(event: any) {
+    if (event.target.files.length <= 5) {
+      this.selectedFiles = Array.from(event.target.files);
+    } else {
+      alert("Solo puedes seleccionar hasta 5 imágenes.");
+    }
+  }
+
+  // Método para agregar un nuevo modelo con imágenes
   agregarModelo() {
-    if (this.modeloForm.invalid) {
-      console.log('Formulario inválido');
+    if (this.modeloForm.invalid || this.selectedFiles.length === 0) {
+      console.log('Formulario inválido o no se seleccionaron imágenes');
       return;
     }
 
-    console.log('Formulario válido, enviando datos');
-    const MODELO: modelo = {
-      nombreModelo: this.modeloForm.get('nombreModelo')?.value,
-      categoriaModelo: this.modeloForm.get('categoriaModelo')?.value,
-      marcaModelo: this.modeloForm.get('marcaModelo')?.value,
-      precioXdia: this.modeloForm.get('precioXdia')?.value,
-      anio: this.modeloForm.get('anio')?.value,
-      color: this.modeloForm.get('color')?.value,
-      dimensiones: this.modeloForm.get('dimensiones')?.value,
-      cantidadAsientos: this.modeloForm.get('cantidadAsientos')?.value,
-      cantidadPuertas: this.modeloForm.get('cantidadPuertas')?.value,
-      motor: this.modeloForm.get('motor')?.value,
-      cajaTransmision: this.modeloForm.get('cajaTransmision')?.value,
-      tipoCombustible: this.modeloForm.get('tipoCombustible')?.value,
-      capacidadTanqueCombustible: this.modeloForm.get('capacidadTanqueCombustible')?.value,
-      capacidadBaul: this.modeloForm.get('capacidadBaul')?.value,
-    };
+    const formData = new FormData();
+    formData.append('nombreModelo', this.modeloForm.get('nombreModelo')?.value);
+    formData.append('categoriaModelo', this.modeloForm.get('categoriaModelo')?.value);
+    formData.append('marcaModelo', this.modeloForm.get('marcaModelo')?.value);
+    formData.append('precioXdia', this.modeloForm.get('precioXdia')?.value);
+    formData.append('anio', this.modeloForm.get('anio')?.value);
+    formData.append('color', this.modeloForm.get('color')?.value);
+    formData.append('dimensiones', this.modeloForm.get('dimensiones')?.value);
+    formData.append('cantidadAsientos', this.modeloForm.get('cantidadAsientos')?.value);
+    formData.append('cantidadPuertas', this.modeloForm.get('cantidadPuertas')?.value);
+    formData.append('motor', this.modeloForm.get('motor')?.value);
+    formData.append('cajaTransmision', this.modeloForm.get('cajaTransmision')?.value);
+    formData.append('tipoCombustible', this.modeloForm.get('tipoCombustible')?.value);
+    formData.append('capacidadTanqueCombustible', this.modeloForm.get('capacidadTanqueCombustible')?.value);
+    formData.append('capacidadBaul', this.modeloForm.get('capacidadBaul')?.value);
+
+    // Agregar las imágenes al FormData
+    this.selectedFiles.forEach((file) => {
+      formData.append('images', file); // 'images' debe coincidir con el nombre en multer.array()
+    });
 
     if (this.id !== null) {
-      console.log('Editando modelo:', MODELO);
-      this._modeloService.editarModelo(this.id, MODELO).subscribe(data => {
-        console.log('Modelo editado', data);
+      this._modeloService.editarModelo(this.id, formData).subscribe(data => {
         this.toastr.info('El modelo fue actualizado con éxito!', 'Modelo Actualizado!');
         this.router.navigate(['/']);
       }, error => {
@@ -95,9 +101,7 @@ export class CrearModeloComponent implements OnInit {
         this.modeloForm.reset();
       });
     } else {
-      console.log('Guardando modelo:', MODELO);
-      this._modeloService.guardarModelo(MODELO).subscribe(data => {
-        console.log('Modelo guardado', data);
+      this._modeloService.guardarModelo(formData).subscribe(data => {
         this.toastr.success('El modelo fue registrado con éxito!', 'Modelo Registrado!');
         this.router.navigate(['/']);
       }, error => {
@@ -105,6 +109,8 @@ export class CrearModeloComponent implements OnInit {
         this.modeloForm.reset();
       });
     }
+
+    console.log('Datos enviados:', Array.from((formData as any).entries()));
   }
 
   esEditar() {

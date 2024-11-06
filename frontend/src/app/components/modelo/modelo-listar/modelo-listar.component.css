@@ -1,6 +1,10 @@
 .modelo-list {
-  display: flex !important;
+  /* display: flex !important;
   flex-direction: row !important;
+  */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0px;
   padding: 0;
   margin: 0;
   gap: 10px;

@@ -12,6 +12,10 @@ conectarDB();
 app.use(cors());
 app.use(express.json());
 
+// Hacer la carpeta de uploads accesible
+app.use('/uploads', express.static(path.join(__dirname, '../assets/uploads')));
+
+
 // Rutas
 app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/sucursales', require('./routes/sucursal'));

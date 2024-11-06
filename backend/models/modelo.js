@@ -62,7 +62,9 @@ const ModeloSchema = new mongoose.Schema({
     capacidadBaul: {
         type: Number,
         required: true
-    }
+    },
+    images: [String] // Array de rutas de las imágenes
+
     
 }, { collection: 'modelos' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 

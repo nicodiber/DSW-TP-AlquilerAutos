@@ -19,12 +19,12 @@ export class ModeloService {
     return this.http.delete(this.url + _id);
   }
 
-  guardarModelo(modelo: modelo): Observable<any>{
-    return this.http.post(this.url, modelo);
+  guardarModelo(modeloData: FormData): Observable<any>{
+    return this.http.post(this.url, modeloData);
   }
 
-  editarModelo(_id: string, modelo: modelo):Observable<any>{
-    return this.http.put(this.url + _id, modelo);
+  editarModelo(_id: string, modeloData: FormData):Observable<any>{
+    return this.http.put(this.url + _id, modeloData);
   }
 
   obtenerModelo(_id: string): Observable<any> {

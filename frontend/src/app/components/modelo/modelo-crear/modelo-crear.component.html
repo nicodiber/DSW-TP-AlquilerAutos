@@ -123,6 +123,12 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <input type="file" (change)="onFileSelected($event)" multiple>
+                            <div class="text-danger" *ngIf="selectedFiles.length === 0 && modeloForm.touched">
+                                <span>Debes cargar al menos una imagen</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <button type="button" routerLink="/"
                                 class="btn btn-secondary btn-lg float-start">VOLVER</button>
                             <button type="submit" [disabled]="modeloForm.invalid"
