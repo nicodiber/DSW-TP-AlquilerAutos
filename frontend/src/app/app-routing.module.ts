@@ -29,6 +29,7 @@ const routes: Routes = [
       { path: 'modelo/:id', component: DetallarModeloComponent },
       { path: 'modelo-crear', component: CrearModeloComponent },
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
+      { path: 'contacto', component: FormularioContactoComponent },
     ]
   },
   { path: 'loginUsuario', component: LoginPageComponent },
@@ -46,7 +47,6 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar', component: AlquilerEditarComponent },
   { path: 'alquiler-eliminar', component: AlquilerEliminarComponent },
-  { path: 'formulario-contacto', component: FormularioContactoComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
 ];
 

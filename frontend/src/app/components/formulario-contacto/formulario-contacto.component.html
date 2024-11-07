@@ -1,33 +1,83 @@
-<div class="col-lg-6 mb-sm-30">
+<!-- content begin -->
+<div class="no-bottom no-top" id="content">
+  <div id="top"></div>
 
-  <h3>¿Alguna duda?</h3>
-
-  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" id="contact_form" class="form-border">
-    <div class="row">
-      <div class="col-md-4 mb10">
-        <div class="field-set">
-          <input type="text" id="name" formControlName="name" placeholder="Nombre completo" required>
+  <!-- section begin -->
+  <section id="subheader" class="jarallax text-light">
+    <img src="images/background/subheader.jpg" class="jarallax-img" alt="" style="filter: brightness(0.5);">
+    <div class="center-y relative text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1>Contacto</h1>
+          </div>
+          <div class="clearfix"></div>
         </div>
       </div>
+    </div>
+  </section>
+  <!-- section close -->
 
-      <div class="col-md-4 mb10">
-        <div class="field-set">
-          <input type="text" id="email" formControlName="email" placeholder="Email" required>
+
+  <section aria-label="section">
+    <div class="container">
+      <div class="row g-custom-x">
+
+        <div class="col-lg-8 mb-sm-30">
+        
+          <h3>¿Alguna duda?</h3>
+
+          <div class="spacer-20"></div>
+        
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" id="contact_form" class="form-border">
+            <div class="row">
+              <div class="col-md-4 mb10" style="width: 100%;">
+                <div class="field-set">
+                  <input type="text" id="name" formControlName="name" placeholder="Nombre completo" style="width: 100%;" required>
+                </div>
+              </div>
+        
+              <div class="col-md-4 mb10" style="width: 100%;">
+                <div class="field-set">
+                  <input type="text" id="email" formControlName="email" placeholder="Email" style="width: 49%;" required>
+                  <input type="text" id="phone" formControlName="phone" placeholder="Celular" style="width: 49%; margin-left: 2%;" required>
+                </div>
+              </div>
+        
+              <div class="field-set mb20" style="width: 100%; margin: 0px">
+                <textarea id="message" formControlName="message" placeholder="Mensaje o consulta..." style="width: 100%;" required></textarea>
+              </div>
+        
+            </div>
+        
+            <button type="submit" [disabled]="contactForm.invalid" class="btn-main" style="width: 100%;">Enviar</button>
+          </form>
         </div>
-      </div>
 
-      <div class="col-md-4 mb10">
-        <div class="field-set">
-          <input type="text" id="phone" formControlName="phone" placeholder="Celular" required>
+        <div class="col-lg-4">
+
+          <div class="de-box mb30">
+            <h4>Nuestra Oficina</h4>
+            <address class="s1">
+              <span><i class="id-color fa fa-map-marker fa-lg"></i>San Martín 100, Rosario, Santa Fe, Argentina</span>
+            </address>
+          </div>
+
+
+          <div class="de-box mb30">
+            <h4>Datos de Contacto</h4>
+            <address class="s1">
+              <span><i class="fa fa-phone fa-lg"></i>+54 341 544-2171</span>
+              <span><i class="fa fa-envelope-o fa-lg"></i>contacto&#64;nebarent.com</span>
+            </address>
+          </div>
+
         </div>
-      </div>
 
-      <div class="field-set mb20">
-        <textarea id="message" formControlName="message" placeholder="Mensaje o consulta..." required></textarea>
       </div>
-
     </div>
 
-    <button type="submit" [disabled]="contactForm.invalid" class="btn-main">Enviar</button>
-  </form>
+  </section>
+
 </div>
+<!-- content close -->

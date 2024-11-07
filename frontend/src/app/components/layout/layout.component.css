@@ -1,0 +1,9 @@
+blockquote::before{
+  background-color: #dbb700 !important;
+  color: #ffffff !important;
+  margin-left: -20px !important;
+}
+
+#back-to-top{
+  background-color: #dbb700 !important;;
+}
