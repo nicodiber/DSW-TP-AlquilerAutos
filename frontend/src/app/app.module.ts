@@ -29,6 +29,7 @@ import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alq
 import { AlquilerEditarComponent } from './components/alquiler/alquiler-editar/alquiler-editar.component';
 import { AlquilerEliminarComponent } from './components/alquiler/alquiler-eliminar/alquiler-eliminar.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
+import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/a
     AlquilerEditarComponent,
     AlquilerEliminarComponent,
     AlquilerListarComponent,
+    FormularioContactoComponent
   ],
   imports: [
     BrowserModule,

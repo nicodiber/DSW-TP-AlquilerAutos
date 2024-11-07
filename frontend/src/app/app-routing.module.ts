@@ -20,6 +20,7 @@ import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alq
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { AlquilerEditarComponent } from './components/alquiler/alquiler-editar/alquiler-editar.component';
 import { AlquilerEliminarComponent } from './components/alquiler/alquiler-eliminar/alquiler-eliminar.component';
+import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar', component: AlquilerEditarComponent },
   { path: 'alquiler-eliminar', component: AlquilerEliminarComponent },
+  { path: 'formulario-contacto', component: FormularioContactoComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
 ];
 

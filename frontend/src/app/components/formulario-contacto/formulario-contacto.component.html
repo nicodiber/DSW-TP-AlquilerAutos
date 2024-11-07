@@ -1,0 +1,33 @@
+<div class="col-lg-6 mb-sm-30">
+
+  <h3>¿Alguna duda?</h3>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" id="contact_form" class="form-border">
+    <div class="row">
+      <div class="col-md-4 mb10">
+        <div class="field-set">
+          <input type="text" id="name" formControlName="name" placeholder="Nombre completo" required>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb10">
+        <div class="field-set">
+          <input type="text" id="email" formControlName="email" placeholder="Email" required>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb10">
+        <div class="field-set">
+          <input type="text" id="phone" formControlName="phone" placeholder="Celular" required>
+        </div>
+      </div>
+
+      <div class="field-set mb20">
+        <textarea id="message" formControlName="message" placeholder="Mensaje o consulta..." required></textarea>
+      </div>
+
+    </div>
+
+    <button type="submit" [disabled]="contactForm.invalid" class="btn-main">Enviar</button>
+  </form>
+</div>
