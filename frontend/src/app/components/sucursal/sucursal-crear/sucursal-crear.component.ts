@@ -29,8 +29,8 @@ export class SucursalCrearComponent implements OnInit {
       ciudadSucursal: ['', [Validators.required]],
       horaAperturaSucursal: ['', [Validators.required]],
       horaCierreSucursal: ['', [Validators.required]],
-      trabajadores: [''],  // Puede ser opcional, IDs separados por comas
-      autos: ['']           // Puede ser opcional, IDs separados por comas
+      //trabajadores: [''],  // Puede ser opcional, IDs separados por comas
+      //autos: ['']           // Puede ser opcional, IDs separados por comas
     });
     this.id = this.aRouter.snapshot.paramMap.get('id');
   }
@@ -49,8 +49,8 @@ export class SucursalCrearComponent implements OnInit {
       ciudadSucursal: this.sucursalForm.get('ciudadSucursal')?.value,
       horaAperturaSucursal: this.sucursalForm.get('horaAperturaSucursal')?.value,
       horaCierreSucursal: this.sucursalForm.get('horaCierreSucursal')?.value,
-      trabajadores: this.sucursalForm.get('trabajadores')?.value ? this.sucursalForm.get('trabajadores')?.value.split(',') : [],
-      autos: this.sucursalForm.get('autos')?.value ? this.sucursalForm.get('autos')?.value.split(',') : []
+      //trabajadores: this.sucursalForm.get('trabajadores')?.value ? this.sucursalForm.get('trabajadores')?.value.split(',') : [],
+      //autos: this.sucursalForm.get('autos')?.value ? this.sucursalForm.get('autos')?.value.split(',') : []
     };
 
     if (this.id !== null) {
@@ -88,8 +88,8 @@ export class SucursalCrearComponent implements OnInit {
           ciudadSucursal: data.ciudadSucursal,
           horaAperturaSucursal: data.horaAperturaSucursal,
           horaCierreSucursal: data.horaCierreSucursal,
-          trabajadores: data.trabajadores ? data.trabajadores.join(',') : '',
-          autos: data.autos ? data.autos.join(',') : ''
+          //trabajadores: data.trabajadores ? data.trabajadores.join(',') : '',
+          //autos: data.autos ? data.autos.join(',') : ''
         });
       });
     }
