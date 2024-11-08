@@ -1,66 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Sucursales - Renta de Autos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4">Lista de Sucursales</h2>
-        <table class="table table-striped mt-5">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre Sucursal</th>
-                    <th>Teléfono</th>
-                    <th>Dirección</th>
-                    <th>País</th>
-                    <th>Provincia</th>
-                    <th>Ciudad</th>
-                    <th>Hora Apertura</th>
-                    <th>Hora Cierre</th>
-                    <th>Trabajadores</th>
-                    <th>Autos</th>
-                </tr>
-            </thead>
-            <tbody id="sucursalesTableBody">
-                <tr *ngFor="let sucursal of sucursales">
-                    <td>{{ sucursal._id }}</td>
-                    <td>{{ sucursal.nombreSucursal }}</td>
-                    <td>{{ sucursal.telefonoSucursal }}</td>
-                    <td>{{ sucursal.direccionSucursal }}</td>
-                    <td>{{ sucursal.paisSucursal }}</td>
-                    <td>{{ sucursal.provinciaSucursal }}</td>
-                    <td>{{ sucursal.ciudadSucursal }}</td>
-                    <td>{{ sucursal.horaAperturaSucursal }}</td>
-                    <td>{{ sucursal.horaCierreSucursal }}</td>
-    
-                    <!-- Mostrar nombres de los trabajadores -->
-                    <td>
-                        <ul>
-                            <li *ngFor="let trabajador of sucursal.trabajadores">{{ trabajador.nombre }} {{ trabajador.apellido }}</li>
-                        </ul>
-                    </td>
-    
-                    <!-- Mostrar detalles de los autos -->
-                    <td>
-                        <ul>
-                            <li *ngFor="let auto of sucursal.autos">{{ auto.matricula }}</li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
+                    <span class="titulo">LISTADO DE TODAS LAS SUCURSALES</span>
+                    <button class="btn btn-success float-end" routerLink="/sucursal-crear">NUEVA SUCURSAL</button>
+                    <table *ngIf="listaSucursales.length > 0" class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre Sucursal</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Ciudad</th>
+                                <th scope="col">Provincia</th>
+                                <th scope="col">País</th>
+                                <th scope="col">Hora Apertura</th>
+                                <th scope="col">Hora Cierre</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sucursal of listaSucursales">
+                                <td>{{ sucursal.nombreSucursal }}</td>
+                                <td>{{ sucursal.telefonoSucursal }}</td>
+                                <td>{{ sucursal.direccionSucursal }}</td>
+                                <td>{{ sucursal.ciudadSucursal }}</td>
+                                <td>{{ sucursal.provinciaSucursal }}</td>
+                                <td>{{ sucursal.paisSucursal }}</td>
+                                <td>{{ sucursal.horaAperturaSucursal }}</td>
+                                <td>{{ sucursal.horaCierreSucursal }}</td>
+                                <td>
+                                    <i [routerLink]="['/sucursal-editar', sucursal._id]"
+                                        class="fas fa-edit text-primary"></i>
+                                    <i (click)="deleteSucursal(sucursal._id)"
+                                        class="fas fa-trash text-danger"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaSucursales.length == 0">No hay
+                        sucursales para mostrar</h5>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/js/listar-sucursales.js"></script>
-</body>
-
-</html>
+</div>
