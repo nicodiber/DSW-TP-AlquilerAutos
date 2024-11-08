@@ -27,6 +27,7 @@ const routes: Routes = [
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
+      { path: 'contacto', component: FormularioContactoComponent },
     ]
   },
   
