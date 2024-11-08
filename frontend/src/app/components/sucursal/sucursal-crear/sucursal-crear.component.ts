@@ -29,8 +29,6 @@ export class SucursalCrearComponent implements OnInit {
       ciudadSucursal: ['', [Validators.required]],
       horaAperturaSucursal: ['', [Validators.required]],
       horaCierreSucursal: ['', [Validators.required]],
-      //trabajadores: [''],  // Puede ser opcional, IDs separados por comas
-      //autos: ['']           // Puede ser opcional, IDs separados por comas
     });
     this.id = this.aRouter.snapshot.paramMap.get('id');
   }
@@ -40,6 +38,12 @@ export class SucursalCrearComponent implements OnInit {
   }
 
   agregarSucursal() {
+    if (this.sucursalForm.invalid) {
+      this.showFormErrors();
+      this.sucursalForm.markAllAsTouched();
+      return;
+    }
+
     const SUCURSAL: sucursal = {
       nombreSucursal: this.sucursalForm.get('nombreSucursal')?.value,
       telefonoSucursal: this.sucursalForm.get('telefonoSucursal')?.value,
@@ -49,30 +53,50 @@ export class SucursalCrearComponent implements OnInit {
       ciudadSucursal: this.sucursalForm.get('ciudadSucursal')?.value,
       horaAperturaSucursal: this.sucursalForm.get('horaAperturaSucursal')?.value,
       horaCierreSucursal: this.sucursalForm.get('horaCierreSucursal')?.value,
-      //trabajadores: this.sucursalForm.get('trabajadores')?.value ? this.sucursalForm.get('trabajadores')?.value.split(',') : [],
-      //autos: this.sucursalForm.get('autos')?.value ? this.sucursalForm.get('autos')?.value.split(',') : []
     };
 
     if (this.id !== null) {
       // Editar sucursal
-      this._sucursalService.editarSucursal(this.id, SUCURSAL).subscribe(data => {
-        this.toastr.info('La sucursal fue actualizada con éxito!', 'Sucursal Actualizada!');
-        this.router.navigate(['/sucursal-listar']);
-      }, error => {
-        console.log(error);
-        this.toastr.error('La sucursal NO fue actualizada', 'Error de Actualización');
-      });
+      this._sucursalService.editarSucursal(this.id, SUCURSAL).subscribe(
+        data => {
+          this.toastr.info('La sucursal fue actualizada con éxito!', 'Sucursal Actualizada!');
+          this.router.navigate(['/sucursal-listar']);
+        },
+        error => this.handleError(error, 'actualizar')
+      );
     } else {
       // Crear nueva sucursal
-      this._sucursalService.guardarSucursal(SUCURSAL).subscribe(data => {
-        this.toastr.success('La sucursal fue registrada con éxito!', 'Sucursal Registrada!');
-        this.router.navigate(['/sucursal-listar']);
-      }, error => {
-        console.log(error);
-        this.toastr.error('La sucursal NO fue registrada', 'Error de Registro');
-        this.sucursalForm.reset();
-      });
+      this._sucursalService.guardarSucursal(SUCURSAL).subscribe(
+        data => {
+          this.toastr.success('La sucursal fue registrada con éxito!', 'Sucursal Registrada!');
+          this.router.navigate(['/sucursal-listar']);
+        },
+        error => this.handleError(error, 'registrar')
+      );
     }
+  }
+
+  showFormErrors() {
+    Object.keys(this.sucursalForm.controls).forEach(key => {
+      const control = this.sucursalForm.get(key);
+      if (control?.invalid) {
+        if (control.errors?.['required']) {
+          this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
+        }
+        if (control.errors?.['pattern']) {
+          this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
+        }
+      }
+    });
+  }
+
+  handleError(error: any, action: string) {
+    let errorMsg = `Ocurrió un error al intentar ${action} la sucursal`;
+    if (error.status === 409 && error.error && error.error.msg) {
+      errorMsg = error.error.msg;
+    }
+    this.toastr.error(errorMsg, `Error de ${action === 'registrar' ? 'Registro' : 'Actualización'}`);
+    this.sucursalForm.reset();
   }
 
   esEditar() {
@@ -88,8 +112,6 @@ export class SucursalCrearComponent implements OnInit {
           ciudadSucursal: data.ciudadSucursal,
           horaAperturaSucursal: data.horaAperturaSucursal,
           horaCierreSucursal: data.horaCierreSucursal,
-          //trabajadores: data.trabajadores ? data.trabajadores.join(',') : '',
-          //autos: data.autos ? data.autos.join(',') : ''
         });
       });
     }
