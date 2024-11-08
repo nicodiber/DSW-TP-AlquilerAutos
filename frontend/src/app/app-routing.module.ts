@@ -14,8 +14,8 @@ import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/li
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal/sucursal-crear/sucursal-crear.component';
 import { SucursalListarComponent } from './components/sucursal/sucursal-listar/sucursal-listar.component';
-import { SucursalEditarComponent } from './components/sucursal/sucursal-editar/sucursal-editar.component';
-import { SucursalEliminarComponent } from './components/sucursal/sucursal-eliminar/sucursal-eliminar.component';
+//import { SucursalEditarComponent } from './components/sucursal/sucursal-editar/sucursal-editar.component';
+//import { SucursalEliminarComponent } from './components/sucursal/sucursal-eliminar/sucursal-eliminar.component';
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { AlquilerEditarComponent } from './components/alquiler/alquiler-editar/alquiler-editar.component';
@@ -40,8 +40,8 @@ const routes: Routes = [
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
   { path: 'sucursal-crear', component: SucursalCrearComponent },
   { path: 'sucursal-listar', component: SucursalListarComponent },
-  { path: 'sucursal-editar/:id', component: SucursalEditarComponent },
-  { path: 'sucursal-eliminar', component: SucursalEliminarComponent },
+  { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
+  //{ path: 'sucursal-eliminar', component: SucursalEliminarComponent },
   { path: 'alquiler-crear', component: AlquilerCrearComponent },
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerEditarComponent },
