@@ -23,11 +23,7 @@ import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/li
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal/sucursal-crear/sucursal-crear.component';
 import { SucursalListarComponent } from './components/sucursal/sucursal-listar/sucursal-listar.component';
-import { SucursalEditarComponent } from './components/sucursal/sucursal-editar/sucursal-editar.component';
-import { SucursalEliminarComponent } from './components/sucursal/sucursal-eliminar/sucursal-eliminar.component';
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
-import { AlquilerEditarComponent } from './components/alquiler/alquiler-editar/alquiler-editar.component';
-import { AlquilerEliminarComponent } from './components/alquiler/alquiler-eliminar/alquiler-eliminar.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 
@@ -46,11 +42,7 @@ import { FormularioContactoComponent } from './components/formulario-contacto/fo
     CrearAdminTrabajadorComponent,
     SucursalCrearComponent,
     SucursalListarComponent,
-    SucursalEditarComponent,
-    SucursalEliminarComponent,
     AlquilerCrearComponent,
-    AlquilerEditarComponent,
-    AlquilerEliminarComponent,
     AlquilerListarComponent,
     FormularioContactoComponent
   ],
