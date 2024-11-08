@@ -8,15 +8,19 @@ const SucursalSchema = new mongoose.Schema({
   nombreSucursal: {
     type: String,
     required: true,
-    unique: true,     // El nombre de sucursal debe ser único
+    unique: true,               // El nombre de sucursal debe ser único
+    minlength: [3],             // El nombre de la sucursal debe tener al menos 3 caracteres
+    maxlength: [100],           // El nombre de la sucursal no debe exceder los 100 caracteres
   },
   telefonoSucursal: {
     type: String,
-    required: true
+    required: true,
+    match: [/^[0-9]{7,15}$/],   // El teléfono debe contener entre 7 y 15 números
   },
   direccionSucursal: {
     type: String,
-    required: true
+    required: true,
+    maxlength: [200],           // La dirección no debe exceder los 200 caracteres
   },
   paisSucursal: {
     type: String,
