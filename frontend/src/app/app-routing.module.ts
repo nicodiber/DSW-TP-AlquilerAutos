@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // Componentes
 import { LayoutComponent } from './components/layout/layout.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
-import { DetallarModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
+import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
@@ -17,12 +17,14 @@ import { SucursalListarComponent } from './components/sucursal/sucursal-listar/s
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
+import { Error404Component } from './components/404/404.component';
+
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
-      { path: 'modelo/:id', component: DetallarModeloComponent },
+      { path: 'modelo/:id', component: DetalleModeloComponent },
       { path: 'modelo-crear', component: CrearModeloComponent },
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
       { path: 'loginUsuario', component: LoginPageComponent },
@@ -44,7 +46,7 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
+  { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
 @NgModule({

@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router'; // Asegúrate de importar Router
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
-import { DetallarModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
+import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
@@ -26,13 +26,14 @@ import { SucursalListarComponent } from './components/sucursal/sucursal-listar/s
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
+import { Error404Component } from './components/404/404.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
     ListarModelosComponent,
-    DetallarModeloComponent,
+    DetalleModeloComponent,
     CrearModeloComponent,
     LoginPageComponent,
     TareasAdminComponent,
@@ -44,7 +45,8 @@ import { FormularioContactoComponent } from './components/formulario-contacto/fo
     SucursalListarComponent,
     AlquilerCrearComponent,
     AlquilerListarComponent,
-    FormularioContactoComponent
+    FormularioContactoComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,

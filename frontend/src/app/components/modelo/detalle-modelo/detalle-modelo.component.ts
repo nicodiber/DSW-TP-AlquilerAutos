@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './detalle-modelo.component.html',
   styleUrls: ['./detalle-modelo.component.css']
 })
-export class DetallarModeloComponent implements OnInit {
+export class DetalleModeloComponent implements OnInit {
   modelo: any;
 
   constructor(private route: ActivatedRoute, private modeloService: ModeloService) {}

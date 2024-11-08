@@ -1,9 +1,4 @@
 /* ================================================== */
-
-
-/* Rentaly
-/* created by designesia
-
 @charset "utf-8";
 
 /* ================================================== */
@@ -13144,11 +13139,7 @@ i.big {
 }
 
 /* Adicional */
-#section-car-details .owl-item, #section-car-details .owl-item img{
-    height: 400px;
-    object-fit: cover;
-    border-radius: 10px; 
-}
+
 @media (max-width: 768px){
     #section-car-details .owl-item, #section-car-details .owl-item img{
     height: 300px;
@@ -18804,4 +18795,15 @@ img {
 
 ::-webkit-scrollbar-thumb {
     background-color: #020202 !important;
+}
+
+
+.owl-carousel .item img {
+    object-fit: contain !important;
+    width: 100% !important;
+}
+
+.owl-carousel div:not(.owl-thumbs):has(img),
+.owl-carousel div:not(.owl-thumbs) img {
+    height: 500px !important;
 }
