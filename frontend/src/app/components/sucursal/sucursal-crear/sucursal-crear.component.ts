@@ -37,6 +37,31 @@ export class SucursalCrearComponent implements OnInit {
     this.esEditar();
   }
 
+  submitForm() {
+    if (this.sucursalForm.invalid) {
+      Object.keys(this.sucursalForm.controls).forEach(key => {
+        const control = this.sucursalForm.get(key);
+
+        if (control?.invalid) {
+          if (control.errors?.['required']) {
+            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
+          }
+          if (control.errors?.['pattern']) {
+            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
+          }
+          if (control.errors?.['minlength']) {
+            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
+          }
+        }
+      });
+      this.sucursalForm.markAllAsTouched();
+      return;
+    }
+
+    this.agregarSucursal();
+  }
+
+
   agregarSucursal() {
     if (this.sucursalForm.invalid) {
       this.showFormErrors();
