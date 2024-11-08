@@ -7,7 +7,8 @@ const SucursalSchema = new mongoose.Schema({
   },
   nombreSucursal: {
     type: String,
-    required: true
+    required: true,
+    unique: true,     // El nombre de sucursal debe ser único
   },
   telefonoSucursal: {
     type: String,
