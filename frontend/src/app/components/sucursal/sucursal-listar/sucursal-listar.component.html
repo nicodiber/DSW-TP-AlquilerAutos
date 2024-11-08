@@ -31,7 +31,7 @@
                                 <td>{{ sucursal.horaAperturaSucursal }}</td>
                                 <td>{{ sucursal.horaCierreSucursal }}</td>
                                 <td>
-                                    <i [routerLink]="['/sucursal-editar', sucursal._id]"
+                                    <i [routerLink]="['/editar-sucursal', sucursal._id]"
                                         class="fas fa-edit text-primary"></i>
                                     <i (click)="deleteSucursal(sucursal._id)"
                                         class="fas fa-trash text-danger"></i>
