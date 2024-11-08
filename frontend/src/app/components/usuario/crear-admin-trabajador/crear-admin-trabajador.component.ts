@@ -10,15 +10,19 @@ import { UsuarioService } from '../../../services/usuario.service';
   templateUrl: './crear-admin-trabajador.component.html',
   styleUrl: './crear-admin-trabajador.component.css'
 })
-export class CrearAdminTrabajadorComponent implements OnInit{
+export class CrearAdminTrabajadorComponent implements OnInit {
   usuarioForm: FormGroup;
   titulo = 'Crear Admin / Trabajador';
   id: string | null;
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private toastr: ToastrService,
-              private _usuarioService: UsuarioService,
-              private aRouter: ActivatedRoute) { 
+  mostrarContrasena: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService,
+    private _usuarioService: UsuarioService,
+    private aRouter: ActivatedRoute
+  ) { 
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
@@ -26,20 +30,45 @@ export class CrearAdminTrabajadorComponent implements OnInit{
       licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
-      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]], // Asumiendo DNI o pasaporte numérico de 7 a 10 dígitos
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
       direccion: ['', [Validators.required]],
-      rol: ['', [Validators.required]],
-    })
-    this.id = this.aRouter.snapshot.paramMap.get('id'); // Esta es la manera que tenemos para acceder al id
+      rol: ['', [Validators.required]]
+    });
+    this.id = this.aRouter.snapshot.paramMap.get('id');
   }
-
 
   ngOnInit(): void {
     this.esEditar();
   }
 
-  agregarUsuario() {
+  submitForm() {
+    if (this.usuarioForm.invalid) {
+      Object.keys(this.usuarioForm.controls).forEach(key => {
+        const control = this.usuarioForm.get(key);
+        
+        if (control?.invalid) {
+          if (control.errors?.['required']) {
+            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
+          }
+          if (control.errors?.['pattern']) {
+            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
+          }
+          if (control.errors?.['minlength']) {
+            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
+          }
+          if (control.errors?.['email']) {
+            this.toastr.error(`El email posee un formato inválido.`, 'Error en el formulario');
+          }
+        }
+      });
+      this.usuarioForm.markAllAsTouched();
+      return;
+    }
 
+    this.agregarUsuario();
+  }
+
+  agregarUsuario() {
     const USUARIO: usuario = {
       nombre: this.usuarioForm.get('nombre')?.value,
       apellido: this.usuarioForm.get('apellido')?.value,
@@ -53,29 +82,46 @@ export class CrearAdminTrabajadorComponent implements OnInit{
     };
 
     if (this.id !== null) {
-    // Si existe un ID, significa que es una edición
-    this._usuarioService.editarUsuario(this.id, USUARIO).subscribe(data => {
-      this.toastr.info('El Usuario fue actualizado con éxito!', 'Usuario Actualizado!');
-      this.router.navigate(['/listarUsuarios']);
-    }, error => {
-      console.log(error);
-      this.toastr.error('El Usuario NO fue actualizado', 'Error de Actualización');
-    });
-  } else {
-    // Crear un nuevo usuario si no hay ID
-    this._usuarioService.guardarUsuario(USUARIO).subscribe(data => {
-      this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-      this.router.navigate(['/listarUsuarios']);
-    }, error => {
-      console.log(error);
-      this.toastr.error('El Usuario NO fue registrado', 'Error de Registro');
-      this.usuarioForm.reset();
-    });
+      this._usuarioService.editarUsuario(this.id, USUARIO).subscribe(
+        data => {
+          this.toastr.info('El Usuario fue actualizado con éxito!', 'Usuario Actualizado!');
+          this.router.navigate(['/listarUsuarios']);
+        },
+        error => {
+          let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
+        
+        // Verificar si es error de conflicto 409
+        if (error.status === 409 && error.error && error.error.msg) {
+          errorMsg = error.error.msg;
+        }
+
+        this.toastr.error(errorMsg, 'Error de Actualización');
+        
+        }
+      );
+    } else {
+      this._usuarioService.guardarUsuario(USUARIO).subscribe(
+        data => {
+          this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
+          this.router.navigate(['/listarUsuarios']);
+        },
+        error => {
+          let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
+        
+        // Verificar si es error de conflicto 409
+        if (error.status === 409 && error.error && error.error.msg) {
+          errorMsg = error.error.msg;
+        }
+
+        this.toastr.error(errorMsg, 'Error de Registro');
+        this.usuarioForm.reset();
+        }
+      );
+    }
   }
-  }
-  
+
   esEditar() {
-    if(this.id !== null) {
+    if (this.id !== null) {
       this.titulo = 'Editar Usuario';
       this._usuarioService.obtenerUsuario(this.id).subscribe(data => {
         this.usuarioForm.setValue({
@@ -88,9 +134,11 @@ export class CrearAdminTrabajadorComponent implements OnInit{
           dni: data.dni,
           direccion: data.direccion,
           rol: data.rol
-        })
-      })
+        });
+      });
     }
   }
-
+  toggleContrasena() {
+        this.mostrarContrasena = !this.mostrarContrasena;
+    }
 }

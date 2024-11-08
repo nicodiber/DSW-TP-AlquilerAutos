@@ -23,9 +23,25 @@ exports.crearUsuario = async (req, res) => {
     res.json(usuario);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error al crear el usuario');
+    // Verificar si el error es de duplicado de clave en MongoDB
+    if (error.code === 11000 && error.keyValue) {
+      // Detectar el campo duplicado específico
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'email'
+        ? 'El Correo Electronico ya está en uso. Intenta con uno diferente.'
+        : field === 'dni'
+        ? 'El DNI ya está registrado. Verifica los datos ingresados.'
+        : field === 'licenciaConductor'
+        ? 'La licencia de conductor ya está en uso. Verifica los datos ingresados.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    } else {
+      res.status(500).send('Hubo un error al crear el usuario');
+    }
   }
 };
+
 
 exports.obtenerUsuarios = async (req, res) => {
   try {
@@ -63,7 +79,22 @@ exports.actualizarUsuario = async (req, res) => {
     res.json(usuario);
   } catch (error) {
     console.log(error);
+
+    if (error.code === 11000 && error.keyValue) {
+      // Detectar el campo duplicado específico
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'email'
+        ? 'El Correo Electronico ya está en uso. Intenta con uno diferente.'
+        : field === 'dni'
+        ? 'El DNI ya está registrado. Verifica los datos ingresados.'
+        : field === 'licenciaConductor'
+        ? 'La licencia de conductor ya está en uso. Verifica los datos ingresados.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    }else {
     res.status(500).send('Hubo un error al actualizar el usuario');
+    }
   }
 };
 

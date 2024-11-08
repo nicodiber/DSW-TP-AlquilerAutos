@@ -28,11 +28,12 @@ const routes: Routes = [
       { path: 'modelo/:id', component: DetallarModeloComponent },
       { path: 'modelo-crear', component: CrearModeloComponent },
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
+      { path: 'loginUsuario', component: LoginPageComponent },
+      { path: 'registrar', component: RegisterPageComponent },
     ]
   },
-  { path: 'loginUsuario', component: LoginPageComponent },
-  { path: 'registrar', component: RegisterPageComponent },
-  { path: 'tareas-admin', component: TareasAdminComponent },
+  
+
   { path: 'tareas-admin', component: TareasAdminComponent },
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-modelo', component: CrearAdminTrabajadorComponent },

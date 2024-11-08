@@ -24,6 +24,7 @@ const UsuarioSchema = new mongoose.Schema({
   },
   licenciaConductor: {
       type: String,
+      unique: true,
     },
   telefono: {
     type: String,
@@ -35,7 +36,8 @@ const UsuarioSchema = new mongoose.Schema({
   },
   dni: {
     type: Number,
-    required: true
+    required: true,
+    unique: true 
   },
   rol: {
     type: String,
