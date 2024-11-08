@@ -26,6 +26,7 @@ import { SucursalListarComponent } from './components/sucursal/sucursal-listar/s
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
+import { Error404Component } from './components/404/404.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { FormularioContactoComponent } from './components/formulario-contacto/fo
     SucursalListarComponent,
     AlquilerCrearComponent,
     AlquilerListarComponent,
-    FormularioContactoComponent
+    FormularioContactoComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
