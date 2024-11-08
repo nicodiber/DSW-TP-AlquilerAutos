@@ -40,11 +40,11 @@ const routes: Routes = [
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
   { path: 'sucursal-crear', component: SucursalCrearComponent },
   { path: 'sucursal-listar', component: SucursalListarComponent },
-  { path: 'sucursal-editar', component: SucursalEditarComponent },
-  { path: 'sucursal-eliminar', component: SucursalEliminarComponent },
-  { path: 'alquiler-crear', component: AlquilerCrearComponent }, 
+  { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
+  { path: 'sucursal-eliminar', component: SucursalCrearComponent },
+  { path: 'alquiler-crear', component: AlquilerCrearComponent },
   { path: 'alquiler-listar', component: AlquilerListarComponent },
-  { path: 'alquiler-editar', component: AlquilerEditarComponent },
+  { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerEliminarComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Para rutas inválidas
 ];

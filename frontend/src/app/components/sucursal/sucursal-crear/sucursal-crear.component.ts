@@ -57,7 +57,7 @@ export class SucursalCrearComponent implements OnInit {
       // Editar sucursal
       this._sucursalService.editarSucursal(this.id, SUCURSAL).subscribe(data => {
         this.toastr.info('La sucursal fue actualizada con éxito!', 'Sucursal Actualizada!');
-        this.router.navigate(['/listarSucursales']);
+        this.router.navigate(['/sucursal-listar']);
       }, error => {
         console.log(error);
         this.toastr.error('La sucursal NO fue actualizada', 'Error de Actualización');
@@ -66,7 +66,7 @@ export class SucursalCrearComponent implements OnInit {
       // Crear nueva sucursal
       this._sucursalService.guardarSucursal(SUCURSAL).subscribe(data => {
         this.toastr.success('La sucursal fue registrada con éxito!', 'Sucursal Registrada!');
-        this.router.navigate(['/listarSucursales']);
+        this.router.navigate(['/sucursal-listar']);
       }, error => {
         console.log(error);
         this.toastr.error('La sucursal NO fue registrada', 'Error de Registro');

@@ -5,7 +5,7 @@
                 <div class="card-body text-center">
                     <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
                     <span class="titulo">LISTADO DE TODAS LAS SUCURSALES</span>
-                    <button class="btn btn-success float-end" routerLink="/crear-sucursal">NUEVA SUCURSAL</button>
+                    <button class="btn btn-success float-end" routerLink="/sucursal-crear">NUEVA SUCURSAL</button>
                     <table *ngIf="listaSucursales.length > 0" class="table table-striped mt-3">
                         <thead>
                             <tr>
@@ -31,7 +31,7 @@
                                 <td>{{ sucursal.horaAperturaSucursal }}</td>
                                 <td>{{ sucursal.horaCierreSucursal }}</td>
                                 <td>
-                                    <i [routerLink]="['/editar-sucursal', sucursal._id]"
+                                    <i [routerLink]="['/sucursal-editar', sucursal._id]"
                                         class="fas fa-edit text-primary"></i>
                                     <i (click)="deleteSucursal(sucursal._id)"
                                         class="fas fa-trash text-danger"></i>
