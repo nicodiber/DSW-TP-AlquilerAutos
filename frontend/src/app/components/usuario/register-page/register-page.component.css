@@ -1,0 +1,21 @@
+#content .container .row {
+    margin-top: -20px; /* Ajusta el valor según sea necesario */
+}
+#submit {
+    text-align: center;
+}
+.position-relative {
+    position: relative;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 58%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: grey;
+}

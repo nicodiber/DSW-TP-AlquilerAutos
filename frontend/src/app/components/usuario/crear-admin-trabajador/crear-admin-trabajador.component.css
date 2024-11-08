@@ -1,4 +1,29 @@
 .titulo {
-    font-size: 1.5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+
 }
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-icon {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 1.1rem;
+    z-index: 10;
+}
+
+.mb-3 label{
+text-align: left;
+float: left;
+}    
