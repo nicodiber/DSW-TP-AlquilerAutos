@@ -4982,6 +4982,7 @@ i.font60 {
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
     background: #ffffff;
+    height: 260px;
 }
 
 .feature-box.style-4 i {
@@ -5002,6 +5003,7 @@ i.font60 {
     top: 120px;
     z-index: 2;
     font-weight: bold;
+    opacity: .15;
 }
 
 .feature-box.style-4 .text {
@@ -5388,11 +5390,6 @@ i.font60 {
     position: absolute;
     text-align: center;
     font-weight: bold;
-}
-
-
-.feature-box-type-2 i {
-    /*text-shadow: 5px 5px 5px rgba(var(--primary-color-rgb), 0.3);*/
 }
 
 .f-box i {

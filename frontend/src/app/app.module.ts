@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router'; // Asegúrate de importar Router
 // Componentes
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
 import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
@@ -25,6 +26,8 @@ import { SucursalCrearComponent } from './components/sucursal/sucursal-crear/suc
 import { SucursalListarComponent } from './components/sucursal/sucursal-listar/sucursal-listar.component';
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
+import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revision/alquiler-revision.component';
+import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
 
@@ -32,6 +35,7 @@ import { Error404Component } from './components/404/404.component';
   declarations: [
     AppComponent,
     LayoutComponent,
+    BuscadorComponent,
     ListarModelosComponent,
     DetalleModeloComponent,
     CrearModeloComponent,
@@ -45,6 +49,8 @@ import { Error404Component } from './components/404/404.component';
     SucursalListarComponent,
     AlquilerCrearComponent,
     AlquilerListarComponent,
+    AlquilerRevisionComponent,
+    AlquilerCompletadoComponent,
     FormularioContactoComponent,
     Error404Component
   ],

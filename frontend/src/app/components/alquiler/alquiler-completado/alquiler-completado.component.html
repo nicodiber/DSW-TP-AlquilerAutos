@@ -1,0 +1,107 @@
+
+<!-- section begin -->
+<section id="subheader" class="jarallax text-light" style="background-color: black;">
+  <div class="center-y relative text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="spacer-20"></div>
+          <h1>¡Reserva realizada!</h1>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- section close -->
+
+<div class="breadcrumb-container">
+  <div class="breadcrumb">
+    <h6><a href="/index.html">Inicio</a> / Reserva realizada</h6>
+    <div class="success-message" style="display: flex;"><h6>Su reserva ha sido realizada con éxito</h6>&nbsp;&nbsp;<i class="fa fa-check-circle" style="font-size: 17px;"></i></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="reservation">
+
+    <section class="reservation-summary">
+      <h1>Resumen de la reserva</h1>
+      <div class="reservation-details">
+        <div class="reservation-code">
+          <p>Código de reserva: <strong>IT3VBKJQBDQH</strong></p>
+        </div>
+        <div class="details-row">
+          <div class="detail-item">
+            <h3>Retiro</h3>
+            <p>29 de noviembre de 2024 a las 08:00</p>
+            <p>Aeropuerto Bariloche, Ruta 237 S/N, Bariloche - RN</p>
+          </div>
+          <div class="detail-item">
+            <h3>Devolución</h3>
+            <p>29 de noviembre de 2024 a las 09:00</p>
+            <p>Aeropuerto Bariloche, Ruta 237 S/N, Bariloche - RN</p>
+          </div>
+          <div class="detail-item">
+            <h3>Detalles del vehículo</h3>
+            <p>Toyota Yaris</p>
+            <a href="#">Ver detalle del modelo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer-40"></div>
+
+    <section class="contract-values">
+      <h2>Valores del contrato</h2>
+      <table>
+        <tr>
+          <td>Tarifa diaria</td>
+          <td>ARS 33,839.54</td>
+        </tr>
+        <tr>
+          <td>Protección básica con franquicia</td>
+          <td>ARS 30.00</td>
+        </tr>
+        <tr>
+          <td>Servicios</td>
+          <td>ARS 4,064.35</td>
+        </tr>
+        <tr>
+          <td>Otros valores (IVA)</td>
+          <td>ARS 7,966.12</td>
+        </tr>
+        <tr class="total">
+          <td>Total del pedido</td>
+          <td>ARS 45,000.00</td>
+        </tr>
+      </table>
+    </section>
+
+    <div class="spacer-40"></div>
+
+    <section class="requirements">
+      <div style="display: flex; justify-content: space-between;">
+        <h2>Para retirar tu auto necesitás:</h2>
+        <img class="logo-2" src="../../../images/logo.png" style="width: 156px;">
+      </div>
+      <ul>
+        <li><i class="fa fa-user-o"></i>&nbsp;&nbsp;&nbsp;Tener una edad mínima de 18 años</li>
+        <li><i class="fa fa-id-card-o"></i>&nbsp;&nbsp;&nbsp;Presentar una licencia de conducir física y vigente</li>
+        <li><i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Llevar una tarjeta de crédito a nombre del titular</li>
+        <li><i class="fa fa-clock-o"></i>&nbsp;&nbsp;&nbsp;Presentarte 15 minutos antes del horario de retiro</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <section class="actions">
+    <button class="btn-main" onclick="location.href='/loginUsuario'"><i class="fa fa-home"></i>&nbsp;&nbsp;Ir a Mi Cuenta</button>
+    <button (click)="generatePDF()" class="pdf-button btn-black"><i class="fa fa-print"></i>&nbsp;&nbsp;Generar PDF</button>
+  </section>
+
+  <div class="spacer-40"></div>
+
+</div>

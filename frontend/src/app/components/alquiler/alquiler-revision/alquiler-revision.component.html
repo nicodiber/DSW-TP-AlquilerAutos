@@ -1,0 +1,157 @@
+<!-- section begin -->
+<section id="subheader" class="jarallax text-light" style="background-color: black;">
+  <div class="center-y relative text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="spacer-20"></div>
+          <h1>Completá tu reserva</h1>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- section close -->
+
+<div class="breadcrumb-container">
+  <div class="breadcrumb">
+    <h6><a href="/index.html">Inicio</a> / Reserva</h6>
+  </div>
+</div>
+
+<div class="container">
+  <div style="display: flex;">
+
+    <section class="form-section">
+      <h1>Datos Personales</h1>
+      <p class="info-text">
+        Informá tus datos para que podamos realizar tu reserva. La información recogida en el registro será utilizada
+        para identificar las reservas y ejecutar el contrato entre el propietario de los datos y la compañía. 
+        <a class="terms" data-bs-toggle="modal" data-bs-target="#scrollingLongContent">Ver términos y condiciones</a>
+      </p>
+
+      <!-- Modal -->
+      <div class="modal fade" id="scrollingLongContent" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="scrollingLongContentLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="scrollingLongContentLabel">Términos y Condiciones</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>- Para retirar el vehículo necesitas tener, como mínimo, 21 años de edad, licencia de conducir con 2 años
+                de antigüedad y
+                contar con tarjeta de crédito bancarizada para realizar la pre autorización según tablas vigentes en
+                modalidad de
+                garantía.</p>
+
+              <p>- Entregamos el tanque lleno, para evitar cargos adicionales tenés que devolverlo con la misma cantidad.
+              </p>
+
+              <p>- Descuentos y promociones no son acumulables.</p>
+
+              <p>- La diaria del auto es de 24 horas, con hasta 1 hora de tolerancia para su devolución. A partir de la
+                25º hora se cobrará
+                hora extra (1/5 del valor de la diaria para cada hora extra), siendo cobrada, incluso, la hora de
+                tolerancia.</p>
+
+              <p>- Nebarent garantiza la reserva por un período de hasta 1 hora luego del horario previsto,
+                limitada al horario de cierre de la agencia.</p>
+
+              <p>- En caso de hurto, robo, incendio o colisión, es necesario presentar la Denuncia Policial y completar el
+                Aviso de
+                Siniestro, en Nebarent.</p>
+
+              <p>- En caso de devolución de autos en una agencia diferente de la agencia de donde fue retirado se
+                cobradará una tasa de
+                devolución, conforme tabla propia disponible en los mostradores de las agencias.</p>
+
+              <p>- El vehículo es entregado limpio y así deberá ser devuelto. En el caso de que sea entregado con suciedad
+                excesiva, afuera
+                de los estándares normales y razonables, serán cobradas tasas de lavado, de acuerdo a la tabla Localiza.
+              </p>
+
+              <p>- Para alquiler de silla de bebé, consultá vía telefónica una vez realices tu reserva.</p>
+
+              <p>- Licencia de conducir y Documento Nacional de Identidad son exigidos al momento de retirar el vehículo.
+              </p>
+
+              <p>- Por modificaciones, cancelaciones o consultas de reservas comuniquese de 08 a 22hs al 0800 999 2999.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-main" data-bs-dismiss="modal">Entendido</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form>
+        <div class="form-row">
+          <div class="form-group" style="width: 50%;">
+            <label for="nombre">Nombre *</label>
+            <input type="text" id="nombre" required>
+          </div>
+          <div class="form-group" style="width: 50%;">
+            <label for="apellido">Apellido *</label>
+            <input type="text" id="apellido" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo Electrónico *</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="width: 50%;">
+            <label for="dni">Número de DNI *</label>
+            <input type="text" id="dni" required>
+          </div>
+          <div class="form-group" style="width: 50%;">
+            <label for="licenciaConductor">Número de Licencia de Conducir *</label>
+            <input type="text" id="licenciaConductor" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="width: 50%;">
+            <label for="telefono">Celular</label>
+            <input type="text" id="telefono">
+          </div>
+          <div class="form-group" style="width: 50%;">
+            <label for="direccion">Dirección *</label>
+            <input type="text" id="direccion" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-main"
+          style="width: 100%; padding: 10px; letter-spacing: 1px;"><strong>RESERVAR</strong></button>
+      </form>
+    </section>
+
+    <aside class="reservation-summary">
+      <div class="reservation-summary-top">
+        <h3>Resumen de la Reserva</h3>
+        <div class="summary-item">
+          <p style="margin: 0px;"><strong>Lugar de Retiro</strong></p>
+          <p>14 de noviembre de 2024 a las 07:30 - Aeropuerto Bariloche</p>
+        </div>
+        <div class="summary-item">
+          <p style="margin: 0px;"><strong>Devolución</strong></p>
+          <p>28 de noviembre de 2024 a las 07:30 - Aeropuerto Bariloche</p>
+        </div>
+        <div class="summary-item">
+          <p style="margin: 0px;"><strong>Modelo</strong></p>
+          <p>Toyota Yaris</p>
+        </div>
+      </div>
+      <div class="summary-item total-price"
+        style="background-color: #000000; padding: 20px; margin: 0px -30px; border-radius: 0px 0px 10px 10px;">
+        <h4 style="color: #ffffff;">Valor total</h4>
+        <h3 style="color: #ffffff;">ARS 961,940.01</h3>
+      </div>
+    </aside>
+  </div>
+
+  <div class="spacer-60"></div>
+</div>
