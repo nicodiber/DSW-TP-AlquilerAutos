@@ -38,4 +38,10 @@ export class AlquilerService {
   actualizarEstadoAlquiler(_id: string): Observable<any> {
     return this.http.get(this.url + _id + 'estado');
   }
+
+
+  buscarModelosDisponibles(data: any): Observable<any> {
+    return this.http.post<any>(this.url + 'buscarModelosDisponibles', data);
+  }
+
 }

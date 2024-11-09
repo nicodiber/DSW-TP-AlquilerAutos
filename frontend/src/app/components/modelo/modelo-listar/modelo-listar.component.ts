@@ -5,7 +5,7 @@ import { ModeloService } from '../../../services/modelo.service';
 import { categoria } from '../../../models/categoria';
 import { marca } from '../../../models/marca';
 import { modelo } from '../../../models/modelo';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modelo-listar',
@@ -20,17 +20,40 @@ export class ListarModelosComponent implements OnInit {
   categoriasSeleccionadas: number | null = null;
   marcasSeleccionadas: number[] = [];
 
+  modelosDisponibles: modelo[] = [];
+  datosBusqueda: any;
+
   constructor(
+    private router: Router,
     private _categoriaService: CategoriaService,
     private _marcaService: MarcaService,
     private _modeloService: ModeloService,
-    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.datosBusqueda = JSON.parse(localStorage.getItem('datosBusqueda') || '{}');
+    this.modelosDisponibles = JSON.parse(localStorage.getItem('modelosDisponibles') || '[]');
+    console.log("Datos de búsqueda:", this.datosBusqueda);
+    console.log("Modelos coincidentes disponibles:", this.modelosDisponibles);
+
+    if (Object.keys(this.datosBusqueda).length === 0) {
+      this.router.navigate(['/buscador']); // Redirigir a "buscador"
+    } else {
+      if (window.localStorage) {
+        // Recarga la primera vez para que todo se vea bien, pero evitando loop
+        if (!localStorage.getItem('reload')) {
+          localStorage['reload'] = true;
+          window.location.reload();
+        } else {
+          localStorage.removeItem('reload');
+        }
+      }
+    }
+
     this.obtenerCategorias();
     this.obtenerMarcas();
-    this.obtenerModelos();
+    // Inicializar modelosFiltrados con modelosDisponibles
+    this.modelosFiltrados = [...this.modelosDisponibles];
   }
 
   obtenerCategorias() {
@@ -42,14 +65,6 @@ export class ListarModelosComponent implements OnInit {
   obtenerMarcas() {
     this._marcaService.obtenerMarcas().subscribe(data => {
       this.listMarcas = data;
-    });
-  }
-
-  obtenerModelos() {
-    this._modeloService.obtenerModelos().subscribe(data => {
-      this.listModelos = data;
-      console.log("Modelos obtenidos desde el servicio:", this.listModelos);
-      this.filtrarModelos();
     });
   }
 
@@ -80,13 +95,14 @@ export class ListarModelosComponent implements OnInit {
 
   // Lógica de filtrado que considera categoría y marcas seleccionadas
   filtrarModelos() {
-    this.modelosFiltrados = this.listModelos.filter(modelo => {
-      const modeloCategoriaId = modelo.categoriaModelo?._id;  // ?. significa encadenamiento opcional, para evitar errores cuando la propiedad podría ser null o undefined
-      const modeloMarcaId = modelo.marcaModelo?._id;
+    this.modelosFiltrados = this.modelosDisponibles.filter(modelo => {
+      // Verificamos si modelo.categoriaModelo y modelo.marcaModelo son números directamente. Si no, asume que son objetos y accede al campo _id
+      const modeloCategoriaId = typeof modelo.categoriaModelo === 'number' ? modelo.categoriaModelo : modelo.categoriaModelo?._id;
+      const modeloMarcaId = typeof modelo.marcaModelo === 'number' ? modelo.marcaModelo : modelo.marcaModelo?._id;
 
       // (condicion) ? valor_si_cumple : valor_si_nocumple
       const categoriaCoincide = this.categoriasSeleccionadas ? modeloCategoriaId === this.categoriasSeleccionadas : true;
-      const marcaCoincide = this.marcasSeleccionadas.length > 0 ? this.marcasSeleccionadas.includes(modeloMarcaId as number) : true;
+      const marcaCoincide = this.marcasSeleccionadas.length > 0 && modeloMarcaId !== undefined ? this.marcasSeleccionadas.includes(modeloMarcaId) : true; // Solo se intenta aplicar includes si modeloMarcaId no es undefined, para que no tire error
 
       return categoriaCoincide && marcaCoincide;
     });

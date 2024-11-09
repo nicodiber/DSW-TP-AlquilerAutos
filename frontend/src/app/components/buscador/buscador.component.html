@@ -15,45 +15,34 @@
         <div class="col-lg-12">
 
           <div class="p-4 rounded-3 shadow-soft" data-bgcolor="#ffffff">
-            <form name="contactForm" id='contact_form' method="post">
+            <form name="formulario-busqueda" id='formulario-busqueda' method="post">
               <div class="col-lg-12">
 
                 <div class="row">
                   <div class="col-lg-6 mb20">
                     <h5>Sucursal de Retiro</h5>
-                    <input type="text" name="PickupLocation" class="form-control">
+                    <select id="selectSucursalRetiro" [(ngModel)]="selectedSucursalRetiro" [ngModelOptions]="{standalone: true}" (change)="onSucursalRetiroSeleccionada()" (change)="verificarCamposCompletos()">
+                      <option value="" disabled selected>Seleccione una sucursal...</option>
+                      <option *ngFor="let sucursal of sucursales" [value]="sucursal._id">{{ sucursal.nombreSucursal }}</option>
+                    </select>
                   </div>
 
                   <div class="col-lg-6 mb20">
                     <h5>Sucursal de Devolución</h5>
-                    <input type="text" name="PickupLocation" class="form-control">
+                    <select id="selectSucursalDevolucion" [(ngModel)]="selectedSucursalDevolucion" [ngModelOptions]="{standalone: true}" (change)="onSucursalDevolucionSeleccionada()" (change)="verificarCamposCompletos()">
+                      <option value="" disabled selected>Seleccione una sucursal...</option>
+                      <option *ngFor="let sucursal of sucursales" [value]="sucursal._id" >{{ sucursal.nombreSucursal }}</option>
+                    </select>
                   </div>
 
                   <div class="col-lg-6 mb20">
                     <h5>Fecha y Hora de Retiro</h5>
                     <div class="date-time-field">
-                      <input type="text" id="date-picker" name="Pick Up Date" value="">
-                      <select name="Pick Up Time" id="pickup-time">
-                        <option selected disabled value="Select time">Time</option>
-                        <option value="09:00">09:00</option>
-                        <option value="09:30">09:30</option>
-                        <option value="10:00">10:00</option>
-                        <option value="10:30">10:30</option>
-                        <option value="11:00">11:00</option>
-                        <option value="11:30">11:30</option>
-                        <option value="12:00">12:00</option>
-                        <option value="12:30">12:30</option>
-                        <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
-                        <option value="14:00">14:00</option>
-                        <option value="14:30">14:30</option>
-                        <option value="15:00">15:00</option>
-                        <option value="15:30">15:30</option>
-                        <option value="16:00">16:00</option>
-                        <option value="16:30">16:30</option>
-                        <option value="17:00">17:00</option>
-                        <option value="17:30">17:30</option>
-                        <option value="18:00">18:00</option>
+                      <input type="date" id="" [(ngModel)]="fechaRetiro" [ngModelOptions]="{standalone: true}" placeholder="Seleccionar Fecha" autocomplete="off" (change)="verificarCamposCompletos()" (change)="verificarFechasValidas()">
+                      
+                      <select [(ngModel)]="horaRetiro" [ngModelOptions]="{standalone: true}" id="collection-time" (change)="verificarCamposCompletos()">
+                        <option value="" disabled selected>Seleccione horario...</option>
+                        <option *ngFor="let horario of horariosRetiroDisponibles" [value]="horario">{{ horario }}</option>
                       </select>
                     </div>
                   </div>
@@ -61,28 +50,11 @@
                   <div class="col-lg-6 mb20">
                     <h5>Fecha y Hora de Devolución</h5>
                     <div class="date-time-field">
-                      <input type="text" id="date-picker-2" name="Collection Date" value="">
-                      <select name="Collection Time" id="collection-time">
-                        <option selected disabled value="Select time">Time</option>
-                        <option value="09:00">09:00</option>
-                        <option value="09:30">09:30</option>
-                        <option value="10:00">10:00</option>
-                        <option value="10:30">10:30</option>
-                        <option value="11:00">11:00</option>
-                        <option value="11:30">11:30</option>
-                        <option value="12:00">12:00</option>
-                        <option value="12:30">12:30</option>
-                        <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
-                        <option value="14:00">14:00</option>
-                        <option value="14:30">14:30</option>
-                        <option value="15:00">15:00</option>
-                        <option value="15:30">15:30</option>
-                        <option value="16:00">16:00</option>
-                        <option value="16:30">16:30</option>
-                        <option value="17:00">17:00</option>
-                        <option value="17:30">17:30</option>
-                        <option value="18:00">18:00</option>
+                      <input type="date" [(ngModel)]="fechaDevolucion" [ngModelOptions]="{standalone: true}" placeholder="Seleccionar Fecha" autocomplete="off" (change)="verificarCamposCompletos()" (change)="verificarFechasValidas()">
+                      
+                      <select [(ngModel)]="horaDevolucion" [ngModelOptions]="{standalone: true}" id="collection-time-2" (change)="verificarCamposCompletos()">
+                        <option value="" disabled selected>Seleccione horario...</option>
+                        <option *ngFor="let horario of horariosDevolucionDisponibles" [value]="horario">{{ horario }}</option>
                       </select>
                     </div>
                   </div>
@@ -90,7 +62,7 @@
               </div>
 
               <div class="col-lg-12" style="padding-bottom: 30px;">
-                <input type='submit' id='send_message' value='Realizar Búsqueda' class="btn-main pull-right">
+                <button (click)="realizarBusqueda()" class="btn-main pull-right">Realizar Búsqueda</button>
               </div>
 
             </form>

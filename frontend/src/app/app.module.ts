@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Para el toastr
 import { ToastrModule } from 'ngx-toastr'; // Para el toastr
@@ -60,6 +60,7 @@ import { Error404Component } from './components/404/404.component';
     AppRoutingModule,
     RouterModule,  // Para leer el router-outlet
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],

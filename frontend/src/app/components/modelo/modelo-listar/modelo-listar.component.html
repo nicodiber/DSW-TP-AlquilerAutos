@@ -60,16 +60,16 @@
 
                 <div class="col-lg-9" style="width: 75% !important;">
                     <div class="row">
-                        <div class="col-xl-6 col-lg-6" *ngIf="listModelos.length === 0">
-                            <h4>¡No hay modelos disponibles!</h4>
+                        <div class="col-xl-6 col-lg-6 no-encontrado" *ngIf="modelosDisponibles.length === 0">
+                            <h4>No se encontraron modelos disponibles para las fechas y sucursales seleccionadas...</h4>
                         </div>
-                        <div class="col-xl-6 col-lg-6 no-encontrado" *ngIf="modelosFiltrados.length === 0">
+                        <div class="col-xl-6 col-lg-6 no-encontrado" *ngIf="modelosDisponibles.length > 0 && modelosFiltrados.length === 0">
                             <h4>¡No hay modelos coincidentes!</h4>
                             <button class="btn-main btn-black" (click)="resetFiltros()">Reiniciar filtros</button>
                         </div>
                         
-                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="listModelos.length > 0">
-                            <div class="de-item mb30 modelo-item" *ngFor="let modelo of modelosFiltrados" style="margin: 0px 8px 24px 8px !important;">
+                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="modelosDisponibles.length > 0">
+                            <div class="de-item mb30 modelo-item" *ngFor="let modelo of modelosDisponibles" style="margin: 0px 8px 24px 8px !important;">
                                 <div class="d-img">
                                     <a [href]="'/modelo/' + modelo._id"><img [src]="'http://localhost:4000' + modelo.images[0]" class="img-fluid" alt="Modelo de automóvil"></a>
                                 </div>
@@ -92,6 +92,47 @@
                         </div>
                     </div>
                 </div>
+                <!--
+                <div class="col-lg-9" style="width: 75% !important;">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6" *ngIf="listModelos.length === 0">
+                            <h4>¡No hay modelos disponibles!</h4>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 no-encontrado" *ngIf="modelosFiltrados.length === 0">
+                            <h4>¡No hay modelos coincidentes!</h4>
+                            <button class="btn-main btn-black" (click)="resetFiltros()">Reiniciar filtros</button>
+                        </div>
+                
+                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="listModelos.length > 0">
+                            <div class="de-item mb30 modelo-item" *ngFor="let modelo of modelosFiltrados"
+                                style="margin: 0px 8px 24px 8px !important;">
+                                <div class="d-img">
+                                    <a [href]="'/modelo/' + modelo._id"><img [src]="'http://localhost:4000' + modelo.images[0]"
+                                            class="img-fluid" alt="Modelo de automóvil"></a>
+                                </div>
+                                <div class="d-info">
+                                    <div class="d-text">
+                                        <h4><a [href]="'/modelo/' + modelo._id">{{ modelo.nombreModelo }}</a></h4>
+                                        <div class="d-item_like"></div>
+                                        <div class="d-atr-group">
+                                            <span class="d-atr"><img src="../../../images/icons/1.svg" alt="">{{ modelo.cantidadAsientos
+                                                }}</span>
+                                            <span class="d-atr"><img src="../../../images/icons/3.svg" alt="">{{ modelo.cantidadPuertas
+                                                }}</span>
+                                            <span class="d-atr"><img src="../../../images/icons/4.svg" alt="">Categoria: {{
+                                                modelo.categoriaModelo.nombreCategoria }}</span>
+                                        </div>
+                                        <div class="d-price">
+                                            Precio diario desde <span>${{ modelo.precioXdia }}</span>
+                                            <a class="btn-main" [href]="'/modelo/' + modelo._id">Ver más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
             </div>
         </div>
     </section>

@@ -2,6 +2,7 @@ const Alquiler = require("../models/alquiler");
 const Usuario = require("../models/usuario");
 const Auto = require("../models/auto");
 const Sucursal = require("../models/sucursal");
+const Modelo = require("../models/Modelo");
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear un nuevo alquiler
@@ -226,5 +227,50 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error al asignar el trabajador al alquiler');
+  }
+};
+
+
+exports.buscarModelosDisponibles = async (req, res) => {
+  try {
+    const { sucursalRetiro, fechaRetiro, fechaDevolucion } = req.body;
+    const fechaInicio = new Date(fechaRetiro);
+    const fechaFin = new Date(fechaDevolucion);
+
+    // Paso 1: Obtener autos en la sucursal de retiro
+    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiro });
+    console.log("Autos en la sucursal de retiro:", autosEnSucursal);
+
+    // Paso 2: Filtrar autos disponibles en el rango de fechas
+    const autosDisponibles = [];
+    for (const auto of autosEnSucursal) {
+      const conflictos = await Alquiler.find({
+        auto: auto._id,
+        $or: [
+          {
+            fechaInicio: { $lte: fechaFin },
+            fechaFin: { $gte: fechaInicio }
+          },
+          {
+            fechaInicio: { $gte: fechaInicio },
+            fechaFin: { $lte: fechaFin }
+          }
+        ]
+      });
+
+      if (conflictos.length === 0) {
+        autosDisponibles.push(auto);
+      }
+    }
+    console.log("Autos disponibles en el rango de fechas:", autosDisponibles);
+
+    // Obtener los modelos de los autos disponibles
+    const modelosDisponibles = await Modelo.find({ _id: { $in: autosDisponibles.map(auto => auto.modeloAuto) } });
+    console.log("Modelos disponibles:", modelosDisponibles);
+
+    res.json(modelosDisponibles);
+  } catch (error) {
+    console.error("Error al buscar modelos disponibles:", error);
+    res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
