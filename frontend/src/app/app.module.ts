@@ -27,6 +27,9 @@ import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alq
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
+import { MarcaCrearComponent } from './components/marca/marca-crear/marca-crear.component';
+import { MarcaListarComponent } from './components/marca/marca-listar/marca-listar.component';
+
 
 @NgModule({
   declarations: [
@@ -46,7 +49,9 @@ import { Error404Component } from './components/404/404.component';
     AlquilerCrearComponent,
     AlquilerListarComponent,
     FormularioContactoComponent,
-    Error404Component
+    Error404Component,
+    MarcaCrearComponent,
+    MarcaListarComponent,
   ],
   imports: [
     BrowserModule,

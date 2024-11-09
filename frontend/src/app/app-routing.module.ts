@@ -18,6 +18,7 @@ import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alq
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
+import { MarcaListarComponent } from './components/marca/marca-listar/marca-listar.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
+      { path: 'marcas', component: MarcaListarComponent}
     ]
   },
   
