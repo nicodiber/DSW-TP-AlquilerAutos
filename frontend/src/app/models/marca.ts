@@ -1,6 +1,6 @@
-export class marca {
+export class marca {  // Asegúrate de que esté precedida de `export`
     _id?: number; // El campo _id es opcional para la creación de nuevos objetos.
-    nombreMarca: string; 
+    nombreMarca: string;
 
     constructor(nombreMarca: string, _id?: number) {
         this.nombreMarca = nombreMarca;

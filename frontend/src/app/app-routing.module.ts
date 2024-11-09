@@ -31,7 +31,6 @@ const routes: Routes = [
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
-      { path: 'marcas', component: MarcaListarComponent}
     ]
   },
   
@@ -48,6 +47,7 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
+  { path: 'marcas', component: MarcaListarComponent},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
