@@ -27,6 +27,7 @@ app.use('/api/alquileres', require('./routes/alquiler'));
 app.use('/api/incidentes', require('./routes/incidente'));
 app.use('/api/mantenimientos', require('./routes/mantenimiento'));
 app.use('/api/formulario-contacto', require('./routes/contact')); // Ruta para el formulario de contacto
+app.use('/api/marcas', require('./routes/marca'));
 
 app.listen(4000, () => {
     console.log('El servidor está corriendo perfectamente');

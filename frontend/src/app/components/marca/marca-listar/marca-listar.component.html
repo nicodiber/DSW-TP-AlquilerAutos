@@ -5,32 +5,37 @@
                 <div class="card-body text-center">
                     <span class="titulo">Listado de Marcas</span>
                     <button class="btn btn-success float-end">Agregar</button>
-                    <div class="d-flex justify-content-center">
+                    <div class="container mt-4">
+                        <h2 class="text-center mb-4">Lista de Marcas</h2>
+                        
                         <table class="table table-striped">
                           <thead>
                             <tr>
                               <th>ID</th>
-                              <th>Nombre de la marca</th>
+                              <th>Nombre de la Marca</th>
                               <th>Acciones</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let marca of listaMarcas">
+                            <tr *ngFor="let marca of marcas">
                               <td>{{ marca._id }}</td>
                               <td>{{ marca.nombreMarca }}</td>
                               <td>
                                 <!-- Botón de modificar (solo estético) -->
-                                <i class="fa-solid fa-pen-to-square text-primary me-2"></i>
+                                <button class="btn btn-light">
+                                  <i class="fa-solid fa-pen-to-square text-primary me-2"></i>
+                                </button>
                                 
                                 <!-- Botón de eliminar (solo estético) -->
-                                <i class="fa-solid fa-trash text-danger"></i>
+                                <button class="btn btn-light">
+                                  <i class="fa-solid fa-trash text-danger"></i>
+                                </button>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
                       
-                </div>
             </div>
         </div>
     </div>
