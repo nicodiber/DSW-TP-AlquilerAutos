@@ -10,6 +10,9 @@ export class CategoriaService {
 
   
   constructor(private http: HttpClient) { }
+  crearCategoria(categoria: any) {
+    return this.http.post('URL_DEL_BACKEND/categorias', categoria);
+  }
 
   //el get devuelve un observable y se usa para hacer peticiones asincronas
   obtenerCategorias(): Observable<any>{

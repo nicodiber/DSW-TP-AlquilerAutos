@@ -32,6 +32,7 @@ import { ListarModelosMarcaComponent } from './components/marca/listar-marca-mod
 import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
 import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
 import { ListarCategoriaModeloComponent } from './components/categoria/listar-categoria-modelo/listar-categoria-modelo.component';
+import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ListarCategoriaModeloComponent } from './components/categoria/listar-ca
     ListarModelosMarcaComponent,
     CrearMarcaComponent,
     ListarCategoriaComponent,
-    ListarCategoriaModeloComponent
+    ListarCategoriaModeloComponent,
+    CrearCategoriaComponent
   ],
   imports: [
     BrowserModule,
