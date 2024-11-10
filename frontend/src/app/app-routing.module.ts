@@ -49,7 +49,7 @@ const routes: Routes = [
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
   { path: 'marcas', component: ListarMarcaComponent},
-  { path: 'marca-modelos/:_id', component: ListarModelosMarcaComponent},
+  { path: 'marca-modelos/:nombreMarca', component: ListarModelosMarcaComponent},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

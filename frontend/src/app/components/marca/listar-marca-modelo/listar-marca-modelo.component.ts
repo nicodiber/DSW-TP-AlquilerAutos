@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModeloService } from '../../../services/modelo.service'; // Ajusta la ruta según tu estructura
+import { ModeloService } from '../../../services/modelo.service';
 import { modelo } from '../../../models/modelo';
 
 @Component({
@@ -10,7 +10,7 @@ import { modelo } from '../../../models/modelo';
 })
 export class ListarModelosMarcaComponent implements OnInit {
   modelos: modelo[] = [];
-  marcaId!: number;
+  nombreMarca!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -18,14 +18,15 @@ export class ListarModelosMarcaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.marcaId = +this.route.snapshot.paramMap.get('marcaId')!; // Obtén el marcaId de la URL
-    this.getModelosByMarca(this.marcaId);
+    this.nombreMarca = this.route.snapshot.paramMap.get('nombreMarca')!;
+    this.getModelosByMarca(this.nombreMarca);
   }
 
-  getModelosByMarca(marcaId: number): void {
-    this.modeloService.obtenerModelosPorMarca(marcaId).subscribe(
+  getModelosByMarca(nombreMarca: string): void {
+    this.modeloService.obtenerModelosPorMarca().subscribe(
       data => {
-        this.modelos = data;
+        // Filtrar los modelos para que solo coincidan con la marca seleccionada
+        this.modelos = data.filter(modelo => modelo.marcaModelo.nombreMarca === nombreMarca);
       },
       error => {
         console.log(error);
