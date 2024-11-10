@@ -46,7 +46,7 @@ export class CrearMarcaComponent implements OnInit {
         this.toastr.success('Marca creada exitosamente', 'Éxito');
         
         // Redirigimos al listado de marcas después de la creación
-        this.router.navigate(['/marca-listar']);
+        this.router.navigate(['/marcas']);
       },
       (error) => {
         this.toastr.error('Error al crear la marca', 'Error');

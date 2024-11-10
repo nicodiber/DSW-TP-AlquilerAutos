@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { categoria } from '../models/categoria';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class CategoriaService {
 
   
   constructor(private http: HttpClient) { }
-  crearCategoria(categoria: any) {
-    return this.http.post('URL_DEL_BACKEND/categorias', categoria);
+  crearCategoria(categoria: categoria): Observable<categoria> {
+    return this.http.post<categoria>(this.url, categoria);
   }
 
   //el get devuelve un observable y se usa para hacer peticiones asincronas
