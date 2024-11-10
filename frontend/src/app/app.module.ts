@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Para ciertos atributos como ngModule, ngModel, ngModelOptions, entre otros
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Para el toastr
 import { ToastrModule } from 'ngx-toastr'; // Para el toastr
 import { provideHttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule aquí
+import { CookieService } from 'ngx-cookie-service'; // Cookies
 
 
 // Componentes
@@ -64,7 +65,7 @@ import { Error404Component } from './components/404/404.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(), CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

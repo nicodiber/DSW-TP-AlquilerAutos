@@ -3,6 +3,8 @@ import { SucursalService } from '../../services/sucursal.service';
 import { Router } from '@angular/router';
 import { AlquilerService } from '../../services/alquiler.service';
 import moment from 'moment';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-buscador',
@@ -23,7 +25,7 @@ export class BuscadorComponent implements OnInit {
   isFormValid: boolean = false;
   isDateValid: boolean = false;
 
-  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router) {}
+  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService) {}
 
   ngOnInit(): void {
     // Obtener las Sucursales
@@ -44,13 +46,12 @@ export class BuscadorComponent implements OnInit {
     );
 
     // Recarga la primera vez para que todo se vea bien, pero evitando loop
-    if (window.localStorage) {
-      if (!localStorage.getItem('reload')) {
-        localStorage['reload'] = true;
-        window.location.reload();
-      } else {
-        localStorage.removeItem('reload');
-      }
+    console.log(this.cookieService.get('reload'));
+    if (this.cookieService.get('reload') === 'true') {
+      this.cookieService.delete('reload'); // Eliminar la cookie para evitar loop
+      window.location.reload();
+    } else {
+      this.cookieService.delete('reload');
     }
   }
 
@@ -127,10 +128,10 @@ export class BuscadorComponent implements OnInit {
 
       this.alquilerService.buscarModelosDisponibles(data).subscribe(
         (modelos) => {
-          localStorage.setItem('datosBusqueda', JSON.stringify(data)); // Almacenar temporalmente
-          localStorage.setItem('modelosDisponibles', JSON.stringify(modelos));
-          if (localStorage.getItem('reload')) {
-            localStorage.removeItem('reload');
+          this.cookieService.set('datosBusqueda', JSON.stringify(data)); // Almacenar temporalmente
+          this.cookieService.set('modelosDisponibles', JSON.stringify(modelos));
+          if (this.cookieService.get('reload')) {
+            this.cookieService.delete('reload');
           }
           this.router.navigate(['/modelo-listar']); // Redirigir a "modelo-listar"
         },

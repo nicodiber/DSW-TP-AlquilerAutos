@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriaService } from '../../../services/categoria.service';
 import { MarcaService } from '../../../services/marca.service';
-import { ModeloService } from '../../../services/modelo.service';
 import { categoria } from '../../../models/categoria';
 import { marca } from '../../../models/marca';
 import { modelo } from '../../../models/modelo';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-modelo-listar',
@@ -19,41 +19,37 @@ export class ListarModelosComponent implements OnInit {
   modelosFiltrados: modelo[] = [];
   categoriasSeleccionadas: number | null = null;
   marcasSeleccionadas: number[] = [];
-
   modelosDisponibles: modelo[] = [];
   datosBusqueda: any;
 
-  constructor(
-    private router: Router,
-    private _categoriaService: CategoriaService,
-    private _marcaService: MarcaService,
-    private _modeloService: ModeloService,
-  ) {}
+  constructor(private router: Router, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService) {}
 
   ngOnInit(): void {
-    this.datosBusqueda = JSON.parse(localStorage.getItem('datosBusqueda') || '{}');
-    this.modelosDisponibles = JSON.parse(localStorage.getItem('modelosDisponibles') || '[]');
-    console.log("Datos de búsqueda:", this.datosBusqueda);
-    console.log("Modelos coincidentes disponibles:", this.modelosDisponibles);
+    // Cookies
+    this.datosBusqueda = JSON.parse(this.cookieService.get('datosBusqueda') || '{}');
+    this.modelosDisponibles = JSON.parse(this.cookieService.get('modelosDisponibles') || '[]');
 
     if (Object.keys(this.datosBusqueda).length === 0) {
-      this.router.navigate(['/buscador']); // Redirigir a "buscador"
+      this.router.navigate(['/buscador']);
     } else {
-      if (window.localStorage) {
-        // Recarga la primera vez para que todo se vea bien, pero evitando loop
-        if (!localStorage.getItem('reload')) {
-          localStorage['reload'] = true;
-          window.location.reload();
-        } else {
-          localStorage.removeItem('reload');
-        }
+      // Una recarga para que se vea correctamente si llega de forma forzada
+      console.log(this.cookieService.get('reload'));
+      if (this.cookieService.get('reload') !== 'true') {
+        this.cookieService.set('reload', 'true'); // Eliminar la cookie para evitar loop
+        window.location.reload();
       }
+
+      // Establecer cookies con tiempo de expiración calculado
+      const expirationDate = new Date();
+      expirationDate.setSeconds(expirationDate.getSeconds() + 1800); // Tiempo de expiración de las cookies en 30 minutos
+      this.cookieService.set('datosBusqueda', JSON.stringify(this.datosBusqueda), { expires: expirationDate });
+      this.cookieService.set('modelosDisponibles', JSON.stringify(this.modelosDisponibles), { expires: expirationDate });
     }
 
+    // Obtenemos Categorias y Marcas e inicializamos modelosFiltrados con modelosDisponibles
     this.obtenerCategorias();
     this.obtenerMarcas();
-    // Inicializar modelosFiltrados con modelosDisponibles
-    this.modelosFiltrados = [...this.modelosDisponibles];
+    this.modelosFiltrados = [...this.modelosDisponibles]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
   }
 
   obtenerCategorias() {
@@ -68,14 +64,14 @@ export class ListarModelosComponent implements OnInit {
     });
   }
 
-  // Método para manejar la selección y deselección de categorías
+  // Manejo de la selección y deselección de categorías
   seleccionarCategoria(idCategoria: number) {
     // Si la categoría ya está seleccionada, deseleccionar estableciendo null
     this.categoriasSeleccionadas = this.categoriasSeleccionadas === idCategoria ? null : idCategoria;
     this.filtrarModelos();
   }
 
-  // Método para manejar la selección de marcas con checkboxes
+  // Manejo de la selección de marcas con checkboxes
   checkMarca(idMarca: number) {
     const index = this.marcasSeleccionadas.indexOf(idMarca);
     if (index > -1) {
@@ -109,3 +105,4 @@ export class ListarModelosComponent implements OnInit {
   }
 
 }
+
