@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Para ciertos atributos como ngModule, ngModel, ngModelOptions, entre otros
@@ -9,6 +9,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule aquí
 import { CookieService } from 'ngx-cookie-service'; // Cookies
 
+// Cambiar la fechas a formato español
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs, 'es');
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -65,7 +69,7 @@ import { Error404Component } from './components/404/404.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],
-  providers: [provideHttpClient(), CookieService],
+  providers: [provideHttpClient(), CookieService, { provide: LOCALE_ID, useValue: 'es' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,7 +5,6 @@ import { AlquilerService } from '../../services/alquiler.service';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 
-
 @Component({
   selector: 'app-buscador',
   templateUrl: './buscador.component.html',
@@ -46,7 +45,6 @@ export class BuscadorComponent implements OnInit {
     );
 
     // Recarga la primera vez para que todo se vea bien, pero evitando loop
-    console.log(this.cookieService.get('reload'));
     if (this.cookieService.get('reload') === 'true') {
       this.cookieService.delete('reload'); // Eliminar la cookie para evitar loop
       window.location.reload();
@@ -112,36 +110,45 @@ export class BuscadorComponent implements OnInit {
     const fechaRetiroMoment = moment(this.fechaRetiro, "YYYY-MM-DD");
     const fechaDevolucionMoment = moment(this.fechaDevolucion, "YYYY-MM-DD");
 
-    this.isDateValid = (fechaDevolucionMoment.isAfter(fechaRetiroMoment));
+    this.isDateValid = ((fechaDevolucionMoment.isAfter(fechaRetiroMoment)) && fechaRetiroMoment.isAfter(moment().format('YYYY-MM-DD')));
   }
 
   realizarBusqueda(): void {
-    if (this.isFormValid && this.isDateValid) {
-      const data = {
-        sucursalRetiro: Number(this.selectedSucursalRetiro),
-        sucursalDevolucion: Number(this.selectedSucursalDevolucion),
-        fechaRetiro: this.fechaRetiro,
-        fechaDevolucion: this.fechaDevolucion,
-        horaRetiro: this.horaRetiro,
-        horaDevolucion: this.horaDevolucion
-      };
+  if (this.isFormValid && this.isDateValid) {
+    // Obtener sucursales completas utilizando suscripciones
+    this.sucursalService.obtenerSucursal(this.selectedSucursalRetiro).subscribe((sucursalRetiroData) => {
+      this.sucursalService.obtenerSucursal(this.selectedSucursalDevolucion).subscribe((sucursalDevolucionData) => { // No se ejecuta hasta que sucursalRetiroData se haya recibido
+        const data = {
+          sucursalRetiro: sucursalRetiroData, // Objeto completo
+          sucursalDevolucion: sucursalDevolucionData, // Objeto completo
+          fechaRetiro: this.fechaRetiro,
+          fechaDevolucion: this.fechaDevolucion,
+          horaRetiro: this.horaRetiro,
+          horaDevolucion: this.horaDevolucion,
+          modeloElegido: undefined,
+          precioTotal: undefined,
+        };
 
-      this.alquilerService.buscarModelosDisponibles(data).subscribe(
-        (modelos) => {
-          this.cookieService.set('datosBusqueda', JSON.stringify(data)); // Almacenar temporalmente
-          this.cookieService.set('modelosDisponibles', JSON.stringify(modelos));
-          if (this.cookieService.get('reload')) {
-            this.cookieService.delete('reload');
-          }
-          this.router.navigate(['/modelo-listar']); // Redirigir a "modelo-listar"
-        },
-        (error) => console.error('Error al buscar modelos disponibles:', error)
-      );
+        this.alquilerService.buscarModelosDisponibles(data).subscribe(
+          (modelos) => {
+            // Cookies
+            const expirationDate = new Date();
+            expirationDate.setSeconds(expirationDate.getSeconds() + 1800); // Tiempo de expiración de las cookies en 1800 = 30 minutos
+            this.cookieService.set('datosBusqueda', JSON.stringify(data), { expires: expirationDate, path: '/' });
+            this.cookieService.set('modelosDisponibles', JSON.stringify(modelos), { expires: expirationDate, path: '/' });
 
-    } else if (!this.isFormValid) {
-      alert("Por favor, complete todos los campos antes de realizar la búsqueda.");
-    } else {
-      alert("La fecha de devolución debe ser posterior a la fecha de retiro.");
-    }
+            // Redirigir a "modelo-listar"
+            this.router.navigate(['/modelo-listar']);
+          },
+          (error) => console.error('Error al buscar modelos disponibles:', error)
+        );
+      });
+    });
+  } else if (!this.isFormValid){
+    alert("Por favor, complete todos los campos antes de realizar la búsqueda.");
+  } else {
+    alert("Por favor, revise las fechas indicadas. La fecha de retiro debe ser posterior a hoy, y la fecha de devolución debe ser posterior a la fecha de retiro.");
   }
+}
+
 }

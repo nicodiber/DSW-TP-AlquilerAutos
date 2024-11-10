@@ -54,6 +54,13 @@ section {
 .detail-item {
   flex: 1;
 }
+.detail-item p{
+  margin-bottom: 5px;
+}
+.detail-item a{
+  color: #dbb700;
+  text-decoration: none;
+}
 
 .requirements {
   padding: 25px;
@@ -99,7 +106,7 @@ table tr:not(:last-child) {
 
 table .total td {
   font-weight: bold;
-  color: #28a745;
+  color: #dbb700;;
 }
 
 .actions {

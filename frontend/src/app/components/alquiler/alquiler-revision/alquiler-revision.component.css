@@ -84,17 +84,29 @@ select {
   padding-top: 20px;
 }
 
-.summary-item {
+.reservation-summary-top{
+  padding: 10px 0px;
+}
+
+.summary-item:not(:last-child) {
   margin-bottom: 1rem;
   border-bottom: 1px solid #ccc;
   padding-bottom: 0.5rem;
+}
+.summary-item p span{
+  color: #727272;
 }
 
 .total-price {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #28a745;
+  color: #ffffff;
   text-align: right;
+}
+
+.total-price .price-list h6{
+  font-weight: 400;
+  color: #ffffff;
 }
 
 .modal-dialog{

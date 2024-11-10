@@ -1,5 +1,3 @@
-
-<!-- section begin -->
 <section id="subheader" class="jarallax text-light" style="background-color: black;">
   <div class="center-y relative text-center">
     <div class="container">
@@ -13,7 +11,6 @@
     </div>
   </div>
 </section>
-<!-- section close -->
 
 <div class="breadcrumb-container">
   <div class="breadcrumb">
@@ -24,29 +21,35 @@
 
 <div class="container">
 
-  <div class="reservation">
+  <div class="reservation" *ngIf="datosBusqueda">
 
     <section class="reservation-summary">
       <h1>Resumen de la reserva</h1>
       <div class="reservation-details">
         <div class="reservation-code">
-          <p>Código de reserva: <strong>IT3VBKJQBDQH</strong></p>
+          <p>Código de reserva: <strong>ID_DE_ALQUILER_GENERADO</strong></p>
         </div>
         <div class="details-row">
           <div class="detail-item">
             <h3>Retiro</h3>
-            <p>29 de noviembre de 2024 a las 08:00</p>
-            <p>Aeropuerto Bariloche, Ruta 237 S/N, Bariloche - RN</p>
+            <p><i class="fa fa-calendar"></i>&nbsp;{{ datosBusqueda.fechaRetiro | date:'longDate'}} a las {{ datosBusqueda.horaRetiro }} hs.</p>
+            <p><i class="fa  fa-map-signs"></i>&nbsp;{{ datosBusqueda.sucursalRetiro.nombreSucursal }} ({{ datosBusqueda.sucursalRetiro.direccionSucursal }}, {{
+            datosBusqueda.sucursalRetiro.ciudadSucursal }}, {{ datosBusqueda.sucursalRetiro.provinciaSucursal }}, {{
+            datosBusqueda.sucursalRetiro.paisSucursal }})</p>
           </div>
           <div class="detail-item">
             <h3>Devolución</h3>
-            <p>29 de noviembre de 2024 a las 09:00</p>
-            <p>Aeropuerto Bariloche, Ruta 237 S/N, Bariloche - RN</p>
+            <p><i class="fa fa-calendar"></i>&nbsp;{{ datosBusqueda.fechaDevolucion | date:'longDate'}} a las {{ datosBusqueda.horaDevolucion }} hs.</p>
+            <p><i class="fa  fa-map-signs"></i>&nbsp;{{ datosBusqueda.sucursalDevolucion.nombreSucursal }} ({{
+            datosBusqueda.sucursalDevolucion.direccionSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.ciudadSucursal }}, {{ datosBusqueda.sucursalDevolucion.provinciaSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.paisSucursal }})</p>
           </div>
           <div class="detail-item">
-            <h3>Detalles del vehículo</h3>
-            <p>Toyota Yaris</p>
-            <a href="#">Ver detalle del modelo</a>
+            <h3>Vehículo</h3>
+            <p><i class="fa  fa-car"></i>&nbsp;{{ datosBusqueda.modeloElegido.nombreModelo }}<br>
+            Año {{ datosBusqueda.modeloElegido.anio }} | Color {{ datosBusqueda.modeloElegido.color }}</p>
+            <a [href]="'/modelo/' + datosBusqueda.modeloElegido._id" target="_blank">Ver detalle del modelo</a>
           </div>
         </div>
       </div>
@@ -59,23 +62,19 @@
       <table>
         <tr>
           <td>Tarifa diaria</td>
-          <td>ARS 33,839.54</td>
+          <td>${{ datosBusqueda.modeloElegido.precioXdia | number: '1.0-0' }} (x{{ diasReserva }} días)</td>
         </tr>
         <tr>
-          <td>Protección básica con franquicia</td>
-          <td>ARS 30.00</td>
+          <td>Subtotal</td>
+          <td>${{ (datosBusqueda.modeloElegido.precioXdia)*diasReserva | number: '1.0-0' }}</td>
         </tr>
         <tr>
-          <td>Servicios</td>
-          <td>ARS 4,064.35</td>
-        </tr>
-        <tr>
-          <td>Otros valores (IVA)</td>
-          <td>ARS 7,966.12</td>
+          <td>IVA (21%)</td>
+          <td>${{ ((datosBusqueda.modeloElegido.precioXdia)*diasReserva)*0.21 | number: '1.0-0' }}</td>
         </tr>
         <tr class="total">
-          <td>Total del pedido</td>
-          <td>ARS 45,000.00</td>
+          <td>Total a Pagar</td>
+          <td>${{ datosBusqueda.precioTotal | number: '1.0-0' }}</td>
         </tr>
       </table>
     </section>

@@ -28,7 +28,8 @@
       <p class="info-text">
         Informá tus datos para que podamos realizar tu reserva. La información recogida en el registro será utilizada
         para identificar las reservas y ejecutar el contrato entre el propietario de los datos y la compañía. 
-        <a class="terms" data-bs-toggle="modal" data-bs-target="#scrollingLongContent">Ver términos y condiciones</a>
+        <a class="terms" data-bs-toggle="modal" data-bs-target="#scrollingLongContent">Ver términos y condiciones</a><br>
+        <strong>No recargues esta página para no perder tu progreso en el proceso de reservación.</strong>
       </p>
 
       <!-- Modal -->
@@ -124,31 +125,47 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-main"
+        <button type="button" (click)="confirmarReserva()" class="btn-main"
           style="width: 100%; padding: 10px; letter-spacing: 1px;"><strong>RESERVAR</strong></button>
       </form>
     </section>
 
-    <aside class="reservation-summary">
+    <aside class="reservation-summary" *ngIf="datosBusqueda">
       <div class="reservation-summary-top">
         <h3>Resumen de la Reserva</h3>
         <div class="summary-item">
-          <p style="margin: 0px;"><strong>Lugar de Retiro</strong></p>
-          <p>14 de noviembre de 2024 a las 07:30 - Aeropuerto Bariloche</p>
+          <p style="margin: 0px;"><strong>Retiro</strong></p>
+          <p>
+            <span>Fecha:</span> {{ datosBusqueda.fechaRetiro | date:'longDate'}}<br>
+            <span>Hora:</span> {{ datosBusqueda.horaRetiro }} hs.<br>
+            <span>Dirección:</span> {{ datosBusqueda.sucursalRetiro.nombreSucursal }} ({{ datosBusqueda.sucursalRetiro.direccionSucursal }}, {{
+            datosBusqueda.sucursalRetiro.ciudadSucursal }}, {{ datosBusqueda.sucursalRetiro.provinciaSucursal }}, {{
+            datosBusqueda.sucursalRetiro.paisSucursal }})
+          </p>
         </div>
         <div class="summary-item">
           <p style="margin: 0px;"><strong>Devolución</strong></p>
-          <p>28 de noviembre de 2024 a las 07:30 - Aeropuerto Bariloche</p>
+          <p>
+            <span>Fecha:</span> {{ datosBusqueda.fechaDevolucion | date:'longDate'}}<br>
+            <span>Hora:</span> {{ datosBusqueda.horaDevolucion }} hs.<br>
+            <span>Dirección:</span> {{ datosBusqueda.sucursalDevolucion.nombreSucursal }} ({{
+            datosBusqueda.sucursalDevolucion.direccionSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.ciudadSucursal }}, {{ datosBusqueda.sucursalDevolucion.provinciaSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.paisSucursal }})
+          </p>
         </div>
         <div class="summary-item">
-          <p style="margin: 0px;"><strong>Modelo</strong></p>
-          <p>Toyota Yaris</p>
+          <p style="margin: 0px;"><strong>Vehículo</strong></p>
+          <p>{{ datosBusqueda.modeloElegido.nombreModelo }} ({{ datosBusqueda.modeloElegido.anio }}) - ${{ datosBusqueda.modeloElegido.precioXdia | number: '1.0-0' }} x{{ diasReserva }} días</p>
         </div>
       </div>
       <div class="summary-item total-price"
         style="background-color: #000000; padding: 20px; margin: 0px -30px; border-radius: 0px 0px 10px 10px;">
-        <h4 style="color: #ffffff;">Valor total</h4>
-        <h3 style="color: #ffffff;">ARS 961,940.01</h3>
+        <div class="price-list">
+          <h6>Subtotal: ${{ (datosBusqueda.modeloElegido.precioXdia)*diasReserva | number: '1.0-0' }}</h6>
+          <h6>IVA (21%): ${{ ((datosBusqueda.modeloElegido.precioXdia)*diasReserva)*0.21 | number: '1.0-0' }}</h6>
+        </div>
+        <h3>Valor total: ${{ precioTotal | number: '1.0-0' }}</h3>
       </div>
     </aside>
   </div>

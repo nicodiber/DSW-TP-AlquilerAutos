@@ -2,7 +2,7 @@ const Alquiler = require("../models/alquiler");
 const Usuario = require("../models/usuario");
 const Auto = require("../models/auto");
 const Sucursal = require("../models/sucursal");
-const Modelo = require("../models/Modelo");
+const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear un nuevo alquiler
@@ -234,11 +234,13 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
     const { sucursalRetiro, fechaRetiro, fechaDevolucion } = req.body;
+    const sucursalRetiroId = sucursalRetiro._id; // Extraer el ID de la sucursal de retiro
+
     const fechaInicio = new Date(fechaRetiro);
     const fechaFin = new Date(fechaDevolucion);
 
-    // Paso 1: Obtener autos en la sucursal de retiro
-    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiro });
+    // Paso 1: Obtener autos en la sucursal de retiro utilizando el ID de la sucursal
+    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiroId });
     console.log("Autos en la sucursal de retiro:", autosEnSucursal);
 
     // Paso 2: Filtrar autos disponibles en el rango de fechas
@@ -274,3 +276,4 @@ exports.buscarModelosDisponibles = async (req, res) => {
     res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
+
