@@ -4,7 +4,7 @@
         <div class="card">
           <div class="card-body text-center">
             <span class="titulo">Listado Categorias</span>
-            <button class="btn btn-success float-end" routerLink="crearmarca">Agregar Categoria</button>
+            <button class="btn btn-success float-end">Agregar Categoria</button>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -18,7 +18,7 @@
                   <td>{{ categoria._id }}</td>
                   <td>{{ categoria.nombreCategoria }}</td>
                   <td>
-                    <i class="fa-solid fa-car-side" title="Ver Modelos"></i>
+                    <i class="fa-solid fa-car-side" [routerLink]="['/categoria-modelos', categoria.nombreCategoria]" title="Ver Modelos"></i>
                     <i class="fa-solid fa-trash"h title="Eliminar"></i>
                     <i class="fa-solid fa-pen-to-square" title="Editar"></i>
                   </td>

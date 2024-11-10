@@ -34,4 +34,8 @@ export class ModeloService {
   obtenerModelosPorMarca(): Observable<modelo[]> {
     return this.http.get<modelo[]>(this.url);
   }
+
+  obtenerModelosPorCategoria(): Observable<modelo[]> {
+    return this.http.get<modelo[]>(this.url);
+  }
 }
