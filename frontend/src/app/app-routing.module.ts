@@ -20,7 +20,8 @@ import { FormularioContactoComponent } from './components/formulario-contacto/fo
 import { Error404Component } from './components/404/404.component';
 import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
 import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
-
+import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
+import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
 
 const routes: Routes = [
   {
@@ -48,8 +49,10 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
+  { path: 'crearmarca', component:CrearMarcaComponent},
   { path: 'marcas', component: ListarMarcaComponent},
   { path: 'marca-modelos/:nombreMarca', component: ListarModelosMarcaComponent},
+  { path: 'categoria', component: ListarCategoriaComponent},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

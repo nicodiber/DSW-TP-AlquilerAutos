@@ -29,6 +29,8 @@ import { FormularioContactoComponent } from './components/formulario-contacto/fo
 import { Error404Component } from './components/404/404.component';
 import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
 import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
+import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
+import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { ListarModelosMarcaComponent } from './components/marca/listar-marca-mod
     Error404Component,
     ListarMarcaComponent,
     ListarModelosMarcaComponent,
+    CrearMarcaComponent,
+    ListarCategoriaComponent
   ],
   imports: [
     BrowserModule,

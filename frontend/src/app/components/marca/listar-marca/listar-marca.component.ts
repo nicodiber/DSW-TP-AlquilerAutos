@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { marca } from '../../../models/marca';
 import { MarcaService } from '../../../services/marca.service';
 
