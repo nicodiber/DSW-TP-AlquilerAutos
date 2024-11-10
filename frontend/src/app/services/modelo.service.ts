@@ -30,4 +30,8 @@ export class ModeloService {
   obtenerModelo(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
   }
+
+  obtenerModelosPorMarca(marcaId: number): Observable<modelo[]> {
+    return this.http.get<modelo[]>(`${this.url}?marca=${marcaId}`);
+  }
 }

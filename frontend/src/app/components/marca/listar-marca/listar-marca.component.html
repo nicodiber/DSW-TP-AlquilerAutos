@@ -1,0 +1,33 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <span class="titulo">Listado Marcas</span>
+            <button class="btn btn-success float-end">Agregar</button>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre de la Marca</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let marca of listaMarcas">
+                  <td>{{ marca._id }}</td>
+                  <td>{{ marca.nombreMarca }}</td>
+                  <td>
+                    <i class="fa-solid fa-car-side" [routerLink]="['/marca-modelos', marca._id]" title="Ver Modelos"></i>
+                    <i class="fa-solid fa-trash"h title="Eliminar"></i>
+                    <i class="fa-solid fa-pen-to-square" title="Editar"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

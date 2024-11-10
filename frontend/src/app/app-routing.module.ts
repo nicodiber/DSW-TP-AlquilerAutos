@@ -18,6 +18,8 @@ import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alq
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
+import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
+import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
 
 
 const routes: Routes = [
@@ -46,6 +48,8 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
+  { path: 'marcas', component: ListarMarcaComponent},
+  { path: 'marca-modelos/:_id', component: ListarModelosMarcaComponent},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
