@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  [x: string]: any;
   url = 'http://localhost:4000/api/usuarios';
 
   constructor(private http: HttpClient) { }
@@ -24,12 +25,12 @@ export class AuthService {
   
   // Guardar usuario en sessionStorage
   setUsuarioLogueado(usuario: any): void {
-  sessionStorage.setItem('usuario', JSON.stringify(usuario));  // Guardar el objeto completo como string
+    sessionStorage.setItem('usuario', JSON.stringify(usuario));  // Guardar el objeto completo como string
   }
 
- getUsuarioLogueado(): any {
-  const usuario = sessionStorage.getItem('usuario');
-  return usuario ? JSON.parse(usuario) : null;  // Parsear el objeto de nuevo a JSON
+  getUsuarioLogueado(): any {
+    const usuario = sessionStorage.getItem('usuario');
+    return usuario ? JSON.parse(usuario) : null;  // Parsear el objeto de nuevo a JSON
   }
 
   // Eliminar usuario de sessionStorage al cerrar sesión

@@ -2,6 +2,7 @@ const Alquiler = require("../models/alquiler");
 const Usuario = require("../models/usuario");
 const Auto = require("../models/auto");
 const Sucursal = require("../models/sucursal");
+const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear un nuevo alquiler
@@ -228,3 +229,46 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
     res.status(500).send('Hubo un error al asignar el trabajador al alquiler');
   }
 };
+
+
+exports.buscarModelosDisponibles = async (req, res) => {
+  try {
+    const { sucursalRetiro } = req.body;
+
+    // Paso 1: Obtener autos en la sucursal de retiro utilizando el ID de la sucursal
+    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiro._id });
+    console.log("Autos en la sucursal de retiro:", autosEnSucursal);
+
+    // Paso 2: Filtrar autos disponibles en el rango de fechas
+    const autosDisponibles = await Auto.find({ estadoAuto: 'disponible' });
+    console.log("Autos disponibles segun su estado:", autosDisponibles);
+
+    // Obtener los modelos coincidentes
+    const autosCoincidentes = []
+    for (let i = 0; i < autosEnSucursal.length; i++) {
+      for (let j = 0; j < autosDisponibles.length; j++) {
+          if (String(autosEnSucursal[i]._id) === String(autosDisponibles[j]._id)) {
+            autosCoincidentes.push(autosEnSucursal[i]);
+          }
+      }
+    }
+    console.log("Autos Coincidentes:", autosCoincidentes);
+
+    const modelosDeAutosCoincidentes = []
+    for (const auto of autosCoincidentes) {
+      const conflictos = await Alquiler.find({auto: auto._id}); // Array de autos en conflicto
+      if (conflictos.length === 0) {
+        modelosDeAutosCoincidentes.push(auto);
+      }
+    }
+    const modelosDisponibles = await Modelo.find({ _id: { $in: modelosDeAutosCoincidentes.map(auto => auto.modeloAuto) } });
+    console.log("Modelos finales a exponer:", modelosDisponibles);
+
+    res.json(modelosDisponibles);
+
+  } catch (error) {
+    console.error("Error al buscar modelos disponibles:", error);
+    res.status(500).json({ message: "Error al buscar modelos disponibles" });
+  }
+};
+

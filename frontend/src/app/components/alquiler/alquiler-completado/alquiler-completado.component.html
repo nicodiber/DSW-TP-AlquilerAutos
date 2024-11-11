@@ -1,0 +1,106 @@
+<section id="subheader" class="jarallax text-light" style="background-color: black;">
+  <div class="center-y relative text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="spacer-20"></div>
+          <h1>¡Reserva realizada!</h1>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="breadcrumb-container">
+  <div class="breadcrumb">
+    <h6><a href="/index.html">Inicio</a> / Reserva realizada</h6>
+    <div class="success-message" style="display: flex;"><h6>Su reserva ha sido realizada con éxito</h6>&nbsp;&nbsp;<i class="fa fa-check-circle" style="font-size: 17px;"></i></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="reservation" *ngIf="datosBusqueda">
+
+    <section class="reservation-summary">
+      <h1>Resumen de la reserva</h1>
+      <div class="reservation-details">
+        <div class="reservation-code">
+          <p>Código de reserva: <strong>ID_DE_ALQUILER_GENERADO</strong></p>
+        </div>
+        <div class="details-row">
+          <div class="detail-item">
+            <h3>Retiro</h3>
+            <p><i class="fa fa-calendar"></i>&nbsp;{{ datosBusqueda.fechaRetiro | date:'longDate'}} a las {{ datosBusqueda.horaRetiro }} hs.</p>
+            <p><i class="fa  fa-map-signs"></i>&nbsp;{{ datosBusqueda.sucursalRetiro.nombreSucursal }} ({{ datosBusqueda.sucursalRetiro.direccionSucursal }}, {{
+            datosBusqueda.sucursalRetiro.ciudadSucursal }}, {{ datosBusqueda.sucursalRetiro.provinciaSucursal }}, {{
+            datosBusqueda.sucursalRetiro.paisSucursal }})</p>
+          </div>
+          <div class="detail-item">
+            <h3>Devolución</h3>
+            <p><i class="fa fa-calendar"></i>&nbsp;{{ datosBusqueda.fechaDevolucion | date:'longDate'}} a las {{ datosBusqueda.horaDevolucion }} hs.</p>
+            <p><i class="fa  fa-map-signs"></i>&nbsp;{{ datosBusqueda.sucursalDevolucion.nombreSucursal }} ({{
+            datosBusqueda.sucursalDevolucion.direccionSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.ciudadSucursal }}, {{ datosBusqueda.sucursalDevolucion.provinciaSucursal }}, {{
+            datosBusqueda.sucursalDevolucion.paisSucursal }})</p>
+          </div>
+          <div class="detail-item">
+            <h3>Vehículo</h3>
+            <p><i class="fa  fa-car"></i>&nbsp;{{ datosBusqueda.modeloElegido.nombreModelo }}<br>
+            Año {{ datosBusqueda.modeloElegido.anio }} | Color {{ datosBusqueda.modeloElegido.color }}</p>
+            <a [href]="'/modelo/' + datosBusqueda.modeloElegido._id" target="_blank">Ver detalle del modelo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer-40"></div>
+
+    <section class="contract-values">
+      <h2>Valores del contrato</h2>
+      <table>
+        <tr>
+          <td>Tarifa diaria</td>
+          <td>${{ datosBusqueda.modeloElegido.precioXdia | number: '1.0-0' }} (x{{ diasReserva }} días)</td>
+        </tr>
+        <tr>
+          <td>Subtotal</td>
+          <td>${{ (datosBusqueda.modeloElegido.precioXdia)*diasReserva | number: '1.0-0' }}</td>
+        </tr>
+        <tr>
+          <td>IVA (21%)</td>
+          <td>${{ ((datosBusqueda.modeloElegido.precioXdia)*diasReserva)*0.21 | number: '1.0-0' }}</td>
+        </tr>
+        <tr class="total">
+          <td>Total a Pagar</td>
+          <td>${{ datosBusqueda.precioTotal | number: '1.0-0' }}</td>
+        </tr>
+      </table>
+    </section>
+
+    <div class="spacer-40"></div>
+
+    <section class="requirements">
+      <div style="display: flex; justify-content: space-between;">
+        <h2>Para retirar tu auto necesitás:</h2>
+        <img class="logo-2" src="../../../images/logo.png" style="width: 156px;">
+      </div>
+      <ul>
+        <li><i class="fa fa-user-o"></i>&nbsp;&nbsp;&nbsp;Tener una edad mínima de 18 años</li>
+        <li><i class="fa fa-id-card-o"></i>&nbsp;&nbsp;&nbsp;Presentar una licencia de conducir física y vigente</li>
+        <li><i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Llevar una tarjeta de crédito a nombre del titular</li>
+        <li><i class="fa fa-clock-o"></i>&nbsp;&nbsp;&nbsp;Presentarte 15 minutos antes del horario de retiro</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <section class="actions">
+    <button class="btn-main" onclick="location.href='/loginUsuario'"><i class="fa fa-home"></i>&nbsp;&nbsp;Ir a Mi Cuenta</button>
+    <button (click)="generatePDF()" class="pdf-button btn-black"><i class="fa fa-print"></i>&nbsp;&nbsp;Generar PDF</button>
+  </section>
+
+  <div class="spacer-40"></div>
+
+</div>

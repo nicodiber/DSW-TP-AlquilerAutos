@@ -87,8 +87,12 @@
 .no-encontrado{
   height: 100% !important;
   margin: auto !important;
-  margin-top: 150px !important;
   text-align: center !important;
+  display: flex;
+  justify-content: center;
+}
+.no-encontrado .vertical-centrado{
+  margin: auto !important;
 }
 
 .no-encontrado h4{

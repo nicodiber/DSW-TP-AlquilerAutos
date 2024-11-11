@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriaService } from '../../../services/categoria.service';
 import { MarcaService } from '../../../services/marca.service';
-import { ModeloService } from '../../../services/modelo.service';
 import { categoria } from '../../../models/categoria';
 import { marca } from '../../../models/marca';
 import { modelo } from '../../../models/modelo';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { gestionCookiesService } from '../../../services/gestionCookies.service';
 
 @Component({
   selector: 'app-modelo-listar',
@@ -19,18 +20,29 @@ export class ListarModelosComponent implements OnInit {
   modelosFiltrados: modelo[] = [];
   categoriasSeleccionadas: number | null = null;
   marcasSeleccionadas: number[] = [];
+  modelosDisponibles: modelo[] = [];
+  datosBusqueda: any;
 
-  constructor(
-    private _categoriaService: CategoriaService,
-    private _marcaService: MarcaService,
-    private _modeloService: ModeloService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private router: Router, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
+    // Cookies
+    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) || (Object.keys(this.gestionCookiesService.getDatosModelosDisponibles()).length === 0)) {
+      this.router.navigate(['/buscador']);
+    } else {
+      // Una recarga para que se vea correctamente si llega de forma forzada
+      if (this.cookieService.get('reload') !== 'true') {
+        this.cookieService.set('reload', 'true'); // Eliminar la cookie para evitar loop
+        window.location.reload();
+      }
+    }
+    // Obtenemos Categorias y Marcas
     this.obtenerCategorias();
     this.obtenerMarcas();
-    this.obtenerModelos();
+    console.log(this.gestionCookiesService.getDatosBusqueda());
+    // Inicializamos modelosFiltrados con modelosDisponibles
+    this.modelosDisponibles = this.gestionCookiesService.getDatosModelosDisponibles(); // Necesitamos modelosDisponibles como una referencia constante (para tener siempre el conjunto completo de modelos sin filtrado o modificaciones)
+    this.modelosFiltrados = [...(this.modelosDisponibles)]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
   }
 
   obtenerCategorias() {
@@ -45,22 +57,21 @@ export class ListarModelosComponent implements OnInit {
     });
   }
 
-  obtenerModelos() {
-    this._modeloService.obtenerModelos().subscribe(data => {
-      this.listModelos = data;
-      console.log("Modelos obtenidos desde el servicio:", this.listModelos);
-      this.filtrarModelos();
-    });
+  // Función auxiliar para obtener el nombre de la categoría
+  obtenerNombreCategoria(idCategoria: any): string {
+  const idString = String(idCategoria);
+  const categoria = this.listCategorias.find(cat => String(cat._id) === idString);
+  return categoria ? categoria.nombreCategoria : 'Categoría no encontrada';
   }
 
-  // Método para manejar la selección y deselección de categorías
-  seleccionarCategoria(idCategoria: number) {
+  // Manejo de la selección y deselección de categorías
+  seleccionarCategoria(idCategoria: any) {
     // Si la categoría ya está seleccionada, deseleccionar estableciendo null
     this.categoriasSeleccionadas = this.categoriasSeleccionadas === idCategoria ? null : idCategoria;
     this.filtrarModelos();
   }
 
-  // Método para manejar la selección de marcas con checkboxes
+  // Manejo de la selección de marcas con checkboxes
   checkMarca(idMarca: number) {
     const index = this.marcasSeleccionadas.indexOf(idMarca);
     if (index > -1) {
@@ -76,20 +87,20 @@ export class ListarModelosComponent implements OnInit {
     this.marcasSeleccionadas = [];
     this.filtrarModelos();
   }
-
-
-  // Lógica de filtrado que considera categoría y marcas seleccionadas
+  
   filtrarModelos() {
-    this.modelosFiltrados = this.listModelos.filter(modelo => {
-      const modeloCategoriaId = modelo.categoriaModelo?._id;  // ?. significa encadenamiento opcional, para evitar errores cuando la propiedad podría ser null o undefined
-      const modeloMarcaId = modelo.marcaModelo?._id;
+    this.modelosFiltrados = this.gestionCookiesService.getDatosModelosDisponibles().filter((modelo: modelo) => {
+      // Verificamos si modelo.categoriaModelo y modelo.marcaModelo son números directamente. Si no, asume que son objetos y accede al campo _id
+      const modeloCategoriaId = typeof modelo.categoriaModelo === 'number' ? modelo.categoriaModelo : modelo.categoriaModelo?._id;
+      const modeloMarcaId = typeof modelo.marcaModelo === 'number' ? modelo.marcaModelo : modelo.marcaModelo?._id;
 
       // (condicion) ? valor_si_cumple : valor_si_nocumple
       const categoriaCoincide = this.categoriasSeleccionadas ? modeloCategoriaId === this.categoriasSeleccionadas : true;
-      const marcaCoincide = this.marcasSeleccionadas.length > 0 ? this.marcasSeleccionadas.includes(modeloMarcaId as number) : true;
+      const marcaCoincide = this.marcasSeleccionadas.length > 0 && modeloMarcaId !== undefined ? this.marcasSeleccionadas.includes(modeloMarcaId) : true; // Solo se intenta aplicar includes si modeloMarcaId no es undefined, para que no tire error
 
       return categoriaCoincide && marcaCoincide;
     });
   }
 
 }
+

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DetallarModeloComponent } from './detalle-modelo.component';
+import { DetalleModeloComponent } from './detalle-modelo.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ModeloService } from '../../../services/modelo.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DetallarModeloComponent', () => {
-  let component: DetallarModeloComponent;
-  let fixture: ComponentFixture<DetallarModeloComponent>;
+  let component: DetalleModeloComponent;
+  let fixture: ComponentFixture<DetalleModeloComponent>;
   let modeloService: ModeloService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DetallarModeloComponent],
+      declarations: [DetalleModeloComponent],
       imports: [HttpClientTestingModule],
       providers: [
         {
@@ -27,7 +27,7 @@ describe('DetallarModeloComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetallarModeloComponent);
+    fixture = TestBed.createComponent(DetalleModeloComponent);
     component = fixture.componentInstance;
     modeloService = TestBed.inject(ModeloService);
 
