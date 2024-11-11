@@ -17,6 +17,8 @@
                                 <th scope="col">País</th>
                                 <th scope="col">Hora Apertura</th>
                                 <th scope="col">Hora Cierre</th>
+                                <th scope="col">Trabajadores</th>
+                                <th scope="col">Autos</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -30,6 +32,21 @@
                                 <td>{{ sucursal.paisSucursal }}</td>
                                 <td>{{ sucursal.horaAperturaSucursal }}</td>
                                 <td>{{ sucursal.horaCierreSucursal }}</td>
+
+                                <!-- Columna para gestionar trabajadores -->
+                                <td>
+                                    <a [routerLink]="['/ver-trabajadores', sucursal._id]" class="btn btn-info btn-sm">
+                                        Ver Trabajadores
+                                    </a>
+                                </td>
+
+                                <!-- Columna para gestionar autos -->
+                                <td>
+                                    <a [routerLink]="['/ver-autos', sucursal._id]" class="btn btn-warning btn-sm">
+                                        Ver Autos
+                                    </a>
+                                </td>
+
                                 <td>
                                     <i [routerLink]="['/sucursal-editar', sucursal._id]"
                                         class="fas fa-edit text-primary"></i>

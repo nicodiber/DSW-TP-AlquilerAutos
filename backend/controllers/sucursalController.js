@@ -1,6 +1,7 @@
 const Sucursal = require("../models/sucursal");
 const { getNextSequenceValue } = require('../config/db');
 
+// Crear una nueva sucursal
 exports.crearSucursal = async (req, res) => {
   try {
     const _id = await getNextSequenceValue('sucursalId'); 
@@ -24,10 +25,23 @@ exports.crearSucursal = async (req, res) => {
     res.json(sucursal);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error al crear la sucursal');
+
+    // Manejo de error de duplicación en campo único en MongoDB
+    if (error.code === 11000 && error.keyValue) {
+      // Detectar el campo duplicado específico
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'nombreSucursal'
+        ? 'El nombre de la sucursal ya está en uso. Elige un nombre diferente.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    } else {
+      res.status(500).send('Hubo un error al crear la sucursal');
+    }
   }
 };
 
+// Obtener todas las sucursales
 exports.obtenerSucursales = async (req, res) => {
   try {
     const sucursales = await Sucursal.find();
@@ -38,6 +52,7 @@ exports.obtenerSucursales = async (req, res) => {
   }
 };
 
+// Actualizar una sucursal
 exports.actualizarSucursal = async (req, res) => {
   try {
     const { nombreSucursal, telefonoSucursal, direccionSucursal, paisSucursal, provinciaSucursal, ciudadSucursal, horaAperturaSucursal, horaCierreSucursal, trabajadores, autos } = req.body;
@@ -48,6 +63,7 @@ exports.actualizarSucursal = async (req, res) => {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
     }
 
+    // Actualizar los campos
     sucursal.nombreSucursal = nombreSucursal;
     sucursal.telefonoSucursal = telefonoSucursal;
     sucursal.direccionSucursal = direccionSucursal;
@@ -63,10 +79,22 @@ exports.actualizarSucursal = async (req, res) => {
     res.json(sucursal);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Hubo un error al actualizar la sucursal');
+
+    if (error.code === 11000 && error.keyValue) {
+      // Detectar el campo dublicado específico
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'nombreSucursal'
+        ? 'El nombre de la sucursal ya está en uso. Por favor, elige un nombre diferente.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    } else {
+      res.status(500).send('Hubo un error al actualizar la sucursal');
+    }
   }
 };
 
+// Obtener una sucursal por ID
 exports.obtenerSucursal = async (req, res) => {
   try {
     const sucursal = await Sucursal.findById(req.params.id);
@@ -82,6 +110,7 @@ exports.obtenerSucursal = async (req, res) => {
   }
 };
 
+// Eliminar una sucursal
 exports.eliminarSucursal = async (req, res) => {
   try {
     const sucursal = await Sucursal.findById(req.params.id);
