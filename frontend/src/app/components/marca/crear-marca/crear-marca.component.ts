@@ -14,15 +14,15 @@ export class CrearMarcaComponent implements OnInit {
   marcaForm: FormGroup;
   titulo = 'Agregar Marca';
 
+  // Cambiar private a public para que sea accesible en el template
   constructor(
     private fb: FormBuilder,
     private _marcaService: MarcaService,
     private toastr: ToastrService,
-    private router: Router
+    public router: Router // Cambiar 'private' por 'public'
   ) {
     // Define el formulario para la marca
     this.marcaForm = this.fb.group({
-      idMarca: [''], // No es obligatorio
       nombreMarca: ['', Validators.required] // Validación de nombreMarca como obligatorio
     });
   }
@@ -36,8 +36,7 @@ export class CrearMarcaComponent implements OnInit {
     }
 
     const nuevaMarca = new marca(
-      this.marcaForm.value.nombreMarca,
-      this.marcaForm.value.idMarca ? +this.marcaForm.value.idMarca : undefined
+      this.marcaForm.value.nombreMarca
     );
 
     // Enviamos la nueva marca al servicio

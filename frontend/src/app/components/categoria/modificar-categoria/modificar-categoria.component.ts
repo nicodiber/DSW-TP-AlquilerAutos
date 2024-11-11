@@ -55,16 +55,16 @@ export class ModificarCategoriaComponent implements OnInit {
       this.toastr.error('Por favor, complete todos los campos', 'Error');
       return;
     }
-
+  
     const categoriaActualizada: categoria = {
       _id: this.categoriaId,
-      nombreCategoria: this.categoriaForm.value.nombreCategoria,
+      nombreCategoria: this.categoriaForm.value.nombreCategoria,  // Nombre ingresado por el usuario
     };
-
+  
     this._categoriaService.actualizarCategoria(this.categoriaId, categoriaActualizada).subscribe(
       () => {
         this.toastr.success('Categoría actualizada con éxito', 'Éxito');
-        this.router.navigate(['/categorias']);
+        this.router.navigate(['/categorias']);  // Redirigir después de actualizar
       },
       (error) => {
         console.log(error);
@@ -72,6 +72,7 @@ export class ModificarCategoriaComponent implements OnInit {
       }
     );
   }
+  
 
   // Método para volver a la lista de categorías
   volver() {

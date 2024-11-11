@@ -6,12 +6,6 @@
                     <span class="titulo"> {{ titulo | uppercase }}</span>
                     <form class="mt-3" [formGroup]="categoriaForm" (ngSubmit)="agregarCategoria()">
 
-                        <!-- Campo opcional de ID -->
-                        <div class="mb-3">
-                            <input type="text" formControlName="idCategoria" class="form-control form-control-lg"
-                                placeholder="ID de la Categoría (opcional)">
-                        </div>
-
                         <!-- Campo de Nombre de Categoría obligatorio -->
                         <div class="mb-3">
                             <input type="text" formControlName="nombreCategoria" class="form-control form-control-lg"
