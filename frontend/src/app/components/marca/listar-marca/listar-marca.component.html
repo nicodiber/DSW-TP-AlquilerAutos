@@ -4,7 +4,7 @@
         <div class="card">
           <div class="card-body text-center">
             <span class="titulo">Listado Marcas</span>
-            <button class="btn btn-success float-end" routerLink="marca-crear">Agregar Marca</button>
+            <button class="btn btn-success float-end" routerLink="/marca-crear">Agregar Marca</button>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -20,7 +20,7 @@
                   <td>
                     <i class="fa-solid fa-car-side" [routerLink]="['/marca-modelos', marca.nombreMarca]" title="Ver Modelos"></i>
                     <i class="fa-solid fa-trash"h title="Eliminar" (click)="eliminarMarca(marca._id)"></i>
-                    <i class="fa-solid fa-pen-to-square" title="Editar"></i>
+                    <i class="fa-solid fa-pen-to-square" title="Editar" [routerLink]="['/modificar-marca', marca._id]"></i>
                   </td>
                 </tr>
               </tbody>

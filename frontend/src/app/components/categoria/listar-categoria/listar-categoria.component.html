@@ -20,7 +20,7 @@
                   <td>
                     <i class="fa-solid fa-car-side" [routerLink]="['/categoria-modelos', categoria.nombreCategoria]" title="Ver Modelos"></i>
                     <i class="fa-solid fa-trash"h title="Eliminar" (click)="eliminarCategoria(categoria._id)"></i>
-                    <i class="fa-solid fa-pen-to-square" title="Editar"></i>
+                    <i class="fa-solid fa-pen-to-square" title="Editar" [routerLink]="['/modificar-categoria', categoria._id]"></i>
                   </td>
                 </tr>
               </tbody>

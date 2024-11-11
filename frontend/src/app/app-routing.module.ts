@@ -24,6 +24,8 @@ import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.
 import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
 import { ListarCategoriaModeloComponent } from './components/categoria/listar-categoria-modelo/listar-categoria-modelo.component';
 import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
+import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
+import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
 
 const routes: Routes = [
   {
@@ -54,9 +56,11 @@ const routes: Routes = [
   { path: 'marca-crear', component:CrearMarcaComponent},
   { path: 'marcas', component: ListarMarcaComponent},
   { path: 'marca-modelos/:nombreMarca', component: ListarModelosMarcaComponent},
+  { path: 'modificar-marca/:id', component: ModificarMarcaComponent },
   { path: 'categoria-crear', component: CrearCategoriaComponent },
-  { path: 'categoria', component: ListarCategoriaComponent},
+  { path: 'categorias', component: ListarCategoriaComponent},
   { path: 'categoria-modelos/:nombreCategoria', component:ListarCategoriaModeloComponent},
+  { path: 'modificar-categoria/:id', component: ModificarCategoriaComponent },
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

@@ -23,6 +23,10 @@ export class MarcaService {
     return this.http.post<marca>(this.url, marca);
   }
 
+  obtenerMarcaPorId(id: number): Observable<marca> {
+    return this.http.get<marca>(`${this.url}/${id}`);
+  }  
+
   // Método para actualizar una marca
   actualizarMarca(id: number, marca: marca): Observable<marca> {
     return this.http.put<marca>(`${this.url}/${id}`, marca);

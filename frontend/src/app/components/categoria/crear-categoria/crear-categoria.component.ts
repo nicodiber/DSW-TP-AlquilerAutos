@@ -46,7 +46,7 @@ export class CrearCategoriaComponent implements OnInit {
         this.toastr.success('Categoría creada exitosamente', 'Éxito');
         
         // Redirigimos al listado de categorías después de la creación
-        this.router.navigate(['/categoria']);
+        this.router.navigate(['/categorias']);
       },
       (error) => {
         this.toastr.error('Error al crear la categoría', 'Error');
