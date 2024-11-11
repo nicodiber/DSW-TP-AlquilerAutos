@@ -68,4 +68,5 @@ const ModeloSchema = new mongoose.Schema({
     
 }, { collection: 'modelos' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 
-module.exports = mongoose.model('Modelo', ModeloSchema);
+// Verifica si ya existe y usa el modelo existente, o crea uno nuevo si no existe. Lo modificamos al momento de buscador.
+module.exports = mongoose.models.Modelo || mongoose.model('Modelo', ModeloSchema);

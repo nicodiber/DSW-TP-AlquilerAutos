@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { categoria } from '../models/categoria';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,24 @@ export class CategoriaService {
 
   
   constructor(private http: HttpClient) { }
+  crearCategoria(categoria: categoria): Observable<categoria> {
+    return this.http.post<categoria>(this.url, categoria);
+  }
+
+  obtenerCategoriaPorId(id: number): Observable<categoria> {
+    return this.http.get<categoria>(`${this.url}/${id}`);
+  }
+  
+
+  // Método para actualizar una categoria
+  actualizarCategoria(id: number, categoria: categoria): Observable<categoria> {
+    return this.http.put<categoria>(`${this.url}/${id}`, categoria);
+  }
+  
+    // Método para eliminar una categoria
+  eliminarCategoria(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 
   //el get devuelve un observable y se usa para hacer peticiones asincronas
   obtenerCategorias(): Observable<any>{

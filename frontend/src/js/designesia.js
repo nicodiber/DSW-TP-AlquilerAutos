@@ -1,6 +1,7 @@
  /* --------------------------------------------------
   * © Copyright 2024 - Rentaly by Designesia
   * --------------------------------------------------*/
+ 
 (function($) {
     'use strict';
 
@@ -1634,53 +1635,52 @@
         });
 
         /* detepicker */
-        
         $('#date-picker').daterangepicker({
                 "singleDatePicker": true,
-                "showISOWeekNumbers": true,
+                "showISOWeekNumbers": false,
                 "timePicker": false,
                 "autoUpdateInput": true,
                 "locale": {
-                    "format": "MMMM DD, YYYY",
+                    "format": "DD/MM/YYYY",
                     "separator": " - ",
-                    "applyLabel": "Apply",
-                    "cancelLabel": "Cancel",
-                    "fromLabel": "From",
-                    "toLabel": "To",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "fromLabel": "Desde",
+                    "toLabel": "Al",
                     "customRangeLabel": "Custom",
                     "weekLabel": "W",
                     "daysOfWeek": [
-                        "Su",
-                        "Mo",
-                        "Tu",
-                        "We",
-                        "Th",
-                        "Fr",
+                        "Do",
+                        "Lu",
+                        "Ma",
+                        "Mi",
+                        "Ju",
+                        "Vi",
                         "Sa"
                     ],
                     "monthNames": [
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
                     ],
                     "firstDay": 1
                 },
+                
                 "linkedCalendars": true,
-                "showCustomRangeLabel": false,
+                "showCustomRangeLabel": true,
                 "startDate": 1,
                 "endDate": moment().startOf('hour').add(24, 'hour'),
                 "opens": "right"
             });
-
 
         $('#date-picker-2').daterangepicker({
                 "singleDatePicker": true,
@@ -1688,36 +1688,36 @@
                 "timePicker": false,
                 "autoUpdateInput": true,
                 "locale": {
-                    "format": "MMMM DD, YYYY",
+                    "format": "DD/MM/YYYY",
                     "separator": " - ",
-                    "applyLabel": "Apply",
-                    "cancelLabel": "Cancel",
-                    "fromLabel": "From",
-                    "toLabel": "To",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "fromLabel": "Desde",
+                    "toLabel": "Al",
                     "customRangeLabel": "Custom",
                     "weekLabel": "W",
                     "daysOfWeek": [
-                        "Su",
-                        "Mo",
-                        "Tu",
-                        "We",
-                        "Th",
-                        "Fr",
+                        "Do",
+                        "Lu",
+                        "Ma",
+                        "Mi",
+                        "Ju",
+                        "Vi",
                         "Sa"
                     ],
                     "monthNames": [
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
                     ],
                     "firstDay": 1
                 },
