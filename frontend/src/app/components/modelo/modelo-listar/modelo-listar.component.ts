@@ -27,7 +27,7 @@ export class ListarModelosComponent implements OnInit {
 
   ngOnInit(): void {
     // Cookies
-    if (Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) {
+    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) || (Object.keys(this.gestionCookiesService.getDatosModelosDisponibles()).length === 0)) {
       this.router.navigate(['/buscador']);
     } else {
       // Una recarga para que se vea correctamente si llega de forma forzada
@@ -57,8 +57,15 @@ export class ListarModelosComponent implements OnInit {
     });
   }
 
+  // Función auxiliar para obtener el nombre de la categoría
+  obtenerNombreCategoria(idCategoria: any): string {
+  const idString = String(idCategoria);
+  const categoria = this.listCategorias.find(cat => String(cat._id) === idString);
+  return categoria ? categoria.nombreCategoria : 'Categoría no encontrada';
+  }
+
   // Manejo de la selección y deselección de categorías
-  seleccionarCategoria(idCategoria: number) {
+  seleccionarCategoria(idCategoria: any) {
     // Si la categoría ya está seleccionada, deseleccionar estableciendo null
     this.categoriasSeleccionadas = this.categoriasSeleccionadas === idCategoria ? null : idCategoria;
     this.filtrarModelos();
@@ -80,7 +87,7 @@ export class ListarModelosComponent implements OnInit {
     this.marcasSeleccionadas = [];
     this.filtrarModelos();
   }
-
+  
   filtrarModelos() {
     this.modelosFiltrados = this.gestionCookiesService.getDatosModelosDisponibles().filter((modelo: modelo) => {
       // Verificamos si modelo.categoriaModelo y modelo.marcaModelo son números directamente. Si no, asume que son objetos y accede al campo _id

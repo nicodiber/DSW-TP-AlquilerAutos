@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModeloService } from '../../../services/modelo.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,7 +9,7 @@ import { gestionCookiesService } from '../../../services/gestionCookies.service'
   templateUrl: './detalle-modelo.component.html',
   styleUrls: ['./detalle-modelo.component.css']
 })
-export class DetalleModeloComponent implements OnInit {
+export class DetalleModeloComponent implements OnInit, OnDestroy {
   modelo: any;
   datosBusqueda: any;
 
@@ -19,7 +19,7 @@ export class DetalleModeloComponent implements OnInit {
     this.cookieService.delete('modelosDisponibles', '/modelo');
     this.cookieService.delete('reload', '/modelo');
 
-    if (Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) {
+    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) || (Object.keys(this.gestionCookiesService.getDatosModelosDisponibles()).length === 0)) {
       this.router.navigate(['/buscador']);
     }
 
@@ -34,7 +34,17 @@ export class DetalleModeloComponent implements OnInit {
         });
       }
     });
+
+    // Si viene apretando el botón de atrás, para que no se vea rota
+    window.addEventListener('popstate', () => {
+      window.location.reload();
+    });
   }
+  // Para que no quede almacenado el EventListener 
+  ngOnDestroy(): void {
+    window.removeEventListener('popstate', () => window.location.reload());
+  }
+
 
   elegirModelo(): void {
     try {

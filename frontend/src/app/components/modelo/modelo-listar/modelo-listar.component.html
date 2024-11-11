@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="modelosDisponibles.length > 0">
+                        <div class="col-xl-4 col-lg-6 modelo-list" *ngIf="modelosDisponibles.length > 0 && modelosFiltrados.length > 0">
                             <div class="de-item mb30 modelo-item" *ngFor="let modelo of modelosDisponibles" style="margin: 0px 8px 24px 8px !important;">
                                 <div class="d-img">
                                     <a [href]="'/modelo/' + modelo._id"><img [src]="'http://localhost:4000' + modelo.images[0]" class="img-fluid" alt="Modelo de automóvil"></a>
@@ -85,7 +85,7 @@
                                         <div class="d-atr-group">
                                             <span class="d-atr"><img src="../../../images/icons/1.svg" alt="">{{ modelo.cantidadAsientos }}</span>
                                             <span class="d-atr"><img src="../../../images/icons/3.svg" alt="">{{ modelo.cantidadPuertas }}</span>
-                                            <span class="d-atr"><img src="../../../images/icons/4.svg" alt="">Categoria: {{ modelo.categoriaModelo.nombreCategoria }}</span>
+                                            <span class="d-atr"><img src="../../../images/icons/4.svg" alt="">Categoria: {{ obtenerNombreCategoria(modelo.categoriaModelo) }}</span>
                                         </div>
                                         <div class="d-price">
                                             Precio diario desde <span>${{ modelo.precioXdia }}</span>

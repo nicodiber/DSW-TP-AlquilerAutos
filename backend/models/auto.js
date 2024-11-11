@@ -6,13 +6,17 @@ const AutoSchema = new mongoose.Schema({
         required: true
     },
     modeloAuto: {
-        type: mongoose.Schema.Types.Number,
-        ref: 'Modelo',
+        // type: mongoose.Schema.Types.Number,
+        // ref: 'Modelo',
+        // required: true
+        type: Number,
         required: true
     },
     sucursalAuto: {
-        type: mongoose.Schema.Types.Number, // El tipo debe coincidir con el _id de la colección sucursales
-        ref: 'Sucursal', // Hace referencia a la colección 'sucursales' donde estaría almacenado el auto
+        // type: mongoose.Schema.Types.Number, // El tipo debe coincidir con el _id de la colección sucursales
+        // ref: 'Sucursal', // Hace referencia a la colección 'sucursales' donde estaría almacenado el auto
+        // required: true
+        type: Number,
         required: true
     },
     historialMantenimiento: {

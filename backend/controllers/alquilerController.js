@@ -233,44 +233,39 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
 
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
-    const { sucursalRetiro, fechaRetiro, fechaDevolucion } = req.body;
-    const sucursalRetiroId = sucursalRetiro._id; // Extraer el ID de la sucursal de retiro
-
-    const fechaInicio = new Date(fechaRetiro);
-    const fechaFin = new Date(fechaDevolucion);
+    const { sucursalRetiro } = req.body;
 
     // Paso 1: Obtener autos en la sucursal de retiro utilizando el ID de la sucursal
-    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiroId });
+    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiro._id });
     console.log("Autos en la sucursal de retiro:", autosEnSucursal);
 
     // Paso 2: Filtrar autos disponibles en el rango de fechas
-    const autosDisponibles = [];
-    for (const auto of autosEnSucursal) {
-      const conflictos = await Alquiler.find({
-        auto: auto._id,
-        $or: [
-          {
-            fechaInicio: { $lte: fechaFin },
-            fechaFin: { $gte: fechaInicio }
-          },
-          {
-            fechaInicio: { $gte: fechaInicio },
-            fechaFin: { $lte: fechaFin }
-          }
-        ]
-      });
+    const autosDisponibles = await Auto.find({ estadoAuto: 'disponible' });
+    console.log("Autos disponibles segun su estado:", autosDisponibles);
 
-      if (conflictos.length === 0) {
-        autosDisponibles.push(auto);
+    // Obtener los modelos coincidentes
+    const autosCoincidentes = []
+    for (let i = 0; i < autosEnSucursal.length; i++) {
+      for (let j = 0; j < autosDisponibles.length; j++) {
+          if (String(autosEnSucursal[i]._id) === String(autosDisponibles[j]._id)) {
+            autosCoincidentes.push(autosEnSucursal[i]);
+          }
       }
     }
-    console.log("Autos disponibles en el rango de fechas:", autosDisponibles);
+    console.log("Autos Coincidentes:", autosCoincidentes);
 
-    // Obtener los modelos de los autos disponibles
-    const modelosDisponibles = await Modelo.find({ _id: { $in: autosDisponibles.map(auto => auto.modeloAuto) } });
-    console.log("Modelos disponibles:", modelosDisponibles);
+    const modelosDeAutosCoincidentes = []
+    for (const auto of autosCoincidentes) {
+      const conflictos = await Alquiler.find({auto: auto._id}); // Array de autos en conflicto
+      if (conflictos.length === 0) {
+        modelosDeAutosCoincidentes.push(auto);
+      }
+    }
+    const modelosDisponibles = await Modelo.find({ _id: { $in: modelosDeAutosCoincidentes.map(auto => auto.modeloAuto) } });
+    console.log("Modelos finales a exponer:", modelosDisponibles);
 
     res.json(modelosDisponibles);
+
   } catch (error) {
     console.error("Error al buscar modelos disponibles:", error);
     res.status(500).json({ message: "Error al buscar modelos disponibles" });

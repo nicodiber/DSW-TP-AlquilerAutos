@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
+import { AuthService } from '../../../services/auth.service'; // Para mostrar ciertos campos u otros en función de si está logueado el usuario
 
 @Component({
   selector: 'app-alquiler-revision',
@@ -15,8 +16,9 @@ export class AlquilerRevisionComponent implements OnInit {
   fechaDevolucion: string = '';
   diasReserva: number = 0;
   precioTotal: number = 0;
+  isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private gestionCookiesService: gestionCookiesService) {}
+  constructor(private router: Router, private gestionCookiesService: gestionCookiesService, private authService: AuthService) {}
 
   ngOnInit(): void {
     // Obtener datos de datosBusqueda desde el servicio
@@ -33,6 +35,10 @@ export class AlquilerRevisionComponent implements OnInit {
     this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
     this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
     this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
+
+    // Verificar si el usuario está autenticado
+    this.isAuthenticated = this.authService.getUsuarioLogueado();
+    console.log("Está logeado?", this.isAuthenticated);
   }
 
   confirmarReserva(): void {
