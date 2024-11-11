@@ -1,6 +1,8 @@
 .titulo {
     font-size: 2rem;
-
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
 .input-container {
@@ -27,3 +29,9 @@
 text-align: left;
 float: left;
 }    
+
+.mb-3 {
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
