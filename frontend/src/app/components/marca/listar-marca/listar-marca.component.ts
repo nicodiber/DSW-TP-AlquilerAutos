@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { marca } from '../../../models/marca';
 import { MarcaService } from '../../../services/marca.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listar-marca',
@@ -10,7 +11,10 @@ import { MarcaService } from '../../../services/marca.service';
 export class ListarMarcaComponent implements OnInit {
   listaMarcas: marca[] = [];
 
-  constructor(private _marcaService: MarcaService) { }
+  constructor(
+    private _marcaService: MarcaService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.getMarcas();
@@ -24,4 +28,22 @@ export class ListarMarcaComponent implements OnInit {
       console.log(error);
     });
   }
+  eliminarMarca(id: number | undefined) {
+    if (id !== undefined) {
+      this._marcaService.eliminarMarca(id).subscribe(
+        () => {
+          this.toastr.success('Marca eliminada con éxito', 'Éxito');
+          this.getMarcas();  // Recargar la lista después de eliminar
+        },
+        error => {
+          console.log(error);
+          this.toastr.error('Error al eliminar la Marca', 'Error');
+        }
+      );
+    } else {
+      this.toastr.error('ID de Marca no válido', 'Error');
+    }
+  }
+  
+
 }

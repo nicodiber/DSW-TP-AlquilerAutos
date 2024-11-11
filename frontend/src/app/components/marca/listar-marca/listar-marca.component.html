@@ -19,7 +19,7 @@
                   <td>{{ marca.nombreMarca }}</td>
                   <td>
                     <i class="fa-solid fa-car-side" [routerLink]="['/marca-modelos', marca.nombreMarca]" title="Ver Modelos"></i>
-                    <i class="fa-solid fa-trash"h title="Eliminar"></i>
+                    <i class="fa-solid fa-trash"h title="Eliminar" (click)="eliminarMarca(marca._id)"></i>
                     <i class="fa-solid fa-pen-to-square" title="Editar"></i>
                   </td>
                 </tr>

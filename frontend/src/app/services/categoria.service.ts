@@ -15,6 +15,16 @@ export class CategoriaService {
     return this.http.post<categoria>(this.url, categoria);
   }
 
+    // Método para actualizar una categoria
+    actualizarCategoria(id: number, categoria: categoria): Observable<categoria> {
+      return this.http.put<categoria>(`${this.url}/${id}`, categoria);
+    }
+  
+    // Método para eliminar una categoria
+    eliminarCategoria(id: number): Observable<void> {
+      return this.http.delete<void>(`${this.url}/${id}`);
+    }
+
   //el get devuelve un observable y se usa para hacer peticiones asincronas
   obtenerCategorias(): Observable<any>{
     return this.http.get(this.url);

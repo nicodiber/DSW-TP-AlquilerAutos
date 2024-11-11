@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { categoria } from '../../../models/categoria';
 import { CategoriaService } from '../../../services/categoria.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listar-categoria',
@@ -10,7 +11,10 @@ import { CategoriaService } from '../../../services/categoria.service';
 export class ListarCategoriaComponent {
   listaCategorias: categoria[] = [];
 
-  constructor(private _categoriaService: CategoriaService) { }
+  constructor(
+    private _categoriaService: CategoriaService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.getCategorias();
@@ -24,5 +28,22 @@ export class ListarCategoriaComponent {
       console.log(error);
     });
   }
+  eliminarCategoria(id: number | undefined) {
+    if (id !== undefined) {
+      this._categoriaService.eliminarCategoria(id).subscribe(
+        () => {
+          this.toastr.success('Categoría eliminada con éxito', 'Éxito');
+          this.getCategorias();  // Recargar la lista después de eliminar
+        },
+        error => {
+          console.log(error);
+          this.toastr.error('Error al eliminar la categoría', 'Error');
+        }
+      );
+    } else {
+      this.toastr.error('ID de categoría no válido', 'Error');
+    }
+  }
+  
 }
 
