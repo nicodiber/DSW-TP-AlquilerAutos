@@ -1,9 +1,4 @@
 /* ================================================== */
-
-
-/* Rentaly
-/* created by designesia
-
 @charset "utf-8";
 
 /* ================================================== */
@@ -4987,6 +4982,7 @@ i.font60 {
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
     background: #ffffff;
+    height: 260px;
 }
 
 .feature-box.style-4 i {
@@ -5007,6 +5003,7 @@ i.font60 {
     top: 120px;
     z-index: 2;
     font-weight: bold;
+    opacity: .15;
 }
 
 .feature-box.style-4 .text {
@@ -5393,11 +5390,6 @@ i.font60 {
     position: absolute;
     text-align: center;
     font-weight: bold;
-}
-
-
-.feature-box-type-2 i {
-    /*text-shadow: 5px 5px 5px rgba(var(--primary-color-rgb), 0.3);*/
 }
 
 .f-box i {
@@ -13144,11 +13136,7 @@ i.big {
 }
 
 /* Adicional */
-#section-car-details .owl-item, #section-car-details .owl-item img{
-    height: 400px;
-    object-fit: cover;
-    border-radius: 10px; 
-}
+
 @media (max-width: 768px){
     #section-car-details .owl-item, #section-car-details .owl-item img{
     height: 300px;
@@ -18804,4 +18792,15 @@ img {
 
 ::-webkit-scrollbar-thumb {
     background-color: #020202 !important;
+}
+
+
+.owl-carousel .item img {
+    object-fit: contain !important;
+    width: 100% !important;
+}
+
+.owl-carousel div:not(.owl-thumbs):has(img),
+.owl-carousel div:not(.owl-thumbs) img {
+    height: 500px !important;
 }

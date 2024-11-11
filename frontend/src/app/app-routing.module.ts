@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Componentes
 import { LayoutComponent } from './components/layout/layout.component';
+import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
-import { DetallarModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
+import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
@@ -16,6 +17,8 @@ import { SucursalCrearComponent } from './components/sucursal/sucursal-crear/suc
 import { SucursalListarComponent } from './components/sucursal/sucursal-listar/sucursal-listar.component';
 import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
+import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revision/alquiler-revision.component';
+import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
 import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
@@ -31,15 +34,17 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
-      { path: 'modelo/:id', component: DetallarModeloComponent },
+      { path: 'modelo/:id', component: DetalleModeloComponent },
       { path: 'modelo-crear', component: CrearModeloComponent },
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
+      { path: 'alquiler-revision', component: AlquilerRevisionComponent },
+      { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
+      { path: 'buscador', component: BuscadorComponent },
     ]
   },
-
 
   { path: 'tareas-admin', component: TareasAdminComponent },
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
@@ -53,15 +58,19 @@ const routes: Routes = [
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'alquiler-editar/:id', component: AlquilerCrearComponent },
   { path: 'alquiler-eliminar', component: AlquilerCrearComponent },
+  { path: 'marca-crear', component: CrearMarcaComponent },
+  { path: 'marcas', component: ListarMarcaComponent },
+  { path: 'marca-modelos/:nombreMarca', component: ListarModelosMarcaComponent },
   { path: 'modificar-marca/:id', component: ModificarMarcaComponent },
   { path: 'categoria-crear', component: CrearCategoriaComponent },
   { path: 'categorias', component: ListarCategoriaComponent },
   { path: 'categoria-modelos/:nombreCategoria', component: ListarCategoriaModeloComponent },
   { path: 'modificar-categoria/:id', component: ModificarCategoriaComponent },
-  { path: '**', component: Error404Component } // Para rutas inválidas
+  { path: '**', component: Error404Component } // Para rutas invÃ¡lidas
 ];
 
-imports: [RouterModule.forRoot(routes)],
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -47,8 +47,7 @@
                                 <div>
                                     <div style="display: flex !important;">
                                         <div style="width: 130px !important;">
-                                            <span class="d-value"> Categoría: </span><span class="d-value">{{ modelo.categoriaModelo.nombreCategoria
-                                                }}</span>
+                                            <span class="d-value"> Categoría: </span><span class="d-value">{{ modelo.categoriaModelo.nombreCategoria }}</span>
                                         </div>
                                         <div style="width: 130px !important;">
                                             <span class="d-value"> Marca: </span><span class="d-value">{{ modelo.marcaModelo.nombreMarca }}</span>
@@ -128,11 +127,7 @@
                             <h4 style="text-align: center;">Alquilar Vehículo</h4>
 
                             <div class="spacer-20"></div>
-
-                            <input type='submit' id='send_message' value='Alquilar'
-                                class="btn-main btn-fullwidth">
-
-                            <div class="clearfix"></div>
+                            <button type="button" (click)="elegirModelo()" class="btn-main btn-fullwidth">Alquilar</button> <!-- Es clave especificar type="button" para que no lo tome como un submit y desencadene en una solicitud post no definida -->
 
                         </form>
                     </div>

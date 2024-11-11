@@ -11,5 +11,7 @@ router.delete('/:id', alquilerController.eliminarAlquiler);
 router.put('/:id/estado', alquilerController.actualizarEstadoAlquiler);
 router.put('/:id/asignar-trabajador', alquilerController.asignarTrabajadorAlquiler);
 
+router.post('/buscarModelosDisponibles', alquilerController.buscarModelosDisponibles);
+
 
 module.exports = router;
