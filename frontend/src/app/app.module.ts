@@ -35,6 +35,14 @@ import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revisi
 import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
+import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
+import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
+import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
+import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
+import { ListarCategoriaModeloComponent } from './components/categoria/listar-categoria-modelo/listar-categoria-modelo.component';
+import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
+import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
+import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +65,15 @@ import { Error404Component } from './components/404/404.component';
     AlquilerRevisionComponent,
     AlquilerCompletadoComponent,
     FormularioContactoComponent,
-    Error404Component
+    Error404Component,
+    ListarMarcaComponent,
+    ListarModelosMarcaComponent,
+    CrearMarcaComponent,
+    ListarCategoriaComponent,
+    ListarCategoriaModeloComponent,
+    CrearCategoriaComponent,
+    ModificarCategoriaComponent,
+    ModificarMarcaComponent
   ],
   imports: [
     BrowserModule,

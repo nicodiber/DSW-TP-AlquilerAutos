@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-secondary" routerLink="/categorias">Volver</button>
+    <button class="btn btn-primary" routerLink="/modelo-crear">Agregar Modelo</button>
+  </div>
+    <h3>Modelos de la Marca  {{ nombreCategoria }}</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio por Día</th>
+          <th>Año</th>
+          <th>Color</th>
+          <!-- Más columnas según tus necesidades -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let modelo of modelos">
+          <td>{{ modelo._id }}</td>
+          <td>{{ modelo.nombreModelo }}</td>
+          <td>{{ modelo.precioXdia }}</td>
+          <td>{{ modelo.anio }}</td>
+          <td>{{ modelo.color }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
