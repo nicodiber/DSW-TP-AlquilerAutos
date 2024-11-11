@@ -26,6 +26,9 @@ export class TareasAdminComponent implements OnInit {
   irAGestionarUsuarios() {
     this.router.navigate(['/listarUsuarios']);
   }
+  irAGestionarSucursales() {
+    this.router.navigate(['/sucursal-listar']);
+  }
   cerrarSesion() {
     this.authService.logout();  // Llamar al método logout
     this.router.navigate(['/loginUsuario']);  // Redirigir al login después de cerrar sesión
