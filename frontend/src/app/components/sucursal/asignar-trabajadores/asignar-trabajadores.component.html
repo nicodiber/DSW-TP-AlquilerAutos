@@ -8,19 +8,35 @@
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
+                                <th scope="col">ID del Trabajador</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Correo</th>
                                 <th scope="col">Asignar</th>
+                                <th scope="col">No Asignar</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of listaUsuarios">
+                                <td>{{ usuario._id }}</td>
                                 <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
                                 <td>{{ usuario.email }}</td>
+
+                                <!-- Columna Asignar -->
                                 <td>
-                                    <!-- Checkbox para asignar o quitar asignación -->
-                                    <input type="checkbox" [checked]="trabajadoresAsignados.has(usuario._id)"
-                                        (change)="toggleAsignacion(usuario._id)" />
+                                    <label>
+                                        <input type="radio" name="asignacion_{{ usuario._id }}"
+                                            (change)="actualizarAsignacion(usuario._id, true)"
+                                            [checked]="trabajadoresAsignados.has(usuario._id)" /> Asignar
+                                    </label>
+                                </td>
+                                
+                                <!-- Columna No Asignar -->
+                                <td>
+                                    <label>
+                                        <input type="radio" name="asignacion_{{ usuario._id }}"
+                                            (change)="actualizarAsignacion(usuario._id, false)"
+                                            [checked]="!trabajadoresAsignados.has(usuario._id)" /> No Asignar
+                                    </label>
                                 </td>
                             </tr>
                         </tbody>

@@ -31,6 +31,11 @@ export class SucursalService {
     return this.http.put(this.url + _id, sucursal);
   }
 
+  // Obtiene una sucursal por su ID
+  obtenerSucursalPorId(_id: string): Observable<any> {
+    return this.http.get(this.url + _id);
+  }
+
   obtenerSucursal(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
   }

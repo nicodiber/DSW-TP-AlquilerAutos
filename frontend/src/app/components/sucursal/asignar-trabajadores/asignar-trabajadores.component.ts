@@ -14,6 +14,7 @@ export class AsignarTrabajadoresComponent implements OnInit {
   idSucursal: string = '';
   sucursal: any;
   trabajadoresAsignados: Set<string> = new Set();
+  nombreSucursal: string = '';
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -24,9 +25,19 @@ export class AsignarTrabajadoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.idSucursal = this.route.snapshot.paramMap.get('idSucursal') || '';
+    this.getSucursal();
     this.getUsuarios();
   }
 
+  // Obtener detalles de la sucursal
+  getSucursal(): void {
+    this._sucursalService.obtenerSucursalPorId(this.idSucursal).subscribe((sucursal: any) => {
+      this.sucursal = sucursal;
+      this.nombreSucursal = sucursal.nombreSucursal;
+    });
+  }
+
+  // Obtener detalles de los usuarios
   getUsuarios(): void {
     this._usuarioService.obtenerUsuarios().subscribe((usuarios: any[]) => {
       this.listaUsuarios = usuarios;
@@ -40,11 +51,11 @@ export class AsignarTrabajadoresComponent implements OnInit {
     });
   }
 
-  toggleAsignacion(usuarioId: string): void {
-    if (this.trabajadoresAsignados.has(usuarioId)) {
-      this.trabajadoresAsignados.delete(usuarioId);
-    } else {
+  actualizarAsignacion(usuarioId: string, asignar: boolean): void {
+    if (asignar) {
       this.trabajadoresAsignados.add(usuarioId);
+    } else {
+      this.trabajadoresAsignados.delete(usuarioId);
     }
   }
 
