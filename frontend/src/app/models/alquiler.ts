@@ -4,20 +4,22 @@ import { sucursal } from './sucursal';
 
 export class alquiler {
     _id?: number; // El campo _id es opcional para la creación de nuevos objetos.
-    usuario: usuario; 
+    usuario: usuario;
     auto: auto;
     sucursalEntrega: sucursal;
     sucursalDevolucion: sucursal;
-    trabajadorAsignado: usuario;
+    trabajadorAsignado?: usuario;
     fechaInicio: Date;
     fechaFin: Date;
     horaInicio: Date;
     horaFin: Date;
-    fechaInicioReal: Date;
-    fechaFinReal: Date;
+    fechaInicioReal?: Date;
+    fechaFinReal?: Date;
     estadoAlquiler: string; 
     precioTotalAlquiler: number; 
-    notas: string; 
+    notas?: string; 
+
+    mostrarDetalles?: boolean = false; // Propiedad opcional para controlar la expansión de detalles en el frontend
     
 
     constructor(usuario: usuario, auto: auto, sucursalEntrega: sucursal, sucursalDevolucion: sucursal, trabajadorAsignado: usuario, fechaInicio: Date, fechaFin: Date, horaInicio: Date, horaFin: Date, fechaInicioReal: Date, fechaFinReal: Date, estadoAlquiler: string, precioTotalAlquiler: number, notas: string, _id?: number) {
@@ -39,5 +41,7 @@ export class alquiler {
         if (_id !== undefined) {
             this._id = _id;
         }
+
+        this.mostrarDetalles = false; // Inicia ocultando los detalles del alquiler
     }
 }

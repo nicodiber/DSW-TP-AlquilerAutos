@@ -56,7 +56,7 @@ exports.obtenerAlquileres = async (req, res) => {
     const alquileres = await Alquiler.find()
       .populate('usuario') 
       .populate('auto') 
-      .populate('sucursalEntrega') 
+      .populate('sucursalEntrega')
       .populate('sucursalDevolucion') 
       .populate('trabajadorAsignado');
 
@@ -67,6 +67,27 @@ exports.obtenerAlquileres = async (req, res) => {
   }
 };
 
+// Obtener un alquiler por ID
+exports.obtenerAlquiler = async (req, res) => {
+  try {
+    const alquiler = await Alquiler.findById(req.params.id)
+      .populate('usuario')
+      .populate('auto')
+      .populate('sucursalEntrega')
+      .populate('sucursalDevolucion')
+      .populate('trabajadorAsignado');
+    if (!alquiler) {
+      return res.status(404).json({ msg: 'No existe ese alquiler' });
+    }
+
+    res.json(alquiler);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener el alquiler');
+  }
+};
+
+/*
 // Actualizar un alquiler
 exports.actualizarAlquiler = async (req, res) => {
   try {
@@ -116,28 +137,11 @@ exports.actualizarAlquiler = async (req, res) => {
     res.status(500).send('Hubo un error al actualizar el alquiler');
   }
 };
+*/
 
-// Obtener un alquiler por ID
-exports.obtenerAlquiler = async (req, res) => {
-  try {
-    const alquiler = await Alquiler.findById(req.params.id)
-      .populate('usuario')
-      .populate('auto')
-      .populate('sucursalEntrega')
-      .populate('sucursalDevolucion')
-      .populate('trabajadorAsignado');
-    if (!alquiler) {
-      return res.status(404).json({ msg: 'No existe ese alquiler' });
-    }
-
-    res.json(alquiler);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al obtener el alquiler');
-  }
-};
 
 // Eliminar un alquiler
+/*
 exports.eliminarAlquiler = async (req, res) => {
   try {
     const alquiler = await Alquiler.findById(req.params.id);
@@ -153,8 +157,9 @@ exports.eliminarAlquiler = async (req, res) => {
     res.status(500).send('Hubo un error al eliminar el alquiler');
   }
 };
+*/
 
-
+/*
 // Actualizar un alquiler
 exports.actualizarEstadoAlquiler = async (req, res) => {
   try {
@@ -184,7 +189,8 @@ exports.actualizarEstadoAlquiler = async (req, res) => {
     res.status(500).send('Hubo un error al actualizar el alquiler');
   }
 };
-
+*/
+/*
 exports.asignarTrabajadorAlquiler = async (req, res) => {
   try {
     const { idTrabajador } = req.body;
@@ -229,8 +235,66 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
     res.status(500).send('Hubo un error al asignar el trabajador al alquiler');
   }
 };
+*/
+
+// Especificos
+exports.establecerFechaInicioReal = async (req, res) => {
+  const { id } = req.params;
+  const { fechaInicioReal } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { fechaInicioReal }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar la fecha de inicio real');
+  }
+};
+
+exports.establecerFechaFinReal = async (req, res) => {
+  const { id } = req.params;
+  const { fechaFinReal } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { fechaFinReal }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar la fecha de fin real');
+  }
+};
+
+exports.modificarNotas = async (req, res) => {
+  const { id } = req.params;
+  const { notas } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { notas }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar las notas');
+  }
+};
+
+exports.modificarTrabajador = async (req, res) => {
+  const { id } = req.params;
+  const { trabajadorAsignado } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { trabajadorAsignado }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar el trabajador asignado');
+  }
+};
+
+exports.cambiarEstado = async (req, res) => {
+  const { id } = req.params;
+  const { estadoAlquiler } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { estadoAlquiler }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar el estado');
+  }
+};
 
 
+// Usado en el buscador
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
     const { sucursalRetiro } = req.body;

@@ -1,1 +1,116 @@
-<p>alquiler-listar works!</p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
+          <span class="titulo">LISTADO DE TODOS LOS ALQUILERES</span>
+          <table *ngIf="listaAlquileres.length > 0" class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Fecha y Hora de Inicio</th>
+                <th scope="col">Fecha y Hora de Fin</th>
+                <th scope="col">Fecha de Inicio Real</th>
+                <th scope="col">Fecha de Fin Real</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Precio Total</th>
+                <th scope="col">Patente Auto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let alquiler of listaAlquileres">
+                <!-- Fila principal: Datos Generales del alquiler -->
+                <tr>
+                  <td>{{ alquiler._id }}</td>
+                  <td>{{ alquiler.fechaInicio | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ alquiler.fechaFin | date: 'dd/MM/yyyy' }}</td>
+                  <td>
+                    <span *ngIf="alquiler.fechaInicioReal">{{ alquiler.fechaInicioReal | date: 'dd-MM-yyyy' }}</span>
+                    <span *ngIf="!alquiler.fechaInicioReal"> N/A </span>
+                  </td>
+                  <td>
+                    <span *ngIf="alquiler.fechaFinReal">{{ alquiler.fechaFinReal | date: 'dd-MM-yyyy' }}</span>
+                    <span *ngIf="!alquiler.fechaFinReal"> N/A </span>
+                  </td>
+                  <td style="text-transform: capitalize;">{{ alquiler.estadoAlquiler }}</td>
+                  <td>${{ alquiler.precioTotalAlquiler | number: '1.0-0' }}</td>
+                  <td>{{ alquiler.auto.matricula }}</td>
+                  
+                  <td>
+                    <!-- Botón para expandir Datos Adicionales y Notas -->
+                    <button (click)="alquiler.mostrarDetalles = !alquiler.mostrarDetalles" class="btn-main btn-black">
+                      {{ alquiler.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
+                    </button>
+                  </td>
+                </tr>
+              
+                <!-- Fila expandible: Datos Adicionales y Notas -->
+                <tr *ngIf="alquiler.mostrarDetalles">
+                  <td colspan="10" style="padding: 30px;">
+                    <div class="doble-columna" style="display: flex;">
+                      <div style="width: 40%;">
+                        <h6>Datos Adicionales:</h6>
+                        <div class="datos-adicionales" style="display: grid; gap: 15px">
+                          <span><i class="fa fa-home"></i>&nbsp;&nbsp;<strong>Sucursal de Entrega:</strong> {{ alquiler.sucursalEntrega.nombreSucursal }}</span>
+                          <span><i class="fa fa-home"></i>&nbsp;&nbsp;<strong>Sucursal de Devolución:</strong> {{ alquiler.sucursalDevolucion.nombreSucursal }}</span>
+                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Usuario:</strong> {{ alquiler.usuario.nombre }} {{ alquiler.usuario.apellido }}</span>
+                          <span><i class="fa fa-hammer"></i>&nbsp;&nbsp;<strong>Trabajador Asignado:</strong><span *ngIf="alquiler.trabajadorAsignado;"> {{ alquiler.trabajadorAsignado.nombre }} {{ alquiler.trabajadorAsignado.apellido }}</span><span *ngIf="!alquiler.trabajadorAsignado;"> N/A</span></span>
+                        </div>
+                      </div>
+                      
+                      <div style="width: 30%; border-right: 1px solid black; border-left: 1px solid black;">
+                        <h6>Notas:</h6>
+                        {{ alquiler.notas || 'No hay notas' }}
+                        <div class="spacer-20"></div>
+                        <div><button (click)="modificarNotas(alquiler)" class="boton-acciones">Modificar Notas</button></div>
+                      </div>
+                    
+                      <div style="width: 30%;">
+                        <div style="display: inline-grid; gap: 15px">
+                          <button (click)="establecerFechaInicioReal(alquiler)" *ngIf="!alquiler.fechaInicioReal" class="boton-acciones">Establecer Fecha Inicio Real</button>
+                          <button (click)="establecerFechaFinReal(alquiler)" *ngIf="!alquiler.fechaFinReal" class="boton-acciones">Establecer Fecha Fin Real</button>
+                          <button (click)="modificarTrabajador(alquiler)" *ngIf="alquiler.trabajadorAsignado" class="boton-acciones">Modificar Trabajador</button>
+                          <button (click)="modificarTrabajador(alquiler)" *ngIf="!alquiler.trabajadorAsignado" class="boton-acciones">Asignar Trabajador</button>
+                          <button (click)="cambiarEstado(alquiler)" class="boton-acciones">Cambiar Estado</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+
+
+
+                <!-- Columna para asignar Fecha Inicio Real 
+                <td>
+                  <a [routerLink]="['/ver-trabajadores', alquiler._id]" class="btn btn-info btn-sm">
+                    Ver Trabajadores
+                  </a>
+                </td>
+                -->
+
+                <!-- Columna para asignar Fecha Fin Real 
+                <td>
+                  <a [routerLink]="['/ver-trabajadores', alquiler._id]" class="btn btn-info btn-sm">
+                    Ver Trabajadores
+                  </a>
+                </td>
+                -->
+                
+                <!-- Columna para Asignar Trabajador
+                <td>
+                  <a [routerLink]="['/ver-autos', alquiler._id]" class="btn btn-warning btn-sm">
+                    Ver Autos
+                  </a>
+                </td>
+                -->
+            </tbody>
+          </table>
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAlquileres.length === 0">No hay
+            alquileres para mostrar</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

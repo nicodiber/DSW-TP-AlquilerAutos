@@ -40,7 +40,7 @@ const AlquilerSchema = new mongoose.Schema({
     },
     fechaInicoReal: {
         type: Date,
-         default: ''
+        default: ''
     },
     fechaFinReal: {
         type: Date,
@@ -64,7 +64,7 @@ const AlquilerSchema = new mongoose.Schema({
     },
     estadoAlquiler: {
         type: String,
-        enum: ['reservado', 'activa', 'cancelada', 'completada'],  // Definir los estados permitidos
+        enum: ['reservado', 'activo', 'cancelado', 'completado'],  // Definir los estados permitidos
         required: true
     },
 }, { collection: 'alquileres' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural

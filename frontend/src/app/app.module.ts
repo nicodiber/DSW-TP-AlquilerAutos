@@ -29,7 +29,6 @@ import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/li
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
 import { SucursalCrearComponent } from './components/sucursal/sucursal-crear/sucursal-crear.component';
 import { SucursalListarComponent } from './components/sucursal/sucursal-listar/sucursal-listar.component';
-import { AlquilerCrearComponent } from './components/alquiler/alquiler-crear/alquiler-crear.component';
 import { AlquilerListarComponent } from './components/alquiler/alquiler-listar/alquiler-listar.component';
 import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revision/alquiler-revision.component';
 import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
@@ -60,7 +59,6 @@ import { ModificarMarcaComponent } from './components/marca/modificar-marca/modi
     CrearAdminTrabajadorComponent,
     SucursalCrearComponent,
     SucursalListarComponent,
-    AlquilerCrearComponent,
     AlquilerListarComponent,
     AlquilerRevisionComponent,
     AlquilerCompletadoComponent,
