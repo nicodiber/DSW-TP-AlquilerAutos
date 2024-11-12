@@ -38,8 +38,8 @@ export class AlquilerService {
     return this.http.put(`${this.url}${_id}/notas`, { notas });
   }
 
-  obtenerTrabajadorPorId(id: number) {
-    return this.http.get<usuario>(`${this.url}/usuarios/${id}`);
+  obtenerUsuariosPorRol(rol: string): Observable<usuario[]> {
+    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/rol/${rol}`);
   }
 
   modificarTrabajador(_id: string, trabajadorId: number) {

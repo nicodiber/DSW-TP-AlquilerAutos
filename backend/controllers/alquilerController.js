@@ -241,22 +241,50 @@ exports.asignarTrabajadorAlquiler = async (req, res) => {
 exports.establecerFechaInicioReal = async (req, res) => {
   const { id } = req.params;
   const { fechaInicioReal } = req.body;
+
   try {
-    const alquiler = await Alquiler.findByIdAndUpdate(id, { fechaInicioReal }, { new: true });
+    // Convertir fechaInicioReal a un objeto Date
+    const fechaInicioDate = new Date(fechaInicioReal);
+    // Guardar la fecha en la base de datos
+    const alquiler = await Alquiler.findByIdAndUpdate(
+      id,
+      { fechaInicioReal: fechaInicioDate },
+      { new: true }
+    );
+
+    if (!alquiler) {
+      return res.status(404).json({ mensaje: 'Alquiler no encontrado' });
+    }
+
     res.json(alquiler);
   } catch (error) {
-    res.status(500).send('Error al actualizar la fecha de inicio real');
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar la fecha de inicio real' });
   }
 };
 
 exports.establecerFechaFinReal = async (req, res) => {
   const { id } = req.params;
   const { fechaFinReal } = req.body;
+
   try {
-    const alquiler = await Alquiler.findByIdAndUpdate(id, { fechaFinReal }, { new: true });
+    // Convertir fechaFinReal a un objeto Date
+    const fechaFinDate = new Date(fechaFinReal);
+    // Guardar la fecha en la base de datos
+    const alquiler = await Alquiler.findByIdAndUpdate(
+      id,
+      { fechaFinReal: fechaFinDate },
+      { new: true }
+    );
+
+    if (!alquiler) {
+      return res.status(404).json({ mensaje: 'Alquiler no encontrado' });
+    }
+
     res.json(alquiler);
   } catch (error) {
-    res.status(500).send('Error al actualizar la fecha de fin real');
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar la fecha de fin real' });
   }
 };
 

@@ -172,3 +172,13 @@ exports.obtenerUsuarioPorEmail = async (req, res) => {
         return res.status(500).json({ message: 'Error en el servidor' });
     }
 };
+
+exports.obtenerUsuariosPorRol = async (req, res) => {
+  const { rol } = req.params; // Obtiene el rol desde el parámetro de ruta
+  try {
+    const usuarios = await Usuario.find({ rol }); // Filtra los usuarios por rol
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener usuarios' });
+  }
+};

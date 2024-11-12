@@ -30,21 +30,21 @@ const AlquilerSchema = new mongoose.Schema({
         ref: 'Usuario',
         required: true
     },
-    fechaInicoAlquiler: {
+    fechaInicio: {
         type: Date,
         required: true
     },
-    fechaFinAlquiler: {
+    fechaFin: {
         type: Date,
         required: true
     },
-    fechaInicoReal: {
+    fechaInicioReal: {
         type: Date,
         default: ''
     },
     fechaFinReal: {
         type: Date,
-         default: ''
+        default: ''
     },
     horaInicio: {
         type: String, 

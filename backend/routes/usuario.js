@@ -12,5 +12,7 @@ router.get('/:id', usuarioController.obtenerUsuario);
 router.put('/:id', usuarioController.actualizarUsuario);
 router.delete('/:id', usuarioController.eliminarUsuario);
 router.post('/loginUsuario', usuarioController.loginUsuario);
+// Usado en el listado alquiler para obtener por rol
+router.get('/rol/:rol', usuarioController.obtenerUsuariosPorRol);
 
 module.exports = router;

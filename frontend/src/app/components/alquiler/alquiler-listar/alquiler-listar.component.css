@@ -1,8 +1,3 @@
-.fas {
-  cursor: pointer;
-  margin-left: 7px;
-}
-
 .boton-acciones{
   background-color: #f2f2f2;
   color: #000000;
@@ -17,4 +12,30 @@
   color: #ffffff;
   border: 1px solid #000000;
   transition: .3s ease !important;
+}
+
+.estado-reservado {
+  color: orange;
+}
+.estado-activo {
+  color: green;
+}
+.estado-completado {
+  color: blue;
+}
+.estado-cancelado {
+  color: red;
+}
+
+thead tr {
+  cursor: default;
+}
+thead tr :has(span){
+  cursor: pointer;
+}
+
+thead span {  /* Iconos flechas */
+  font-size: 10px;
+  margin-left: 5px;
+  color: rgba(0,0,0,.5);
 }
