@@ -62,6 +62,12 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="licenciaConductor" class="form-label">Licencia de Conductor:</label>
+                            <input type="text" formControlName="licenciaConductor" class="form-control form-control-lg"
+                                placeholder="Licencia de Conductor">
+                                
+                        </div>
+                        <div class="mb-3">
                             <label for="direccion" class="form-label">Teléfono</label>
                             <input type="number" formControlName="telefono" class="form-control form-control-lg"
                                 placeholder="Telefono">
@@ -112,7 +118,7 @@
                         </div>
                         <div class="mb-3">
                             <button routerLink="/listarUsuarios" class="btn btn-secondary btn-lg float-start">VOLVER</button>
-                            <button type="button" (click)="submitForm()" [disabled]="usuarioForm.invalid" class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                            <button type="button" (click)="submitForm()"  class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
                 </div>

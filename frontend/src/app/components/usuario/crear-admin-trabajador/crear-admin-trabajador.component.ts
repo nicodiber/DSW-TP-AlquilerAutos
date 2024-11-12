@@ -27,6 +27,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       email: ['', [Validators.required, Validators.email]],
+      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
       password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
@@ -73,7 +74,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       apellido: this.usuarioForm.get('apellido')?.value,
       email: this.usuarioForm.get('email')?.value,
       password: this.usuarioForm.get('password')?.value,
-      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value || null,
+      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value,
       telefono: this.usuarioForm.get('telefono')?.value,
       dni: this.usuarioForm.get('dni')?.value,
       direccion: this.usuarioForm.get('direccion')?.value,
@@ -84,7 +85,9 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       this._usuarioService.editarUsuario(this.id, USUARIO).subscribe(
         data => {
           this.toastr.info('El Usuario fue actualizado con éxito!', 'Usuario Actualizado!');
-          this.router.navigate(['/listarUsuarios']);
+          setTimeout(() => {
+          window.location.href = '/listarUsuarios';
+          }, 1000);
         },
         error => {
           let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
@@ -102,7 +105,9 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       this._usuarioService.guardarUsuario(USUARIO).subscribe(
         data => {
           this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-          window.location.href ='/listarUsuarios';
+          setTimeout(() => {
+          window.location.href = '/listarUsuarios';
+          }, 1000);
         },
         error => {
           let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
@@ -113,7 +118,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
         }
 
         this.toastr.error(errorMsg, 'Error de Registro');
-        this.usuarioForm.reset();
+        
         }
       );
     }
@@ -128,6 +133,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
           apellido: data.apellido,
           email: data.email,
           password: data.password,
+          licenciaConductor: data.licenciaConductor,
           telefono: data.telefono,
           dni: data.dni,
           direccion: data.direccion,
