@@ -9,30 +9,15 @@ import { UsuarioService } from '../../../services/usuario.service';
   styleUrl: './listar-usuarios.component.css'
 })
 export class ListarUsuariosComponent implements OnInit {
-[x: string]: any;
+  [x: string]: any;
   listaUsuarios: usuario[] = [];
 
   constructor(private _usuarioService: UsuarioService,
-        private toastr: ToastrService) { }
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getUsuarios();
   }
-
-  formatDateToDDMMYYYY(fecha: Date | undefined): string {
-  if (!fecha) {
-    return 'Fecha no disponible'; // O un valor por defecto
-  }
-
-  const date = new Date(fecha);
-  const day = ('0' + date.getDate()).slice(-2);
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const year = date.getFullYear();
-  
-  return `${day}/${month}/${year}`;
-}
-
-
 
   getUsuarios() {
     this._usuarioService.obtenerUsuarios().subscribe(data => {
@@ -45,12 +30,21 @@ export class ListarUsuariosComponent implements OnInit {
 
   deleteUsuario(id: any) {
     this._usuarioService.eliminarUsuario(id).subscribe(data => {
-      this.toastr.success('El usuario fue eliminado con exito' ,'Usuario Eliminado');
+      this.toastr.success('El usuario fue eliminado con exito', 'Usuario Eliminado');
       this.getUsuarios();
     }, error => {
       console.log(error);
     })
   }
+
+  formatDateToDDMMYYYY(fecha: Date | undefined): string {
+    if (!fecha) {
+      return 'Fecha no disponible'; // O un valor por defecto
+    }
+    const date = new Date(fecha);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 }
-
-

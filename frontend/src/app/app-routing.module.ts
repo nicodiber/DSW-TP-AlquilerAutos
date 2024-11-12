@@ -29,6 +29,7 @@ import { ListarCategoriaModeloComponent } from './components/categoria/listar-ca
 import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
 import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
 import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
+import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 
 const routes: Routes = [
   {
@@ -66,7 +67,10 @@ const routes: Routes = [
   { path: 'categorias', component: ListarCategoriaComponent },
   { path: 'categoria-modelos/:nombreCategoria', component: ListarCategoriaModeloComponent },
   { path: 'modificar-categoria/:id', component: ModificarCategoriaComponent },
-  { path: '**', component: Error404Component } // Para rutas invÃ¡lidas
+  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },
+
+  // Ruta para manejar rutas inválidas o inexistentes
+  { path: '**', component: Error404Component }
 ];
 
 @NgModule({

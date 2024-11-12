@@ -1,0 +1,33 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a routerLink="/sucursal-listar" class="btn btn-link float-start">Volver</a>
+                    <h4 class="titulo">Asignar Trabajadores a la Sucursal</h4>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Asignar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of listaUsuarios">
+                                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                                <td>{{ usuario.email }}</td>
+                                <td>
+                                    <!-- Checkbox para asignar o quitar asignación -->
+                                    <input type="checkbox" [checked]="trabajadoresAsignados.has(usuario._id)"
+                                        (change)="toggleAsignacion(usuario._id)" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
