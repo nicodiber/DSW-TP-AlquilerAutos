@@ -27,8 +27,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       email: ['', [Validators.required, Validators.email]],
-      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
       direccion: ['', [Validators.required]],
@@ -74,7 +73,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       apellido: this.usuarioForm.get('apellido')?.value,
       email: this.usuarioForm.get('email')?.value,
       password: this.usuarioForm.get('password')?.value,
-      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value,
+      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value || null,
       telefono: this.usuarioForm.get('telefono')?.value,
       dni: this.usuarioForm.get('dni')?.value,
       direccion: this.usuarioForm.get('direccion')?.value,
@@ -103,7 +102,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       this._usuarioService.guardarUsuario(USUARIO).subscribe(
         data => {
           this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-          this.router.navigate(['/listarUsuarios']);
+          window.location.href ='/listarUsuarios';
         },
         error => {
           let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
@@ -129,7 +128,6 @@ export class CrearAdminTrabajadorComponent implements OnInit {
           apellido: data.apellido,
           email: data.email,
           password: data.password,
-          licenciaConductor: data.licenciaConductor,
           telefono: data.telefono,
           dni: data.dni,
           direccion: data.direccion,

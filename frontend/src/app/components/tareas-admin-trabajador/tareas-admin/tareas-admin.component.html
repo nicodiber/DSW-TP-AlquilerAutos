@@ -19,13 +19,13 @@
             <!-- section close -->
 
             <section id="section-cars" class="bg-gray-100">
-                <div class="container">
+                <div class="container" style="margin-top: -50px">
                     <div class="row">
                         <div class="col-lg-3 mb30">
                             <div class="card p-4 rounded-5">
                                 <div class="profile_avatar">
                                     <div class="profile_img">
-                                        <img src="images/profile/1.jpg" alt="">
+                                        <img src="">
                                     </div>
                                     <div class="profile_name">
                                         <h4>
@@ -36,20 +36,20 @@
                                 </div>
                                 <div class="spacer-20"></div>
                                 <ul class="menu-col">
-                                    <li><a href="/tareas-admin" class="active"><i class="fa fa-home"></i>Escritorio</a></li>
-                                    <li><a href="account-profile.html"><i class="fa fa-user"></i>Perfil</a></li>
-                                    <li><a (click)="cerrarSesion()" class="no-underline"><i class="fa fa-sign-out"></i> Cerrar Sesión</a></li>
+                                    <li><a href="/tareas-admin" class="no-underline active"><i class="fa fa-home"></i>Escritorio</a></li>
+                                    <li><a (click)="editarMisDatos()"class="no-underline"><i class="fa fa-user "></i>Perfil</a></li>
+                                    <li><a (click)="cerrarSesion()" class="no-underline"><i class="fa fa-sign-out"></i>Cerrar Sesión</a></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-lg-8">
                             <div class="card p-4 rounded-5 mb25">
-                                <!-- Enlace de Gestión de Usuarios con espacio abajo -->
+                                
                                 <a (click)="irAGestionarUsuarios()" class="btn-main btn-fullwidth rounded-3 mb-3">
                                     <i class="fa-solid fa-users"></i> Gestión de Usuarios
                                 </a>
-                                <!-- Enlace de Gestión de Sucursales alineado a la derecha -->
+                                
                                 
                                 <a (click)="irAGestionarSucursales()" class="btn-main rounded-3">
                                     <i class="fa-solid fa-store"></i> Gestión de Sucursales

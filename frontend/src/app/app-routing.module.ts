@@ -29,6 +29,7 @@ import { ListarCategoriaModeloComponent } from './components/categoria/listar-ca
 import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
 import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
 import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
+import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
 
 const routes: Routes = [
   {
@@ -43,10 +44,12 @@ const routes: Routes = [
       { path: 'alquiler-revision', component: AlquilerRevisionComponent },
       { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
       { path: 'buscador', component: BuscadorComponent },
+      { path: 'tareas-admin', component: TareasAdminComponent },
+      { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
     ]
   },
 
-  { path: 'tareas-admin', component: TareasAdminComponent },
+  
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },

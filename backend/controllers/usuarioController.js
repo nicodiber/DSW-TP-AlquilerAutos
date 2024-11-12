@@ -1,5 +1,6 @@
 const Usuario = require("../models/usuario");
 const { getNextSequenceValue } = require('../config/db');
+const usuario = require("../models/usuario");
 
 exports.crearUsuario = async (req, res) => {
   try {
@@ -155,7 +156,7 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).send('Hubo un error al iniciar sesión');
   }
 };
-
+  //este ya no se usa
 exports.obtenerUsuarioPorEmail = async (req, res) => {
     try {
         const email = req.params.email;  // Tomamos el email de los parámetros de la URL
@@ -171,4 +172,38 @@ exports.obtenerUsuarioPorEmail = async (req, res) => {
         console.error('Error al obtener usuario por email:', error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
+};
+
+exports.actualizarUsuarioPrueba = async (req, res) => {
+  try {
+    const usuarioActualizado = await usuario.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true }  // Para que devuelva el usuario actualizado
+    );
+    
+    if (!usuarioActualizado) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(usuarioActualizado);
+  } catch (error) {
+    console.log(error);
+
+    if (error.code === 11000 && error.keyValue) {
+      
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'email'
+        ? 'El Correo Electronico ya está en uso. Intenta con uno diferente.'
+        : field === 'dni'
+        ? 'El DNI ya está registrado. Verifica los datos ingresados.'
+        : field === 'licenciaConductor'
+        ? 'La licencia de conductor ya está en uso. Verifica los datos ingresados.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    }else {
+    res.status(500).send('Hubo un error al actualizar el usuario');
+    }
+  }
 };

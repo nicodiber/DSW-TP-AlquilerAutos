@@ -14,13 +14,26 @@
                                 <div class="field-set mb-2">
                                     <input type="email" id="email" formControlName="email" class="form-control" placeholder="Correo Electrónico"
                                         required />
+                                        <div class="text-danger" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+                                            <span>El Correo Electrónico <strong>es obligatorio</strong></span>
+                                        </div>
+                                        <div class="text-danger" *ngIf="loginForm.get('email')?.hasError('pattern') && loginForm.get('email')?.touched">
+                                            <span>El Correo Electrónico <strong>tiene un formato incorrecto</strong></span>
+                                        </div>
                                 </div>
                                 <div class="field-set mb-2 position-relative">
+                                    <div class="input-wrapper">
                                     <input [type]="mostrarContrasena ? 'text' : 'password'" id="password" formControlName="password"
-                                        class="form-control" placeholder="Contraseña" required />
+                                        class="form-control" placeholder="Contraseña" required  />
                                     <button type="button" (click)="toggleContrasena()" class="btn-toggle-password">
                                         <i class="fa-solid" [ngClass]="mostrarContrasena ? 'fa-eye-slash' : 'fa-eye'"></i>
                                     </button>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+                                        <span>La Contraseña <strong>es obligatoria</strong></span>
+                                    </div>
+                                    
                                 </div>
                                 <div id="submit">
                                     <button type="submit" id="send_message" class="btn-main btn-fullwidth rounded-3">
