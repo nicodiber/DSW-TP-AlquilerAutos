@@ -1,4 +1,5 @@
 const Modelo = require("../models/modelo");
+const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
 
 exports.crearModelo = async (req, res) => {
@@ -143,5 +144,30 @@ exports.eliminarModelo = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
+  }
+};
+
+// Usado en el alquiler
+exports.buscarAutoAleatorioDisponible = async (req, res) => {
+  try {
+    const { idModelo, idSucursal } = req.body;
+
+    // Buscar autos que coincidan con el modelo, estén en la sucursal indicada y estén disponibles
+    const autosDisponibles = await Auto.find({
+      modeloAuto: idModelo,
+      sucursalAuto: idSucursal,
+      estadoAuto: 'disponible'
+    });
+
+    if (autosDisponibles.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron autos disponibles para el modelo y sucursal especificados.' });
+    }
+
+    // Seleccionar un auto aleatorio de la lista de autos disponibles
+    const autoAleatorio = autosDisponibles[Math.floor(Math.random() * autosDisponibles.length)];  // Si hay más de uno, agarro uno aleatorio
+    res.json(autoAleatorio);
+  } catch (error) {
+    console.error("Error al buscar auto aleatorio disponible:", error);
+    res.status(500).json({ message: "Error al buscar auto aleatorio disponible" });
   }
 };

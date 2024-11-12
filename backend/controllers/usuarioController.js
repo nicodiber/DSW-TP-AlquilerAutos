@@ -204,6 +204,15 @@ exports.actualizarUsuarioPrueba = async (req, res) => {
       return res.status(409).json({ msg: errorMsg });
     }else {
     res.status(500).send('Hubo un error al actualizar el usuario');
-    }
+    }}
+  }
+  
+exports.obtenerUsuariosPorRol = async (req, res) => {
+  const { rol } = req.params; // Obtiene el rol desde el parámetro de ruta
+  try {
+    const usuarios = await Usuario.find({ rol }); // Filtra los usuarios por rol
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener usuarios' });
   }
 };

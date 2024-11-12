@@ -1,1 +1,133 @@
-<p>alquiler-listar works!</p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
+          <span class="titulo">LISTADO DE TODOS LOS ALQUILERES</span>
+          <table *ngIf="listaAlquileres.length > 0" class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th (click)="ordenarPor('fechaInicio')">Fecha y Hora de Inicio <span [ngClass]="getIconoOrden('fechaInicio')"></span></th>
+                <th (click)="ordenarPor('fechaFin')">Fecha y Hora de Fin <span [ngClass]="getIconoOrden('fechaFin')"></span></th>
+                <th (click)="ordenarPor('fechaInicioReal')">Fecha de Inicio Real <span [ngClass]="getIconoOrden('fechaInicioReal')"></span></th>
+                <th (click)="ordenarPor('fechaFinReal')">Fecha de Fin Real <span [ngClass]="getIconoOrden('fechaFinReal')"></span></th>
+                <th (click)="ordenarPor('estadoAlquiler')">Estado <span [ngClass]="getIconoOrden('estadoAlquiler')"></span></th>
+                <th (click)="ordenarPor('precioTotalAlquiler')">Precio Total <span [ngClass]="getIconoOrden('precioTotalAlquiler')"></span></th>
+                <th>Patente Auto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let alquiler of listaAlquileres">
+                <!-- Fila principal: Datos Generales del alquiler -->
+                <tr>
+                  <td>{{ alquiler._id }}</td>
+                  <td>{{ alquiler.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</td>
+                  <td>{{ alquiler.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</td>
+                  <td>
+                    <span *ngIf="alquiler.fechaInicioReal">{{ alquiler.fechaInicioReal | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</span>
+                    <span *ngIf="!alquiler.fechaInicioReal"> N/A </span>
+                  </td>
+                  <td>
+                    <span *ngIf="alquiler.fechaFinReal">{{ alquiler.fechaFinReal | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</span>
+                    <span *ngIf="!alquiler.fechaFinReal"> N/A </span>
+                  </td>
+                  <td style="text-transform: capitalize;" [ngClass]="{'estado-reservado': alquiler.estadoAlquiler === 'reservado', 'estado-activo': alquiler.estadoAlquiler === 'activo', 'estado-cancelado': alquiler.estadoAlquiler === 'cancelado', 'estado-completado': alquiler.estadoAlquiler === 'completado'}"><strong>{{ alquiler.estadoAlquiler }}</strong></td>
+                  <td>${{ alquiler.precioTotalAlquiler | number: '1.0-0' }}</td>
+                  <td>{{ alquiler.auto.matricula }}</td>
+                  
+                  <td>
+                    <!-- Botón para expandir Datos Adicionales y Notas -->
+                    <button (click)="alquiler.mostrarDetalles = !alquiler.mostrarDetalles" class="btn-main btn-black">
+                      {{ alquiler.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
+                    </button>
+                  </td>
+                </tr>
+              
+                <!-- Fila expandible: Datos Adicionales y Notas -->
+                <tr *ngIf="alquiler.mostrarDetalles">
+                  <td colspan="10" style="padding: 30px;">
+                    <div style="display: flex;">
+                      <div style="width: 40%;">
+                        <h6>Datos Adicionales:</h6>
+                        <div class="datos-adicionales" style="display: grid; gap: 15px">
+                          <span><i class="fa fa-home"></i>&nbsp;&nbsp;<strong>Sucursal de Entrega:</strong> {{ alquiler.sucursalEntrega.nombreSucursal }}</span>
+                          <span><i class="fa fa-home"></i>&nbsp;&nbsp;<strong>Sucursal de Devolución:</strong> {{ alquiler.sucursalDevolucion.nombreSucursal }}</span>
+                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Usuario:</strong> {{ alquiler.usuario.nombre }} {{ alquiler.usuario.apellido }}</span>
+                          <span><i class="fa fa-hammer"></i>&nbsp;&nbsp;<strong>Trabajador Asignado:</strong><span *ngIf="alquiler.trabajadorAsignado;"> {{ alquiler.trabajadorAsignado.nombre }} {{ alquiler.trabajadorAsignado.apellido }}</span><span *ngIf="!alquiler.trabajadorAsignado;"> N/A</span></span>
+                        </div>
+                      </div>
+                      
+                      <div style="width: 30%; border-right: 1px solid black; border-left: 1px solid black;">
+                        <h6>Notas:</h6>
+                        {{ alquiler.notas || 'No hay notas' }}
+                        <div class="spacer-20"></div>
+                        <div><button (click)="abrirModal('notas', alquiler)" class="boton-acciones">Modificar Notas</button></div>
+                      </div>
+                    
+                      <div style="width: 30%;">
+                        <div style="display: inline-grid; gap: 15px">
+                          <button (click)="abrirModal('fecha', alquiler)" *ngIf="!alquiler.fechaInicioReal" class="boton-acciones">Establecer Fecha Inicio Real</button>
+                          <button (click)="abrirModal('fechaFinReal', alquiler)" *ngIf="!alquiler.fechaFinReal" class="boton-acciones">Establecer Fecha Fin Real</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="alquiler.trabajadorAsignado" class="boton-acciones">Modificar Trabajador</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="!alquiler.trabajadorAsignado" class="boton-acciones">Asignar Trabajador</button>
+                          <button (click)="abrirModal('estado', alquiler)" class="boton-acciones">Cambiar Estado</button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title" id="dynamicModalLabel">{{ modalTitle }}</h4>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <!-- Input para fechas -->
+                                  <div *ngIf="modalType === 'fecha' || modalType === 'fechaFinReal'">
+                                    <label>{{ modalPlaceholder }}</label>
+                                    <input type="text" [(ngModel)]="modalInput" class="form-control" placeholder="DD/MM/YYYY" />
+                                    <div *ngIf="!fechaValida && modalInput" class="text-danger">Formato de fecha inválido o la fecha es incorrecta</div>
+                                  </div>
+                                  <!-- Dropdown para trabajador -->
+                                  <div *ngIf="modalType === 'trabajador'">
+                                    <label>Seleccione un Trabajador</label>
+                                    <select [(ngModel)]="modalInput" class="form-select">
+                                      <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }} {{ trabajador.apellido }}</option>
+                                    </select>
+                                  </div>
+                                  <!-- Dropdown para estado -->
+                                  <div *ngIf="modalType === 'estado'">
+                                    <label>Seleccione un Estado</label>
+                                    <select [(ngModel)]="modalInput" class="form-select" style="text-transform: capitalize;">
+                                      <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+                                    </select>
+                                  </div>
+                                  <!-- Dropdown para notas -->
+                                  <div *ngIf="modalType === 'notas'">
+                                    <textarea [(ngModel)]="modalInput" class="form-control"></textarea>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                  <button type="button" class="btn btn-primary" [disabled]="!inputValido()"
+                                    (click)="confirmarModal()">Guardar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAlquileres.length === 0">No hay
+            alquileres para mostrar</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

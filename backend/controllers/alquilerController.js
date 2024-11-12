@@ -1,7 +1,5 @@
 const Alquiler = require("../models/alquiler");
-const Usuario = require("../models/usuario");
 const Auto = require("../models/auto");
-const Sucursal = require("../models/sucursal");
 const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
 
@@ -14,15 +12,16 @@ exports.crearAlquiler = async (req, res) => {
       auto,
       sucursalEntrega,
       sucursalDevolucion,
-      fechaInicoAlquiler,
-      fechaFinAlquiler,
-      fechaInicoReal  = '',
-      fechaFinReal  = '',
+      trabajadorAsignado,
+      fechaInicio,
+      fechaFin,
+      fechaInicioReal,
+      fechaFinReal,
       horaInicio,
       horaFin,
-      notas = '',
-      precioTotalAlquiler  = '',
-      estadoAlquiler = 'reservado'
+      notas,
+      precioTotalAlquiler,
+      estadoAlquiler
     } = req.body;
 
     let alquiler = new Alquiler({
@@ -31,9 +30,10 @@ exports.crearAlquiler = async (req, res) => {
       auto,
       sucursalEntrega,
       sucursalDevolucion,
-      fechaInicoAlquiler,
-      fechaFinAlquiler,
-      fechaInicoReal,
+      trabajadorAsignado,
+      fechaInicio,
+      fechaFin,
+      fechaInicioReal,
       fechaFinReal,
       horaInicio,
       horaFin,
@@ -56,7 +56,7 @@ exports.obtenerAlquileres = async (req, res) => {
     const alquileres = await Alquiler.find()
       .populate('usuario') 
       .populate('auto') 
-      .populate('sucursalEntrega') 
+      .populate('sucursalEntrega')
       .populate('sucursalDevolucion') 
       .populate('trabajadorAsignado');
 
@@ -64,56 +64,6 @@ exports.obtenerAlquileres = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error al obtener los alquileres');
-  }
-};
-
-// Actualizar un alquiler
-exports.actualizarAlquiler = async (req, res) => {
-  try {
-    const {
-      usuario,
-      auto,
-      sucursalEntrega,
-      sucursalDevolucion,
-      trabajadorAsignado,
-      fechaInicoAlquiler,
-      fechaFinAlquiler,
-      fechaInicoReal,
-      fechaFinReal,
-      horaInicio,
-      horaFin,
-      notas,
-      precioTotalAlquiler,
-      estadoAlquiler
-    } = req.body;
-
-    let alquiler = await Alquiler.findById(req.params.id);
-
-    if (!alquiler) {
-      return res.status(404).json({ msg: 'No existe ese alquiler' });
-    }
-
-    // Actualizar los campos
-    alquiler.usuario = usuario;
-    alquiler.auto = auto;
-    alquiler.sucursalEntrega = sucursalEntrega;
-    alquiler.sucursalDevolucion = sucursalDevolucion;
-    alquiler.trabajadorAsignado = trabajadorAsignado;
-    alquiler.fechaInicoAlquiler = fechaInicoAlquiler;
-    alquiler.fechaFinAlquiler = fechaFinAlquiler;
-    alquiler.fechaInicoReal = fechaInicoReal;
-    alquiler.fechaFinReal = fechaFinReal;
-    alquiler.horaInicio = horaInicio;
-    alquiler.horaFin = horaFin;
-    alquiler.notas = notas;
-    alquiler.precioTotalAlquiler = precioTotalAlquiler;
-    alquiler.estadoAlquiler = estadoAlquiler;
-
-    alquiler = await Alquiler.findOneAndUpdate({ _id: req.params.id }, alquiler, { new: true });
-    res.json(alquiler);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al actualizar el alquiler');
   }
 };
 
@@ -137,132 +87,102 @@ exports.obtenerAlquiler = async (req, res) => {
   }
 };
 
-// Eliminar un alquiler
-exports.eliminarAlquiler = async (req, res) => {
+// Especificos
+exports.establecerFechaInicioReal = async (req, res) => {
+  const { id } = req.params;
+  const { fechaInicioReal } = req.body;
+
   try {
-    const alquiler = await Alquiler.findById(req.params.id);
+    // Convertir fechaInicioReal a un objeto Date
+    const fechaInicioDate = new Date(fechaInicioReal);
+    // Guardar la fecha en la base de datos
+    const alquiler = await Alquiler.findByIdAndUpdate(
+      id,
+      { fechaInicioReal: fechaInicioDate },
+      { new: true }
+    );
 
     if (!alquiler) {
-      return res.status(404).json({ msg: 'No existe ese alquiler' });
+      return res.status(404).json({ mensaje: 'Alquiler no encontrado' });
     }
-
-    await Alquiler.findOneAndDelete({ _id: req.params.id });
-    res.json({ msg: 'Alquiler eliminado con éxito' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al eliminar el alquiler');
-  }
-};
-
-
-// Actualizar un alquiler
-exports.actualizarEstadoAlquiler = async (req, res) => {
-  try {
-    const {
-      fechaInicoReal,
-      fechaFinReal,
-      notas,
-      estadoAlquiler
-    } = req.body;
-
-    let alquiler = await Alquiler.findById(req.params.id);
-
-    if (!alquiler) {
-      return res.status(404).json({ msg: 'No existe ese alquiler' });
-    }
-
-    // Actualizar los campos
-    alquiler.fechaInicoReal = fechaInicoReal;
-    alquiler.fechaFinReal = fechaFinReal;
-    alquiler.notas = notas;
-    alquiler.estadoAlquiler = estadoAlquiler;
-
-    alquiler = await Alquiler.findOneAndUpdate({ _id: req.params.id }, alquiler, { new: true });
-    res.json(alquiler);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al actualizar el alquiler');
-  }
-};
-
-exports.asignarTrabajadorAlquiler = async (req, res) => {
-  try {
-    const { idTrabajador } = req.body;
-    const alquilerId = req.params.id; // El ID del alquiler viene de los parámetros
-
-    // Buscar el alquiler
-    let alquiler = await Alquiler.findById(alquilerId).populate('sucursalEntrega');
-
-    if (!alquiler) {
-      return res.status(404).json({ msg: 'No existe ese alquiler' });
-    }
-
-    // Obtener la sucursal de entrega del alquiler
-    const sucursalEntrega = await Sucursal.findById(alquiler.sucursalEntrega._id).populate('trabajadores');
-    
-    if (!sucursalEntrega) {
-      return res.status(404).json({ msg: 'No existe la sucursal de entrega' });
-    }
-
-    // Verificar si el trabajador existe y tiene el rol de 'trabajador'
-    const trabajador = await Usuario.findById(idTrabajador);
-    if (!trabajador) {
-      return res.status(404).json({ msg: 'El trabajador no existe' });
-    }
-
-    if (trabajador.rol !== 'trabajador') {
-      return res.status(400).json({ msg: 'El usuario no tiene el rol de trabajador' });
-    }
-
-    // Verificar si el trabajador pertenece a la sucursal de entrega
-    if (!sucursalEntrega.trabajadores.includes(idTrabajador)) {
-      return res.status(400).json({ msg: 'El trabajador no pertenece a la sucursal de entrega' });
-    }
-
-    // Asignar el trabajador al alquiler
-    alquiler.trabajadorAsignado = idTrabajador;
-    await alquiler.save();
 
     res.json(alquiler);
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al asignar el trabajador al alquiler');
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar la fecha de inicio real' });
   }
 };
 
+exports.establecerFechaFinReal = async (req, res) => {
+  const { id } = req.params;
+  const { fechaFinReal } = req.body;
 
+  try {
+    // Convertir fechaFinReal a un objeto Date
+    const fechaFinDate = new Date(fechaFinReal);
+    // Guardar la fecha en la base de datos
+    const alquiler = await Alquiler.findByIdAndUpdate(
+      id,
+      { fechaFinReal: fechaFinDate },
+      { new: true }
+    );
+
+    if (!alquiler) {
+      return res.status(404).json({ mensaje: 'Alquiler no encontrado' });
+    }
+
+    res.json(alquiler);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar la fecha de fin real' });
+  }
+};
+
+exports.modificarNotas = async (req, res) => {
+  const { id } = req.params;
+  const { notas } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { notas }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar las notas');
+  }
+};
+
+exports.modificarTrabajador = async (req, res) => {
+  const { id } = req.params;
+  const { trabajadorAsignado } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { trabajadorAsignado }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar el trabajador asignado');
+  }
+};
+
+exports.cambiarEstado = async (req, res) => {
+  const { id } = req.params;
+  const { estadoAlquiler } = req.body;
+  try {
+    const alquiler = await Alquiler.findByIdAndUpdate(id, { estadoAlquiler }, { new: true });
+    res.json(alquiler);
+  } catch (error) {
+    res.status(500).send('Error al actualizar el estado');
+  }
+};
+
+// Usado en el buscador
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
     const { sucursalRetiro } = req.body;
 
-    // Paso 1: Obtener autos en la sucursal de retiro utilizando el ID de la sucursal
-    const autosEnSucursal = await Auto.find({ sucursalAuto: sucursalRetiro._id });
-    console.log("Autos en la sucursal de retiro:", autosEnSucursal);
+    // Paso 1: Filtrar autos disponibles en la sucursal de retiro elegida
+    const autosCoincidentes = await Auto.find({ sucursalAuto: sucursalRetiro._id, estadoAuto: 'disponible' });
 
-    // Paso 2: Filtrar autos disponibles en el rango de fechas
-    const autosDisponibles = await Auto.find({ estadoAuto: 'disponible' });
-    console.log("Autos disponibles segun su estado:", autosDisponibles);
+    // Paso 2: Obtener modelos de autos coincidentes
+    const modeloIds = autosCoincidentes.map(auto => auto.modeloAuto);
 
-    // Obtener los modelos coincidentes
-    const autosCoincidentes = []
-    for (let i = 0; i < autosEnSucursal.length; i++) {
-      for (let j = 0; j < autosDisponibles.length; j++) {
-          if (String(autosEnSucursal[i]._id) === String(autosDisponibles[j]._id)) {
-            autosCoincidentes.push(autosEnSucursal[i]);
-          }
-      }
-    }
-    console.log("Autos Coincidentes:", autosCoincidentes);
-
-    const modelosDeAutosCoincidentes = []
-    for (const auto of autosCoincidentes) {
-      const conflictos = await Alquiler.find({auto: auto._id}); // Array de autos en conflicto
-      if (conflictos.length === 0) {
-        modelosDeAutosCoincidentes.push(auto);
-      }
-    }
-    const modelosDisponibles = await Modelo.find({ _id: { $in: modelosDeAutosCoincidentes.map(auto => auto.modeloAuto) } });
-    console.log("Modelos finales a exponer:", modelosDisponibles);
+    const modelosDisponibles = await Modelo.find({ _id: { $in: modeloIds } });
 
     res.json(modelosDisponibles);
 
@@ -271,4 +191,3 @@ exports.buscarModelosDisponibles = async (req, res) => {
     res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
-

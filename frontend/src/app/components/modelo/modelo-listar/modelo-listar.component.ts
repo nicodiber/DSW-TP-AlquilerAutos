@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from '../../../services/categoria.service';
 import { MarcaService } from '../../../services/marca.service';
 import { categoria } from '../../../models/categoria';
@@ -23,12 +24,13 @@ export class ListarModelosComponent implements OnInit {
   modelosDisponibles: modelo[] = [];
   datosBusqueda: any;
 
-  constructor(private router: Router, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
+  constructor(private router: Router, private toastr: ToastrService, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
     // Cookies
-    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0) || (Object.keys(this.gestionCookiesService.getDatosModelosDisponibles()).length === 0)) {
-      this.router.navigate(['/buscador']);
+    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0)) {
+      window.location.href = '/buscador';
+      this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
     } else {
       // Una recarga para que se vea correctamente si llega de forma forzada
       if (this.cookieService.get('reload') !== 'true') {

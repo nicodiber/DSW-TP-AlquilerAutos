@@ -42,5 +42,6 @@ router.get('/:id', modeloController.obtenerModelo);
 router.put('/:id', modeloController.actualizarModelo);
 router.delete('/:id', modeloController.eliminarModelo);
 
+router.post('/buscarAutoAleatorioDisponible', modeloController.buscarAutoAleatorioDisponible);
 
 module.exports = router;

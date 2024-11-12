@@ -1,30 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-alquiler-completado',
   templateUrl: './alquiler-completado.component.html',
   styleUrls: ['./alquiler-completado.component.css']
 })
-export class AlquilerCompletadoComponent implements OnInit {
+export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
   datosBusqueda: any;
   fechaRetiro: string = '';
   fechaDevolucion: string = '';
   diasReserva: number = 0;
+  private subscription: Subscription | null = null;;
 
   constructor(private router: Router, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
+    this.subscription = this.router.events.subscribe(event => {
+      if (event) {
+        // Borrar las cookies al iniciar la navegación hacia otra ruta
+        console.log('borro');
+        this.gestionCookiesService.borrarCookie('datosBusqueda');
+        this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
+        this.gestionCookiesService.borrarCookie('modelosDisponibles');
+        this.gestionCookiesService.borrarCookie('reload');
+      }
+    });
+
     // Obtener datos de datosBusqueda desde el servicio
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    console.log("Datos de búsqueda al cargar alquiler-completado:", this.datosBusqueda);
     
     // Verificar si modeloElegido existe en datosBusqueda
     if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
-      console.warn("El campo modeloElegido no está presente en datosBusqueda. Redirigiendo...");
-      this.router.navigate(['/modelo-listar']);
+      console.warn("Cookies faltantes. Redirigiendo...");
+      window.location.href = '/buscador';
     }
 
     this.fechaRetiro = this.datosBusqueda.fechaRetiro;
@@ -32,6 +44,11 @@ export class AlquilerCompletadoComponent implements OnInit {
     this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   generatePDF() {
     const ticket = document.querySelector('.reservation');
