@@ -25,10 +25,7 @@ export class AlquilerListarComponent implements OnInit {
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
 
-  constructor(
-    private _alquilerService: AlquilerService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private _alquilerService: AlquilerService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.getAlquileres();
@@ -38,6 +35,12 @@ export class AlquilerListarComponent implements OnInit {
   getAlquileres() {
     this._alquilerService.obtenerAlquileres().subscribe((data) => {
       this.listaAlquileres = data;
+    });
+  }
+
+  getTrabajadores() {
+    this._alquilerService.obtenerUsuariosPorRol('trabajador').subscribe((trabajadores: usuario[]) => {
+      this.trabajadores = trabajadores;
     });
   }
 
@@ -79,14 +82,7 @@ export class AlquilerListarComponent implements OnInit {
     return 'fa fa-chevron-down'; // Mostrar flecha hacia abajo por defecto
   }
 
-
   // Funciones que intervienen en los botones de accion
-  getTrabajadores() {
-    this._alquilerService.obtenerUsuariosPorRol('trabajador').subscribe((trabajadores: usuario[]) => {
-      this.trabajadores = trabajadores;
-    });
-  }
-
   abrirModal(tipo: 'fecha' | 'fechaFinReal' | 'trabajador' | 'estado' | 'notas', alquiler: alquiler) {
     this.alquilerActual = alquiler;
     this.modalType = tipo;
@@ -144,7 +140,6 @@ export class AlquilerListarComponent implements OnInit {
       const fechaISO = this.convertirFechaAFormatoISO(this.modalInput); // Convertir a YYYY-MM-DD para que Mongo lo interprete bien
       this._alquilerService.establecerFechaInicioReal(String(this.alquilerActual._id), fechaISO).subscribe(() => {
         this.alquilerActual!.fechaInicioReal = new Date(fechaISO);
-        console.log(new Date(fechaISO));
         this.toastr.success('Fecha de Inicio Real actualizada');
         this.modalInstance?.hide(); // Cierra el modal
       });
@@ -152,7 +147,6 @@ export class AlquilerListarComponent implements OnInit {
       const fechaISO = this.convertirFechaAFormatoISO(this.modalInput);
       const fechaInicio = new Date(this.alquilerActual.fechaInicioReal || '');
       const fechaFin = new Date(fechaISO);
-
       if (fechaFin <= fechaInicio) {
         this.toastr.warning('La Fecha de Fin Real debe ser mayor a la Fecha de Inicio Real.');
         return;
@@ -184,13 +178,5 @@ export class AlquilerListarComponent implements OnInit {
         this.modalInstance?.hide();
       });
     }
-  }
-
-  formatFecha(fecha: string | Date): string {
-    const date = new Date(fecha);
-    const dia = String(date.getUTCDate()).padStart(2, '0');
-    const mes = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const anio = date.getUTCFullYear();
-    return `${dia}/${mes}/${anio}`;
   }
 }

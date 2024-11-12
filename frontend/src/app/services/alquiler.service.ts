@@ -1,8 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { alquiler } from '../models/alquiler';
 import { usuario } from '../models/usuario';
+// import { alquiler } from '../models/alquiler';
+
+// Voy a redefinir mis Alquiler para almacenar los atributos por el id unicamente
+interface AlquilerData {
+  usuario: number;
+  auto: number;  // Ej. cambié a string para recibir el ID
+  sucursalEntrega: number;
+  sucursalDevolucion: number;
+  trabajadorAsignado?: number;
+  fechaInicio: Date;
+  fechaFin: Date;
+  fechaInicioReal?: Date;
+  fechaFinReal?: Date;
+  horaInicio: string;
+  horaFin: string;
+  notas?: string;
+  precioTotalAlquiler: number;
+  estadoAlquiler: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +30,7 @@ export class AlquilerService {
 
   constructor(private http: HttpClient) { }
   
-  guardarAlquiler(alquiler: alquiler): Observable<any>{
+  crearAlquiler(alquiler: AlquilerData): Observable<any>{
     return this.http.post(this.url, alquiler);
   }
 
@@ -24,8 +42,7 @@ export class AlquilerService {
     return this.http.get(this.url + _id);
   }
 
-  // Funciones especificas - Alquiler
-
+  // Funciones especificas - Listar Alquiler
   establecerFechaInicioReal(_id: string, fecha: string) {
     return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha });
   }
@@ -50,18 +67,7 @@ export class AlquilerService {
     return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado });
   }
 
-  /* VIEJO
-  asignarTrabajadorAlquiler(_id: string): Observable<any> {
-    return this.http.get(this.url + _id + 'asignar-trabajador');
-  }
-
-  actualizarEstadoAlquiler(_id: string): Observable<any> {
-    return this.http.get(this.url + _id + 'estado');
-  }
-  */
-
   // Funciones especificas - Buscador
-
   buscarModelosDisponibles(data: any): Observable<any> {
     return this.http.post<any>(this.url + 'buscarModelosDisponibles', data);
   }

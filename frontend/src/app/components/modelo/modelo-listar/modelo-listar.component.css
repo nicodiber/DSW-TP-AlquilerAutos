@@ -98,3 +98,7 @@
 .no-encontrado h4{
   margin-bottom: 20px;
 }
+
+.toast-container .ngx-toastr {
+  background-size: 24px !important;
+}

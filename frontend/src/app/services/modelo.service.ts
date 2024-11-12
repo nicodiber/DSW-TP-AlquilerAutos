@@ -38,4 +38,9 @@ export class ModeloService {
   obtenerModelosPorCategoria(): Observable<modelo[]> {
     return this.http.get<modelo[]>(this.url);
   }
+
+  // Funciones especificas
+  buscarAutoAleatorioDisponible(idModelo: string, idSucursal: string): Observable<any> {
+    return this.http.post<any>(this.url + 'buscarAutoAleatorioDisponible', {idModelo, idSucursal});
+  }
 }

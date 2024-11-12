@@ -8,7 +8,7 @@ export class gestionCookiesService {
 
   constructor(private cookieService: CookieService) { }
 
-  setDatosBusqueda(datos: any, modelo?: any, precio?: any): void {
+  setDatosBusqueda(datos: any, modelo?: any, auto?: any, precio?: any, idAlq?: any): void {
     const data = {
       sucursalRetiro: datos.sucursalRetiro,
       sucursalDevolucion: datos.sucursalDevolucion,
@@ -17,11 +17,13 @@ export class gestionCookiesService {
       horaRetiro: datos.horaRetiro,
       horaDevolucion: datos.horaDevolucion,
       modeloElegido: modelo != undefined ? modelo : datos.modeloElegido,
+      autoAsignado: auto != undefined ? auto : datos.autoAsignado,
       precioTotal: precio != undefined ? precio : datos.precioTotal,
+      idAlquiler: idAlq != undefined ? idAlq : datos.idAlquiler,
     };
 
-    const expirationDate = new Date();
-    expirationDate.setSeconds(expirationDate.getSeconds() + 900); // Tiempo de expiración de las cookies en 900 = 15 minutos
+    const expiration = this.cookieService.get('datosBusquedaExpiration');
+    const expirationDate = new Date(expiration);  // Para mantener la fecha de expiración anterior
     this.cookieService.delete('datosBusqueda', '/');
     this.cookieService.set('datosBusqueda', JSON.stringify(data), { expires: expirationDate, path: '/' }); // Almacenar temporalmente
   }
@@ -32,5 +34,9 @@ export class gestionCookiesService {
 
   getDatosModelosDisponibles(): [] {
     return JSON.parse(this.cookieService.get('modelosDisponibles') || '[]');
+  }
+
+  borrarCookie(nombreCookie: string){
+    this.cookieService.delete(nombreCookie, '/');
   }
 }

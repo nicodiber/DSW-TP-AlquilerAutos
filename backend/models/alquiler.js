@@ -28,7 +28,6 @@ const AlquilerSchema = new mongoose.Schema({
     trabajadorAsignado:{
         type: mongoose.Schema.Types.Number,
         ref: 'Usuario',
-        required: true
     },
     fechaInicio: {
         type: Date,

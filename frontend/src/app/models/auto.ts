@@ -1,15 +1,17 @@
 import { mantenimiento } from './mantenimiento';
+import { modelo } from './modelo';
+import { sucursal } from './sucursal';
 
 export class auto {
     _id?: number; // El campo _id es opcional para la creación de nuevos objetos.
-    modeloAuto: number; 
-    sucursalAuto: number;
+    modeloAuto: modelo; 
+    sucursalAuto: sucursal;
     historialMantenimiento: mantenimiento;
     estadoAuto: string;
     matricula: string;
 
 
-    constructor(modeloAuto: number, sucursalAuto: number, historialMantenimiento: mantenimiento, estadoAuto: string, matricula: string, _id?: number) {
+    constructor(modeloAuto: modelo, sucursalAuto: sucursal, historialMantenimiento: mantenimiento, estadoAuto: string, matricula: string, _id?: number) {
         this.modeloAuto = modeloAuto;
         this.sucursalAuto = sucursalAuto;
         this.historialMantenimiento = historialMantenimiento;

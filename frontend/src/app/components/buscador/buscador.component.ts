@@ -136,9 +136,10 @@ export class BuscadorComponent implements OnInit {
             expirationDate.setSeconds(expirationDate.getSeconds() + 1800); // Tiempo de expiración de las cookies en 1800 = 30 minutos
             this.cookieService.set('datosBusqueda', JSON.stringify(data), { expires: expirationDate, path: '/' });
             this.cookieService.set('modelosDisponibles', JSON.stringify(modelos), { expires: expirationDate, path: '/' });
+            this.cookieService.set('datosBusquedaExpiration', expirationDate.toISOString(), { expires: expirationDate, path: '/' });  // Guardar la fecha de expiración en una segunda cookie
 
             // Redirigir a "modelo-listar"
-            this.router.navigate(['/modelo-listar']);
+            window.location.href = '/modelo-listar';
           },
           (error) => console.error('Error al buscar modelos disponibles:', error)
         );
