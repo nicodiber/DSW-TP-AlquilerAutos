@@ -8,8 +8,8 @@
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
-                                <th scope="col">ID del Trabajador</th>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">ID del trabajador</th>
+                                <th scope="col">Nombre y Apellido</th>
                                 <th scope="col">Correo</th>
                                 <th scope="col">Asignar</th>
                                 <th scope="col">No Asignar</th>
@@ -17,8 +17,14 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of listaUsuarios">
+
+                                <!-- Columna ID del trabajador -->
                                 <td>{{ usuario._id }}</td>
+
+                                <!-- Columna Nombre y Apellido del trabajador -->
                                 <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+
+                                <!-- Columna Correo del trabajador -->
                                 <td>{{ usuario.email }}</td>
 
                                 <!-- Columna Asignar -->
