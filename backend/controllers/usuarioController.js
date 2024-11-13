@@ -182,3 +182,53 @@ exports.obtenerUsuariosPorRol = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener usuarios' });
   }
 };
+
+// Controlador para actualizar solo el array de alquileres del usuario
+exports.actualizarAlquileresUsuario = async (req, res) => {
+  const userId = req.params.id;
+  const nuevoAlquiler = req.body.alquiler; // El alquiler completo se pasa directamente en el cuerpo de la solicitud
+
+  try {
+    // Encuentra al usuario y añade el nuevo alquiler en el array de alquileres
+    const usuario = await Usuario.findByIdAndUpdate(
+      userId,
+      { $push: { alquileres: nuevoAlquiler } },  // Agregamos el objeto alquiler directamente
+      { new: true }
+    );
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(usuario); // Devuelve el usuario actualizado
+  } catch (error) {
+    console.error('Error al agregar alquiler al usuario:', error);
+    res.status(500).json({ message: 'Error al agregar alquiler al usuario', error });
+  }
+};
+
+exports.actualizarEstadoAlquilerUsuario = async (req, res) => {
+  const userId = req.params.id;
+  const alquilerId = req.params.alquilerId;
+  const nuevoEstado = req.body.nuevoEstado; // El nuevo estado del alquiler
+  
+  try {
+    // Busca el usuario y actualiza el estado del alquiler en el array
+    const usuario = await Usuario.findOneAndUpdate(
+      { _id: userId, 'alquileres._id': alquilerId },
+      { $set: { 'alquileres.$.estadoAlquiler': nuevoEstado } }, // `$` apunta al alquiler coincidente en el array
+      { new: true }
+      
+    );
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario o alquiler no encontrado' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.error('Error al actualizar el estado del alquiler en el usuario:', error);
+    res.status(500).json({ message: 'Error al actualizar el estado del alquiler', error });
+  }
+};
+

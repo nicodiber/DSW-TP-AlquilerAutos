@@ -13,9 +13,8 @@ export class usuario {
     licenciaConductor: string;
     fechaRegistro?: Date;
     alquileres?: alquiler []; 
-    
 
-    constructor(nombre: string, apellido: string, email: string, password: string, rol: string, telefono: string, dni: number, direccion: string, licenciaConductor: string, fechaRegistro: Date, alquileres: alquiler[], _id?: number) {
+    constructor(nombre: string, apellido: string, email: string, password: string, rol: string, telefono: string, dni: number, direccion: string, licenciaConductor: string, fechaRegistro: Date, alquileres?: alquiler[], _id?: number) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;

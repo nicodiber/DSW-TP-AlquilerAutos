@@ -1,4 +1,4 @@
-const Alquiler = require("../models/alquiler");
+const { Alquiler } = require('../models/alquiler'); // Importa el modelo Alquiler correctamente
 const Auto = require("../models/auto");
 const Modelo = require("../models/modelo");
 const { getNextSequenceValue } = require('../config/db');
@@ -22,7 +22,7 @@ exports.crearAlquiler = async (req, res) => {
       estadoAlquiler
     } = req.body;
 
-    let alquiler = new Alquiler({
+    const alquiler = new Alquiler({
       _id,
       usuario,
       auto,
@@ -41,8 +41,8 @@ exports.crearAlquiler = async (req, res) => {
     await alquiler.save();
     res.json(alquiler);
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al crear el alquiler');
+    console.error('Error al crear el alquiler:', error);
+    res.status(500).json({ message: 'Hubo un error al crear el alquiler', error });
   }
 };
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AlquilerService } from '../../../services/alquiler.service';
+import { UsuarioService } from '../../../services/usuario.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
@@ -27,7 +28,7 @@ export class AlquilerListarComponent implements OnInit {
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
 
-  constructor(private _alquilerService: AlquilerService, private toastr: ToastrService) {}
+  constructor(private _alquilerService: AlquilerService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.getAlquileres();
@@ -171,6 +172,16 @@ export class AlquilerListarComponent implements OnInit {
     } else if (this.modalType === 'estado' && typeof this.modalInput === 'string') {
         this._alquilerService.cambiarEstado(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
           this.alquilerActual!.estadoAlquiler = String(this.modalInput);
+
+          // Llama a actualizarEstadoAlquilerUsuario para reflejar el cambio en el array de alquileres del usuario
+          this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), String(this.modalInput)).subscribe(
+            () => {
+              console.log('Estado del alquiler actualizado en el usuario');
+            },
+            error => {
+              console.error('Error al actualizar el estado del alquiler en el usuario:', error);
+            }
+          );
 
           // Llamada para actualizar el estado del auto después de actualizar el estado del alquiler
           let nuevoEstadoAuto;

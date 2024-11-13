@@ -38,16 +38,13 @@ const AlquilerSchema = new mongoose.Schema({
         required: true
     },
     fechaInicioReal: {
-        type: Date,
-        default: ''
+        type: Date
     },
     fechaFinReal: {
-        type: Date,
-        default: ''
+        type: Date
     },
     notas: {
-        type: String, // Campo opcional para observaciones o detalles adicionales
-        default: ''  // Se puede dejar en blanco por defecto
+        type: String
     },
     precioTotalAlquiler: {
         type: Number,
@@ -60,4 +57,7 @@ const AlquilerSchema = new mongoose.Schema({
     },
 }, { collection: 'alquileres' }); // Especificamos la colección para evitar que Mongoose use el nombre en plural
 
-module.exports = mongoose.model('Alquiler', AlquilerSchema);
+module.exports = {
+    AlquilerSchema,
+    Alquiler: mongoose.model('Alquiler', AlquilerSchema)
+};

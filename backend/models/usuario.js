@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { AlquilerSchema } = require('./alquiler');
 
 const UsuarioSchema = new mongoose.Schema({
   _id: {
@@ -16,7 +17,7 @@ const UsuarioSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true                                      // El email debe ser único y el que va a usar para inciar sesion
+    unique: true  // El email debe ser único y el que va a usar para inciar sesion
   },
   password: {
     type: String,
@@ -48,10 +49,7 @@ const UsuarioSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  alquileres: [{
-    type: mongoose.Schema.Types.Number,
-    ref: 'Alquiler'                                     // Referencia a la colección de alquileres
-  }]
+  alquileres: [AlquilerSchema]
 }, { collection: 'usuarios' });
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlquilerService } from '../../../services/alquiler.service';
+import { UsuarioService } from '../../../services/usuario.service';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
 import { AuthService } from '../../../services/auth.service';
@@ -18,12 +19,12 @@ export class AlquilerRevisionComponent implements OnInit {
   precioTotal: number = 0;
   usuario: any;
 
-  constructor(private router: Router, private authService: AuthService, private gestionCookiesService: gestionCookiesService, private alquilerService: AlquilerService) {}
+  constructor(private router: Router, private authService: AuthService, private gestionCookiesService: gestionCookiesService, private alquilerService: AlquilerService, private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
     // Obtener datos de datosBusqueda desde el servicio
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    console.log(this.datosBusqueda);
+    console.log("Datos búsqueda:", this.datosBusqueda);
     
     // Verificar si modeloElegido existe en datosBusqueda
     if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
@@ -39,6 +40,7 @@ export class AlquilerRevisionComponent implements OnInit {
     this.usuario = this.authService.getUsuarioLogueado();
   }
   
+  // Botón Cancelar
   cancelarProceso(){
     this.gestionCookiesService.borrarCookie('datosBusqueda');
     this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
@@ -46,6 +48,7 @@ export class AlquilerRevisionComponent implements OnInit {
     window.location.href = '/buscador';
   }
 
+  // Botón de Reservar
   confirmarReserva(): void {
     try {
       // Crear las fechas con horas integradas
@@ -72,18 +75,36 @@ export class AlquilerRevisionComponent implements OnInit {
         estadoAlquiler: 'reservado'
       };
 
+      console.log("Alquiler Data:", alquilerData); // Verifica que todos los datos sean correctos
+
       // Llamada al servicio para crear el alquiler
       this.alquilerService.crearAlquiler(alquilerData).subscribe(
         response => {
-          this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
-          // Llamada para actualizar el estado del auto después de crear el alquiler
-          this.alquilerService.actualizarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
+          if (this.usuario.alquileres) {
+            this.usuario.alquileres.push(response);  // Agregar el nuevo alquiler al array
+          } else {
+            this.usuario.alquileres = [response]; // Si no existe el array, crearlo
+          }
+
+          // Enviar solo el alquiler creado en vez del array completo
+          console.log(this.usuario._id);
+          console.log(String(this.usuario._id));
+          this.usuarioService.actualizarAlquileresUsuario(Number(this.usuario._id), response).subscribe(
             () => {
-              console.log('Estado del auto actualizado a "reservado".');
-              window.location.href = '/alquiler-completado';
+              console.log('Alquiler añadido al usuario actual.');
+              this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
+              this.alquilerService.actualizarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
+                () => {
+                  console.log('Estado del auto actualizado a "reservado".');
+                  window.location.href = '/alquiler-completado';
+                },
+                error => {
+                  console.error('Error al actualizar el estado del auto:', error);
+                }
+              );
             },
             error => {
-              console.error('Error al actualizar el estado del auto:', error);
+              console.error('Error al actualizar el usuario con el nuevo alquiler:', error);
             }
           );
         },

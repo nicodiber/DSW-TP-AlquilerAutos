@@ -35,6 +35,6 @@ export class AuthService {
 
   // Eliminar usuario de sessionStorage al cerrar sesión
   logout(): void {
-  sessionStorage.removeItem('usuario');  // Eliminar el usuario de sessionStorage
-}
+    sessionStorage.removeItem('usuario');  // Eliminar el usuario de sessionStorage
+  }
 }

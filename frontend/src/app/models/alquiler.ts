@@ -20,7 +20,7 @@ export class alquiler {
     mostrarDetalles?: boolean = false; // Propiedad opcional para controlar la expansión de detalles en el frontend
     
 
-    constructor(usuario: usuario, auto: auto, sucursalEntrega: sucursal, sucursalDevolucion: sucursal, trabajadorAsignado: usuario, fechaInicio: Date, fechaFin: Date, horaInicio: string, horaFin: string, fechaInicioReal: Date, fechaFinReal: Date, estadoAlquiler: string, precioTotalAlquiler: number, notas: string, _id?: number) {
+    constructor(usuario: usuario, auto: auto, sucursalEntrega: sucursal, sucursalDevolucion: sucursal, trabajadorAsignado: usuario, fechaInicio: Date, fechaFin: Date, fechaInicioReal: Date, fechaFinReal: Date, estadoAlquiler: string, precioTotalAlquiler: number, notas: string, _id?: number) {
         this.usuario = usuario;
         this.auto = auto;
         this.sucursalEntrega = sucursalEntrega;

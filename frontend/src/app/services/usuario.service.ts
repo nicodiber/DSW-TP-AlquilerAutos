@@ -30,4 +30,15 @@ export class UsuarioService {
   obtenerUsuario(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
   }
+
+  // Meter el alquiler en el array alquileres del usuario
+  actualizarAlquileresUsuario(userId: number, nuevoAlquiler: any): Observable<any> {
+    return this.http.put(this.url + userId + '/alquileres', { alquiler: nuevoAlquiler });
+  }
+
+  // Actualizar el estado de un alquiler del usuario
+  actualizarEstadoAlquilerUsuario(userId: number, alquilerId: number, nuevoEstado: string): Observable<any> {
+    return this.http.put(`${this.url}${userId}/alquileres/${alquilerId}/estado`, { nuevoEstado });
+  }
+
 }
