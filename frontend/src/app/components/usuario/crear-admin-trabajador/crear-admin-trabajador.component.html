@@ -62,12 +62,6 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="licenciaConductor" class="form-label">Licencia de Conductor:</label>
-                            <input type="text" formControlName="licenciaConductor" class="form-control form-control-lg"
-                                placeholder="Licencia de Conductor">
-                                
-                        </div>
-                        <div class="mb-3">
                             <label for="direccion" class="form-label">Teléfono</label>
                             <input type="number" formControlName="telefono" class="form-control form-control-lg"
                                 placeholder="Telefono">
@@ -82,7 +76,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="dni" class="form-label">DNI:</label>
-                            <input type="text" formControlName="dni" class="form-control form-control-lg"
+                            <input type="number" formControlName="dni" class="form-control form-control-lg"
                                 placeholder="DNI">
                                 <div class="text-danger"
                                     *ngIf="usuarioForm.get('dni')?.hasError('required') && usuarioForm.get('dni')?.touched">
@@ -90,7 +84,7 @@
                                 </div>
                                 <div class="text-danger"
                                     *ngIf="usuarioForm.get('dni')?.hasError('pattern') && usuarioForm.get('dni')?.touched">
-                                    <span>El DNI <strong>debe contener solo números</strong> y tener entre 7 y 10 dígitos</span>
+                                    <span>El DNI <strong>y tener entre 7 y 10 dígitos</strong></span>
                                 </div>
                         </div>
                         <div class="mb-3">

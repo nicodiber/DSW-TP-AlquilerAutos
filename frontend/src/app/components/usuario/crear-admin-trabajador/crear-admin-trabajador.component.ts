@@ -27,7 +27,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       email: ['', [Validators.required, Validators.email]],
-      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
+      licenciaConductor: ['', [Validators.pattern('^[A-Z0-9]+$')]],
       password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
@@ -69,12 +69,17 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   }
 
   agregarUsuario() {
+    const rol = this.usuarioForm.get('rol')?.value;
+    const dni = this.usuarioForm.get('dni')?.value;
+
+  // Asigna el valor de licenciaConductor automáticamente
+    const licenciaConductor = rol === 'administrador' ? `A${dni}` : rol === 'trabajador' ? `T${dni}` : '';
     const USUARIO: usuario = {
       nombre: this.usuarioForm.get('nombre')?.value,
       apellido: this.usuarioForm.get('apellido')?.value,
       email: this.usuarioForm.get('email')?.value,
       password: this.usuarioForm.get('password')?.value,
-      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value,
+      licenciaConductor: licenciaConductor,
       telefono: this.usuarioForm.get('telefono')?.value,
       dni: this.usuarioForm.get('dni')?.value,
       direccion: this.usuarioForm.get('direccion')?.value,
