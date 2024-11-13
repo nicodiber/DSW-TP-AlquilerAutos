@@ -125,6 +125,7 @@ exports.eliminarSucursal = async (req, res) => {
     console.log(error);
     res.status(500).send('Hubo un error al eliminar la sucursal');
   }
+};
 
 // Asignar trabajadores a una sucursal
 exports.asignarTrabajadores = async (req, res) => {
@@ -148,6 +149,4 @@ exports.asignarTrabajadores = async (req, res) => {
     console.error(error);
     res.status(500).json({ msg: 'Error al asignar trabajadores a la sucursal' });
   }
-};
-
 };
