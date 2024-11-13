@@ -125,4 +125,29 @@ exports.eliminarSucursal = async (req, res) => {
     console.log(error);
     res.status(500).send('Hubo un error al eliminar la sucursal');
   }
+
+// Asignar trabajadores a una sucursal
+exports.asignarTrabajadores = async (req, res) => {
+  try {
+    const { idSucursal } = req.params; 
+    const { trabajadores } = req.body; // Array de IDs de trabajadores a asignar
+
+    // Buscar la sucursal y actualizar la lista de trabajadores
+    const sucursal = await Sucursal.findByIdAndUpdate(
+      idSucursal, 
+      { trabajadores }, // Asigna los IDs de trabajadores
+      { new: true } // Retorna la sucursal actualizada
+    );
+
+    if (!sucursal) {
+      return res.status(404).json({ msg: 'Sucursal no encontrada' });
+    }
+
+    res.json({ msg: 'Trabajadores asignados correctamente', sucursal });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Error al asignar trabajadores a la sucursal' });
+  }
+};
+
 };
