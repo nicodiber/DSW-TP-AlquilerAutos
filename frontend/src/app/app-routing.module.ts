@@ -29,14 +29,14 @@ import { CrearCategoriaComponent } from './components/categoria/crear-categoria/
 import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
 import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
+import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
       { path: 'modelo/:id', component: DetalleModeloComponent },
-      { path: 'modelo-crear', component: CrearModeloComponent },
-      { path: 'modelo-editar/:id', component: CrearModeloComponent },
+      
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
@@ -48,7 +48,10 @@ const routes: Routes = [
     ]
   },
 
-  
+  { path: 'modelos-listar', component: ModelosListarComponent },
+  { path: 'modelo-crear', component: CrearModeloComponent },
+  { path: 'modelo-editar/:id', component: CrearModeloComponent },
+
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },

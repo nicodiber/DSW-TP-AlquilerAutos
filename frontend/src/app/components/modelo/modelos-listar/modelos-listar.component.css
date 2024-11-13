@@ -1,0 +1,46 @@
+.d-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-img img {
+    border: 1px solid #ddd;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(33.333% - 20px);
+    box-sizing: border-box;
+    max-width: 150px;
+    height: auto;
+}
+
+.fas {
+    cursor: pointer;
+    margin-left: 7px;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-family: "Outfit", Helvetica, Arial, sans-serif;
+}
+
+.col-lg-9 {
+    margin: auto;
+}
+.card-body{
+font-family: "Outfit", Helvetica, Arial, sans-serif;
+}
+.table td, .table th {
+    padding: 5px; /* Reduce el espacio entre celdas */
+    vertical-align: middle; /* Centra el contenido verticalmente */
+}
+
+.float-end{
+    background-color: #dbb700;
+    color: white;
+}
+
+.float-start{
+    background-color: grey;
+    color: white;
+}

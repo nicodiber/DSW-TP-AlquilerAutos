@@ -43,6 +43,7 @@ import { CrearCategoriaComponent } from './components/categoria/crear-categoria/
 import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
 import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
+import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-u
     ModificarCategoriaComponent,
     ModificarMarcaComponent,
     EditarDatosUsuarioComponent,
+    ModelosListarComponent,
   ],
   imports: [
     BrowserModule,

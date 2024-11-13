@@ -31,8 +31,19 @@ export class TareasAdminComponent implements OnInit {
     window.location.href = '/sucursal-listar';    
     //this.router.navigate(['/sucursal-listar']);
   }
+  irAGestionarModelos() {
+    window.location.href = '/modelos-listar';    
+  }
+  irAGestionarMarcas() {
+    window.location.href = '/';    
+  }
+  irAGestionarCategorias() {
+    window.location.href = '/';    
+  }
+  irAGestionarAlquileres() {
+    window.location.href = '/';    
+  }
   editarMisDatos() {
-    
     window.location.href = '/editar-datos-usuario';
     //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }

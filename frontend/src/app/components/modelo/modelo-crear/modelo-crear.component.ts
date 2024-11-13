@@ -33,10 +33,10 @@ export class CrearModeloComponent implements OnInit {
       precioXdia: ['', [Validators.required, Validators.min(0)]],
       anio: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
       color: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
-      dimensiones: ['', [Validators.required]],
+        dimensiones: ['', [Validators.required, Validators.pattern('^[0-9]+x[0-9]+x[0-9]+$')]],
       cantidadAsientos: ['', [Validators.required, Validators.min(1)]],
       cantidadPuertas: ['', [Validators.required, Validators.min(2)]],
-      motor: ['', [Validators.required]],
+      motor: ['', [Validators.required, Validators.pattern('^[0-9]+.[0-9]+$')]],
       cajaTransmision: ['', [Validators.required]],
       tipoCombustible: ['', [Validators.required]],
       capacidadTanqueCombustible: ['', [Validators.required, Validators.min(1)]],
@@ -53,6 +53,49 @@ export class CrearModeloComponent implements OnInit {
     this._marcaService.obtenerMarcas().subscribe((data: any[]) => {
       this.marcas = data;
     });
+  }
+  submitForm() {
+    // Recorre los controles del formulario y muestra mensajes de error con toastr
+    Object.keys(this.modeloForm.controls).forEach(key => {
+      const control = this.modeloForm.get(key);
+
+      if (control?.invalid) {
+        const friendlyFieldNames: { [key: string]: string } = {
+          nombreModelo: 'Nombre de Modelo',
+          categoriaModelo: 'Categoría',
+          marcaModelo: 'Marca',
+          precioXdia: 'Precio por día',
+          anio: 'Año',
+          color: 'Color',
+          dimensiones: 'Dimensiones',
+          cantidadAsientos: 'Cantidad de Asientos',
+          cantidadPuertas: 'Cantidad de Puertas',
+          motor: 'Motor',
+          cajaTransmision: 'Caja de Transmisión',
+          tipoCombustible: 'Tipo de Combustible',
+          capacidadTanqueCombustible: 'Capacidad del Tanque de Combustible',
+          capacidadBaul: 'Capacidad del Baúl'
+        };
+
+        const fieldName = friendlyFieldNames[key] || key;
+
+        if (control.errors?.['required']) {
+          this.toastr.error(`El campo ${fieldName} es obligatorio.`, 'Error en el formulario');
+        }
+        if (control.errors?.['pattern']) {
+          this.toastr.error(`El campo ${fieldName} tiene un formato incorrecto.`, 'Error en el formulario');
+        }
+        if (control.errors?.['min']) {
+          this.toastr.error(`El campo ${fieldName} debe ser mayor o igual a ${control.errors['min'].min}.`, 'Error en el formulario');
+        }
+        if (control.errors?.['max']) {
+          this.toastr.error(`El campo ${fieldName} debe ser menor o igual a ${control.errors['max'].max}.`, 'Error en el formulario');
+        }
+      }
+    });
+
+    this.modeloForm.markAllAsTouched();
+    return;
   }
 
   // Método para manejar la selección de archivos
@@ -95,15 +138,25 @@ export class CrearModeloComponent implements OnInit {
     if (this.id !== null) {
       this._modeloService.editarModelo(this.id, formData).subscribe(data => {
         this.toastr.info('El modelo fue actualizado con éxito!', 'Modelo Actualizado!');
-        this.router.navigate(['/']);
+       setTimeout(() => {
+          window.location.href = '/modelos-listar';
+          }, 1000);
       }, error => {
-        console.log('Error al actualizar modelo', error);
-        this.modeloForm.reset();
+        let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
+        
+        // Verificar si es error de conflicto 409
+        if (error.status === 409 && error.error && error.error.msg) {
+          errorMsg = error.error.msg;
+        }
+
+        this.toastr.error(errorMsg, 'Error de Actualización');
       });
     } else {
       this._modeloService.guardarModelo(formData).subscribe(data => {
         this.toastr.success('El modelo fue registrado con éxito!', 'Modelo Registrado!');
-        this.router.navigate(['/']);
+        setTimeout(() => {
+          window.location.href = '/modelos-listar';
+          }, 1000);
       }, error => {
         console.log('Error al guardar modelo', error);
         this.modeloForm.reset();
@@ -117,10 +170,10 @@ export class CrearModeloComponent implements OnInit {
     if (this.id !== null) {
       this.titulo = 'Editar Modelo';
       this._modeloService.obtenerModelo(this.id).subscribe(data => {
-        this.modeloForm.setValue({
+        this.modeloForm.patchValue({
           nombreModelo: data.nombreModelo,
-          categoriaModelo: data.categoriaModelo,
-          marcaModelo: data.marcaModelo,
+          categoriaModelo: data.categoriaModelo._id,
+          marcaModelo: data.marcaModelo._id,
           precioXdia: data.precioXdia,
           anio: data.anio,
           color: data.color,

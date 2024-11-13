@@ -42,30 +42,39 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.usuarioForm.invalid) {
-      Object.keys(this.usuarioForm.controls).forEach(key => {
-        const control = this.usuarioForm.get(key);
+    // Recorre los controles del formulario y muestra mensajes de error con toastr
+    Object.keys(this.usuarioForm.controls).forEach(key => {
+      const control = this.usuarioForm.get(key);
+      if (control?.invalid) {
+        const friendlyFieldNames: { [key: string]: string } = {
+          nombre: 'Nombre',
+          apellido: 'Apellido',
+          email: 'Correo Electrónico',
+          licenciaConductor: 'Licencia de Conductor',
+          password: 'Contraseña',
+          telefono: 'Teléfono',
+          dni: 'DNI',
+          direccion: 'Dirección'
+        };
         
-        if (control?.invalid) {
-          if (control.errors?.['required']) {
-            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-          }
-          if (control.errors?.['pattern']) {
-            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
-          }
-          if (control.errors?.['minlength']) {
-            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
-          }
-          if (control.errors?.['email']) {
-            this.toastr.error(`El email posee un formato inválido.`, 'Error en el formulario');
-          }
-        }
-      });
-      this.usuarioForm.markAllAsTouched();
-      return;
-    }
+        const fieldName = friendlyFieldNames[key] || key;
 
-    this.agregarUsuario();
+        if (control.errors?.['required']) {
+          this.toastr.error(`El campo ${fieldName} es obligatorio.`, 'Error en el formulario');
+        }
+        if (control.errors?.['pattern']) {
+          this.toastr.error(`El campo ${fieldName} tiene un formato incorrecto.`, 'Error en el formulario');
+        }
+        if (control.errors?.['minlength']) {
+          this.toastr.error(`El campo ${fieldName} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
+        }
+        if (control.errors?.['email']) {
+          this.toastr.error(`El correo electrónico posee un formato inválido.`, 'Error en el formulario');
+        }
+      }
+    });
+    this.usuarioForm.markAllAsTouched();
+    return;
   }
 
   agregarUsuario() {
