@@ -11,8 +11,6 @@ export class alquiler {
     trabajadorAsignado?: usuario;
     fechaInicio: Date;
     fechaFin: Date;
-    horaInicio: string;
-    horaFin: string;
     fechaInicioReal?: Date;
     fechaFinReal?: Date;
     estadoAlquiler: string; 
@@ -30,8 +28,6 @@ export class alquiler {
         this.trabajadorAsignado = trabajadorAsignado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
         this.fechaInicioReal = fechaInicioReal;
         this.fechaFinReal = fechaFinReal;
         this.estadoAlquiler = estadoAlquiler;

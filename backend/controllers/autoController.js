@@ -114,3 +114,39 @@ exports.eliminarAuto = async (req, res) => {
     res.status(500).send('Hubo un error al eliminar el auto');
   }
 };
+
+// Actualizar el estado de un auto debido al alquiler
+exports.actualizarEstadoAuto = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    const auto = await Auto.findByIdAndUpdate(id, { estadoAuto: estado }, { new: true });
+    if (!auto) {
+      return res.status(404).json({ message: 'Auto no encontrado' });
+    }
+
+    res.json(auto);
+  } catch (error) {
+    console.error("Error al actualizar el estado del auto:", error);
+    res.status(500).json({ message: "Error al actualizar el estado del auto" });
+  }
+};
+
+exports.actualizarSucursalAuto = async (req, res) => {
+  try {
+    const { id } = req.params;  // Cambia a `id` para coincidir con la ruta o ajusta la ruta
+    const { sucursalId } = req.body;
+
+    // Actualiza el auto y establece la nueva sucursal
+    const auto = await Auto.findByIdAndUpdate(id, { sucursalAuto: sucursalId }, { new: true });
+    if (!auto) {
+      return res.status(404).json({ message: 'Auto no encontrado' });
+    }
+
+    res.json(auto);  // Envía el auto actualizado como respuesta
+  } catch (error) {
+    console.error("Error al actualizar la sucursal del auto:", error);
+    res.status(500).json({ message: "Error al actualizar la sucursal del auto" });
+  }
+};

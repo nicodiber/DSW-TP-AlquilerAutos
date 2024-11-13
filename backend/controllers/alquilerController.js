@@ -17,8 +17,6 @@ exports.crearAlquiler = async (req, res) => {
       fechaFin,
       fechaInicioReal,
       fechaFinReal,
-      horaInicio,
-      horaFin,
       notas,
       precioTotalAlquiler,
       estadoAlquiler
@@ -35,8 +33,6 @@ exports.crearAlquiler = async (req, res) => {
       fechaFin,
       fechaInicioReal,
       fechaFinReal,
-      horaInicio,
-      horaFin,
       notas,
       precioTotalAlquiler,
       estadoAlquiler

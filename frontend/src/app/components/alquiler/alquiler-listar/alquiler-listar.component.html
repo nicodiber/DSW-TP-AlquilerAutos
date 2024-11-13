@@ -8,11 +8,11 @@
           <table *ngIf="listaAlquileres.length > 0" class="table table-striped mt-3">
             <thead>
               <tr>
-                <th>ID</th>
-                <th (click)="ordenarPor('fechaInicio')">Fecha y Hora de Inicio <span [ngClass]="getIconoOrden('fechaInicio')"></span></th>
-                <th (click)="ordenarPor('fechaFin')">Fecha y Hora de Fin <span [ngClass]="getIconoOrden('fechaFin')"></span></th>
-                <th (click)="ordenarPor('fechaInicioReal')">Fecha de Inicio Real <span [ngClass]="getIconoOrden('fechaInicioReal')"></span></th>
-                <th (click)="ordenarPor('fechaFinReal')">Fecha de Fin Real <span [ngClass]="getIconoOrden('fechaFinReal')"></span></th>
+                <th (click)="ordenarPor('_id')">ID <span [ngClass]="getIconoOrden('_id')"></span></th>
+                <th (click)="ordenarPor('fechaInicio')">Fecha y Hora Inicio <span [ngClass]="getIconoOrden('fechaInicio')"></span></th>
+                <th (click)="ordenarPor('fechaFin')">Fecha y Hora Fin <span [ngClass]="getIconoOrden('fechaFin')"></span></th>
+                <th (click)="ordenarPor('fechaInicioReal')">Fecha y Hora Inicio Real <span [ngClass]="getIconoOrden('fechaInicioReal')"></span></th>
+                <th (click)="ordenarPor('fechaFinReal')">Fecha y Hora Fin Real <span [ngClass]="getIconoOrden('fechaFinReal')"></span></th>
                 <th (click)="ordenarPor('estadoAlquiler')">Estado <span [ngClass]="getIconoOrden('estadoAlquiler')"></span></th>
                 <th (click)="ordenarPor('precioTotalAlquiler')">Precio Total <span [ngClass]="getIconoOrden('precioTotalAlquiler')"></span></th>
                 <th>Patente Auto</th>
@@ -23,14 +23,14 @@
                 <!-- Fila principal: Datos Generales del alquiler -->
                 <tr>
                   <td>{{ alquiler._id }}</td>
-                  <td>{{ alquiler.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</td>
-                  <td>{{ alquiler.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</td>
+                  <td>{{ alquiler.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
+                  <td>{{ alquiler.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
                   <td>
-                    <span *ngIf="alquiler.fechaInicioReal">{{ alquiler.fechaInicioReal | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</span>
+                    <span *ngIf="alquiler.fechaInicioReal">{{ alquiler.fechaInicioReal | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</span>
                     <span *ngIf="!alquiler.fechaInicioReal"> N/A </span>
                   </td>
                   <td>
-                    <span *ngIf="alquiler.fechaFinReal">{{ alquiler.fechaFinReal | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}</span>
+                    <span *ngIf="alquiler.fechaFinReal">{{ alquiler.fechaFinReal | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</span>
                     <span *ngIf="!alquiler.fechaFinReal"> N/A </span>
                   </td>
                   <td style="text-transform: capitalize;" [ngClass]="{'estado-reservado': alquiler.estadoAlquiler === 'reservado', 'estado-activo': alquiler.estadoAlquiler === 'activo', 'estado-cancelado': alquiler.estadoAlquiler === 'cancelado', 'estado-completado': alquiler.estadoAlquiler === 'completado'}"><strong>{{ alquiler.estadoAlquiler }}</strong></td>
@@ -83,19 +83,26 @@
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                  <!-- Input para fechas -->
+                                  <!-- Modal para fechas y horas -->
                                   <div *ngIf="modalType === 'fecha' || modalType === 'fechaFinReal'">
                                     <label>{{ modalPlaceholder }}</label>
-                                    <input type="text" [(ngModel)]="modalInput" class="form-control" placeholder="DD/MM/YYYY" />
-                                    <div *ngIf="!fechaValida && modalInput" class="text-danger">Formato de fecha inválido o la fecha es incorrecta</div>
+                                    <input type="text" class="form-control" placeholder="DD/MM/YYYY" [(ngModel)]="fechaInput" />
+                                    <div class="spacer-10"></div>
+                                    <input type="text" class="form-control" placeholder="HH:mm" [(ngModel)]="horaInput" />
+                                    <div *ngIf="!fechaValida && fechaInput && horaInput" class="text-danger">
+                                      Formato de fecha y/o hora inválido o incorrecto
+                                    </div>
                                   </div>
+                                  
                                   <!-- Dropdown para trabajador -->
                                   <div *ngIf="modalType === 'trabajador'">
                                     <label>Seleccione un Trabajador</label>
                                     <select [(ngModel)]="modalInput" class="form-select">
-                                      <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }} {{ trabajador.apellido }}</option>
+                                      <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }} {{
+                                        trabajador.apellido }}</option>
                                     </select>
                                   </div>
+                                  
                                   <!-- Dropdown para estado -->
                                   <div *ngIf="modalType === 'estado'">
                                     <label>Seleccione un Estado</label>
@@ -103,15 +110,15 @@
                                       <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
                                     </select>
                                   </div>
-                                  <!-- Dropdown para notas -->
+                                  
+                                  <!-- Textarea para notas -->
                                   <div *ngIf="modalType === 'notas'">
                                     <textarea [(ngModel)]="modalInput" class="form-control"></textarea>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                  <button type="button" class="btn btn-primary" [disabled]="!inputValido()"
-                                    (click)="confirmarModal()">Guardar</button>
+                                  <button type="button" class="btn btn-primary" [disabled]="!inputValido()" (click)="confirmarModal()">Guardar</button>
                                 </div>
                               </div>
                             </div>

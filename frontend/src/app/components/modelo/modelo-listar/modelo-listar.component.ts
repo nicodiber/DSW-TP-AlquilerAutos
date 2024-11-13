@@ -31,12 +31,6 @@ export class ListarModelosComponent implements OnInit {
     if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0)) {
       window.location.href = '/buscador';
       this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
-    } else {
-      // Una recarga para que se vea correctamente si llega de forma forzada
-      if (this.cookieService.get('reload') !== 'true') {
-        this.cookieService.set('reload', 'true'); // Eliminar la cookie para evitar loop
-        window.location.reload();
-      }
     }
     // Obtenemos Categorias y Marcas
     this.obtenerCategorias();

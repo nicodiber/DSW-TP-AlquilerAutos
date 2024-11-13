@@ -22,11 +22,9 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
     this.subscription = this.router.events.subscribe(event => {
       if (event) {
         // Borrar las cookies al iniciar la navegación hacia otra ruta
-        console.log('borro');
         this.gestionCookiesService.borrarCookie('datosBusqueda');
         this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
         this.gestionCookiesService.borrarCookie('modelosDisponibles');
-        this.gestionCookiesService.borrarCookie('reload');
       }
     });
 

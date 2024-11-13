@@ -3,25 +3,27 @@ import { ToastrService } from 'ngx-toastr';
 import { AlquilerService } from '../../../services/alquiler.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
+import moment from 'moment';
 
 @Component({
   selector: 'app-alquiler-listar',
   templateUrl: './alquiler-listar.component.html',
   styleUrls: ['./alquiler-listar.component.css']
 })
+
 export class AlquilerListarComponent implements OnInit {
   listaAlquileres: alquiler[] = [];
   trabajadores: usuario[] = [];
-  // Ordenamiento de columnas
   campoOrden: string = '';
   direccionOrdenAsc: boolean = true;
-  // Utilizado para los botones de accion:
   estados = ['reservado', 'activo', 'cancelado', 'completado'];
-  modalInstance: any; // Variable para almacenar la instancia del modal
+  modalInstance: any;
   modalTitle: string = '';
   modalPlaceholder: string = '';
   modalType: 'fecha' | 'fechaFinReal' | 'trabajador' | 'estado' | 'notas' = 'fecha';
-  modalInput: any;
+  modalInput: string | undefined; // Usado solo para tipos distintos a 'fecha' y 'fechaFinReal'
+  fechaInput: string = ''; // Usado solo para 'fecha' y 'fechaFinReal'
+  horaInput: string = '';  // Usado solo para 'fecha' y 'fechaFinReal'
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
 
@@ -87,24 +89,17 @@ export class AlquilerListarComponent implements OnInit {
     this.alquilerActual = alquiler;
     this.modalType = tipo;
 
-    if (tipo === 'fecha') {
-      this.modalTitle = 'Establecer Fecha de Inicio Real';
-      this.modalPlaceholder = 'DD/MM/YYYY';
-      this.modalInput = '';
-    } else if (tipo === 'fechaFinReal') {
-      this.modalTitle = 'Establecer Fecha de Fin Real';
-      this.modalPlaceholder = 'DD/MM/YYYY';
-      this.modalInput = '';
-      if (!alquiler.fechaInicioReal) {
-        this.toastr.warning('Debe establecer primero la Fecha de Inicio Real.');
-        return;
-      }
+    if (tipo === 'fecha' || tipo === 'fechaFinReal') {
+      this.modalTitle = tipo === 'fecha' ? 'Establecer Fecha de Inicio Real' : 'Establecer Fecha de Fin Real';
+      this.modalPlaceholder = 'Ingrese fecha y hora según los formatos indicados';
+      this.fechaInput = '';  // Limpiar la fecha antes de abrir el modal
+      this.horaInput = '';   // Limpiar la hora antes de abrir el modal
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Modificar Trabajador';
-      this.modalInput = alquiler.trabajadorAsignado?._id;
+      this.modalInput = String(alquiler.trabajadorAsignado?._id) || '';
     } else if (tipo === 'estado') {
       this.modalTitle = 'Cambiar Estado';
-      this.modalInput = alquiler.estadoAlquiler;
+      this.modalInput = alquiler.estadoAlquiler || '';
     } else if (tipo === 'notas') {
       this.modalTitle = 'Modificar Notas';
       this.modalInput = alquiler.notas || '';
@@ -118,14 +113,19 @@ export class AlquilerListarComponent implements OnInit {
   }
 
   inputValido(): boolean {
-    // Valida solo el formato para los campos de fecha
     if (this.modalType === 'fecha' || this.modalType === 'fechaFinReal') {
-      const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-      return regex.test(this.modalInput); // Retorna true solo si el formato es correcto
+      const regexFecha = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+      const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+      this.fechaValida = regexFecha.test(this.fechaInput) && regexHora.test(this.horaInput);
+      return this.fechaValida;
     }
 
-    // Para otros tipos (trabajador, estado, notas), verifica que el campo no esté vacío
-    return this.modalInput !== undefined && this.modalInput !== null && this.modalInput !== '';
+    return typeof this.modalInput === 'string' && this.modalInput.trim() !== '';
+  }
+
+  isFechaHoraInput(): boolean {
+    return typeof this.modalInput === 'object' && this.modalInput !== null && 'fecha' in this.modalInput && 'hora' in this.modalInput;
   }
 
   convertirFechaAFormatoISO(fecha: string): string {
@@ -136,47 +136,83 @@ export class AlquilerListarComponent implements OnInit {
   confirmarModal() {
     if (!this.alquilerActual) return;
 
-    if (this.modalType === 'fecha') {
-      const fechaISO = this.convertirFechaAFormatoISO(this.modalInput); // Convertir a YYYY-MM-DD para que Mongo lo interprete bien
-      this._alquilerService.establecerFechaInicioReal(String(this.alquilerActual._id), fechaISO).subscribe(() => {
-        this.alquilerActual!.fechaInicioReal = new Date(fechaISO);
-        this.toastr.success('Fecha de Inicio Real actualizada');
-        this.modalInstance?.hide(); // Cierra el modal
-      });
-    } else if (this.modalType === 'fechaFinReal') {
-      const fechaISO = this.convertirFechaAFormatoISO(this.modalInput);
-      const fechaInicio = new Date(this.alquilerActual.fechaInicioReal || '');
-      const fechaFin = new Date(fechaISO);
-      if (fechaFin <= fechaInicio) {
-        this.toastr.warning('La Fecha de Fin Real debe ser mayor a la Fecha de Inicio Real.');
-        return;
-      }
+    if (!this.inputValido()) return;
 
-      this._alquilerService.establecerFechaFinReal(String(this.alquilerActual._id), fechaISO).subscribe(() => {
-        this.alquilerActual!.fechaFinReal = fechaFin;
-        this.toastr.success('Fecha de Fin Real actualizada');
-        this.modalInstance?.hide();
-      });
-    } else if (this.modalType === 'trabajador') {
-        this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
-          this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
-            this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
-            this.toastr.success('Trabajador asignado actualizado');
-            this.modalInstance?.hide();
-          });
+    if (this.modalType === 'fecha' || this.modalType === 'fechaFinReal') {
+      const fechaISO = this.convertirFechaAFormatoISO(this.fechaInput) + ' ' + this.horaInput;
+      const fechaCompleta = moment(fechaISO, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
+
+      if (this.modalType === 'fecha') {
+        this._alquilerService.establecerFechaInicioReal(String(this.alquilerActual._id), fechaCompleta).subscribe(() => {
+          this.alquilerActual!.fechaInicioReal = fechaCompleta;
+          this.toastr.success('Fecha de Inicio Real actualizada');
+          this.modalInstance?.hide();
         });
-    } else if (this.modalType === 'estado') {
-      this._alquilerService.cambiarEstado(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
-        this.alquilerActual!.estadoAlquiler = this.modalInput;
-        this.toastr.success('Estado actualizado');
-        this.modalInstance?.hide();
-      });
-    } else if (this.modalType === 'notas') {
-      this._alquilerService.modificarNotas(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
-        this.alquilerActual!.notas = this.modalInput;
-        this.toastr.success('Notas actualizadas');
-        this.modalInstance?.hide();
-      });
+      } else if (this.modalType === 'fechaFinReal') {
+        const fechaInicio = new Date(this.alquilerActual.fechaInicioReal || '');
+        if (fechaCompleta <= fechaInicio) {
+          this.toastr.warning('La Fecha de Fin Real debe ser mayor a la Fecha de Inicio Real.');
+          return;
+        }
+        this._alquilerService.establecerFechaFinReal(String(this.alquilerActual._id), fechaCompleta).subscribe(() => {
+          this.alquilerActual!.fechaFinReal = fechaCompleta;
+          this.toastr.success('Fecha de Fin Real actualizada');
+          this.modalInstance?.hide();
+        });
+      }
+    } else if (this.modalType === 'trabajador' && typeof this.modalInput === 'string') {
+        this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), Number(this.modalInput)).subscribe(() => {
+            this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
+              this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
+              this.toastr.success('Trabajador asignado actualizado');
+              this.modalInstance?.hide();
+            });
+        });
+    } else if (this.modalType === 'estado' && typeof this.modalInput === 'string') {
+        this._alquilerService.cambiarEstado(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
+          this.alquilerActual!.estadoAlquiler = String(this.modalInput);
+
+          // Llamada para actualizar el estado del auto después de actualizar el estado del alquiler
+          let nuevoEstadoAuto;
+          if (this.alquilerActual!.estadoAlquiler === 'completado' || this.alquilerActual!.estadoAlquiler === 'cancelado') {
+            nuevoEstadoAuto = 'disponible';
+          } else if (this.alquilerActual!.estadoAlquiler === 'activo') {
+            nuevoEstadoAuto = 'alquilado';
+          } else {
+            nuevoEstadoAuto = 'reservado';
+          }
+
+          this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?.auto._id), nuevoEstadoAuto).subscribe(
+            () => {
+              console.log('Estado del auto actualizado a', nuevoEstadoAuto);
+              if (this.alquilerActual!.estadoAlquiler === 'completado') {
+                // Si el estado es "completado", actualiza la sucursal del auto a la sucursal de devolución del alquiler
+                const sucursalDevolucionId = this.alquilerActual!.sucursalDevolucion._id;
+                this._alquilerService.actualizarSucursalAuto(String(this.alquilerActual?.auto._id), String(sucursalDevolucionId)).subscribe(
+                  () => {
+                    console.log('Sucursal del auto actualizada a la sucursal de devolución:', sucursalDevolucionId);
+                  },
+                  error => {
+                    console.error('Error al actualizar la sucursal del auto:', error);
+                  }
+                );
+              }
+            },
+            error => {
+              console.error('Error al actualizar el estado del auto:', error);
+            }
+          );
+
+          this.toastr.success('Estado actualizado');
+          this.modalInstance?.hide();
+        });
+    } else if (this.modalType === 'notas' && typeof this.modalInput === 'string') {
+        this._alquilerService.modificarNotas(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
+          this.alquilerActual!.notas = String(this.modalInput);
+          this.toastr.success('Notas actualizadas');
+          this.modalInstance?.hide();
+        });
     }
   }
+
 }

@@ -38,9 +38,20 @@ export class AlquilerRevisionComponent implements OnInit {
 
     this.usuario = this.authService.getUsuarioLogueado();
   }
+  
+  cancelarProceso(){
+    this.gestionCookiesService.borrarCookie('datosBusqueda');
+    this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
+    this.gestionCookiesService.borrarCookie('modelosDisponibles');
+    window.location.href = '/buscador';
+  }
 
   confirmarReserva(): void {
     try {
+      // Crear las fechas con horas integradas
+      const fechaInicio = moment(this.datosBusqueda.fechaRetiro + ' ' + this.datosBusqueda.horaRetiro, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
+      const fechaFin = moment(this.datosBusqueda.fechaDevolucion + ' ' + this.datosBusqueda.horaDevolucion, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
+
       // Actualizar datosBusqueda en el servicio y en la cookie con tiempo de expiración
       this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);  // Le enviamos el precio para que lo sume a las cookies
       // Volvemos a obtener toda la cookie nuevamente, ya actualizada, y guardamos en misma variable
@@ -52,12 +63,10 @@ export class AlquilerRevisionComponent implements OnInit {
         sucursalEntrega: this.datosBusqueda.sucursalRetiro._id,
         sucursalDevolucion: this.datosBusqueda.sucursalDevolucion._id,
         trabajadorAsignado: this.datosBusqueda.trabajadorAsignado || undefined, // No es obligatorio
-        fechaInicio: new Date(this.datosBusqueda.fechaRetiro),
-        fechaFin: new Date(this.datosBusqueda.fechaDevolucion),
+        fechaInicio: fechaInicio,
+        fechaFin: fechaFin,
         fechaInicioReal: undefined,
         fechaFinReal: undefined,
-        horaInicio: this.datosBusqueda.horaRetiro,
-        horaFin: this.datosBusqueda.horaDevolucion,
         notas: undefined,
         precioTotalAlquiler: this.datosBusqueda.precioTotal,
         estadoAlquiler: 'reservado'
@@ -67,7 +76,16 @@ export class AlquilerRevisionComponent implements OnInit {
       this.alquilerService.crearAlquiler(alquilerData).subscribe(
         response => {
           this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
-          window.location.href = '/alquiler-completado';
+          // Llamada para actualizar el estado del auto después de crear el alquiler
+          this.alquilerService.actualizarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
+            () => {
+              console.log('Estado del auto actualizado a "reservado".');
+              window.location.href = '/alquiler-completado';
+            },
+            error => {
+              console.error('Error al actualizar el estado del auto:', error);
+            }
+          );
         },
         error => {
           console.error('Error al crear el alquiler:', error);
@@ -78,5 +96,4 @@ export class AlquilerRevisionComponent implements OnInit {
       alert("Hubo un error al realizar la reserva. Intente nuevamente.");
     }
   }
-
 }

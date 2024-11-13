@@ -15,8 +15,6 @@ interface AlquilerData {
   fechaFin: Date;
   fechaInicioReal?: Date;
   fechaFinReal?: Date;
-  horaInicio: string;
-  horaFin: string;
   notas?: string;
   precioTotalAlquiler: number;
   estadoAlquiler: string;
@@ -43,11 +41,11 @@ export class AlquilerService {
   }
 
   // Funciones especificas - Listar Alquiler
-  establecerFechaInicioReal(_id: string, fecha: string) {
+  establecerFechaInicioReal(_id: string, fecha: string | Date) {
     return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha });
   }
 
-  establecerFechaFinReal(_id: string, fecha: string) {
+  establecerFechaFinReal(_id: string, fecha: string | Date) {
     return this.http.put(`${this.url}${_id}/fechaFinReal`, { fechaFinReal: fecha });
   }
 
@@ -70,6 +68,15 @@ export class AlquilerService {
   // Funciones especificas - Buscador
   buscarModelosDisponibles(data: any): Observable<any> {
     return this.http.post<any>(this.url + 'buscarModelosDisponibles', data);
+  }
+
+  actualizarEstadoAuto(idAuto: string, estado: string): Observable<any> {
+    const url = `${this.url}autos/${idAuto}/estado`;
+    return this.http.patch(url, { estado });
+  }
+
+  actualizarSucursalAuto(idAuto: string, sucursalId: string) {
+    return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
   }
   
 }

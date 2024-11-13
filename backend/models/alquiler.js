@@ -45,14 +45,6 @@ const AlquilerSchema = new mongoose.Schema({
         type: Date,
         default: ''
     },
-    horaInicio: {
-        type: String, 
-        required: true
-    },
-    horaFin: {
-        type: String, 
-        required: true
-    },
     notas: {
         type: String, // Campo opcional para observaciones o detalles adicionales
         default: ''  // Se puede dejar en blanco por defecto

@@ -43,14 +43,6 @@ export class BuscadorComponent implements OnInit {
       },
       (error) => console.error('Error al obtener sucursales:', error)
     );
-
-    // Recarga la primera vez para que todo se vea bien, pero evitando loop
-    if (this.cookieService.get('reload') === 'true') {
-      this.cookieService.delete('reload'); // Eliminar la cookie para evitar loop
-      window.location.reload();
-    } else {
-      this.cookieService.delete('reload');
-    }
   }
 
   // Método para generar intervalos de media hora entre el horario de apertura y cierre
