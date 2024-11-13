@@ -75,7 +75,6 @@ export class AutoCrearComponent implements OnInit {
       estadoAuto: this.autoForm.get('estadoAuto')?.value,
       matricula: this.autoForm.get('matricula')?.value
     };
-    console.log(AUTO);
 
     if (this.id !== null) {
       // Editar auto
@@ -117,7 +116,7 @@ export class AutoCrearComponent implements OnInit {
     if (error.status === 409 && error.error && error.error.msg) {
       errorMsg = error.error.msg;
     }
-    this.toastr.error(errorMsg, `Error de ${action === 'registrar' ? 'Registro' : 'Actualización'}`);
+    this.toastr.error(errorMsg, `Error de ${action} === 'registrar' ? 'Registro' : 'Actualización'}`);
     this.autoForm.reset();
   }
 

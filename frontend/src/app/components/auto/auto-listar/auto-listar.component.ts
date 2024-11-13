@@ -26,21 +26,20 @@ export class AutoListarComponent implements OnInit {
     });
   }
 
- eliminarAuto(autoId: number) {
-  this.autoService.eliminarAuto(autoId).subscribe({
-    next: () => {
-      this.toastr.success('Auto eliminado con éxito');
-      this.obtenerAutos(); // Actualiza la lista después de eliminar
-    },
-    error: (err) => {
-      if (err.status === 400) {
-        this.toastr.error(err.error.msg, 'Error');
-      } else {
-        console.error('Error al eliminar auto:', err);
+  eliminarAuto(autoId: number) {
+    this.autoService.eliminarAuto(autoId).subscribe({
+      next: () => {
+        this.toastr.success('Auto eliminado con éxito');
+        this.obtenerAutos(); // Actualiza la lista después de eliminar
+      },
+      error: (err) => {
+        if (err.status === 400) {
+          this.toastr.error(err.error.msg, 'Error');
+        } else {
+          console.error('Error al eliminar auto:', err);
+        }
       }
-    }
-  });
-}
+    });
+  }
 
-  
 }

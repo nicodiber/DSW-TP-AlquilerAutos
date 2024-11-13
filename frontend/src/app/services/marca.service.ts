@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { marca } from '../models/marca';
+import { modelo } from '../models/modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,6 @@ import { marca } from '../models/marca';
 export class MarcaService {
   url = 'http://localhost:4000/api/marcas/';
 
-  
   constructor(private http: HttpClient) { }
 
   obtenerMarcas(): Observable<any>{
@@ -27,13 +27,20 @@ export class MarcaService {
     return this.http.get<marca>(`${this.url}/${id}`);
   }  
 
-  // Método para actualizar una marca
-  actualizarMarca(id: number, marca: marca): Observable<marca> {
+  editarMarca(id: string, marca: marca): Observable<marca> {
     return this.http.put<marca>(`${this.url}/${id}`, marca);
   }
 
-  // Método para eliminar una marca
   eliminarMarca(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  // Especificas
+  obtenerModelosPorMarca(idMarca: string): Observable<modelo[]> {
+    return this.http.get<modelo[]>(`${this.url}${idMarca}/marca-modelos`);
+  }
+
+  verificarModelosPorMarca(idMarca: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.url}${idMarca}/existe-modelos`);
   }
 }

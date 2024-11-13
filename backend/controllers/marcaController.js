@@ -1,4 +1,5 @@
 const Marca = require("../models/marca");
+const Modelo = require('../models/modelo');
 const { getNextSequenceValue } = require('../config/db');
 
 exports.crearMarca = async (req, res) => {
@@ -73,6 +74,35 @@ exports.eliminarMarca = async (req, res) => {
     res.json({ msg: 'Marca eliminada con éxito' });
   } catch (error) {
     console.log(error);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+// Especifico
+exports.obtenerModelosPorMarca = async (req, res) => {
+  try {
+    const idMarca = req.params.idMarca;
+    const modelos = await Modelo.find({ marcaModelo: idMarca }).populate('marcaModelo');  // elimina '._id' y usa populate si es una referencia;
+
+    if (!modelos || modelos.length === 0) {
+      return res.status(404).json({ msg: 'No se encontraron modelos para esta marca' });
+    }
+
+    res.json(modelos);
+  } catch (error) {
+    console.error('Error al obtener modelos por marca:', error);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+exports.verificarModelosPorMarca = async (req, res) => {
+  try {
+    const idMarca = req.params.idMarca;
+    const modelos = await Modelo.find({ marcaModelo: idMarca });
+    const existenModelos = modelos.length > 0;
+    res.json(existenModelos);
+  } catch (error) {
+    console.error('Error al verificar modelos para la marca:', error);
     res.status(500).send('Hubo un error');
   }
 };

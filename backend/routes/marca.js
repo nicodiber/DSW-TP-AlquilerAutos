@@ -8,4 +8,7 @@ router.get('/:id', marcaController.obtenerMarca);
 router.put('/:id', marcaController.actualizarMarca);
 router.delete('/:id', marcaController.eliminarMarca);
 
+router.get('/:idMarca/marca-modelos', marcaController.obtenerModelosPorMarca);
+router.get('/:idMarca/existe-modelos', marcaController.verificarModelosPorMarca);
+
 module.exports = router;

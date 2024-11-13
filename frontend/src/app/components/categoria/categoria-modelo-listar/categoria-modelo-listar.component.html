@@ -1,10 +1,9 @@
 <div class="container mt-5">
   <div class="d-flex justify-content-between mb-3">
-    <button class="btn btn-secondary" routerLink="/marcas">Volver</button>
-    <button class="btn btn-primary" routerLink="/modelo-crear">Agregar Modelo</button>
+    <button class="btn btn-secondary" routerLink="/categoria-listar">Volver</button>
   </div>
-  <h3>Modelos de la Marca {{ nombreMarca }}</h3>
-  <table class="table table-striped">
+  <h3>Modelos de la Categoría {{ nombreCategoria }}</h3>
+  <table class="table table-striped" *ngIf="modelos.length > 0">
     <thead>
       <tr>
         <th>ID</th>
@@ -19,10 +18,14 @@
       <tr *ngFor="let modelo of modelos">
         <td>{{ modelo._id }}</td>
         <td>{{ modelo.nombreModelo }}</td>
-        <td>{{ modelo.precioXdia }}</td>
+        <td>${{ modelo.precioXdia | number: '1.0-0' }}</td>
         <td>{{ modelo.anio }}</td>
         <td>{{ modelo.color }}</td>
       </tr>
     </tbody>
   </table>
+  <h5 style="text-align: start; margin-top: 10px;" *ngIf="modelos.length == 0">No hay
+    Modelos para mostrar</h5>
 </div>
+
+  

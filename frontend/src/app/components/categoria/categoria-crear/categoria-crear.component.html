@@ -8,6 +8,7 @@
 
                         <!-- Campo de Nombre de Categoría obligatorio -->
                         <div class="mb-3">
+                            <label for="nombreCategoria">Nombre de la Categoría</label>
                             <input type="text" formControlName="nombreCategoria" class="form-control form-control-lg"
                                 placeholder="Nombre de la Categoría">
                             <div class="text-danger"
@@ -18,7 +19,7 @@
 
                         <!-- Botones de Volver y Aceptar -->
                         <div class="mb-3">
-                            <button routerLink="/categoria" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button routerLink="/categoria-listar" class="btn btn-secondary btn-lg float-start">VOLVER</button>
                             <button type="submit" [disabled]="categoriaForm.invalid" class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
@@ -27,3 +28,18 @@
         </div>
     </div>
 </div>
+<!--
+<div class="container">
+    <h2>Crear Nueva Categoría</h2>
+    <form (ngSubmit)="crearCategoria()" #categoriaForm="ngForm">
+        <div class="form-group">
+            <label for="nombreCategoria">Nombre de la Categoría</label>
+            <input type="text" id="nombreCategoria" class="form-control" [(ngModel)]="categoria.nombreCategoria"
+                name="nombreCategoria" required />
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!categoriaForm.form.valid">
+            Crear Categoría
+        </button>
+    </form>
+</div>
+-->

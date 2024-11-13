@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo">LISTADO DE CATEGORÍAS</span>
+          <button class="btn btn-success float-end" routerLink="/categoria-crear">NUEVA CATEGORIA</button>
+          <table class="table table-striped mt-3" *ngIf="listaCategorias.length > 0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre de la Categoria</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let categoria of listaCategorias">
+                <td>{{ categoria._id }}</td>
+                <td>{{ categoria.nombreCategoria }}</td>
+                <td>
+                  <i class="fa-solid fa-car-side" [routerLink]="['/categoria-modelos', categoria._id]"
+                    title="Ver Modelos"></i>
+                    &nbsp;&nbsp;
+                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
+                    (click)="categoria._id ? eliminarCategoria(categoria._id) : null"></i>
+                    &nbsp;&nbsp;
+                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar"
+                    [routerLink]="['/categoria-editar', categoria._id]"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaCategorias.length == 0">No hay
+            Categorías para mostrar</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

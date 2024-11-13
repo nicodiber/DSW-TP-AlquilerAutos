@@ -1,4 +1,5 @@
 const Categoria = require("../models/categoria");
+const Modelo = require('../models/modelo');
 const { getNextSequenceValue } = require('../config/db');
 
 exports.crearCategoria = async (req, res) => {
@@ -73,6 +74,35 @@ exports.eliminarCategoria = async (req, res) => {
     res.json({ msg: 'Categoria eliminada con éxito' });
   } catch (error) {
     console.log(error);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+// Especifico
+exports.obtenerModelosPorCategoria = async (req, res) => {
+  try {
+    const idCategoria = req.params.idCategoria;
+    const modelos = await Modelo.find({ categoriaModelo: idCategoria }).populate('categoriaModelo');  // elimina '._id' y usa populate si es una referencia
+
+    if (!modelos || modelos.length === 0) {
+      return res.status(404).json({ msg: 'No se encontraron modelos para esta categoría' });
+    }
+
+    res.json(modelos);
+  } catch (error) {
+    console.error('Error al obtener modelos por categoría:', error);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+exports.verificarModelosPorCategoria = async (req, res) => {
+  try {
+    const idCategoria = req.params.idCategoria;
+    const modelos = await Modelo.find({ categoriaModelo: idCategoria });
+    const existenModelos = modelos.length > 0;
+    res.json(existenModelos);
+  } catch (error) {
+    console.error('Error al verificar modelos para la categoría:', error);
     res.status(500).send('Hubo un error');
   }
 };

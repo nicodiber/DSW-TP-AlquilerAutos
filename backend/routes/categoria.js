@@ -8,4 +8,7 @@ router.get('/:id', categoriaController.obtenerCategoria);
 router.put('/:id', categoriaController.actualizarCategoria);
 router.delete('/:id', categoriaController.eliminarCategoria);
 
+router.get('/:idCategoria/categoria-modelos', categoriaController.obtenerModelosPorCategoria);
+router.get('/:idCategoria/existe-modelos', categoriaController.verificarModelosPorCategoria);
+
 module.exports = router;

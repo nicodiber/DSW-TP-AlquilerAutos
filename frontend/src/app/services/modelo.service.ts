@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { modelo } from '../models/modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +28,6 @@ export class ModeloService {
 
   obtenerModelo(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
-  }
-
-  obtenerModelosPorMarca(): Observable<modelo[]> {
-    return this.http.get<modelo[]>(this.url);
-  }
-
-  obtenerModelosPorCategoria(): Observable<modelo[]> {
-    return this.http.get<modelo[]>(this.url);
   }
 
   // Funciones especificas

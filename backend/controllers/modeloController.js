@@ -1,8 +1,6 @@
 const Modelo = require("../models/modelo");
 const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
-const Categoria = require('../models/categoria'); // Ajusta la ruta si es necesario
-const Marca = require('../models/marca'); // Ajusta la ruta si es necesario
 
 
 exports.crearModelo = async (req, res) => {
@@ -59,21 +57,8 @@ exports.crearModeloConImagenes = async (req, res) => {
 
 exports.obtenerModelos = async (req, res) => {
   try {
-    // Obtener todos los modelos
-    const modelos = await Modelo.find();
-
-    // Para cada modelo, busca la categoría y marca asociadas por sus IDs
-    const modelosConDetalles = await Promise.all(
-      modelos.map(async (modelo) => {
-        const categoria = await Categoria.findById(modelo.categoriaModelo); // Cambia 'categoriaModelo' si es necesario
-        const marca = await Marca.findById(modelo.marcaModelo); // Cambia 'marcaModelo' si es necesario
-        return {
-          ...modelo._doc, // Contenido del modelo
-          nombreCategoria: categoria ? categoria.nombre : "Categoría no encontrada", // Ajusta 'nombre' al campo en Categoria
-          nombreMarca: marca ? marca.nombre : "Marca no encontrada" // Ajusta 'nombre' al campo en Marca
-        };
-      })
-    );
+    // Obtener todos los modelos con los detalles de categoría y marca
+    const modelosConDetalles = await Modelo.find().populate('categoriaModelo').populate('marcaModelo');
 
     res.json(modelosConDetalles);
   } catch (error) {
@@ -81,6 +66,7 @@ exports.obtenerModelos = async (req, res) => {
     res.status(500).send("Hubo un error al obtener los modelos");
   }
 };
+
 
 exports.actualizarModelo = async (req, res) => {
   try {

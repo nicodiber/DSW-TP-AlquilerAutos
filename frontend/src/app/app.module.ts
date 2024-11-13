@@ -34,14 +34,12 @@ import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revisi
 import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
-import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
-import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
-import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
-import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
-import { ListarCategoriaModeloComponent } from './components/categoria/listar-categoria-modelo/listar-categoria-modelo.component';
-import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
-import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
-import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
+import { ListarMarcaComponent } from './components/marca/marca-listar/marca-listar.component';
+import { ListarMarcaModeloComponent } from './components/marca/marca-modelo-listar/marca-modelo-listar.component';
+import { CrearMarcaComponent } from './components/marca/marca-crear/marca-crear.component';
+import { ListarCategoriaComponent } from './components/categoria/categoria-listar/categoria-listar.component';
+import { ListarCategoriaModeloComponent } from './components/categoria/categoria-modelo-listar/categoria-modelo-listar.component';
+import { CrearCategoriaComponent } from './components/categoria/categoria-crear/categoria-crear.component';
 import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 
@@ -67,13 +65,11 @@ import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.comp
     FormularioContactoComponent,
     Error404Component,
     ListarMarcaComponent,
-    ListarModelosMarcaComponent,
+    ListarMarcaModeloComponent,
     CrearMarcaComponent,
     ListarCategoriaComponent,
     ListarCategoriaModeloComponent,
     CrearCategoriaComponent,
-    ModificarCategoriaComponent,
-    ModificarMarcaComponent,
     AutoCrearComponent,
     AutoListarComponent
   ],

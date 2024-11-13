@@ -20,14 +20,12 @@ import { AlquilerRevisionComponent } from './components/alquiler/alquiler-revisi
 import { AlquilerCompletadoComponent } from './components/alquiler/alquiler-completado/alquiler-completado.component';
 import { FormularioContactoComponent } from './components/formulario-contacto/formulario-contacto.component';
 import { Error404Component } from './components/404/404.component';
-import { ListarMarcaComponent } from './components/marca/listar-marca/listar-marca.component';
-import { ListarModelosMarcaComponent } from './components/marca/listar-marca-modelo/listar-marca-modelo.component';
-import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
-import { ListarCategoriaComponent } from './components/categoria/listar-categoria/listar-categoria.component';
-import { ListarCategoriaModeloComponent } from './components/categoria/listar-categoria-modelo/listar-categoria-modelo.component';
-import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
-import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
-import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
+import { ListarMarcaComponent } from './components/marca/marca-listar/marca-listar.component';
+import { ListarMarcaModeloComponent } from './components/marca/marca-modelo-listar/marca-modelo-listar.component';
+import { CrearMarcaComponent } from './components/marca/marca-crear/marca-crear.component';
+import { ListarCategoriaComponent } from './components/categoria/categoria-listar/categoria-listar.component';
+import { ListarCategoriaModeloComponent } from './components/categoria/categoria-modelo-listar/categoria-modelo-listar.component';  // cambiar
+import { CrearCategoriaComponent } from './components/categoria/categoria-crear/categoria-crear.component';
 import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 
@@ -57,13 +55,13 @@ const routes: Routes = [
   { path: 'sucursal-eliminar', component: SucursalCrearComponent },
   { path: 'alquiler-listar', component: AlquilerListarComponent },
   { path: 'marca-crear', component:CrearMarcaComponent},
-  { path: 'marcas', component: ListarMarcaComponent},
-  { path: 'marca-modelos/:nombreMarca', component: ListarModelosMarcaComponent},
-  { path: 'modificar-marca/:id', component: ModificarMarcaComponent },
+  { path: 'marca-listar', component: ListarMarcaComponent},
+  { path: 'marca-editar/:id', component: CrearMarcaComponent },
+  { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
+  { path: 'categoria-listar', component: ListarCategoriaComponent},
   { path: 'categoria-crear', component: CrearCategoriaComponent },
-  { path: 'categorias', component: ListarCategoriaComponent},
-  { path: 'categoria-modelos/:nombreCategoria', component:ListarCategoriaModeloComponent},
-  { path: 'modificar-categoria/:id', component: ModificarCategoriaComponent },
+  { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
+  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent},
   { path: 'auto-listar', component: AutoListarComponent },
   { path: 'auto-crear', component:AutoCrearComponent},
   { path: 'auto-editar/:id', component:AutoCrearComponent},
