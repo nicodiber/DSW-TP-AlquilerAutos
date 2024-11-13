@@ -48,11 +48,19 @@ export class SucursalService {
     return this.http.get(this.url + _id + 'asignar-auto');
   }
 
-  obtenerTrabajadoresSucursal(idSucursal: string) {
-    return this.http.get<any[]>(`${this.url}/sucursales/${idSucursal}/trabajadores`);
+  obtenerTrabajadoresSucursal(idSucursal: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}${idSucursal}/trabajadores`);
   }
 
-  asignarTrabajadores(idSucursal: string, trabajadores: string[]) {
-    return this.http.post(`${this.url}/sucursales/${idSucursal}/asignar-trabajadores`, { trabajadores });
+  obtenerTrabajadoresParaAsignacion(idSucursal: string): Observable<any> {
+    return this.http.get(`${this.url}${idSucursal}/trabajadores`);
   }
+
+  asignarTrabajadores(idSucursal: string, trabajadoresAsignados: string[], trabajadoresNoAsignados: string[]): Observable<any> {
+    return this.http.post(`${this.url}${idSucursal}/asignar-trabajadores`, {
+      trabajadoresAsignados,
+      trabajadoresNoAsignados
+    });
+  }
+
 }

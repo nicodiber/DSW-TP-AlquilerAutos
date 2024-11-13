@@ -4,50 +4,74 @@
             <div class="card">
                 <div class="card-body text-center">
                     <a routerLink="/sucursal-listar" class="btn btn-link float-start">Volver</a>
-                    <h4 class="titulo">Asignar Trabajadores a la Sucursal</h4>
+                    <h4 class="titulo">Asignar Trabajadores a la Sucursal {{ nombreSucursal }}</h4>
+
+                    <!-- Tabla de Trabajadores Asignados -->
+                    <h5 class="mt-4">Trabajadores Asignados</h5>
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">ID del trabajador</th>
                                 <th scope="col">Nombre y Apellido</th>
                                 <th scope="col">Correo</th>
-                                <th scope="col">Asignar</th>
-                                <th scope="col">No Asignar</th>
+                                <th scope="col">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let usuario of listaUsuarios">
-
+                            <tr *ngFor="let trabajador of trabajadoresAsignados">
                                 <!-- Columna ID del trabajador -->
-                                <td>{{ usuario._id }}</td>
+                                <td>{{ trabajador._id }}</td>
 
                                 <!-- Columna Nombre y Apellido del trabajador -->
-                                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                                <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
 
                                 <!-- Columna Correo del trabajador -->
-                                <td>{{ usuario.email }}</td>
+                                <td>{{ trabajador.email }}</td>
 
-                                <!-- Columna Asignar -->
+                                <!-- Columna de Acción para Desasignar -->
                                 <td>
-                                    <label>
-                                        <input type="radio" name="asignacion_{{ usuario._id }}"
-                                            (change)="actualizarAsignacion(usuario._id, true)"
-                                            [checked]="trabajadoresAsignados.has(usuario._id)" /> Asignar
-                                    </label>
-                                </td>
-                                
-                                <!-- Columna No Asignar -->
-                                <td>
-                                    <label>
-                                        <input type="radio" name="asignacion_{{ usuario._id }}"
-                                            (change)="actualizarAsignacion(usuario._id, false)"
-                                            [checked]="!trabajadoresAsignados.has(usuario._id)" /> No Asignar
-                                    </label>
+                                    <button (click)="toggleAsignacion(trabajador._id, false)" class="btn btn-warning">
+                                        Desasignar
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button class="btn btn-primary mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button>
+
+                    <!-- Tabla de Trabajadores No Asignados -->
+                    <h5 class="mt-4">Trabajadores No Asignados</h5>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID del trabajador</th>
+                                <th scope="col">Nombre y Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let trabajador of trabajadoresNoAsignados">
+                                <!-- Columna ID del trabajador -->
+                                <td>{{ trabajador._id }}</td>
+
+                                <!-- Columna Nombre y Apellido del trabajador -->
+                                <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
+
+                                <!-- Columna Correo del trabajador -->
+                                <td>{{ trabajador.email }}</td>
+
+                                <!-- Columna de Acción para Asignar -->
+                                <td>
+                                    <button (click)="toggleAsignacion(trabajador._id, true)" class="btn btn-primary">
+                                        Asignar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Botón para Guardar los Cambios -->
+                    <button class="btn btn-success mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button>
                 </div>
             </div>
         </div>

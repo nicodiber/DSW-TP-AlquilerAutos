@@ -1,4 +1,5 @@
 const Sucursal = require("../models/sucursal");
+const Usuario = require("../models/usuario");
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear una nueva sucursal
@@ -127,26 +128,75 @@ exports.eliminarSucursal = async (req, res) => {
   }
 };
 
-// Asignar trabajadores a una sucursal
-exports.asignarTrabajadores = async (req, res) => {
+/*
+// Obtener usuarios trabajadores de una sucursal
+exports.obtenerTrabajadoresSucursal = async (req, res) => {
+  const sucursalId = req.params.id;
   try {
-    const { idSucursal } = req.params; 
-    const { trabajadores } = req.body; // Array de IDs de trabajadores a asignar
+    // Obtén la sucursal con los trabajadores asignados
+    const sucursal = await Sucursal.findById(sucursalId).populate('trabajadores');
 
-    // Buscar la sucursal y actualizar la lista de trabajadores
-    const sucursal = await Sucursal.findByIdAndUpdate(
-      idSucursal, 
-      { trabajadores }, // Asigna los IDs de trabajadores
-      { new: true } // Retorna la sucursal actualizada
-    );
+    // Obtén todos los usuarios que tienen el rol 'trabajador'
+    const allWorkers = await Usuario.find({ rol: 'trabajador' });
 
-    if (!sucursal) {
-      return res.status(404).json({ msg: 'Sucursal no encontrada' });
-    }
+    // Filtra los trabajadores no asignados usando los IDs en la sucursal
+    const assignedWorkerIds = new Set(sucursal.trabajadores.map(trabajador => trabajador._id.toString()));
+    const unassignedWorkers = allWorkers.filter(worker => !assignedWorkerIds.has(worker._id.toString()));
 
-    res.json({ msg: 'Trabajadores asignados correctamente', sucursal });
+    res.json({
+      assignedWorkers: sucursal.trabajadores,
+      unassignedWorkers,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: 'Error al asignar trabajadores a la sucursal' });
+    res.status(500).json({ error: 'Error al obtener los trabajadores' });
   }
 };
+*/
+
+// Obtener trabajadores de una sucursal y trabajadores sin asignar
+exports.obtenerTrabajadoresParaAsignacion = async (req, res) => {
+  try {
+    const idSucursal = req.params.idSucursal;
+
+    // Obtener trabajadores ya asignados a la sucursal
+    const sucursal = await Sucursal.findById(idSucursal).populate('trabajadores');
+    const trabajadoresAsignados = sucursal ? sucursal.trabajadores : [];
+
+    // Obtener trabajadores no asignados a ninguna sucursal
+    const trabajadoresNoAsignados = await Usuario.find({
+      rol: 'trabajador',
+      sucursalId: { $exists: false }
+    });
+
+    res.json({ trabajadoresAsignados, trabajadoresNoAsignados });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Hubo un error al obtener los trabajadores' });
+  }
+};
+
+// Asignar o desasignar trabajadores a una sucursal
+exports.asignarTrabajadores = async (req, res) => {
+  try {
+    const { idSucursal } = req.params;
+    const { trabajadoresAsignados, trabajadoresNoAsignados } = req.body;
+
+    // Desasignar trabajadores seleccionados
+    await Usuario.updateMany(
+      { _id: { $in: trabajadoresNoAsignados } },
+      { $unset: { sucursalId: "" } }
+    );
+
+    // Asignar nuevos trabajadores a la sucursal
+    await Usuario.updateMany(
+      { _id: { $in: trabajadoresAsignados } },
+      { $set: { sucursalId: idSucursal } }
+    );
+
+    res.json({ msg: 'Asignación actualizada correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Error al actualizar la asignación' });
+  }
+};
+

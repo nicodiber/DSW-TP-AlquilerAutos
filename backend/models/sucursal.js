@@ -43,7 +43,7 @@ const SucursalSchema = new mongoose.Schema({
     required: true
   },
   trabajadores: [{
-    type: mongoose.Schema.Types.Number,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario',
     required: true
   }],
