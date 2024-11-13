@@ -7,7 +7,8 @@ router.get('/', sucursalController.obtenerSucursales);
 router.get('/:id', sucursalController.obtenerSucursal);
 router.put('/:id', sucursalController.actualizarSucursal);
 router.delete('/:id', sucursalController.eliminarSucursal);
-//router.post('/:id/asignar-trabajador', sucursalController.asignarTrabajador);
-//router.post('/:id/asignar-auto', sucursalController.asignarAuto);
+
+// Ruta para asignar trabajadores a una sucursal
+router.post('/:id/asignar-trabajadores', sucursalController.asignarTrabajadores);
 
 module.exports = router;
