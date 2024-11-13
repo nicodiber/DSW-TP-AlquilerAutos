@@ -1,5 +1,6 @@
 const Auto = require("../models/auto");
 const Sucursal = require("../models/sucursal");
+const { Alquiler } = require('../models/alquiler');
 const { getNextSequenceValue } = require('../config/db');
 
 exports.crearAuto = async (req, res) => {
@@ -8,9 +9,9 @@ exports.crearAuto = async (req, res) => {
     const {
       modeloAuto,
       sucursalAuto,
-      historialMantenimiento,
+      historialMantenimiento = undefined,
       estadoAuto = 'disponible',
-      matriculaAuto
+      matricula
     } = req.body;
 
     // Verificar que las referencias existen
@@ -25,7 +26,7 @@ exports.crearAuto = async (req, res) => {
       sucursalAuto,
       historialMantenimiento,
       estadoAuto,
-      matriculaAuto
+      matricula
     });
 
     await auto.save();
@@ -39,7 +40,8 @@ exports.crearAuto = async (req, res) => {
 exports.obtenerAutos = async (req, res) => {
   try {
     const autos = await Auto.find()
-                            .populate('sucursalAuto');
+    .populate('modeloAuto')
+    .populate('sucursalAuto');
     res.json(autos);
   } catch (error) {
     console.log(error);
@@ -50,7 +52,8 @@ exports.obtenerAutos = async (req, res) => {
 exports.obtenerAuto = async (req, res) => {
   try {
     const auto = await Auto.findById(req.params.id)
-                           .populate('sucursalAuto');
+      .populate('modeloAuto')
+      .populate('sucursalAuto');
 
     if (!auto) {
       return res.status(404).json({ msg: 'No existe ese auto' });
@@ -70,7 +73,7 @@ exports.actualizarAuto = async (req, res) => {
       sucursalAuto,
       historialMantenimiento,
       estadoAuto,
-      matriculaAuto
+      matricula
     } = req.body;
 
     let auto = await Auto.findById(req.params.id);
@@ -89,7 +92,7 @@ exports.actualizarAuto = async (req, res) => {
     auto.sucursalAuto = sucursalAuto;
     auto.historialMantenimiento = historialMantenimiento;
     auto.estadoAuto = estadoAuto;
-    auto.matriculaAuto = matriculaAuto;
+    auto.matricula = matricula;
 
     auto = await Auto.findOneAndUpdate({ _id: req.params.id }, auto, { new: true });
     res.json(auto);
@@ -101,19 +104,28 @@ exports.actualizarAuto = async (req, res) => {
 
 exports.eliminarAuto = async (req, res) => {
   try {
-    const auto = await Auto.findById(req.params.id);
+    const autoId = req.params.id;
 
-    if (!auto) {
-      return res.status(404).json({ msg: 'No existe ese auto' });
+    // Verificar si existe algún alquiler con el auto y un estado distinto de "completado"
+    const alquilerRelacionado = await Alquiler.findOne({
+      auto: autoId,
+      estadoAlquiler: { $nin: ['completado', 'cancelado'] }
+    });
+
+    if (alquilerRelacionado) {
+      return res.status(400).json({ msg: 'No se puede eliminar el Auto porque está involucrado en un alquiler.' });
     }
 
-    await Auto.findByIdAndDelete(req.params.id);
+    // Si no hay alquileres activos o pendientes, proceder con la eliminación
+    await Auto.findByIdAndDelete(autoId);
     res.json({ msg: 'Auto eliminado con éxito' });
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al eliminar el auto');
+    console.error("Error al intentar eliminar el Auto:", error);
+    res.status(500).send('Hubo un error al eliminar el Auto');
   }
 };
+
+
 
 // Actualizar el estado de un auto debido al alquiler
 exports.actualizarEstadoAuto = async (req, res) => {

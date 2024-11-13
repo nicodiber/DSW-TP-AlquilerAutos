@@ -28,6 +28,8 @@ import { ListarCategoriaModeloComponent } from './components/categoria/listar-ca
 import { CrearCategoriaComponent } from './components/categoria/crear-categoria/crear-categoria.component';
 import { ModificarCategoriaComponent } from './components/categoria/modificar-categoria/modificar-categoria.component';
 import { ModificarMarcaComponent } from './components/marca/modificar-marca/modificar-marca.component';
+import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
+import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 
 const routes: Routes = [
   {
@@ -62,6 +64,9 @@ const routes: Routes = [
   { path: 'categorias', component: ListarCategoriaComponent},
   { path: 'categoria-modelos/:nombreCategoria', component:ListarCategoriaModeloComponent},
   { path: 'modificar-categoria/:id', component: ModificarCategoriaComponent },
+  { path: 'auto-listar', component: AutoListarComponent },
+  { path: 'auto-crear', component:AutoCrearComponent},
+  { path: 'auto-editar/:id', component:AutoCrearComponent},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

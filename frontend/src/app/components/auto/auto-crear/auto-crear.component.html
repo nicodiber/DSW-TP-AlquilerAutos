@@ -1,0 +1,75 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo"> {{ titulo | uppercase }}</span>
+          <form class="mt-3" [formGroup]="autoForm" (ngSubmit)="submitForm()">
+
+            <!-- Modelo del Auto -->
+            <div class="mb-3">
+              <select formControlName="modeloAuto" class="form-control form-control-lg">
+                <option value="" disabled selected>Seleccione el Modelo</option>
+                <option *ngFor="let modelo of modelos" [value]="modelo._id">{{ modelo.nombreModelo }}</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="autoForm.get('modeloAuto')?.hasError('required') && autoForm.get('modeloAuto')?.touched">
+                <span>El modelo del auto <strong>es obligatorio</strong></span>
+              </div>
+            </div>
+
+            <!-- Sucursal del Auto -->
+            <div class="mb-3">
+              <select formControlName="sucursalAuto" class="form-control form-control-lg">
+                <option value="" disabled selected>Seleccione la Sucursal</option>
+                <option *ngFor="let sucursal of sucursales" [value]="sucursal._id">{{ sucursal.nombreSucursal }}</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="autoForm.get('sucursalAuto')?.hasError('required') && autoForm.get('sucursalAuto')?.touched">
+                <span>La sucursal del auto <strong>es obligatoria</strong></span>
+              </div>
+            </div>
+
+            <!-- Estado del Auto -->
+            <div class="mb-3" *ngIf="id !== null">
+              <!-- Desplegable en modo edición -->
+              <select formControlName="estadoAuto" class="form-control form-control-lg">
+                <option value="" disabled selected>Seleccione el Estado</option>
+                <option value="disponible">Disponible</option>
+                <option value="reservado">Reservado</option>
+                <option value="alquilado">Alquilado</option>
+                <option value="mantenimiento">Mantenimiento</option>
+              </select>
+            </div>
+            <div class="mb-3" *ngIf="id === null">
+              <!-- Campo de texto prellenado en modo creación -->
+              <input type="text" formControlName="estadoAuto" class="form-control form-control-lg" placeholder="Disponible" style="text-transform: capitalize;">
+            </div>
+
+            <!-- Matrícula del Auto -->
+            <div class="mb-3">
+              <input type="text" formControlName="matricula" class="form-control form-control-lg"
+                placeholder="Patente del Auto">
+              <div class="text-danger"
+                *ngIf="autoForm.get('matricula')?.hasError('required') && autoForm.get('matricula')?.touched">
+                <span>La patente <strong>es obligatoria</strong></span>
+              </div>
+              <div class="text-danger"
+                *ngIf="autoForm.get('matricula')?.hasError('pattern') && autoForm.get('matricula')?.touched">
+                <span>La patente <strong>tiene un formato incorrecto</strong></span>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="mb-3">
+              <button routerLink="/auto-listar" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+              <button type="submit" [disabled]="autoForm.invalid"
+                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

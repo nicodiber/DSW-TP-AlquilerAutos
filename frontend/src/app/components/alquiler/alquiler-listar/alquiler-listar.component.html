@@ -9,13 +9,14 @@
             <thead>
               <tr>
                 <th (click)="ordenarPor('_id')">ID <span [ngClass]="getIconoOrden('_id')"></span></th>
-                <th (click)="ordenarPor('fechaInicio')">Fecha y Hora Inicio <span [ngClass]="getIconoOrden('fechaInicio')"></span></th>
-                <th (click)="ordenarPor('fechaFin')">Fecha y Hora Fin <span [ngClass]="getIconoOrden('fechaFin')"></span></th>
-                <th (click)="ordenarPor('fechaInicioReal')">Fecha y Hora Inicio Real <span [ngClass]="getIconoOrden('fechaInicioReal')"></span></th>
-                <th (click)="ordenarPor('fechaFinReal')">Fecha y Hora Fin Real <span [ngClass]="getIconoOrden('fechaFinReal')"></span></th>
+                <th (click)="ordenarPor('fechaInicio')">Fecha Inicio <span [ngClass]="getIconoOrden('fechaInicio')"></span></th>
+                <th (click)="ordenarPor('fechaFin')">Fecha Fin <span [ngClass]="getIconoOrden('fechaFin')"></span></th>
+                <th (click)="ordenarPor('fechaInicioReal')">Fecha Inicio Real <span [ngClass]="getIconoOrden('fechaInicioReal')"></span></th>
+                <th (click)="ordenarPor('fechaFinReal')">Fecha Fin Real <span [ngClass]="getIconoOrden('fechaFinReal')"></span></th>
                 <th (click)="ordenarPor('estadoAlquiler')">Estado <span [ngClass]="getIconoOrden('estadoAlquiler')"></span></th>
                 <th (click)="ordenarPor('precioTotalAlquiler')">Precio Total <span [ngClass]="getIconoOrden('precioTotalAlquiler')"></span></th>
                 <th>Patente Auto</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -39,7 +40,7 @@
                   
                   <td>
                     <!-- Botón para expandir Datos Adicionales y Notas -->
-                    <button (click)="alquiler.mostrarDetalles = !alquiler.mostrarDetalles" class="btn-main btn-black">
+                    <button (click)="alquiler.mostrarDetalles = !alquiler.mostrarDetalles" class="btn-main btn-black" style="padding: 5px 15px;">
                       {{ alquiler.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
                     </button>
                   </td>

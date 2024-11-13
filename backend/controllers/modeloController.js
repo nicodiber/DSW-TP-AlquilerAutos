@@ -1,6 +1,9 @@
 const Modelo = require("../models/modelo");
 const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
+const Categoria = require('../models/categoria'); // Ajusta la ruta si es necesario
+const Marca = require('../models/marca'); // Ajusta la ruta si es necesario
+
 
 exports.crearModelo = async (req, res) => {
   try {
