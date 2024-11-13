@@ -30,6 +30,11 @@ exports.crearAuto = async (req, res) => {
     });
 
     await auto.save();
+
+    // Añadir el auto al array de autos de la sucursal
+    sucursal.autos.push(auto._id);
+    await sucursal.save();
+
     res.json(auto);
   } catch (error) {
     console.log(error);
@@ -116,8 +121,15 @@ exports.eliminarAuto = async (req, res) => {
       return res.status(400).json({ msg: 'No se puede eliminar el Auto porque está involucrado en un alquiler.' });
     }
 
+    const auto = await Auto.findById(autoId);
     // Si no hay alquileres activos o pendientes, proceder con la eliminación
     await Auto.findByIdAndDelete(autoId);
+    // Eliminar el ID del auto del array autos en la sucursal
+    await Sucursal.findByIdAndUpdate(
+      auto.sucursalAuto,
+      { $pull: { autos: autoId } }
+    );
+
     res.json({ msg: 'Auto eliminado con éxito' });
   } catch (error) {
     console.error("Error al intentar eliminar el Auto:", error);

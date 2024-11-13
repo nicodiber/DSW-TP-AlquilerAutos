@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AutoCrearComponent } from './auto-crear.component';
 
 describe('AutoCrearComponent', () => {
