@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+// Importa los módulos necesarios de Angular
+import { NgModule } from '@angular/core';  // NgModule se usa para definir un módulo de Angular
+import { RouterModule, Routes } from '@angular/router';  // RouterModule y Routes son necesarios para definir las rutas en la aplicación
 
-// Componentes
+// Importa los componentes necesarios para las rutas
 import { LayoutComponent } from './components/layout/layout.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
@@ -30,8 +31,10 @@ import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.c
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
+import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 
 
+// Define las rutas de la aplicación
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
@@ -72,11 +75,15 @@ const routes: Routes = [
   { path: 'auto-listar', component: AutoListarComponent },
   { path: 'auto-crear', component:AutoCrearComponent},
   { path: 'auto-editar/:id', component:AutoCrearComponent},
+
+  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
+
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
+// Configura el RouterModule con las rutas definidas
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],  // Inicializa el enrutador con las rutas definidas
+  exports: [RouterModule]  // Exporta el RouterModule para que se pueda utilizar en toda la aplicación
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { }  // Define el módulo de enrutamiento

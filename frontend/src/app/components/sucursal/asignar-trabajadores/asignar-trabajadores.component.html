@@ -1,0 +1,74 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Botón para volver a la lista de sucursales -->
+                    <a routerLink="/sucursal-listar" class="btn btn-link float-start">Volver</a> <!-- Enlace redirige a la página de listar sucursales -->
+
+                    <!-- Título que muestra el nombre de la sucursal a la que se asignarán los trabajadores -->
+                    <h4 class="titulo">Asignar Trabajadores a la Sucursal {{ nombreSucursal }}</h4>
+
+                    <!-- Sección de Trabajadores Asignados -->
+                    <h5 class="mt-4">Trabajadores Asignados</h5>
+                    <!-- Tabla para mostrar los trabajadores que ya están asignados a la sucursal -->
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID del trabajador</th>
+                                <th scope="col">Nombre y Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recorrido de la lista de trabajadores asignados a la sucursal. Cada fila muestra un trabajador asignado con su información -->
+                            <tr *ngFor="let trabajador of trabajadoresAsignados">
+                                <td>{{ trabajador._id }}</td>
+                                <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
+                                <td>{{ trabajador.email }}</td>
+                                <!-- Botón para desasignar al trabajador de la sucursal -->
+                                <td>
+                                    <button (click)="toggleAsignacion(trabajador._id, false)" class="btn btn-warning"> <!-- Ejecuta el método 'toggleAsignacion' para desasignarlo -->
+                                        Desasignar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Sección de Trabajadores No Asignados -->
+                    <h5 class="mt-4">Trabajadores No Asignados</h5>
+                    <!-- Tabla para mostrar los trabajadores que no están asignados a ninguna sucursal -->
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID del trabajador</th>
+                                <th scope="col">Nombre y Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recorrido de la lista de trabajadores que no están asignados. Cada fila muestra un trabajador disponible para ser asignado -->
+                            <tr *ngFor="let trabajador of trabajadoresNoAsignados">
+                                <td>{{ trabajador._id }}</td>
+                                <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
+                                <td>{{ trabajador.email }}</td>
+                                <!-- Botón para asignar al trabajador a la sucursal -->
+                                <td>
+                                    <button (click)="toggleAsignacion(trabajador._id, true)" class="btn btn-primary"> <!-- Ejecuta el método 'toggleAsignacion' para asignarlo -->
+                                        Asignar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Botón para guardar los cambios realizados en las asignaciones de los trabajadores -->
+                    <button class="btn btn-success mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button> <!-- Ejecuta el método 'guardarAsignaciones' para guardar las asignaciones -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,12 +3,20 @@
         <div class="col-lg-8 offset-lg-2">
             <div class="card">
                 <div class="card-body text-center">
-                    <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
+                    <!-- Enlace para volver a la página anterior -->
+                    <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
+
+                    <!-- Título de la página -->
                     <span class="titulo">LISTADO DE TODAS LAS SUCURSALES</span>
+
+                    <!-- Botón para agregar una nueva sucursal, redirige a la página de creación de sucursal -->
                     <button class="btn btn-success float-end" routerLink="/sucursal-crear">NUEVA SUCURSAL</button>
+
+                    <!-- Tabla que se muestra solo si hay sucursales en la lista -->
                     <table *ngIf="listaSucursales.length > 0" class="table table-striped mt-3">
                         <thead>
                             <tr>
+                                <!-- Encabezados de la tabla que describen las columnas -->
                                 <th scope="col">Nombre Sucursal</th>
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Dirección</th>
@@ -19,10 +27,11 @@
                                 <th scope="col">Hora Cierre</th>
                                 <th scope="col">Trabajadores</th>
                                 <th scope="col">Autos</th>
-                                <th scope="col"></th>
+                                <th scope="col"></th> <!-- Columna vacía para acciones (editar y eliminar) -->
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Recorre la lista de sucursales y muestra el contenido de cada una en una fila de la tabla -->
                             <tr *ngFor="let sucursal of listaSucursales">
                                 <td>{{ sucursal.nombreSucursal }}</td>
                                 <td>{{ sucursal.telefonoSucursal }}</td>
@@ -33,31 +42,38 @@
                                 <td>{{ sucursal.horaAperturaSucursal }}</td>
                                 <td>{{ sucursal.horaCierreSucursal }}</td>
 
-                                <!-- Columna para gestionar trabajadores -->
+                                <!-- Columna para gestionar los trabajadores de la sucursal -->
                                 <td>
-                                    <a [routerLink]="['/ver-trabajadores', sucursal._id]" class="btn btn-info btn-sm">
+                                    <a [routerLink]="['/asignar-trabajadores', sucursal._id]"
+                                        class="btn btn-info btn-sm">
                                         Ver Trabajadores
                                     </a>
                                 </td>
 
-                                <!-- Columna para gestionar autos -->
+                                <!-- Columna para gestionar los autos de la sucursal -->
                                 <td>
                                     <a [routerLink]="['/ver-autos', sucursal._id]" class="btn btn-warning btn-sm">
                                         Ver Autos
                                     </a>
                                 </td>
 
+                                <!-- Columna con los íconos para editar o eliminar la sucursal -->
                                 <td>
+                                    <!-- Icono para editar la sucursal, redirige a la página de edición -->
                                     <i [routerLink]="['/sucursal-editar', sucursal._id]"
                                         class="fas fa-edit text-primary"></i>
-                                    <i (click)="deleteSucursal(sucursal._id)"
-                                        class="fas fa-trash text-danger"></i>
+
+                                    <!-- Icono para eliminar la sucursal, ejecuta la función deleteSucursal -->
+                                    <i (click)="deleteSucursal(sucursal._id)" class="fas fa-trash text-danger"></i>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaSucursales.length == 0">No hay
-                        sucursales para mostrar</h5>
+
+                    <!-- Mensaje que se muestra si no hay sucursales en la lista -->
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaSucursales.length == 0">
+                        No hay sucursales para mostrar
+                    </h5>
                 </div>
             </div>
         </div>

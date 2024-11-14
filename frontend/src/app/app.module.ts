@@ -1,18 +1,19 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Para ciertos atributos como ngModule, ngModel, ngModelOptions, entre otros
-import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Para el toastr
-import { ToastrModule } from 'ngx-toastr'; // Para el toastr
-import { provideHttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule aquí
-import { CookieService } from 'ngx-cookie-service'; // Cookies
+// Importación de módulos necesarios para configurar la aplicación Angular
+import { NgModule, LOCALE_ID } from '@angular/core';                                                                                  // NgModule para definir el módulo de la aplicación y LOCALE_ID para la configuración regional
+import { BrowserModule } from '@angular/platform-browser';                                                                            // Necesario para ejecutar la aplicación en el navegador
+import { CommonModule } from '@angular/common';                                                                                       // Proporciona funcionalidades comunes como directivas y pipes
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';                                                                    // Importación de módulos para formularios reactivos y formularios con ngModel
+import { AppRoutingModule } from './app-routing.module';                                                                              // Módulo de enrutamiento de la aplicación
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';                                                       // Necesario para habilitar animaciones en Angular, en este caso usado por Toastr
+import { ToastrModule } from 'ngx-toastr';                                                                                            // Módulo para mostrar notificaciones de Toastr
+import { provideHttpClient } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
+import { RouterModule } from '@angular/router';                                                                                       // Necesario para manejar rutas y enrutamiento
+import { CookieService } from 'ngx-cookie-service';                                                                                   // Para trabajar con cookies
 
-// Cambiar la fechas a formato español
-import localeEs from '@angular/common/locales/es';
-import { registerLocaleData } from '@angular/common';
-registerLocaleData(localeEs, 'es');
+// Configuración regional para fechas en español
+import localeEs from '@angular/common/locales/es';                                                                                    // Importa los datos locales de España
+import { registerLocaleData } from '@angular/common';                                                                                 // Función para registrar la configuración regional
+registerLocaleData(localeEs, 'es');  // Registra el formato español como idioma predeterminado
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -44,8 +45,10 @@ import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.c
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
+import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';             // Componente para asignar trabajadores a sucursales
 
 @NgModule({
+  // Declaración de componentes que forman parte del módulo
   declarations: [
     AppComponent,
     LayoutComponent,
@@ -75,19 +78,30 @@ import { ModelosListarComponent } from './components/modelo/modelos-listar/model
     AutoCrearComponent,
     AutoListarComponent,
     EditarDatosUsuarioComponent,
-    ModelosListarComponent
+    ModelosListarComponent,
+    AsignarTrabajadoresComponent        // Componente para asignar trabajadores a una sucursal
   ],
+
+  // Importación de otros módulos necesarios para la aplicación
   imports: [
-    BrowserModule,
-    CommonModule,
-    AppRoutingModule,
-    RouterModule,  // Para leer el router-outlet
-    ReactiveFormsModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    BrowserModule,                      // Módulo necesario para aplicaciones que corren en el navegador
+    CommonModule,                       // Proporciona directivas comunes como ngIf, ngFor
+    AppRoutingModule,                   // Módulo para el enrutamiento de la aplicación
+    RouterModule,                       // Necesario para utilizar <router-outlet> en los componentes
+    ReactiveFormsModule,                // Módulo necesario para formularios reactivos
+    FormsModule,                        // Módulo necesario para formularios con ngModel
+    BrowserAnimationsModule,            // Habilita animaciones de Angular
+    ToastrModule.forRoot(),             // Configura Toastr como el servicio de notificaciones
   ],
-  providers: [provideHttpClient(), CookieService, { provide: LOCALE_ID, useValue: 'es' }],
-  bootstrap: [AppComponent]
+
+  // Proveedores de servicios que estarán disponibles en toda la aplicación
+  providers: [
+    provideHttpClient(),  // Proveedor para realizar solicitudes HTTP
+    CookieService,  // Proveedor para trabajar con cookies
+    { provide: LOCALE_ID, useValue: 'es' }  // Configura la aplicación para usar español como el idioma
+  ],
+
+  // Componente raíz que arranca la aplicación
+  bootstrap: [AppComponent]  // Bootstrap del componente principal (AppComponent)
 })
-export class AppModule { }
+export class AppModule { }  // Definición del módulo principal de la aplicación

@@ -1,110 +1,19 @@
-<!--
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-6 offset-lg-3">
             <div class="card">
                 <div class="card-body text-center">
+                    <!-- Título de la página, se convierte a mayúsculas utilizando el pipe 'uppercase' -->
                     <span class="titulo"> {{ titulo | uppercase }}</span>
-                    <form class="mt-3" [formGroup]="sucursalForm" (ngSubmit)="agregarSucursal()">
 
-                        <div class="mb-3">
-                            <input type="text" formControlName="nombreSucursal" class="form-control form-control-lg"
-                                placeholder="Nombre de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('nombreSucursal')?.hasError('required') && sucursalForm.get('nombreSucursal')?.touched">
-                                <span>El nombre de la sucursal <strong>es obligatorio</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="telefonoSucursal" class="form-control form-control-lg"
-                                placeholder="Teléfono de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('telefonoSucursal')?.hasError('required') && sucursalForm.get('telefonoSucursal')?.touched">
-                                <span>El teléfono <strong>es obligatorio</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="direccionSucursal" class="form-control form-control-lg"
-                                placeholder="Dirección de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('direccionSucursal')?.hasError('required') && sucursalForm.get('direccionSucursal')?.touched">
-                                <span>La dirección <strong>es obligatoria</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="paisSucursal" class="form-control form-control-lg"
-                                placeholder="País de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('paisSucursal')?.hasError('required') && sucursalForm.get('paisSucursal')?.touched">
-                                <span>El país <strong>es obligatorio</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="provinciaSucursal" class="form-control form-control-lg"
-                                placeholder="Provincia de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('provinciaSucursal')?.hasError('required') && sucursalForm.get('provinciaSucursal')?.touched">
-                                <span>La provincia <strong>es obligatoria</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="ciudadSucursal" class="form-control form-control-lg"
-                                placeholder="Ciudad de la Sucursal">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('ciudadSucursal')?.hasError('required') && sucursalForm.get('ciudadSucursal')?.touched">
-                                <span>La ciudad <strong>es obligatoria</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="time" formControlName="horaAperturaSucursal"
-                                class="form-control form-control-lg" placeholder="Hora de Apertura">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('horaAperturaSucursal')?.hasError('required') && sucursalForm.get('horaAperturaSucursal')?.touched">
-                                <span>La hora de apertura <strong>es obligatoria</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="time" formControlName="horaCierreSucursal" class="form-control form-control-lg"
-                                placeholder="Hora de Cierre">
-                            <div class="text-danger"
-                                *ngIf="sucursalForm.get('horaCierreSucursal')?.hasError('required') && sucursalForm.get('horaCierreSucursal')?.touched">
-                                <span>La hora de cierre <strong>es obligatoria</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <button routerLink="/sucursal-listar"
-                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
-                            <button type="submit" [disabled]="sucursalForm.invalid"
-                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titulo"> {{ titulo | uppercase }}</span>
+                    <!-- Formulario para crear una nueva sucursal, con un formulario reactivo -->
                     <form class="mt-3" [formGroup]="sucursalForm" (ngSubmit)="submitForm()">
 
-                        <!-- Nombre de la Sucursal -->
+                        <!-- Campo para ingresar el nombre de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="nombreSucursal" class="form-control form-control-lg"
                                 placeholder="Nombre de la Sucursal">
+                            <!-- Mensajes de error si el campo es obligatorio o tiene un formato incorrecto -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('nombreSucursal')?.hasError('required') && sucursalForm.get('nombreSucursal')?.touched">
                                 <span>El nombre de la sucursal <strong>es obligatorio</strong></span>
@@ -115,10 +24,11 @@
                             </div>
                         </div>
 
-                        <!-- Teléfono de la Sucursal -->
+                        <!-- Campo para ingresar el teléfono de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="telefonoSucursal" class="form-control form-control-lg"
                                 placeholder="Teléfono de la Sucursal">
+                            <!-- Mensajes de error si el campo es obligatorio o no cumple con el formato esperado -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('telefonoSucursal')?.hasError('required') && sucursalForm.get('telefonoSucursal')?.touched">
                                 <span>El teléfono <strong>es obligatorio</strong></span>
@@ -130,70 +40,78 @@
                             </div>
                         </div>
 
-                        <!-- Dirección de la Sucursal -->
+                        <!-- Campo para ingresar la dirección de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="direccionSucursal" class="form-control form-control-lg"
                                 placeholder="Dirección de la Sucursal">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('direccionSucursal')?.hasError('required') && sucursalForm.get('direccionSucursal')?.touched">
                                 <span>La dirección <strong>es obligatoria</strong></span>
                             </div>
                         </div>
 
-                        <!-- País de la Sucursal -->
+                        <!-- Campo para ingresar el país de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="paisSucursal" class="form-control form-control-lg"
                                 placeholder="País de la Sucursal">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('paisSucursal')?.hasError('required') && sucursalForm.get('paisSucursal')?.touched">
                                 <span>El país <strong>es obligatorio</strong></span>
                             </div>
                         </div>
 
-                        <!-- Provincia de la Sucursal -->
+                        <!-- Campo para ingresar la provincia de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="provinciaSucursal" class="form-control form-control-lg"
                                 placeholder="Provincia de la Sucursal">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('provinciaSucursal')?.hasError('required') && sucursalForm.get('provinciaSucursal')?.touched">
                                 <span>La provincia <strong>es obligatoria</strong></span>
                             </div>
                         </div>
 
-                        <!-- Ciudad de la Sucursal -->
+                        <!-- Campo para ingresar la ciudad de la sucursal -->
                         <div class="mb-3">
                             <input type="text" formControlName="ciudadSucursal" class="form-control form-control-lg"
                                 placeholder="Ciudad de la Sucursal">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('ciudadSucursal')?.hasError('required') && sucursalForm.get('ciudadSucursal')?.touched">
                                 <span>La ciudad <strong>es obligatoria</strong></span>
                             </div>
                         </div>
 
-                        <!-- Hora de Apertura -->
+                        <!-- Campo para seleccionar la hora de apertura de la sucursal -->
                         <div class="mb-3">
                             <input type="time" formControlName="horaAperturaSucursal"
                                 class="form-control form-control-lg" placeholder="Hora de Apertura">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('horaAperturaSucursal')?.hasError('required') && sucursalForm.get('horaAperturaSucursal')?.touched">
                                 <span>La hora de apertura <strong>es obligatoria</strong></span>
                             </div>
                         </div>
 
-                        <!-- Hora de Cierre -->
+                        <!-- Campo para seleccionar la hora de cierre de la sucursal -->
                         <div class="mb-3">
                             <input type="time" formControlName="horaCierreSucursal" class="form-control form-control-lg"
                                 placeholder="Hora de Cierre">
+                            <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('horaCierreSucursal')?.hasError('required') && sucursalForm.get('horaCierreSucursal')?.touched">
                                 <span>La hora de cierre <strong>es obligatoria</strong></span>
                             </div>
                         </div>
 
-                        <!-- Botones -->
+                        <!-- Botones de acción -->
                         <div class="mb-3">
+                            <!-- Botón para volver a la lista de sucursales -->
                             <button routerLink="/sucursal-listar"
                                 class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <!-- Botón para enviar el formulario, deshabilitado si el formulario es inválido -->
                             <button type="button" (click)="submitForm()" [disabled]="sucursalForm.invalid"
                                 class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
