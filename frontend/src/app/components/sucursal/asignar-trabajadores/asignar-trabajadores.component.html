@@ -3,6 +3,7 @@
         <div class="col-lg-8 offset-lg-2">
             <div class="card">
                 <div class="card-body text-center">
+                    <!-- Botón para volver a la lista de sucursales -->
                     <a routerLink="/sucursal-listar" class="btn btn-link float-start">Volver</a>
                     <h4 class="titulo">Asignar Trabajadores a la Sucursal {{ nombreSucursal }}</h4>
 
@@ -19,16 +20,10 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let trabajador of trabajadoresAsignados">
-                                <!-- Columna ID del trabajador -->
                                 <td>{{ trabajador._id }}</td>
-
-                                <!-- Columna Nombre y Apellido del trabajador -->
                                 <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
-
-                                <!-- Columna Correo del trabajador -->
                                 <td>{{ trabajador.email }}</td>
-
-                                <!-- Columna de Acción para Desasignar -->
+                                <!-- Botón para desasignar trabajador -->
                                 <td>
                                     <button (click)="toggleAsignacion(trabajador._id, false)" class="btn btn-warning">
                                         Desasignar
@@ -51,16 +46,10 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let trabajador of trabajadoresNoAsignados">
-                                <!-- Columna ID del trabajador -->
                                 <td>{{ trabajador._id }}</td>
-
-                                <!-- Columna Nombre y Apellido del trabajador -->
                                 <td>{{ trabajador.nombre }} {{ trabajador.apellido }}</td>
-
-                                <!-- Columna Correo del trabajador -->
                                 <td>{{ trabajador.email }}</td>
-
-                                <!-- Columna de Acción para Asignar -->
+                                <!-- Botón para asignar trabajador -->
                                 <td>
                                     <button (click)="toggleAsignacion(trabajador._id, true)" class="btn btn-primary">
                                         Asignar

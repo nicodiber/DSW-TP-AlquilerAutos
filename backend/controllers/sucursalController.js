@@ -5,7 +5,7 @@ const { getNextSequenceValue } = require('../config/db');
 // Crear una nueva sucursal
 exports.crearSucursal = async (req, res) => {
   try {
-    const _id = await getNextSequenceValue('sucursalId'); 
+    const _id = await getNextSequenceValue('sucursalId');
     const { nombreSucursal, telefonoSucursal, direccionSucursal, paisSucursal, provinciaSucursal, ciudadSucursal, horaAperturaSucursal, horaCierreSucursal, trabajadores, autos } = req.body;
 
     let sucursal = new Sucursal({
@@ -27,9 +27,7 @@ exports.crearSucursal = async (req, res) => {
   } catch (error) {
     console.log(error);
 
-    // Manejo de error de duplicación en campo único en MongoDB
     if (error.code === 11000 && error.keyValue) {
-      // Detectar el campo duplicado específico
       const field = Object.keys(error.keyValue)[0];
       const errorMsg = field === 'nombreSucursal'
         ? 'El nombre de la sucursal ya está en uso. Elige un nombre diferente.'
@@ -53,6 +51,22 @@ exports.obtenerSucursales = async (req, res) => {
   }
 };
 
+// Obtener una sucursal por ID
+exports.obtenerSucursal = async (req, res) => {
+  try {
+    const sucursal = await Sucursal.findById(req.params.id).populate('trabajadores');
+
+    if (!sucursal) {
+      return res.status(404).json({ msg: 'No existe esa sucursal' });
+    }
+
+    res.json(sucursal);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener la sucursal');
+  }
+};
+
 // Actualizar una sucursal
 exports.actualizarSucursal = async (req, res) => {
   try {
@@ -64,7 +78,6 @@ exports.actualizarSucursal = async (req, res) => {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
     }
 
-    // Actualizar los campos
     sucursal.nombreSucursal = nombreSucursal;
     sucursal.telefonoSucursal = telefonoSucursal;
     sucursal.direccionSucursal = direccionSucursal;
@@ -82,7 +95,6 @@ exports.actualizarSucursal = async (req, res) => {
     console.log(error);
 
     if (error.code === 11000 && error.keyValue) {
-      // Detectar el campo dublicado específico
       const field = Object.keys(error.keyValue)[0];
       const errorMsg = field === 'nombreSucursal'
         ? 'El nombre de la sucursal ya está en uso. Por favor, elige un nombre diferente.'
@@ -92,22 +104,6 @@ exports.actualizarSucursal = async (req, res) => {
     } else {
       res.status(500).send('Hubo un error al actualizar la sucursal');
     }
-  }
-};
-
-// Obtener una sucursal por ID
-exports.obtenerSucursal = async (req, res) => {
-  try {
-    const sucursal = await Sucursal.findById(req.params.id);
-
-    if (!sucursal) {
-      return res.status(404).json({ msg: 'No existe esa sucursal' });
-    }
-
-    res.json(sucursal);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al obtener la sucursal');
   }
 };
 
@@ -128,41 +124,18 @@ exports.eliminarSucursal = async (req, res) => {
   }
 };
 
-/*
-// Obtener usuarios trabajadores de una sucursal
-exports.obtenerTrabajadoresSucursal = async (req, res) => {
-  const sucursalId = req.params.id;
-  try {
-    // Obtén la sucursal con los trabajadores asignados
-    const sucursal = await Sucursal.findById(sucursalId).populate('trabajadores');
-
-    // Obtén todos los usuarios que tienen el rol 'trabajador'
-    const allWorkers = await Usuario.find({ rol: 'trabajador' });
-
-    // Filtra los trabajadores no asignados usando los IDs en la sucursal
-    const assignedWorkerIds = new Set(sucursal.trabajadores.map(trabajador => trabajador._id.toString()));
-    const unassignedWorkers = allWorkers.filter(worker => !assignedWorkerIds.has(worker._id.toString()));
-
-    res.json({
-      assignedWorkers: sucursal.trabajadores,
-      unassignedWorkers,
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los trabajadores' });
-  }
-};
-*/
-
-// Obtener trabajadores de una sucursal y trabajadores sin asignar
+// Obtener trabajadores para asignación a una sucursal específica
 exports.obtenerTrabajadoresParaAsignacion = async (req, res) => {
   try {
     const idSucursal = req.params.idSucursal;
 
-    // Obtener trabajadores ya asignados a la sucursal
+    // Obtener la sucursal con los trabajadores asignados
     const sucursal = await Sucursal.findById(idSucursal).populate('trabajadores');
-    const trabajadoresAsignados = sucursal ? sucursal.trabajadores : [];
+    if (!sucursal) return res.status(404).json({ msg: 'No existe esa sucursal' });
 
-    // Obtener trabajadores no asignados a ninguna sucursal
+    const trabajadoresAsignados = sucursal.trabajadores;
+
+    // Obtener los trabajadores sin asignación a sucursal
     const trabajadoresNoAsignados = await Usuario.find({
       rol: 'trabajador',
       sucursalId: { $exists: false }
@@ -199,4 +172,3 @@ exports.asignarTrabajadores = async (req, res) => {
     res.status(500).json({ msg: 'Error al actualizar la asignación' });
   }
 };
-

@@ -7,7 +7,7 @@ import { sucursal } from '../models/sucursal';
   providedIn: 'root'
 })
 export class SucursalService {
-  url = 'http://localhost:4000/api/sucursales/';
+  private url = 'http://localhost:4000/api/sucursales/';
 
   constructor(private http: HttpClient) { }
 
@@ -17,8 +17,8 @@ export class SucursalService {
   }
 
   // Elimina una sucursal por su ID
-  eliminarSucursal(_id: number): Observable<any> {
-    return this.http.delete(this.url + _id);
+  eliminarSucursal(id: number): Observable<any> {
+    return this.http.delete(`${this.url}${id}`);
   }
 
   // Guarda una nueva sucursal
@@ -27,40 +27,25 @@ export class SucursalService {
   }
 
   // Edita una sucursal existente
-  editarSucursal(_id: string, sucursal: sucursal): Observable<any> {
-    return this.http.put(this.url + _id, sucursal);
+  editarSucursal(id: string, sucursal: sucursal): Observable<any> {
+    return this.http.put(`${this.url}${id}`, sucursal);
   }
 
   // Obtiene una sucursal por su ID
-  obtenerSucursalPorId(_id: string): Observable<any> {
-    return this.http.get(this.url + _id);
+  obtenerSucursalPorId(id: string): Observable<any> {
+    return this.http.get(`${this.url}${id}`);
   }
 
-  obtenerSucursal(_id: string): Observable<any> {
-    return this.http.get(this.url + _id);
-  }
-
-  asignarTrabajador(_id: string): Observable<any> {
-    return this.http.get(this.url + _id + 'asignar-trabajador');
-  }
-
-  asignarAuto(_id: string): Observable<any> {
-    return this.http.get(this.url + _id + 'asignar-auto');
-  }
-
-  obtenerTrabajadoresSucursal(idSucursal: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}${idSucursal}/trabajadores`);
-  }
-
+  // Obtiene trabajadores asignados y no asignados de una sucursal
   obtenerTrabajadoresParaAsignacion(idSucursal: string): Observable<any> {
     return this.http.get(`${this.url}${idSucursal}/trabajadores`);
   }
 
+  // Asigna o desasigna trabajadores a una sucursal
   asignarTrabajadores(idSucursal: string, trabajadoresAsignados: string[], trabajadoresNoAsignados: string[]): Observable<any> {
     return this.http.post(`${this.url}${idSucursal}/asignar-trabajadores`, {
       trabajadoresAsignados,
       trabajadoresNoAsignados
     });
   }
-
 }
