@@ -37,8 +37,8 @@ exports.actualizarCategoria = async (req, res) => {
 
     categoria.nombreCategoria = nombreCategoria;
 
-    nombreCategoria = await Categoria.findOneAndUpdate({ _id: req.params.id }, nombreCategoria, { new: true });
-    res.json(nombreCategoria);
+    categoria = await Categoria.findOneAndUpdate({ _id: req.params.id }, categoria, { new: true });
+    res.json(categoria);
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -99,10 +99,6 @@ exports.obtenerModelosPorCategoria = async (req, res) => {
   try {
     const idCategoria = req.params.idCategoria;
     const modelos = await Modelo.find({ categoriaModelo: idCategoria }).populate('categoriaModelo');  // elimina '._id' y usa populate si es una referencia
-
-    if (!modelos || modelos.length === 0) {
-      return res.status(404).json({ msg: 'No se encontraron modelos para esta categoría' });
-    }
 
     res.json(modelos);
   } catch (error) {

@@ -26,7 +26,6 @@ export class ListarCategoriaComponent {
   }
 
   eliminarCategoria(categoriaId: number) {
-    console.log(categoriaId);
     this._categoriaService.verificarModelosPorCategoria(categoriaId).subscribe({
       next: (existenModelos) => {
         if (existenModelos) {

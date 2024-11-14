@@ -29,7 +29,7 @@
 
           <div class="spacer-20"></div>
         
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" id="contact_form" class="form-border">
+          <form [formGroup]="contactForm" id="contact_form" class="form-border">
             <div class="row">
               <div class="col-md-4 mb10" style="width: 100%;">
                 <div class="field-set">
@@ -50,7 +50,7 @@
         
             </div>
         
-            <button type="submit" [disabled]="contactForm.invalid" class="btn-main" style="width: 100%;">Enviar</button>
+            <button type="submit" (click)="onSubmit()" class="btn-main" style="width: 100%;">Enviar</button>
           </form>
         </div>
 

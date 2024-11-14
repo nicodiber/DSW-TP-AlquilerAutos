@@ -25,15 +25,15 @@ export class MarcaService {
   }
 
   obtenerMarcaPorId(id: number): Observable<marca> {
-    return this.http.get<marca>(`${this.url}/${id}`);
+    return this.http.get<marca>(`${this.url}${id}`);
   }  
 
   editarMarca(id: string, marca: marca): Observable<marca> {
-    return this.http.put<marca>(`${this.url}/${id}`, marca);
+    return this.http.put<marca>(`${this.url}${id}`, marca);
   }
 
   eliminarMarca(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`);
+    return this.http.delete<void>(`${this.url}${id}`);
   }
 
   // Especificas

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlquilerService } from '../../services/alquiler.service';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-buscador',
@@ -24,7 +25,7 @@ export class BuscadorComponent implements OnInit {
   isFormValid: boolean = false;
   isDateValid: boolean = false;
 
-  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService) {}
+  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     // Obtener las Sucursales
@@ -138,9 +139,9 @@ export class BuscadorComponent implements OnInit {
       });
     });
   } else if (!this.isFormValid){
-    alert("Por favor, complete todos los campos antes de realizar la búsqueda.");
+    this.toastr.warning('Por favor, complete todos los campos antes de realizar la búsqueda.', 'Formulario de Búsqueda');
   } else {
-    alert("Por favor, revise las fechas indicadas. La fecha de retiro debe ser posterior a hoy, y la fecha de devolución debe ser posterior a la fecha de retiro.");
+    this.toastr.warning('Por favor, revise las fechas indicadas. La fecha de retiro debe ser posterior a hoy, y la fecha de devolución debe ser posterior a la fecha de retiro.', 'Formulario de Búsqueda');
   }
 }
 

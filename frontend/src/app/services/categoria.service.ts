@@ -17,7 +17,7 @@ export class CategoriaService {
   }
 
   obtenerCategoriaPorId(id: number): Observable<categoria> {
-    return this.http.get<categoria>(`${this.url}/${id}`);
+    return this.http.get<categoria>(`${this.url}${id}`);
   }
   
   editarCategoria(_id: string, categoria: categoria):Observable<any>{
@@ -25,7 +25,7 @@ export class CategoriaService {
   }
   
   eliminarCategoria(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`);
+    return this.http.delete<void>(`${this.url}${id}`);
   }
 
   obtenerCategorias(): Observable<any>{

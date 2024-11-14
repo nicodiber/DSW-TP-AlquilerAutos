@@ -37,8 +37,8 @@ exports.actualizarMarca = async (req, res) => {
 
     marca.nombreMarca = nombreMarca;
 
-    nombreMarca = await Marca.findOneAndUpdate({ _id: req.params.id }, nombreMarca, { new: true });
-    res.json(nombreMarca);
+    marca = await Marca.findOneAndUpdate({ _id: req.params.id }, marca, { new: true });
+    res.json(marca);
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -88,7 +88,6 @@ exports.obtenerMarcaPorNombre = async (req, res) => {
       res.status(200).json(marca);
     } else {
       res.json(marca);
-      // res.status(200).json({ message: 'Marca no encontrada' });
     }
   } catch (error) {
     console.error('Error al buscar la marca:', error);
@@ -100,10 +99,6 @@ exports.obtenerModelosPorMarca = async (req, res) => {
   try {
     const idMarca = req.params.idMarca;
     const modelos = await Modelo.find({ marcaModelo: idMarca }).populate('marcaModelo');  // elimina '._id' y usa populate si es una referencia;
-
-    if (!modelos || modelos.length === 0) {
-      return res.status(404).json({ msg: 'No se encontraron modelos para esta marca' });
-    }
 
     res.json(modelos);
   } catch (error) {

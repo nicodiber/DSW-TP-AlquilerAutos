@@ -26,7 +26,6 @@ export class ListarMarcaComponent {
   }
 
   eliminarMarca(marcaId: number) {
-    console.log(marcaId);
     this._marcaService.verificarModelosPorMarca(marcaId).subscribe({
       next: (existenModelos) => {
         if (existenModelos) {
