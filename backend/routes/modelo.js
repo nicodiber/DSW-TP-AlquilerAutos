@@ -18,7 +18,7 @@ const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }
 }).fields([
-    { name: 'images', maxCount: 5 },
+    { name: 'images', maxCount: 4 },
     { name: 'nombreModelo', maxCount: 1 },
     { name: 'categoriaModelo', maxCount: 1 },
     { name: 'marcaModelo', maxCount: 1 },
@@ -39,7 +39,9 @@ const upload = multer({
 router.post('/', upload, modeloController.crearModeloConImagenes);
 router.get('/', modeloController.obtenerModelos);
 router.get('/:id', modeloController.obtenerModelo);
-router.put('/:id', modeloController.actualizarModelo);
+router.put('/:id', upload, modeloController.actualizarModelo); ///porq con el otro no anda xd
+
+//router.put('/:id', modeloController.actualizarModelo);
 router.delete('/:id', modeloController.eliminarModelo);
 
 router.post('/buscarAutoAleatorioDisponible', modeloController.buscarAutoAleatorioDisponible);

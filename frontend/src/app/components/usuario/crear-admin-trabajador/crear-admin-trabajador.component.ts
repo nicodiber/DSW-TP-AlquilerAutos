@@ -42,6 +42,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.usuarioForm.invalid) {
     // Recorre los controles del formulario y muestra mensajes de error con toastr
     Object.keys(this.usuarioForm.controls).forEach(key => {
       const control = this.usuarioForm.get(key);
@@ -74,8 +75,10 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       }
     });
     this.usuarioForm.markAllAsTouched();
-    this.agregarUsuario();
     return;
+    
+  }
+    this.agregarUsuario();
   }
 
   agregarUsuario() {

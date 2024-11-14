@@ -16,6 +16,7 @@ export class CrearModeloComponent implements OnInit {
   titulo = 'Crear Modelo';
   id: string | null;
   selectedFiles: File[] = []; // Nueva propiedad para almacenar las imágenes
+  existingImages: string[] = []; // Nueva propiedad para imágenes existentes
   categorias: any[] = [];
   marcas: any[] = [];
 
@@ -55,6 +56,7 @@ export class CrearModeloComponent implements OnInit {
     });
   }
   submitForm() {
+    if (this.modeloForm.invalid) {
     // Recorre los controles del formulario y muestra mensajes de error con toastr
     Object.keys(this.modeloForm.controls).forEach(key => {
       const control = this.modeloForm.get(key);
@@ -93,25 +95,29 @@ export class CrearModeloComponent implements OnInit {
         }
       }
     });
-
     this.modeloForm.markAllAsTouched();
     return;
+    }
   }
 
   // Método para manejar la selección de archivos
   onFileSelected(event: any) {
-    if (event.target.files.length <= 5) {
-      this.selectedFiles = Array.from(event.target.files);
+    if (event.target.files.length <= 4) {
+        this.selectedFiles = Array.from(event.target.files); // Agrega nuevas imágenes REVISAR DESPUES
     } else {
-      alert("Solo puedes seleccionar hasta 5 imágenes.");
+        this.toastr.error("Solo puedes seleccionar hasta 4 imágenes");
+        this.selectedFiles = []
     }
-  }
+}
+
+
+
 
   // Método para agregar un nuevo modelo con imágenes
   agregarModelo() {
-    if (this.modeloForm.invalid || this.selectedFiles.length === 0) {
-      console.log('Formulario inválido o no se seleccionaron imágenes');
-      return;
+    if (this.modeloForm.invalid) {
+        console.log('Formulario inválido');
+        return;
     }
 
     const formData = new FormData();
@@ -130,46 +136,52 @@ export class CrearModeloComponent implements OnInit {
     formData.append('capacidadTanqueCombustible', this.modeloForm.get('capacidadTanqueCombustible')?.value);
     formData.append('capacidadBaul', this.modeloForm.get('capacidadBaul')?.value);
 
-    // Agregar las imágenes al FormData
+    // Agregar imágenes existentes
+    if (this.id !== null) {
+        this.existingImages.forEach((img) => {
+            formData.append('existingImages', img); // Usa un campo específico como 'existingImages'
+        });
+    }
+
+    // Agregar nuevas imágenes seleccionadas
     this.selectedFiles.forEach((file) => {
-      formData.append('images', file); // 'images' debe coincidir con el nombre en multer.array()
+        formData.append('images', file); // 'images' debe coincidir con el nombre en multer.array()
     });
 
     if (this.id !== null) {
-      this._modeloService.editarModelo(this.id, formData).subscribe(data => {
-        this.toastr.info('El modelo fue actualizado con éxito!', 'Modelo Actualizado!');
-       setTimeout(() => {
-          window.location.href = '/modelos-listar';
-          }, 1000);
-      }, error => {
-        let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
-        
-        // Verificar si es error de conflicto 409
-        if (error.status === 409 && error.error && error.error.msg) {
-          errorMsg = error.error.msg;
-        }
-
-        this.toastr.error(errorMsg, 'Error de Actualización');
-      });
+        this._modeloService.editarModelo(this.id, formData).subscribe(data => {
+            this.toastr.info('El modelo fue actualizado con éxito!', 'Modelo Actualizado!');
+            setTimeout(() => {
+                window.location.href = '/modelos-listar';
+            }, 1000);
+        }, error => {
+            let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
+            if (error.status === 409 && error.error && error.error.msg) {
+                errorMsg = error.error.msg;
+            }
+            this.toastr.error(errorMsg, 'Error de Actualización');
+        });
     } else {
-      this._modeloService.guardarModelo(formData).subscribe(data => {
-        this.toastr.success('El modelo fue registrado con éxito!', 'Modelo Registrado!');
-        setTimeout(() => {
-          window.location.href = '/modelos-listar';
-          }, 1000);
-      }, error => {
-        console.log('Error al guardar modelo', error);
-        this.modeloForm.reset();
-      });
+        this._modeloService.guardarModelo(formData).subscribe(data => {
+            this.toastr.success('El modelo fue registrado con éxito!', 'Modelo Registrado!');
+            setTimeout(() => {
+                window.location.href = '/modelos-listar';
+            }, 1000);
+        }, error => {
+            console.log('Error al guardar modelo', error);
+            this.modeloForm.reset();
+        });
     }
 
     console.log('Datos enviados:', Array.from((formData as any).entries()));
-  }
+}
+
 
   esEditar() {
     if (this.id !== null) {
       this.titulo = 'Editar Modelo';
       this._modeloService.obtenerModelo(this.id).subscribe(data => {
+        console.log(data.images);
         this.modeloForm.patchValue({
           nombreModelo: data.nombreModelo,
           categoriaModelo: data.categoriaModelo._id,
@@ -185,7 +197,9 @@ export class CrearModeloComponent implements OnInit {
           tipoCombustible: data.tipoCombustible,
           capacidadTanqueCombustible: data.capacidadTanqueCombustible,
           capacidadBaul: data.capacidadBaul,
+          images: data.images,
         });
+         this.existingImages = data.images;
       });
     }
   }
