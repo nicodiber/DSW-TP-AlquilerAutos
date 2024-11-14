@@ -15,10 +15,11 @@ export class MarcaService {
   obtenerMarcas(): Observable<any>{
     return this.http.get(this.url);
   }
+  
   obtenerMarca(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
   }
-  // Método para crear una nueva marca
+
   crearMarca(marca: marca): Observable<marca> {
     return this.http.post<marca>(this.url, marca);
   }
@@ -36,6 +37,10 @@ export class MarcaService {
   }
 
   // Especificas
+  obtenerMarcaPorNombre(nombreMarca: string): Observable<any> {
+    return this.http.get(`${this.url}existe-nombre/${nombreMarca}`);
+  }
+
   obtenerModelosPorMarca(idMarca: string): Observable<modelo[]> {
     return this.http.get<modelo[]>(`${this.url}${idMarca}/marca-modelos`);
   }

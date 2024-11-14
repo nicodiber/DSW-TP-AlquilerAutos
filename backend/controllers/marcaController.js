@@ -79,6 +79,23 @@ exports.eliminarMarca = async (req, res) => {
 };
 
 // Especifico
+exports.obtenerMarcaPorNombre = async (req, res) => {
+  try {
+    const nombreMarca = req.params.nombreMarca;
+    const marca = await Marca.find({ nombreMarca: nombreMarca });
+
+    if (marca.length > 0) {
+      res.status(200).json(marca);
+    } else {
+      res.json(marca);
+      // res.status(200).json({ message: 'Marca no encontrada' });
+    }
+  } catch (error) {
+    console.error('Error al buscar la marca:', error);
+    res.status(500).json({ message: 'Error en el servidor al buscar la marca' });
+  }
+};
+
 exports.obtenerModelosPorMarca = async (req, res) => {
   try {
     const idMarca = req.params.idMarca;

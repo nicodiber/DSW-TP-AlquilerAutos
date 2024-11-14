@@ -37,6 +37,10 @@ export class CategoriaService {
   }
 
   // Funciones especificas
+  obtenerCategoriaPorNombre(nombreCategoria: string): Observable<any> {
+    return this.http.get(`${this.url}existe-nombre/${nombreCategoria}`);
+  }
+
   obtenerModelosPorCategoria(idCategoria: string): Observable<modelo[]> {
     return this.http.get<modelo[]>(`${this.url}${idCategoria}/categoria-modelos`);
   }

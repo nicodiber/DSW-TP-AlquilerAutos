@@ -8,6 +8,8 @@ router.get('/:id', categoriaController.obtenerCategoria);
 router.put('/:id', categoriaController.actualizarCategoria);
 router.delete('/:id', categoriaController.eliminarCategoria);
 
+router.get('/existe-nombre/:nombreCategoria', categoriaController.obtenerCategoriaPorNombre);
+
 router.get('/:idCategoria/categoria-modelos', categoriaController.obtenerModelosPorCategoria);
 router.get('/:idCategoria/existe-modelos', categoriaController.verificarModelosPorCategoria);
 

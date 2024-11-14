@@ -29,36 +29,49 @@ export class CrearCategoriaComponent implements OnInit {
     }
   }
 
+
   agregarCategoria() {
-    const CATEGORIA: categoria = {
+    const MARCA: categoria = {
       nombreCategoria: this.categoriaForm.get('nombreCategoria')?.value
     };
-
-    if (this.id !== null) {
-      // Editar cateogoria
-      this._categoriaService.editarCategoria(this.id, CATEGORIA).subscribe(
-        (response) => {
-          this.toastr.success('Categoría actualizada exitosamente', 'Éxito');
-          this.router.navigate(['/categoria-listar']);
-        },
-      
-        (error) => {
-          this.toastr.error('Error al actualizar la Categoría', 'Error');
-          console.error(error);
+    // Usar el servicio para consultar si ya existe la categoria
+    this._categoriaService.obtenerCategoriaPorNombre(MARCA.nombreCategoria).subscribe(
+      (categoria: any[]) => {
+        if (categoria && categoria.length > 0) {
+          this.toastr.error('Ya hay una Categoria con ese nombre', 'Error');
+        } else {
+          if (this.id !== null) {
+            // Editar categoría existente
+            this._categoriaService.editarCategoria(this.id, MARCA).subscribe(
+              (response) => {
+                this.toastr.success('Categoria actualizada exitosamente', 'Éxito');
+                this.router.navigate(['/categoria-listar']);
+              },
+              (error) => {
+                this.toastr.error('Error al actualizar la Categoria', 'Error');
+                console.error(error);
+              }
+            );
+          } else {
+            // Crear nueva categoria
+            this._categoriaService.crearCategoria(MARCA).subscribe(
+              data => {
+                this.toastr.success('La Categoria fue registrada con éxito!', 'Categoria Registrada!');
+                this.router.navigate(['/categoria-listar']);
+              },
+              error => this.toastr.error('Error al crear la Categoria.', 'Error')
+            );
+          }
         }
-      );
-    } else {
-      // Crear nueva categoria
-      this._categoriaService.crearCategoria(CATEGORIA).subscribe(
-        data => {
-          this.toastr.success('La categoría fue registrado con éxito!', 'Categoría Registrada!');
-          this.router.navigate(['/categoria-listar']);
-        },
-        error => this.toastr.error('Error al crear la Categoria.', 'Error')
-      );
-    }
+      },
+      (error) => {
+        console.error('Error en la consulta de categorias:', error);
+        this.toastr.error('Error al consultar las Categorias existentes.', 'Error');
+      }
+    );
   }
 
+  
   esEditar() {
     if (this.id !== null) {
       this.titulo = 'Editar Categoria';

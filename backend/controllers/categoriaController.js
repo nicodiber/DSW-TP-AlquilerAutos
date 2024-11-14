@@ -79,6 +79,22 @@ exports.eliminarCategoria = async (req, res) => {
 };
 
 // Especifico
+exports.obtenerCategoriaPorNombre = async (req, res) => {
+  try {
+    const nombreCategoria = req.params.nombreCategoria;
+    const categoria = await Categoria.find({ nombreCategoria: nombreCategoria });
+
+    if (categoria.length > 0) {
+      res.status(200).json(categoria);
+    } else {
+      res.json(categoria);
+    }
+  } catch (error) {
+    console.error('Error al buscar la categoria:', error);
+    res.status(500).json({ message: 'Error en el servidor al buscar la categoria' });
+  }
+};
+
 exports.obtenerModelosPorCategoria = async (req, res) => {
   try {
     const idCategoria = req.params.idCategoria;

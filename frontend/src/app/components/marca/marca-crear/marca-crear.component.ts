@@ -29,35 +29,48 @@ export class CrearMarcaComponent implements OnInit {
     }
   }
 
+
   agregarMarca() {
     const MARCA: marca = {
       nombreMarca: this.marcaForm.get('nombreMarca')?.value
     };
-
-    if (this.id !== null) {
-      // Editar cateogoria
-      this._marcaService.editarMarca(this.id, MARCA).subscribe(
-        (response) => {
-          this.toastr.success('Marca actualizada exitosamente', 'Éxito');
-          this.router.navigate(['/marca-listar']);
-        },
-      
-        (error) => {
-          this.toastr.error('Error al actualizar la Marca', 'Error');
-          console.error(error);
+    // Usar el servicio para consultar si ya existe la marca
+    this._marcaService.obtenerMarcaPorNombre(MARCA.nombreMarca).subscribe(
+      (marca: any[]) => {
+        if (marca && marca.length > 0) {
+          this.toastr.error('Ya hay una Marca con ese nombre', 'Error');
+        } else {
+          if (this.id !== null) {
+            // Editar categoría existente
+            this._marcaService.editarMarca(this.id, MARCA).subscribe(
+              (response) => {
+                this.toastr.success('Marca actualizada exitosamente', 'Éxito');
+                this.router.navigate(['/marca-listar']);
+              },
+              (error) => {
+                this.toastr.error('Error al actualizar la Marca', 'Error');
+                console.error(error);
+              }
+            );
+          } else {
+            // Crear nueva marca
+            this._marcaService.crearMarca(MARCA).subscribe(
+              data => {
+                this.toastr.success('La Marca fue registrada con éxito!', 'Marca Registrada!');
+                this.router.navigate(['/marca-listar']);
+              },
+              error => this.toastr.error('Error al crear la Marca.', 'Error')
+            );
+          }
         }
-      );
-    } else {
-      // Crear nueva marca
-      this._marcaService.crearMarca(MARCA).subscribe(
-        data => {
-          this.toastr.success('La Marca fue registrado con éxito!', 'Marca Registrada!');
-          this.router.navigate(['/marca-listar']);
-        },
-        error => this.toastr.error('Error al crear la Marca.', 'Error')
-      );
-    }
+      },
+      (error) => {
+        console.error('Error en la consulta de marcas:', error);
+        this.toastr.error('Error al consultar las Marcas existentes.', 'Error');
+      }
+    );
   }
+
 
   esEditar() {
     if (this.id !== null) {

@@ -2,6 +2,9 @@ import { categoria } from './categoria';
 import { marca } from './marca';
 
 export class modelo {
+    static find(arg0: { nombreMarca: any; }) {
+      throw new Error('Method not implemented.');
+    }
     _id?: number; // El _id es opcional para la creación de nuevos objetos.
     nombreModelo: string; 
     categoriaModelo: categoria; 
