@@ -27,15 +27,25 @@ export class ListarModelosComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
-    // Cookies
-    if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0)) {
+
+    if (this.gestionCookiesService.getDatosBusquedaExpiration() !== 0) {
+      if (this.gestionCookiesService.getDatosBusqueda() === 0) {
+        this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
+        setTimeout(() => {
+          window.location.href = '/buscador';
+        }, 2000);
+      } else {
+        // Que navegue, tiene todo bien
+      }
+    } else {
       window.location.href = '/buscador';
-      this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
     }
+
     // Obtenemos Categorias y Marcas
     this.obtenerCategorias();
     this.obtenerMarcas();
-    console.log(this.gestionCookiesService.getDatosBusqueda());
+    // console.log(this.gestionCookiesService.getDatosBusqueda());
+    
     // Inicializamos modelosFiltrados con modelosDisponibles
     this.modelosDisponibles = this.gestionCookiesService.getDatosModelosDisponibles(); // Necesitamos modelosDisponibles como una referencia constante (para tener siempre el conjunto completo de modelos sin filtrado o modificaciones)
     this.modelosFiltrados = [...(this.modelosDisponibles)]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
