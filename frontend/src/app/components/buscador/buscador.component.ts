@@ -24,7 +24,7 @@ export class BuscadorComponent implements OnInit {
   isFormValid: boolean = false;
   isDateValid: boolean = false;
 
-  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService) {}
+  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
     // Obtener las Sucursales
@@ -98,13 +98,13 @@ export class BuscadorComponent implements OnInit {
   }
 
   verificarCamposCompletos() {
-    this.isFormValid = 
-    (this.selectedSucursalRetiro !== '' &&
-    this.selectedSucursalDevolucion !== '' &&
-    this.fechaRetiro !== '' &&
-    this.horaRetiro !== '' &&
-    this.fechaDevolucion !== '' &&
-    this.horaDevolucion !== '');
+    this.isFormValid =
+      (this.selectedSucursalRetiro !== '' &&
+        this.selectedSucursalDevolucion !== '' &&
+        this.fechaRetiro !== '' &&
+        this.horaRetiro !== '' &&
+        this.fechaDevolucion !== '' &&
+        this.horaDevolucion !== '');
   }
   verificarFechasValidas() {
     const fechaRetiroMoment = moment(this.fechaRetiro, "YYYY-MM-DD");
@@ -114,41 +114,52 @@ export class BuscadorComponent implements OnInit {
   }
 
   realizarBusqueda(): void {
-  if (this.isFormValid && this.isDateValid) {
-    // Obtener sucursales completas utilizando suscripciones
-    this.sucursalService.obtenerSucursal(this.selectedSucursalRetiro).subscribe((sucursalRetiroData) => {
-      this.sucursalService.obtenerSucursal(this.selectedSucursalDevolucion).subscribe((sucursalDevolucionData) => { // No se ejecuta hasta que sucursalRetiroData se haya recibido
-        const data = {
-          sucursalRetiro: sucursalRetiroData, // Objeto completo
-          sucursalDevolucion: sucursalDevolucionData, // Objeto completo
-          fechaRetiro: this.fechaRetiro,
-          fechaDevolucion: this.fechaDevolucion,
-          horaRetiro: this.horaRetiro,
-          horaDevolucion: this.horaDevolucion,
-          modeloElegido: undefined,
-          precioTotal: undefined,
-        };
+    if (this.isFormValid && this.isDateValid) {
+      // Obtener sucursales completas utilizando suscripciones
+      this.sucursalService.obtenerSucursal(this.selectedSucursalRetiro).subscribe((sucursalRetiroData) => {
+        this.sucursalService.obtenerSucursal(this.selectedSucursalDevolucion).subscribe((sucursalDevolucionData) => { // No se ejecuta hasta que sucursalRetiroData se haya recibido
+          const data = {
+            sucursalRetiro: sucursalRetiroData, // Objeto completo
+            sucursalDevolucion: sucursalDevolucionData, // Objeto completo
+            fechaRetiro: this.fechaRetiro,
+            fechaDevolucion: this.fechaDevolucion,
+            horaRetiro: this.horaRetiro,
+            horaDevolucion: this.horaDevolucion,
+            modeloElegido: undefined,
+            precioTotal: undefined,
+          };
 
-        this.alquilerService.buscarModelosDisponibles(data).subscribe(
-          (modelos) => {
-            // Cookies
-            const expirationDate = new Date();
-            expirationDate.setSeconds(expirationDate.getSeconds() + 1800); // Tiempo de expiración de las cookies en 1800 = 30 minutos
-            this.cookieService.set('datosBusqueda', JSON.stringify(data), { expires: expirationDate, path: '/' });
-            this.cookieService.set('modelosDisponibles', JSON.stringify(modelos), { expires: expirationDate, path: '/' });
+          this.alquilerService.buscarModelosDisponibles(data).subscribe(
+            (modelos) => {
+              // Cookies
+              const expirationDate = new Date();
+              expirationDate.setSeconds(expirationDate.getSeconds() + 1800); // Tiempo de expiración de las cookies en 1800 = 30 minutos
+              this.cookieService.set('datosBusqueda', JSON.stringify(data), { expires: expirationDate, path: '/' });
+              this.cookieService.set('modelosDisponibles', JSON.stringify(modelos), { expires: expirationDate, path: '/' });
 
-            // Redirigir a "modelo-listar"
-            this.router.navigate(['/modelo-listar']);
-          },
-          (error) => console.error('Error al buscar modelos disponibles:', error)
-        );
+              // Redirigir a "modelo-listar"
+              this.router.navigate(['/modelo-listar']);
+            },
+            (error) => console.error('Error al buscar modelos disponibles:', error)
+          );
+        });
       });
-    });
-  } else if (!this.isFormValid){
-    alert("Por favor, complete todos los campos antes de realizar la búsqueda.");
-  } else {
-    alert("Por favor, revise las fechas indicadas. La fecha de retiro debe ser posterior a hoy, y la fecha de devolución debe ser posterior a la fecha de retiro.");
+    } else if (!this.isFormValid) {
+      alert("Por favor, complete todos los campos antes de realizar la búsqueda.");
+    } else {
+      alert("Por favor, revise las fechas indicadas. La fecha de retiro debe ser posterior a hoy, y la fecha de devolución debe ser posterior a la fecha de retiro.");
+    }
   }
-}
 
+  loadSucursales(): void {
+    this.sucursalService.obtenerSucursal(this.selectedSucursalRetiro)
+      .subscribe((sucursalRetiroData: any) => {
+        // Lógica con sucursalRetiroData
+      });
+
+    this.sucursalService.obtenerSucursal(this.selectedSucursalDevolucion)
+      .subscribe((sucursalDevolucionData: any) => {
+        // Lógica con sucursalDevolucionData
+      });
+  }
 }

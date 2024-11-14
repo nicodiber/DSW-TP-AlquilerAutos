@@ -15,11 +15,13 @@ export class SucursalCrearComponent implements OnInit {
   titulo = 'Crear Sucursal';
   id: string | null;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
     private _sucursalService: SucursalService,
-    private aRouter: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     this.sucursalForm = this.fb.group({
       nombreSucursal: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       telefonoSucursal: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
@@ -30,45 +32,22 @@ export class SucursalCrearComponent implements OnInit {
       horaAperturaSucursal: ['', [Validators.required]],
       horaCierreSucursal: ['', [Validators.required]],
     });
-    this.id = this.aRouter.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
     this.esEditar();
   }
 
-  submitForm() {
+  submitForm(): void {
     if (this.sucursalForm.invalid) {
-      Object.keys(this.sucursalForm.controls).forEach(key => {
-        const control = this.sucursalForm.get(key);
-
-        if (control?.invalid) {
-          if (control.errors?.['required']) {
-            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-          }
-          if (control.errors?.['pattern']) {
-            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
-          }
-          if (control.errors?.['minlength']) {
-            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
-          }
-        }
-      });
-      this.sucursalForm.markAllAsTouched();
+      this.showFormErrors();
       return;
     }
-
     this.agregarSucursal();
   }
 
-
-  agregarSucursal() {
-    if (this.sucursalForm.invalid) {
-      this.showFormErrors();
-      this.sucursalForm.markAllAsTouched();
-      return;
-    }
-
+  agregarSucursal(): void {
     const SUCURSAL: sucursal = {
       nombreSucursal: this.sucursalForm.get('nombreSucursal')?.value,
       telefonoSucursal: this.sucursalForm.get('telefonoSucursal')?.value,
@@ -80,20 +59,18 @@ export class SucursalCrearComponent implements OnInit {
       horaCierreSucursal: this.sucursalForm.get('horaCierreSucursal')?.value,
     };
 
-    if (this.id !== null) {
-      // Editar sucursal
+    if (this.id) {
       this._sucursalService.editarSucursal(this.id, SUCURSAL).subscribe(
-        data => {
-          this.toastr.info('La sucursal fue actualizada con éxito!', 'Sucursal Actualizada!');
+        () => {
+          this.toastr.info('La sucursal fue actualizada con éxito!', 'Sucursal Actualizada');
           this.router.navigate(['/sucursal-listar']);
         },
         error => this.handleError(error, 'actualizar')
       );
     } else {
-      // Crear nueva sucursal
       this._sucursalService.guardarSucursal(SUCURSAL).subscribe(
-        data => {
-          this.toastr.success('La sucursal fue registrada con éxito!', 'Sucursal Registrada!');
+        () => {
+          this.toastr.success('La sucursal fue registrada con éxito!', 'Sucursal Registrada');
           this.router.navigate(['/sucursal-listar']);
         },
         error => this.handleError(error, 'registrar')
@@ -101,21 +78,18 @@ export class SucursalCrearComponent implements OnInit {
     }
   }
 
-  showFormErrors() {
+  showFormErrors(): void {
     Object.keys(this.sucursalForm.controls).forEach(key => {
       const control = this.sucursalForm.get(key);
       if (control?.invalid) {
-        if (control.errors?.['required']) {
-          this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-        }
-        if (control.errors?.['pattern']) {
-          this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
-        }
+        const errorType = control.errors?.['required'] ? 'obligatorio' : 'formato incorrecto';
+        this.toastr.error(`El campo ${key} es ${errorType}.`, 'Error en el formulario');
       }
     });
+    this.sucursalForm.markAllAsTouched();
   }
 
-  handleError(error: any, action: string) {
+  handleError(error: any, action: string): void {
     let errorMsg = `Ocurrió un error al intentar ${action} la sucursal`;
     if (error.status === 409 && error.error && error.error.msg) {
       errorMsg = error.error.msg;
@@ -124,10 +98,17 @@ export class SucursalCrearComponent implements OnInit {
     this.sucursalForm.reset();
   }
 
-  esEditar() {
-    if (this.id !== null) {
+  esEditar(): void {
+    if (this.id) {
       this.titulo = 'Editar Sucursal';
-      this._sucursalService.obtenerSucursal(this.id).subscribe(data => {
+      this.cargarSucursal();
+    }
+  }
+
+  cargarSucursal(): void {
+    if (!this.id) return;
+    this._sucursalService.obtenerSucursal(this.id).subscribe(
+      (data: any) => {
         this.sucursalForm.setValue({
           nombreSucursal: data.nombreSucursal,
           telefonoSucursal: data.telefonoSucursal,
@@ -138,7 +119,11 @@ export class SucursalCrearComponent implements OnInit {
           horaAperturaSucursal: data.horaAperturaSucursal,
           horaCierreSucursal: data.horaCierreSucursal,
         });
-      });
-    }
+      },
+      error => {
+        console.error("Error al cargar la sucursal:", error);
+        this.toastr.error("No se pudo cargar la información de la sucursal.");
+      }
+    );
   }
 }
