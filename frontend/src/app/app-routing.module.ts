@@ -31,6 +31,7 @@ import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.comp
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
+import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
 
 
 // Define las rutas de la aplicación
@@ -62,22 +63,23 @@ const routes: Routes = [
   { path: 'sucursal-listar', component: SucursalListarComponent },
   { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
   { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
+  { path: 'asignar-autos/:id', component: AsignarAutosComponent },
 
   { path: 'alquiler-listar', component: AlquilerListarComponent },
 
-  { path: 'marca-crear', component:CrearMarcaComponent},
-  { path: 'marca-listar', component: ListarMarcaComponent},
+  { path: 'marca-crear', component: CrearMarcaComponent },
+  { path: 'marca-listar', component: ListarMarcaComponent },
   { path: 'marca-editar/:id', component: CrearMarcaComponent },
-  { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
+  { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent },
 
-  { path: 'categoria-listar', component: ListarCategoriaComponent},
+  { path: 'categoria-listar', component: ListarCategoriaComponent },
   { path: 'categoria-crear', component: CrearCategoriaComponent },
   { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
-  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent},
+  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent },
 
   { path: 'auto-listar', component: AutoListarComponent },
-  { path: 'auto-crear', component:AutoCrearComponent},
-  { path: 'auto-editar/:id', component:AutoCrearComponent},
+  { path: 'auto-crear', component: AutoCrearComponent },
+  { path: 'auto-editar/:id', component: AutoCrearComponent },
 
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];

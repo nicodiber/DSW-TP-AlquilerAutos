@@ -50,4 +50,18 @@ export class SucursalService {
   obtenerTrabajadoresParaAsignacion(idSucursal: string): Observable<any> {
     return this.http.get(`${this.url}${idSucursal}/obtener-trabajadores`);  // Realiza una solicitud GET para obtener la lista de trabajadores para asignación
   }
+
+  // Método para obtener autos asignados y no asignados para una sucursal específica
+  obtenerAutosParaAsignacion(idSucursal: string): Observable<any> {
+    return this.http.get(`${this.url}${idSucursal}/obtener-autos`);  // Realiza una solicitud GET para obtener la lista de autos asignados y no asignados para la sucursal especificada por su ID
+  }
+
+  // Método para asignar o desasignar autos a una sucursal específica
+  asignarAutos(idSucursal: string, autosAsignados: string[], autosNoAsignados: string[]): Observable<any> {
+    // Realiza una solicitud POST para asignar o desasignar autos de la sucursal, enviando los IDs de los autos seleccionados
+    return this.http.post(`${this.url}${idSucursal}/asignar-autos`, {
+      autosAsignados,
+      autosNoAsignados
+    });
+  }
 }

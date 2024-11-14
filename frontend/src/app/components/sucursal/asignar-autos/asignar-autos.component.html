@@ -1,0 +1,85 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Botón para volver a la lista de sucursales -->
+                    <a routerLink="/sucursal-listar" class="btn btn-link float-start">Volver</a>
+
+                    <!-- Título que muestra el nombre de la sucursal a la que se asignarán los autos -->
+                    <h4 class="titulo">Asignar Autos a la Sucursal {{ nombreSucursal }}</h4>
+
+                    <!-- Sección de Autos Asignados -->
+                    <h5 class="mt-4">Autos Asignados</h5>
+                    <!-- Tabla para mostrar los autos que ya están asignados a la sucursal -->
+                    <table class="table table-striped mt-3" *ngIf="autosAsignados.length > 0">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID del Auto</th>
+                                <th scope="col">Modelo</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recorrido de la lista de autos asignados a la sucursal. Cada fila muestra un auto asignado con su información -->
+                            <tr *ngFor="let auto of autosAsignados">
+                                <td>{{ auto._id }}</td>
+                                <td>{{ auto.modelo }}</td>
+                                <td>{{ auto.marca }}</td>
+                                <!-- Botón para desasignar el auto de la sucursal -->
+                                <td>
+                                    <button (click)="toggleAsignacion(auto, false)" *ngIf="!auto.mostrarDesasignado"
+                                        class="btn btn-warning">
+                                        Desasignar
+                                    </button>
+                                    <span *ngIf="auto.mostrarDesasignado" class="mensaje-asignacion"
+                                        style="padding: 5px 15px;">Desasignado</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h6 *ngIf="autosAsignados.length === 0"> No hay autos asignados a esta sucursal</h6>
+
+                    <div class="spacer-20"></div>
+
+                    <!-- Sección de Autos No Asignados -->
+                    <h5 class="mt-4">Autos No Asignados</h5>
+                    <!-- Tabla para mostrar los autos que no están asignados a ninguna sucursal -->
+                    <table class="table table-striped mt-3" *ngIf="autosNoAsignados.length > 0">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID del Auto</th>
+                                <th scope="col">Modelo</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recorrido de la lista de autos que no están asignados. Cada fila muestra un auto disponible para ser asignado -->
+                            <tr *ngFor="let auto of autosNoAsignados">
+                                <td>{{ auto._id }}</td>
+                                <td>{{ auto.modelo }}</td>
+                                <td>{{ auto.marca }}</td>
+                                <!-- Botón para asignar el auto a la sucursal -->
+                                <td>
+                                    <button (click)="toggleAsignacion(auto, true)" *ngIf="!auto.mostrarAsignado"
+                                        class="btn btn-primary">
+                                        Asignar
+                                    </button>
+                                    <span *ngIf="auto.mostrarAsignado" class="mensaje-asignacion"
+                                        style="padding: 5px 15px;">Asignado</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h6 *ngIf="autosNoAsignados.length === 0"> No hay autos disponibles para asignar</h6>
+
+                    <!-- Botón para guardar los cambios realizados en las asignaciones de los autos -->
+                    <button class="btn btn-error mt-3" (click)="recargarPagina()">Cancelar Asignaciones</button>&nbsp;&nbsp;
+                    <button class="btn btn-success mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
