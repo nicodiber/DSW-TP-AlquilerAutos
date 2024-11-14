@@ -28,24 +28,31 @@ import { ListarCategoriaModeloComponent } from './components/categoria/categoria
 import { CrearCategoriaComponent } from './components/categoria/categoria-crear/categoria-crear.component';
 import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
+import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
+import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
+
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
       { path: 'modelo/:id', component: DetalleModeloComponent },
-      { path: 'modelo-crear', component: CrearModeloComponent },
-      { path: 'modelo-editar/:id', component: CrearModeloComponent },
+      
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
       { path: 'alquiler-revision', component: AlquilerRevisionComponent },
       { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
       { path: 'buscador', component: BuscadorComponent },
+      { path: 'tareas-admin', component: TareasAdminComponent },
+      { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
     ]
   },
 
-  { path: 'tareas-admin', component: TareasAdminComponent },
+  { path: 'modelos-listar', component: ModelosListarComponent },
+  { path: 'modelo-crear', component: CrearModeloComponent },
+  { path: 'modelo-editar/:id', component: CrearModeloComponent },
+
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },

@@ -42,6 +42,8 @@ import { ListarCategoriaModeloComponent } from './components/categoria/categoria
 import { CrearCategoriaComponent } from './components/categoria/categoria-crear/categoria-crear.component';
 import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
+import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
+import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.comp
     ListarCategoriaModeloComponent,
     CrearCategoriaComponent,
     AutoCrearComponent,
-    AutoListarComponent
+    AutoListarComponent,
+    EditarDatosUsuarioComponent,
+    ModelosListarComponent
   ],
   imports: [
     BrowserModule,

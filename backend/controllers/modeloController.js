@@ -57,9 +57,9 @@ exports.crearModeloConImagenes = async (req, res) => {
 
 exports.obtenerModelos = async (req, res) => {
   try {
-    // Obtener todos los modelos con los detalles de categoría y marca
+    // Obtener todos los modelos con los detalles de categoría y marca actualizarModelo
     const modelosConDetalles = await Modelo.find().populate('categoriaModelo').populate('marcaModelo');
-
+    
     res.json(modelosConDetalles);
   } catch (error) {
     console.error("Error al obtener modelos con detalles:", error);
@@ -67,43 +67,54 @@ exports.obtenerModelos = async (req, res) => {
   }
 };
 
-
+//nuevo
 exports.actualizarModelo = async (req, res) => {
   try {
-    const { nombreModelo, marcaModelo, categoriaModelo, precioXdia, anio, color, dimensiones, cantidadAsientos, cantidadPuertas, motor, cajaTransmision, tipoCombustible, capacidadTanqueCombustible, capacidadBaul } = req.body;
-    let modeloExistente = await Modelo.findById(req.params.id);
+    console.log('req.body:', req.body); // Verifica que `req.body` contenga los campos de texto
+    console.log('req.files:', req.files); // Verifica que `req.files` contenga las imágenes
 
+    // Buscar el modelo a editar
+    const modeloExistente = await Modelo.findById(req.params.id);
     if (!modeloExistente) {
       return res.status(404).json({ msg: 'No existe ese modelo' });
     }
 
-    // Actualizamos los campos del modelo
-    modeloExistente.nombreModelo = nombreModelo;
-    modeloExistente.marcaModelo = marcaModelo;
-    modeloExistente.categoriaModelo = categoriaModelo;
-    modeloExistente.precioXdia = precioXdia;
-    modeloExistente.anio = anio;
-    modeloExistente.color = color;
-    modeloExistente.dimensiones = dimensiones;
-    modeloExistente.cantidadAsientos = cantidadAsientos;
-    modeloExistente.cantidadPuertas = cantidadPuertas;
-    modeloExistente.motor = motor;
-    modeloExistente.cajaTransmision = cajaTransmision;
-    modeloExistente.tipoCombustible = tipoCombustible;
-    modeloExistente.capacidadTanqueCombustible = capacidadTanqueCombustible;
-    modeloExistente.capacidadBaul = capacidadBaul;
+    // Si hay nuevas imágenes, las agregamos o las reemplazamos
+    const images = req.files['images'] ? req.files['images'].map(file => `/uploads/${file.filename}`) : modeloExistente.images;
 
-    modeloExistente = await Modelo.findOneAndUpdate(
-      { _id: req.params.id },
-      modeloExistente,
-      { new: true }
-    );
-    res.json(modeloExistente);
+    // Dado que los campos de texto de `req.body` vienen como strings, necesitamos convertir algunos a su tipo correcto
+    const modeloData = {
+      nombreModelo: req.body.nombreModelo || modeloExistente.nombreModelo,
+      categoriaModelo: req.body.categoriaModelo || modeloExistente.categoriaModelo,
+      marcaModelo: req.body.marcaModelo || modeloExistente.marcaModelo,
+      precioXdia: req.body.precioXdia ? parseFloat(req.body.precioXdia) : modeloExistente.precioXdia,
+      anio: req.body.anio ? parseInt(req.body.anio) : modeloExistente.anio,
+      color: req.body.color || modeloExistente.color,
+      dimensiones: req.body.dimensiones || modeloExistente.dimensiones,
+      cantidadAsientos: req.body.cantidadAsientos ? parseInt(req.body.cantidadAsientos) : modeloExistente.cantidadAsientos,
+      cantidadPuertas: req.body.cantidadPuertas ? parseInt(req.body.cantidadPuertas) : modeloExistente.cantidadPuertas,
+      motor: req.body.motor || modeloExistente.motor,
+      cajaTransmision: req.body.cajaTransmision || modeloExistente.cajaTransmision,
+      tipoCombustible: req.body.tipoCombustible || modeloExistente.tipoCombustible,
+      capacidadTanqueCombustible: req.body.capacidadTanqueCombustible ? parseFloat(req.body.capacidadTanqueCombustible) : modeloExistente.capacidadTanqueCombustible,
+      capacidadBaul: req.body.capacidadBaul ? parseFloat(req.body.capacidadBaul) : modeloExistente.capacidadBaul,
+      images // Mantiene las imágenes si no se han enviado nuevas
+    };
+
+    // Actualiza el modelo con los datos procesados
+    const modeloActualizado = await Modelo.findByIdAndUpdate(req.params.id, modeloData, { new: true, runValidators: true });
+
+    if (!modeloActualizado) {
+      return res.status(404).json({ msg: 'No se pudo actualizar el modelo' });
+    }
+
+    res.json(modeloActualizado);
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error');
+    console.log('Error al editar el modelo:', error);
+    res.status(500).json({ message: 'Hubo un error', error: error.message });
   }
 };
+
 
 exports.obtenerModelo = async (req, res) => {
   try {

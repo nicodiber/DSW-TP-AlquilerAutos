@@ -1,11 +1,12 @@
-<div class="container mt-4" style="padding-top: 120px !important; padding-bottom: 100px !important;">
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <span class="titulo"> Alta de Modelo </span>
+                    <span class="titulo"> {{ titulo | uppercase }}</span>
                     <form class="mt-3" [formGroup]="modeloForm" (ngSubmit)="agregarModelo()">
                         <div class="mb-3">
+                            <label for="nombreModelo" class="form-label">Nombre del Modelo:</label>
                             <input type="text" formControlName="nombreModelo" class="form-control form-control-lg"
                                 placeholder="Nombre del Modelo">
                             <div class="text-danger"
@@ -14,6 +15,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="categoriaModelo" class="form-label">Categoria:</label>
                             <select formControlName="categoriaModelo" class="form-control form-control-lg" placeholder="Hola">
                                 <option value="">Seleccione una categoria de modelo</option>
                                 <option *ngFor="let categoria of categorias" [value]="categoria._id">{{ categoria.nombreCategoria }}</option>
@@ -24,6 +26,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="marcaModelo" class="form-label">Marca:</label>
                             <select formControlName="marcaModelo" class="form-control form-control-lg" placeholder="Hola">
                                 <option value="">Seleccione una marca de modelo</option>
                                 <option *ngFor="let marca of marcas" [value]="marca._id">{{ marca.nombreMarca }}</option>
@@ -34,6 +37,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="precioXdia" class="form-label">Precio del Modelo:</label>
                             <input type="number" formControlName="precioXdia" class="form-control form-control-lg"
                                 placeholder="Precio del Modelo">
                             <div class="text-danger"
@@ -42,6 +46,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="anio" class="form-label">Año del Modelo:</label>
                             <input type="number" formControlName="anio" class="form-control form-control-lg"
                                 placeholder="Año del Modelo">
                             <div class="text-danger"
@@ -50,6 +55,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="color" class="form-label">Color del Modelo:</label>
                             <input type="text" formControlName="color" class="form-control form-control-lg"
                                 placeholder="Color del Modelo">
                             <div class="text-danger"
@@ -58,14 +64,16 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="dimensiones" class="form-label">Dimensiones (Ancho x largo x alto):</label>
                             <input type="text" formControlName="dimensiones" class="form-control form-control-lg"
-                                placeholder="Dimensiones del Modelo">
+                                placeholder="Ej: 4x2x2">
                             <div class="text-danger"
                                 *ngIf="modeloForm.get('dimensiones')?.hasError('required') && modeloForm.get('dimensiones')?.touched">
                                 <span>Las Dimensiones <strong>son obligatorias</strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="cantidadAsientos" class="form-label">Cantidad de Asientos:</label>
                             <input type="number" formControlName="cantidadAsientos"
                                 class="form-control form-control-lg" placeholder="Cantidad de Asientos">
                             <div class="text-danger"
@@ -74,6 +82,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="cantidadPuertas" class="form-label">Cantidad de Puertas:</label>
                             <input type="number" formControlName="cantidadPuertas"
                                 class="form-control form-control-lg" placeholder="Cantidad de Puertas">
                             <div class="text-danger"
@@ -82,14 +91,16 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="motor" class="form-label">Cilindrada del motor:</label>
                             <input type="text" formControlName="motor" class="form-control form-control-lg"
-                                placeholder="Motor">
+                                placeholder="Ej: 1.2">
                             <div class="text-danger"
                                 *ngIf="modeloForm.get('motor')?.hasError('required') && modeloForm.get('motor')?.touched">
                                 <span>El Motor <strong>es obligatorio</strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="cajaTransmision" class="form-label">Transmision:</label>
                             <input type="text" formControlName="cajaTransmision"
                                 class="form-control form-control-lg" placeholder="Caja de Transmisión">
                             <div class="text-danger"
@@ -98,6 +109,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="tipoCombustible" class="form-label">Tipo de Combustible:</label>
                             <input type="text" formControlName="tipoCombustible"
                                 class="form-control form-control-lg" placeholder="Tipo de Combustible">
                             <div class="text-danger"
@@ -106,33 +118,50 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="capacidadTanqueCombustible" class="form-label">Capacidad del Tanque de Combustible (en litros):</label>
                             <input type="number" formControlName="capacidadTanqueCombustible"
                                 class="form-control form-control-lg"
-                                placeholder="Capacidad del Tanque de Combustible (en litros)">
+                                placeholder="Ej: 45">
                             <div class="text-danger"
                                 *ngIf="modeloForm.get('capacidadTanqueCombustible')?.hasError('required') && modeloForm.get('capacidadTanqueCombustible')?.touched">
                                 <span>La Capacidad del Tanque <strong>es obligatoria</strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="capacidadBaul" class="form-label">Capacidad del Tanque de Baúl (en litros):</label>
                             <input type="number" formControlName="capacidadBaul"
-                                class="form-control form-control-lg" placeholder="Capacidad del Baúl (en litros)">
+                                class="form-control form-control-lg" placeholder="Ej: 400">
                             <div class="text-danger"
                                 *ngIf="modeloForm.get('capacidadBaul')?.hasError('required') && modeloForm.get('capacidadBaul')?.touched">
                                 <span>La Capacidad del Baúl <strong>es obligatoria</strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
+                            <!-- Input para cargar nuevas imágenes -->
+                            <label class="form-label">Cargar nuevas imágenes:</label>
                             <input type="file" (change)="onFileSelected($event)" multiple>
-                            <div class="text-danger" *ngIf="selectedFiles.length === 0 && modeloForm.touched">
+                        
+                            <!-- Validación de carga de imágenes -->
+                            <div class="text-danger" *ngIf="selectedFiles.length === 0 && existingImages.length === 0 && modeloForm.touched">
                                 <span>Debes cargar al menos una imagen</span>
                             </div>
                         </div>
+                        
+                        <!-- Vista previa de imágenes existentes (solo en modo de edición) -->
+                        <div *ngIf="existingImages.length > 0" class="mb-3">
+                            <label class="form-label">Imágenes actuales:</label>
+                            <div *ngFor="let img of existingImages; let i = index" class="mb-2">
+                                <span>Posición: {{ i }}</span>
+                                <img [src]="'http://localhost:4000' + img" alt="Imagen actual" style="max-width: 100px; max-height: 100px;">
+                            </div>
+                        </div>
+                        <div *ngFor="let file of selectedFiles; let i = index">
+                            <img [src]="file" alt="imagen {{ i }}" />
+                        </div>
+
                         <div class="mb-3">
-                            <button type="button" routerLink="/"
-                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
-                            <button type="submit" [disabled]="modeloForm.invalid"
-                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                            <button routerLink="/modelos-listar" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="submit" (click)="submitForm()" class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
                 </div>

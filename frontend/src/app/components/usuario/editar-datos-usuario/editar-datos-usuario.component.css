@@ -1,6 +1,13 @@
-.position-relative {
-    position: relative;
+.col-lg-6{
+font-family: Outfit, Helvetica, Arial, sans-serif;
+font-weight: 600;
 }
+.no-underline {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 .input-wrapper {
     position: relative;
     display: flex;
@@ -10,23 +17,15 @@
 .btn-toggle-password {
     position: absolute;
     right: 10px;
-    top: 42%;
+    top: 45%;
     transform: translateY(-50%);
     background: none;
     border: none;
     cursor: pointer;
     font-size: 1em;
-    color: #404040;
+    color: grey;
 }
 
-.text-danger{
+.text-danger {
     font-size: 0.9em;
-}
-
-.col-lg-4{
-    font-family: Outfit, Helvetica, Arial, sans-serif;
-    font-weight: 600;
-}
-.title-line{
-    font-size: 1em;
 }

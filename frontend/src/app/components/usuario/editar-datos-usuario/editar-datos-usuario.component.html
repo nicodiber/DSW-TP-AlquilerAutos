@@ -1,0 +1,159 @@
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- Section for header -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="images/background/14.jpg" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Cuenta</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main section with profile and form -->
+    <section id="section-settings" class="bg-gray-100">
+        <div class="container">
+            <div class="row" style="margin-top: -50px">
+                <!-- Sidebar with profile and menu -->
+                <div class="col-lg-3 mb30">
+                    <div class="card p-4 rounded-5">
+                        <div class="profile_avatar">
+                            <div class="profile_img">
+                                <img src="">
+                            </div>
+                            <div class="profile_name">
+                                <h4>
+                                    {{ usuario.nombre }} {{ usuario.apellido }}
+                                    <span class="profile_username text-gray">{{ usuario.email }}</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="spacer-20"></div>
+                        <ul class="menu-col">
+                            <li><a href="/tareas-admin" class="no-underline"><i class="fa fa-home"></i>Escritorio</a></li>
+                            <li><a href="" class="no-underline active"><i class="fa fa-user"></i>Perfil</a></li>
+                            <li><a (click)="cerrarSesion()" class="no-underline"><i class="fa fa-sign-out"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Form section -->
+                <div class="col-lg-9">
+                    <div class="card p-4 rounded-5">
+                        <form [formGroup]="usuarioForm" (ngSubmit)="editarUsuario()" id="form-create-item"
+                            class="form-border">
+                            <div class="row">
+                                <div class="col-lg-6 mb20">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                                        placeholder="Ingrese nombre" />
+                                    <div class="text-danger" *ngIf="usuarioForm.get('nombre')?.hasError('required') && usuarioForm.get('nombre')?.touched">
+                                        <span>El nombre <strong>es obligatorio</strong></span>
+                                    </div>
+                                    <div class="text-danger" *ngIf="usuarioForm.get('nombre')?.hasError('pattern') && usuarioForm.get('nombre')?.touched">
+                                        <span>El nombre <strong>tiene un formato incorrecto</strong></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="apellido">Apellido</label>
+                                    <input type="text" id="apellido" formControlName="apellido" class="form-control"
+                                        placeholder="Ingrese apellido" />
+                                        <div class="text-danger"
+                                            *ngIf="usuarioForm.get('apellido')?.hasError('required') && usuarioForm.get('apellido')?.touched">
+                                            <span>El apellido <strong>es obligatorio</strong></span>
+                                        </div>
+                                        <div class="text-danger"
+                                            *ngIf="usuarioForm.get('apellido')?.hasError('pattern') && usuarioForm.get('apellido')?.touched">
+                                            <span>El apellido <strong>tiene un formato incorrecto</strong></span>
+                                        </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" formControlName="email" class="form-control"
+                                        placeholder="Ingrese email" readonly/>
+                                        <div class="text-gray " style="color: rgb(108, 175, 241);" *ngIf="usuarioForm.get('email')?.disable">
+                                            <span>El Correo Electrónico <strong>no es modificable</strong></span>
+                                        </div>
+                                        <div class="text-danger" *ngIf="usuarioForm.get('email')?.hasError('pattern') && usuarioForm.get('email')?.touched">
+                                            <span>El Correo Electrónico <strong>tiene un formato incorrecto</strong></span>
+                                        </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="licenciaConductor">Licencia de Conducir</label>
+                                    <input type="text" id="licenciaConductor" formControlName="licenciaConductor"
+                                        class="form-control" placeholder="Ingrese licencia de conducir" />
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('licenciaConductor')?.hasError('required') && usuarioForm.get('licenciaConductor')?.touched">
+                                        <span>La licencia de Conductor <strong>es obligatoria</strong></span>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('licenciaConductor')?.hasError('pattern') && usuarioForm.get('licenciaConductor')?.touched">
+                                        <span>La licencia de Conductor <strong>tiene un formato incorrecto</strong></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="password">Contraseña</label>
+                                    <div class="input-wrapper">
+                                        <input [type]="mostrarContrasena ? 'text' : 'password'" id="password" formControlName="password"
+                                            class="form-control" placeholder="Contraseña" required />
+                                        <button type="button" (click)="toggleContrasena()" class="btn-toggle-password">
+                                            <i class="fa-solid" [ngClass]="mostrarContrasena ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                        </button>
+                                    </div>
+                                    <div class="text-danger" *ngIf="usuarioForm.get('password')?.hasError('required') && usuarioForm.get('password')?.touched">
+                                        <span>La Contraseña <strong>es obligatoria</strong></span>
+                                    </div>
+                                    <div class="text-danger" *ngIf="usuarioForm.get('password')?.hasError('pattern') && usuarioForm.get('password')?.touched">
+                                        <span>La Contraseña debe tener al menos<strong> 6 caracteres </strong></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="text" id="telefono" formControlName="telefono" class="form-control"
+                                        placeholder="Ingrese teléfono" />
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('telefono')?.hasError('required') && usuarioForm.get('telefono')?.touched">
+                                        <span>El teléfono <strong>es obligatorio</strong></span>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('telefono')?.hasError('pattern') && usuarioForm.get('telefono')?.touched">
+                                        <span>El teléfono <strong>debe contener solo números</strong> y tener entre 7 y 15 dígitos</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="dni">DNI</label>
+                                    <input type="text" id="dni" formControlName="dni" class="form-control"
+                                        placeholder="Ingrese DNI" />
+                                        <div class="text-danger" *ngIf="usuarioForm.get('dni')?.hasError('required') && usuarioForm.get('dni')?.touched">
+                                            <span>El DNI <strong>es obligatorio</strong></span>
+                                        </div>
+                                        <div class="text-danger" *ngIf="usuarioForm.get('dni')?.hasError('pattern') && usuarioForm.get('dni')?.touched">
+                                            <span>El DNI <strong>debe contener solo números</strong> y tener entre 7 y 10 dígitos</span>
+                                        </div>
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" id="direccion" formControlName="direccion" class="form-control"
+                                        placeholder="Ingrese dirección" />
+                                        <div class="text-danger"
+                                            *ngIf="usuarioForm.get('direccion')?.hasError('required') && usuarioForm.get('direccion')?.touched">
+                                            <span>La Direccion <strong>es obligatoria</strong></span>
+                                        </div>
+                                </div>
+                                
+                            </div>
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn-main w-100 mt-3">Actualizar Perfil</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

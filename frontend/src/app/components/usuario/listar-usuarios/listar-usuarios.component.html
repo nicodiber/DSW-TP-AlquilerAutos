@@ -1,9 +1,9 @@
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-8 offset-lg-2">
+        <div class="col-lg-9">
             <div class="card">
                 <div class="card-body text-center">
-                    <a routerLink="/tareas-admin" class="btn btn-link float-start">Volver</a>
+                    <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
                     <span class="titulo">LISTADO DE TODOS LOS USUARIOS</span>
                     <button class="btn btn-success float-end" routerLink="/crear-admin-trabajador">NUEVO ADMIN - TRABAJADOR</button>
                     <table *ngIf="listaUsuarios.length > 0" class="table table-striped mt-3">
@@ -15,6 +15,7 @@
                                 <th scope="col">Telefono</th>
                                 <th scope="col">DNI</th>
                                 <th scope="col">Domicilio</th>
+                                <th scope="col">Licencia de Conducir</th>
                                 <th scope="col">Fecha de Registro</th>
                                 <th scope="col">Alquileres</th>
                                 <th scope="col"></th>
@@ -28,7 +29,10 @@
                                 <td>{{ usuario.telefono }}</td>
                                 <td>{{ usuario.dni }}</td>
                                 <td>{{ usuario.direccion }}</td>
-                                <td>{{ formatDateToDDMMYYYY(usuario.fechaRegistro) }}</td>
+                                <td>
+                                    <span *ngIf="usuario.rol === 'usuario'" >{{usuario.licenciaConductor}}</span> 
+                                </td>
+                                <td>{{ usuario.fechaRegistro | date: 'dd/MM/yyyy ' : '-00:00' }}</td>
                                 <td>
                                     <a *ngIf="usuario.rol === 'usuario'" [routerLink]="['/ver-alquileres', usuario._id]">Ver Alquileres</a>
                                 </td>

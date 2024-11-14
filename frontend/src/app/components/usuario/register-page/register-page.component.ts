@@ -67,7 +67,14 @@ export class RegisterPageComponent implements OnInit {
     this.authService.register(newUser).subscribe(
       response => {
         this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-        this.router.navigate(['/loginUsuario']);
+
+
+      localStorage.setItem('emailRegistrado', newUser.email);
+      localStorage.setItem('passwordRegistrado', newUser.password);
+
+
+        window.location.href = '/loginUsuario';
+        //this.router.navigate(['/loginUsuario']);
       },
       error => {
         let errorMsg = 'Ocurrió un error al intentar registrar el usuario';

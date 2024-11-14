@@ -9,16 +9,40 @@
                             <label for="nombre" class="form-label">Nombre:</label>
                             <input type="text" formControlName="nombre" class="form-control form-control-lg"
                                 placeholder="Nombre">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('nombre')?.hasError('required') && usuarioForm.get('nombre')?.touched">
+                                    <span>El nombre <strong>es obligatorio</strong></span>
+                                </div>
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('nombre')?.hasError('pattern') && usuarioForm.get('nombre')?.touched">
+                                    <span>El nombre <strong>tiene un formato incorrecto</strong></span>
+                                </div>
                         </div>
                         <div class="mb-3">
                             <label for="apellido" class="form-label">Apellido:</label>
                             <input type="text" formControlName="apellido" class="form-control form-control-lg"
                                 placeholder="Apellido">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('apellido')?.hasError('required') && usuarioForm.get('apellido')?.touched">
+                                    <span>El apellido <strong>es obligatorio</strong></span>
+                                </div>
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('apellido')?.hasError('pattern') && usuarioForm.get('apellido')?.touched">
+                                    <span>El apellido <strong>tiene un formato incorrecto</strong></span>
+                                </div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo Electrónico:</label>
                             <input type="email" formControlName="email" class="form-control form-control-lg"
                                 placeholder="E-Mail">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('email')?.hasError('required') && usuarioForm.get('email')?.touched">
+                                    <span>El Correo Electrónico <strong>es obligatorio</strong></span>
+                                </div>
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('email')?.hasError('pattern') && usuarioForm.get('email')?.touched">
+                                    <span>El Correo Electrónico <strong>tiene un formato incorrecto</strong></span>
+                                </div>
                         </div>
                         <div class="mb-3 input-container">
                             <label for="password" class="form-label">Contraseña:</label>
@@ -28,26 +52,48 @@
                                 <i [ngClass]="mostrarContrasena ? 'fas fa-eye-slash' : 'fas fa-eye'" (click)="toggleContrasena()"
                                     class="toggle-icon"></i>
                             </div> 
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('password')?.hasError('required') && usuarioForm.get('password')?.touched">
+                                <span>La Contraseña <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('password')?.hasError('pattern') && usuarioForm.get('password')?.touched">
+                                <span>La Contraseña debe tener al menos<strong> 6 caracteres </strong></span>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="licenciaConductor" class="form-label">Licencia de Conductor:</label>
-                            <input type="text" formControlName="licenciaConductor" class="form-control form-control-lg"
-                                placeholder="Licencia de Conductor">
-                        </div>
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Direccion</label>
+                            <label for="direccion" class="form-label">Teléfono:</label>
                             <input type="number" formControlName="telefono" class="form-control form-control-lg"
                                 placeholder="Telefono">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('telefono')?.hasError('required') && usuarioForm.get('telefono')?.touched">
+                                    <span>El teléfono <strong>es obligatorio</strong></span>
+                                </div>
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('telefono')?.hasError('pattern') && usuarioForm.get('telefono')?.touched">
+                                    <span>El teléfono <strong>debe contener solo números</strong> y tener entre 7 y 15 dígitos</span>
+                                </div>
                         </div>
                         <div class="mb-3">
                             <label for="dni" class="form-label">DNI:</label>
-                            <input type="text" formControlName="dni" class="form-control form-control-lg"
+                            <input type="number" formControlName="dni" class="form-control form-control-lg"
                                 placeholder="DNI">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('dni')?.hasError('required') && usuarioForm.get('dni')?.touched">
+                                    <span>El DNI <strong>es obligatorio</strong></span>
+                                </div>
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('dni')?.hasError('pattern') && usuarioForm.get('dni')?.touched">
+                                    <span>El DNI <strong>y tener entre 7 y 10 dígitos</strong></span>
+                                </div>
                         </div>
                         <div class="mb-3">
                             <label for="direccion" class="form-label">Direccion:</label>
                             <input type="text" formControlName="direccion" class="form-control form-control-lg"
                                 placeholder="Direccion">
+                                <div class="text-danger" *ngIf="usuarioForm.get('direccion')?.hasError('required') && usuarioForm.get('direccion')?.touched">
+                                    <span>La Direccion <strong>es obligatoria</strong></span>
+                                </div>
                         </div>
                         <div class="mb-6">
                             <label for="rol" class="form-label">Selecciona el Rol de Usuario</label>
@@ -59,10 +105,14 @@
                                 <input type="radio" formControlName="rol" id="rolTrabajador" value="trabajador">
                                 <label for="rolTrabajador" class="form-check-label">Trabajador</label>
                             </div>
+                            <div class="text-danger"
+                                *ngIf="usuarioForm.get('rol')?.hasError('required') && usuarioForm.get('rol')?.touched">
+                                <span>La seleccion de Rol <strong>es obligatoria</strong></span>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <button routerLink="/listarUsuarios" class="btn btn-secondary btn-lg float-start">VOLVER</button>
-                            <button type="button" (click)="submitForm()" class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                            <button type="button" (click)="submitForm()"  class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
                 </div>

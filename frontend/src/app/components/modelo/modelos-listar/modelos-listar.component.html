@@ -1,0 +1,91 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
+                    <span class="titulo">LISTADO DE TODOS LOS MODELOS</span>
+                    <button class="btn  float-end" routerLink="/modelo-crear">NUEVO MODELO</button>
+                    <table *ngIf="listaModelos.length > 0" class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Modelo</th>
+                                <th>Marca</th>
+                                <th>Categoría</th>
+                                <th>Año</th>
+                                <th>Precio por día</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let modelo of listaModelos">
+                            <tr>
+                                <td>
+                                    <div class="d-img">
+                                        <img [src]="'http://localhost:4000' + modelo.images[0]" class="img-fluid" alt="Modelo de automóvil">
+                                    </div>
+                                </td>
+                                <td>{{ modelo.nombreModelo }}</td>
+                                <td>{{ modelo.marcaModelo.nombreMarca }}</td>
+                                <td>{{ modelo.categoriaModelo.nombreCategoria }}</td>
+                                <td>{{ modelo.anio }}</td>
+                                <td>$ {{ modelo.precioXdia | number: '1.0-0'}}</td>
+                                <td>
+                                    <!-- Botón para expandir Datos Adicionales y Notas -->
+                                    <button (click)="modelo.mostrarDetalles = !modelo.mostrarDetalles" class="btn-main btn-black">
+                                        {{ modelo.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
+                                    </button>
+                                </td>
+                                <td>
+                                    <i [routerLink]="['/modelo-editar', modelo._id]" class="fas fa-edit text-primary"></i>
+                                    <i (click)="deleteModelo(modelo._id)" class="fas fa-trash text-danger"></i>
+                                </td>
+                            </tr>
+                            <tr *ngIf="modelo.mostrarDetalles">
+                                <td colspan="10" style="padding: 20px;">
+                                    <h6>Datos Adicionales</h6>
+                                    
+                                    <div style="display: flex;">
+                                        
+                                        <div style="width: 55%;">
+                                            
+                                            <div class="datos-adicionales" style="display: grid; gap: 10px">
+                                                <span>&nbsp;&nbsp;<strong>Color:</strong> 
+                                                {{ modelo.color }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Dimensiones:</strong> 
+                                                {{ modelo.dimensiones }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Cantidad de Asientos:</strong> 
+                                                {{ modelo.cantidadAsientos }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Cantidad de Puertas:</strong>
+                                                {{ modelo.cantidadPuertas }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Capacidad de Baul:</strong>
+                                                {{ modelo.capacidadBaul }}.L</span>
+                                            </div>
+                                        </div>
+                            
+                                        <div style="width: 55%;  border-left: 2px solid black;">
+                                            <div class="datos-adicionales" style="display: grid; gap: 10px">
+                                                <span></span>
+                                                <span>&nbsp;&nbsp;<strong>Tipo de Motor:</strong>
+                                                {{ modelo.motor }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Transmision:</strong>
+                                                {{ modelo.cajaTransmision }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Tipo de Combustible:</strong>
+                                                {{ modelo.tipoCombustible }}</span>
+                                                <span>&nbsp;&nbsp;<strong>Capacidad de Tanque</strong>
+                                                {{ modelo.capacidadTanqueCombustible }}.L</span>
+                                                </div>
+                                        </div>                              
+                                    </div>
+                                </td>
+                            </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaModelos.length == 0">No hay usuarios
+                        para mostrar</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

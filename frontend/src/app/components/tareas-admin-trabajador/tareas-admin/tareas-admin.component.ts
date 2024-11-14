@@ -17,20 +17,39 @@ export class TareasAdminComponent implements OnInit {
   ngOnInit(): void {
   const usuarioLogueado = this.authService.getUsuarioLogueado();
   if (!usuarioLogueado) {
-    this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
+    window.location.href = '/loginUsuario';  // Redirigir al login si no hay usuario
   } else {
     this.usuario = usuarioLogueado;
   }
  }
 
   irAGestionarUsuarios() {
-    this.router.navigate(['/listarUsuarios']);
+    window.location.href = '/listarUsuarios';
+    //this.router.navigate(['/listarUsuarios']);
   }
   irAGestionarSucursales() {
-    this.router.navigate(['/sucursal-listar']);
+    window.location.href = '/sucursal-listar';    
+    //this.router.navigate(['/sucursal-listar']);
+  }
+  irAGestionarModelos() {
+    window.location.href = '/modelos-listar';    
+  }
+  irAGestionarMarcas() {
+    window.location.href = '/';    
+  }
+  irAGestionarCategorias() {
+    window.location.href = '/';    
+  }
+  irAGestionarAlquileres() {
+    window.location.href = '/';    
+  }
+  editarMisDatos() {
+    window.location.href = '/editar-datos-usuario';
+    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }
   cerrarSesion() {
-    this.authService.logout();  // Llamar al método logout
-    this.router.navigate(['/loginUsuario']);  // Redirigir al login después de cerrar sesión
+    this.authService.logout(); 
+    window.location.href = '/loginUsuario';
+    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }
 }

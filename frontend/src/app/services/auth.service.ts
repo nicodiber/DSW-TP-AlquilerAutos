@@ -37,4 +37,8 @@ export class AuthService {
   logout(): void {
     sessionStorage.removeItem('usuario');  // Eliminar el usuario de sessionStorage
   }
+
+  actualizarUsuario(usuario: any): Observable<any> {
+    return this.http.put(`${this.url}/editar-datos-usuario/${usuario.email}`, usuario);
+  }
 }

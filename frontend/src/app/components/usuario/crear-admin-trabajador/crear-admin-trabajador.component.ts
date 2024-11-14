@@ -27,8 +27,8 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       email: ['', [Validators.required, Validators.email]],
-      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      licenciaConductor: ['', [Validators.pattern('^[A-Z0-9]+$')]],
+      password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
       direccion: ['', [Validators.required]],
@@ -43,38 +43,56 @@ export class CrearAdminTrabajadorComponent implements OnInit {
 
   submitForm() {
     if (this.usuarioForm.invalid) {
-      Object.keys(this.usuarioForm.controls).forEach(key => {
-        const control = this.usuarioForm.get(key);
+    // Recorre los controles del formulario y muestra mensajes de error con toastr
+    Object.keys(this.usuarioForm.controls).forEach(key => {
+      const control = this.usuarioForm.get(key);
+      if (control?.invalid) {
+        const friendlyFieldNames: { [key: string]: string } = {
+          nombre: 'Nombre',
+          apellido: 'Apellido',
+          email: 'Correo Electrónico',
+          licenciaConductor: 'Licencia de Conductor',
+          password: 'Contraseña',
+          telefono: 'Teléfono',
+          dni: 'DNI',
+          direccion: 'Dirección'
+        };
         
-        if (control?.invalid) {
-          if (control.errors?.['required']) {
-            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-          }
-          if (control.errors?.['pattern']) {
-            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
-          }
-          if (control.errors?.['minlength']) {
-            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
-          }
-          if (control.errors?.['email']) {
-            this.toastr.error(`El email posee un formato inválido.`, 'Error en el formulario');
-          }
-        }
-      });
-      this.usuarioForm.markAllAsTouched();
-      return;
-    }
+        const fieldName = friendlyFieldNames[key] || key;
 
+        if (control.errors?.['required']) {
+          this.toastr.error(`El campo ${fieldName} es obligatorio.`, 'Error en el formulario');
+        }
+        if (control.errors?.['pattern']) {
+          this.toastr.error(`El campo ${fieldName} tiene un formato incorrecto.`, 'Error en el formulario');
+        }
+        if (control.errors?.['minlength']) {
+          this.toastr.error(`El campo ${fieldName} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
+        }
+        if (control.errors?.['email']) {
+          this.toastr.error(`El correo electrónico posee un formato inválido.`, 'Error en el formulario');
+        }
+      }
+    });
+    this.usuarioForm.markAllAsTouched();
+    return;
+    
+  }
     this.agregarUsuario();
   }
 
   agregarUsuario() {
+    const rol = this.usuarioForm.get('rol')?.value;
+    const dni = this.usuarioForm.get('dni')?.value;
+
+  // Asigna el valor de licenciaConductor automáticamente
+    const licenciaConductor = rol === 'administrador' ? `A${dni}` : rol === 'trabajador' ? `T${dni}` : '';
     const USUARIO: usuario = {
       nombre: this.usuarioForm.get('nombre')?.value,
       apellido: this.usuarioForm.get('apellido')?.value,
       email: this.usuarioForm.get('email')?.value,
       password: this.usuarioForm.get('password')?.value,
-      licenciaConductor: this.usuarioForm.get('licenciaConductor')?.value,
+      licenciaConductor: licenciaConductor,
       telefono: this.usuarioForm.get('telefono')?.value,
       dni: this.usuarioForm.get('dni')?.value,
       direccion: this.usuarioForm.get('direccion')?.value,
@@ -85,7 +103,9 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       this._usuarioService.editarUsuario(this.id, USUARIO).subscribe(
         data => {
           this.toastr.info('El Usuario fue actualizado con éxito!', 'Usuario Actualizado!');
-          this.router.navigate(['/listarUsuarios']);
+          setTimeout(() => {
+          window.location.href = '/listarUsuarios';
+          }, 1000);
         },
         error => {
           let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
@@ -103,7 +123,9 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       this._usuarioService.guardarUsuario(USUARIO).subscribe(
         data => {
           this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-          this.router.navigate(['/listarUsuarios']);
+          setTimeout(() => {
+          window.location.href = '/listarUsuarios';
+          }, 1000);
         },
         error => {
           let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
@@ -114,7 +136,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
         }
 
         this.toastr.error(errorMsg, 'Error de Registro');
-        this.usuarioForm.reset();
+        
         }
       );
     }
