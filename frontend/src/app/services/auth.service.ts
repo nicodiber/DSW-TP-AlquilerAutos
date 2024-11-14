@@ -19,9 +19,6 @@ export class AuthService {
     return this.http.post(`${this.url}/registrar`, userData);
   }
 
-  obtenerUsuarioPorEmail(email: string): Observable<any> {
-    return this.http.get<any>(`${this.url}/email/${email}`);
-  }
   
   // Guardar usuario en sessionStorage
   setUsuarioLogueado(usuario: any): void {
@@ -40,5 +37,9 @@ export class AuthService {
 
   actualizarUsuario(usuario: any): Observable<any> {
     return this.http.put(`${this.url}/editar-datos-usuario/${usuario.email}`, usuario);
+  }
+
+  obtenerAlquileresLogueado(usuarioid: number): Observable<any>{
+    return this.http.get(`${this.url}/datos/${usuarioid}`);
   }
 }
