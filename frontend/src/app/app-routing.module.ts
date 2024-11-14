@@ -10,7 +10,6 @@ import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detal
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
-import { TareasTrabajadorComponent } from './components/tareas-admin-trabajador/tareas-trabajador/tareas-trabajador.component';
 import { RegisterPageComponent } from './components/usuario/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
@@ -40,7 +39,6 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
       { path: 'modelo/:id', component: DetalleModeloComponent },
-      
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
@@ -59,24 +57,27 @@ const routes: Routes = [
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
+
   { path: 'sucursal-crear', component: SucursalCrearComponent },
   { path: 'sucursal-listar', component: SucursalListarComponent },
   { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
-  { path: 'sucursal-eliminar', component: SucursalCrearComponent },
+  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
+
   { path: 'alquiler-listar', component: AlquilerListarComponent },
+
   { path: 'marca-crear', component:CrearMarcaComponent},
   { path: 'marca-listar', component: ListarMarcaComponent},
   { path: 'marca-editar/:id', component: CrearMarcaComponent },
   { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
+
   { path: 'categoria-listar', component: ListarCategoriaComponent},
   { path: 'categoria-crear', component: CrearCategoriaComponent },
   { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
   { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent},
+
   { path: 'auto-listar', component: AutoListarComponent },
   { path: 'auto-crear', component:AutoCrearComponent},
   { path: 'auto-editar/:id', component:AutoCrearComponent},
-
-  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
 
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];

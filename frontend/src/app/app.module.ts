@@ -24,7 +24,6 @@ import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detal
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
-import { TareasTrabajadorComponent } from './components/tareas-admin-trabajador/tareas-trabajador/tareas-trabajador.component';
 import { RegisterPageComponent } from './components/usuario/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
@@ -58,7 +57,6 @@ import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trab
     CrearModeloComponent,
     LoginPageComponent,
     TareasAdminComponent,
-    TareasTrabajadorComponent,
     RegisterPageComponent,
     ListarUsuariosComponent,
     CrearAdminTrabajadorComponent,
