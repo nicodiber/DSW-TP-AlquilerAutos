@@ -34,7 +34,7 @@ export class SucursalListarComponent implements OnInit {
       }
     );
   }
-
+  
   // Método para eliminar una sucursal, recibe el ID de la sucursal a eliminar
   deleteSucursal(id: any) {
     // Llamamos al servicio eliminarSucursal, que devuelve un observable

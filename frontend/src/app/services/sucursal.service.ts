@@ -33,7 +33,7 @@ export class SucursalService {
   }
 
   // Método para eliminar una sucursal especificada por su ID
-  eliminarSucursal(id: string): Observable<any> {
+  eliminarSucursal(id: number): Observable<any> {
     return this.http.delete(`${this.url}${id}`);  // Realiza una solicitud DELETE a la URL de la sucursal especificando el ID
   }
 

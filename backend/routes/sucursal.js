@@ -20,7 +20,7 @@ router.post('/:id/asignar-trabajadores', sucursalController.asignarTrabajadores)
 router.get('/:id/obtener-autos', sucursalController.obtenerAutosParaAsignacion);
 
 // Ruta para asignar o desasignar autos a una sucursal
-//router.post('/:id/asignar-autos', sucursalController.asignarAutos);
+router.post('/:id/asignar-autos', sucursalController.asignarAutos);
 
 // Exportar las rutas definidas para que puedan ser utilizadas en otras partes de la aplicación
 module.exports = router;

@@ -17,7 +17,7 @@
                             <tr>
                                 <th scope="col">ID del Auto</th>
                                 <th scope="col">Modelo</th>
-                                <th scope="col">Marca</th>
+                                <th scope="col">Patente</th>
                                 <th scope="col">Acción</th>
                             </tr>
                         </thead>
@@ -25,8 +25,8 @@
                             <!-- Recorrido de la lista de autos asignados a la sucursal. Cada fila muestra un auto asignado con su información -->
                             <tr *ngFor="let auto of autosAsignados">
                                 <td>{{ auto._id }}</td>
-                                <td>{{ auto.modelo }}</td>
-                                <td>{{ auto.marca }}</td>
+                                <td>{{ auto.modeloAuto.nombreModelo }}</td>
+                                <td>{{ auto.matricula }}</td>
                                 <!-- Botón para desasignar el auto de la sucursal -->
                                 <td>
                                     <button (click)="toggleAsignacion(auto, false)" *ngIf="!auto.mostrarDesasignado"
@@ -51,7 +51,7 @@
                             <tr>
                                 <th scope="col">ID del Auto</th>
                                 <th scope="col">Modelo</th>
-                                <th scope="col">Marca</th>
+                                <th scope="col">Patente</th>
                                 <th scope="col">Acción</th>
                             </tr>
                         </thead>
@@ -59,8 +59,8 @@
                             <!-- Recorrido de la lista de autos que no están asignados. Cada fila muestra un auto disponible para ser asignado -->
                             <tr *ngFor="let auto of autosNoAsignados">
                                 <td>{{ auto._id }}</td>
-                                <td>{{ auto.modelo }}</td>
-                                <td>{{ auto.marca }}</td>
+                                <td>{{ auto.modeloAuto.nombreModelo }}</td>
+                                <td>{{ auto.matricula }}</td>
                                 <!-- Botón para asignar el auto a la sucursal -->
                                 <td>
                                     <button (click)="toggleAsignacion(auto, true)" *ngIf="!auto.mostrarAsignado"
