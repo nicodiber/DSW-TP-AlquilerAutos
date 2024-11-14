@@ -48,6 +48,6 @@ export class SucursalService {
 
   // Método para obtener los trabajadores asignados y no asignados para una sucursal
   obtenerTrabajadoresParaAsignacion(idSucursal: string): Observable<any> {
-    return this.http.get(`${this.url}${idSucursal}/trabajadores`);  // Realiza una solicitud GET para obtener la lista de trabajadores para asignación
+    return this.http.get(`${this.url}${idSucursal}/obtener-trabajadores`);  // Realiza una solicitud GET para obtener la lista de trabajadores para asignación
   }
 }

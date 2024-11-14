@@ -144,44 +144,55 @@ exports.eliminarSucursal = async (req, res) => {
 // Obtener trabajadores para asignación a una sucursal específica
 exports.obtenerTrabajadoresParaAsignacion = async (req, res) => {
   try {
-    const idSucursal = req.params.idSucursal;
+    const idSucursal = req.params.id;
 
     // Busca la sucursal por ID y popula los trabajadores asignados
     const sucursal = await Sucursal.findById(idSucursal).populate('trabajadores');
     if (!sucursal) return res.status(404).json({ msg: 'No existe esa sucursal' });
 
-    const trabajadoresAsignados = sucursal.trabajadores;
+    const idTrabajadoresDeEstaSucursal = (sucursal.trabajadores || []).map(trabajador => trabajador._id.toString());;
+    const trabajadoresDeEstaSucursal = await Usuario.find({ _id: { $in: idTrabajadoresDeEstaSucursal } })
+    // console.log("Trabajadores esta sucursal", trabajadoresDeEstaSucursal);
 
-    // Busca los trabajadores sin asignación a una sucursal
+    // Obtener todos los IDs de trabajadores asignados a cualquier sucursal
+    const todasLasSucursales = await Sucursal.find().select('trabajadores');
+    const idsTrabajadoresAsignados = todasLasSucursales.reduce((acc, suc) => {
+      return acc.concat(suc.trabajadores.map(id => id.toString()));
+    }, []);
+
+    // Filtrar los trabajadores que no están en la lista de trabajadores asignados
     const trabajadoresNoAsignados = await Usuario.find({
       rol: 'trabajador',
-      sucursalId: { $exists: false }
+      _id: { $nin: idsTrabajadoresAsignados } // Solo trabajadores que no están asignados a ninguna sucursal
     });
 
     // Devuelve tanto los trabajadores asignados como los no asignados
-    res.json({ trabajadoresAsignados, trabajadoresNoAsignados });
+    res.json({ trabajadoresDeEstaSucursal, trabajadoresNoAsignados });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Hubo un error al obtener los trabajadores' });
   }
 };
 
-// Asignar o desasignar trabajadores a una sucursal
 exports.asignarTrabajadores = async (req, res) => {
   try {
-    const { idSucursal } = req.params;
+    const idSucursal = req.params.id;
     const { trabajadoresAsignados, trabajadoresNoAsignados } = req.body;
 
-    // Desasigna trabajadores, eliminando el ID de sucursal de los trabajadores
-    await Usuario.updateMany(
-      { _id: { $in: trabajadoresNoAsignados } },
-      { $unset: { sucursalId: "" } }
+    // Convertir los arrays de IDs a tipo Number
+    const trabajadoresAsignadosNumeros = trabajadoresAsignados.map(id => Number(id));
+    const trabajadoresNoAsignadosNumeros = trabajadoresNoAsignados.map(id => Number(id));
+
+    // Desasigna trabajadores, eliminando el ID de la sucursal de los trabajadores
+    await Sucursal.updateOne(
+      { _id: idSucursal },
+      { $pull: { trabajadores: { $in: trabajadoresNoAsignadosNumeros } } }
     );
 
-    // Asigna la sucursal a los trabajadores especificados
-    await Usuario.updateMany(
-      { _id: { $in: trabajadoresAsignados } },
-      { $set: { sucursalId: idSucursal } }
+    // Asigna trabajadores, agregando sus IDs al array 'trabajadores' de la sucursal si no están ya
+    await Sucursal.updateOne(
+      { _id: idSucursal },
+      { $addToSet: { trabajadores: { $each: trabajadoresAsignadosNumeros } } }
     );
 
     res.json({ msg: 'Asignación actualizada correctamente' });
@@ -190,3 +201,4 @@ exports.asignarTrabajadores = async (req, res) => {
     res.status(500).json({ msg: 'Error al actualizar la asignación' });
   }
 };
+

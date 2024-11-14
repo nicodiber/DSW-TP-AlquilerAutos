@@ -12,7 +12,7 @@
                     <!-- Sección de Trabajadores Asignados -->
                     <h5 class="mt-4">Trabajadores Asignados</h5>
                     <!-- Tabla para mostrar los trabajadores que ya están asignados a la sucursal -->
-                    <table class="table table-striped mt-3">
+                    <table class="table table-striped mt-3" *ngIf="trabajadoresAsignados.length > 0">
                         <thead>
                             <tr>
                                 <th scope="col">ID del trabajador</th>
@@ -29,18 +29,20 @@
                                 <td>{{ trabajador.email }}</td>
                                 <!-- Botón para desasignar al trabajador de la sucursal -->
                                 <td>
-                                    <button (click)="toggleAsignacion(trabajador._id, false)" class="btn btn-warning"> <!-- Ejecuta el método 'toggleAsignacion' para desasignarlo -->
+                                    <button (click)="toggleAsignacion(trabajador, false)" *ngIf="!trabajador.mostrarDesasignado" class="btn btn-warning"> <!-- Ejecuta el método 'toggleAsignacion' para desasignarlo -->
                                         Desasignar
                                     </button>
+                                    <span *ngIf="trabajador.mostrarDesasignado" class="mensaje-asignacion" style="padding: 5px 15px;">Desasignado</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-
+                    <h6 *ngIf="trabajadoresAsignados.length === 0"> No hay trabajadores asignados a esta sucursal</h6>
+                    <div class="spacer-20"></div>
                     <!-- Sección de Trabajadores No Asignados -->
                     <h5 class="mt-4">Trabajadores No Asignados</h5>
                     <!-- Tabla para mostrar los trabajadores que no están asignados a ninguna sucursal -->
-                    <table class="table table-striped mt-3">
+                    <table class="table table-striped mt-3" *ngIf="trabajadoresNoAsignados.length > 0">
                         <thead>
                             <tr>
                                 <th scope="col">ID del trabajador</th>
@@ -57,15 +59,18 @@
                                 <td>{{ trabajador.email }}</td>
                                 <!-- Botón para asignar al trabajador a la sucursal -->
                                 <td>
-                                    <button (click)="toggleAsignacion(trabajador._id, true)" class="btn btn-primary"> <!-- Ejecuta el método 'toggleAsignacion' para asignarlo -->
+                                    <button (click)="toggleAsignacion(trabajador, true)" *ngIf="!trabajador.mostrarAsignado" class="btn btn-primary"> <!-- Ejecuta el método 'toggleAsignacion' para asignarlo -->
                                         Asignar
                                     </button>
+                                    <span *ngIf="trabajador.mostrarAsignado" class="mensaje-asignacion" style="padding: 5px 15px;">Asignado</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <h6 *ngIf="trabajadoresNoAsignados.length === 0"> No hay trabajadores disponibles para asignar</h6>
 
                     <!-- Botón para guardar los cambios realizados en las asignaciones de los trabajadores -->
+                    <button class="btn btn-error mt-3" (click)="recargarPagina()">Cancelar</button>&nbsp;&nbsp;
                     <button class="btn btn-success mt-3" (click)="guardarAsignaciones()">Guardar Asignaciones</button> <!-- Ejecuta el método 'guardarAsignaciones' para guardar las asignaciones -->
                 </div>
             </div>

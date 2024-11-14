@@ -29,11 +29,31 @@ export class gestionCookiesService {
   }
 
   getDatosBusqueda(): any {
-    return JSON.parse(this.cookieService.get('datosBusqueda') || '{}');
+    const cookie = this.cookieService.get('datosBusqueda');
+    if (cookie) {
+      try {
+        return JSON.parse(cookie);
+      } catch (error) {
+        return 1; // Devuelve 1 si ocurre un error de parseo
+      }
+    }
+    return 0; // Devuelve 0 si la cookie no existe
+  }
+
+  getDatosBusquedaExpiration(): any {
+    const cookie = this.cookieService.get('datosBusquedaExpiration');
+    if (cookie) {
+      try {
+        return JSON.parse(cookie);
+      } catch (error) {
+        return 1; // Devuelve 1 si ocurre un error de parseo
+      }
+    }
+    return 0; // Devuelve 0 si la cookie no existe
   }
 
   getDatosModelosDisponibles(): [] {
-    return JSON.parse(this.cookieService.get('modelosDisponibles') || '[]');
+    return JSON.parse(this.cookieService.get('modelosDisponibles') || '[]');  // No hace falta el chequeo de error de las otras porque no la usamos con ese proposito
   }
 
   borrarCookie(nombreCookie: string){

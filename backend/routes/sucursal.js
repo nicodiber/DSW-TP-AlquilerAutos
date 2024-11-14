@@ -11,7 +11,7 @@ router.put('/:id', sucursalController.actualizarSucursal);           // Actualiz
 router.delete('/:id', sucursalController.eliminarSucursal);          // Eliminar sucursal por ID
 
 // Ruta para obtener los trabajadores asignados y no asignados a una sucursal específica
-router.get('/:id/trabajadores', sucursalController.obtenerTrabajadoresParaAsignacion);
+router.get('/:id/obtener-trabajadores', sucursalController.obtenerTrabajadoresParaAsignacion);
 
 // Ruta para asignar o desasignar trabajadores a una sucursal
 router.post('/:id/asignar-trabajadores', sucursalController.asignarTrabajadores);

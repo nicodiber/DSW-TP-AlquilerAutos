@@ -26,7 +26,6 @@ export class SucursalListarComponent implements OnInit {
     this._sucursalService.obtenerSucursales().subscribe(
       data => {
         // Si la respuesta es exitosa, almacenamos los datos en la listaSucursales
-        console.log(data);  // Se imprime en consola la respuesta para depuración
         this.listaSucursales = data;  // Asignamos la respuesta a la variable listaSucursales
       },
       error => {
