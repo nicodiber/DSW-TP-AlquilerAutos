@@ -1,6 +1,6 @@
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-8 offset-lg-2">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body text-center">
                     <!-- Enlace para volver a la página anterior -->
@@ -25,8 +25,8 @@
                                 <th scope="col">País</th>
                                 <th scope="col">Hora Apertura</th>
                                 <th scope="col">Hora Cierre</th>
-                                <th scope="col">Trabajadores</th>
-                                <th scope="col">Autos</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col"></th> <!-- Columna vacía para acciones (editar y eliminar) -->
                             </tr>
                         </thead>
@@ -45,15 +45,15 @@
                                 <!-- Columna para gestionar los trabajadores de la sucursal -->
                                 <td>
                                     <a [routerLink]="['/asignar-trabajadores', sucursal._id]"
-                                        class="btn btn-info btn-sm">
-                                        Ver Trabajadores
+                                        class="btn-main btn-sm" style="padding: 5px 10px;">
+                                        Trabajadores
                                     </a>
                                 </td>
 
                                 <!-- Columna para gestionar los autos de la sucursal -->
                                 <td>
-                                    <a [routerLink]="['/ver-autos', sucursal._id]" class="btn btn-warning btn-sm">
-                                        Ver Autos
+                                    <a [routerLink]="['/ver-autos', sucursal._id]" class="btn-main btn-black">
+                                        Autos
                                     </a>
                                 </td>
 

@@ -63,7 +63,7 @@ const SucursalSchema = new mongoose.Schema({
   
   // Campo lista de trabajadores asignados a la sucursal
   trabajadores: [{
-    type: mongoose.Schema.Types.ObjectId, // Referencia a la colección "Usuario" por su ID único de MongoDB
+    type: mongoose.Schema.Types.Number, // Referencia a la colección "Usuario" por su ID único de MongoDB
     ref: 'Usuario',                        // Define la referencia al modelo Usuario
   }],
   

@@ -50,7 +50,7 @@ export class AsignarTrabajadoresComponent implements OnInit {
   cargarTrabajadores(): void {
     this._sucursalService.obtenerTrabajadoresParaAsignacion(this.idSucursal).subscribe(
       (data: any) => {
-        this.trabajadoresAsignados = data.trabajadoresAsignados || [];  // Asignar los trabajadores ya asignados
+        this.trabajadoresAsignados = data.trabajadoresDeEstaSucursal || [];  // Asignar los trabajadores ya asignados
         this.trabajadoresNoAsignados = data.trabajadoresNoAsignados || [];  // Asignar los trabajadores no asignados
       },
       error => {
@@ -63,13 +63,15 @@ export class AsignarTrabajadoresComponent implements OnInit {
   // Método para alternar la asignación o desasignación de un trabajador
   // Si 'asignar' es true, el trabajador se añade a los trabajadores para asignar
   // Si 'asignar' es false, el trabajador se añade a los trabajadores para desasignar
-  toggleAsignacion(trabajadorId: string, asignar: boolean): void {
+  toggleAsignacion(trabajador: any, asignar: boolean): void {
     if (asignar) {
-      this.trabajadoresParaAsignar.add(trabajadorId);  // Añadir al Set de trabajadores para asignar
-      this.trabajadoresParaDesasignar.delete(trabajadorId);  // Eliminar de los trabajadores para desasignar si estaba allí
+      this.trabajadoresParaAsignar.add(trabajador._id);  // Añadir al Set de trabajadores para asignar
+      trabajador.mostrarAsignado = true;
+      // this.trabajadoresParaDesasignar.delete(trabajadorId);  // Eliminar de los trabajadores para desasignar si estaba allí
     } else {
-      this.trabajadoresParaDesasignar.add(trabajadorId);  // Añadir al Set de trabajadores para desasignar
-      this.trabajadoresParaAsignar.delete(trabajadorId);  // Eliminar de los trabajadores para asignar si estaba allí
+      this.trabajadoresParaDesasignar.add(trabajador._id);
+      trabajador.mostrarDesasignado = true;  // Añadir al Set de trabajadores para desasignar
+      //this.trabajadoresParaAsignar.delete(trabajadorId);  // Eliminar de los trabajadores para asignar si estaba allí
     }
   }
 
@@ -91,5 +93,9 @@ export class AsignarTrabajadoresComponent implements OnInit {
         this.toastr.error("Error al actualizar asignaciones");  // Mostrar mensaje de error si no se pudieron actualizar las asignaciones
       }
     );
+  }
+
+  recargarPagina(): void {
+    window.location.reload();
   }
 }
