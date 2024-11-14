@@ -1,6 +1,7 @@
+// Importar los módulos necesarios
 const express = require('express');
-const router = express.Router();
-const sucursalController = require('../controllers/sucursalController'); 
+const router = express.Router(); // Crea un enrutador para manejar las rutas relacionadas con sucursales
+const sucursalController = require('../controllers/sucursalController'); // Importa el controlador de sucursal
 
 // Rutas para gestión de sucursales
 router.post('/', sucursalController.crearSucursal);                  // Crear sucursal
@@ -15,4 +16,5 @@ router.get('/:id/trabajadores', sucursalController.obtenerTrabajadoresParaAsigna
 // Ruta para asignar o desasignar trabajadores a una sucursal
 router.post('/:id/asignar-trabajadores', sucursalController.asignarTrabajadores);
 
+// Exportar las rutas definidas para que puedan ser utilizadas en otras partes de la aplicación
 module.exports = router;

@@ -5,9 +5,12 @@ const { getNextSequenceValue } = require('../config/db');
 // Crear una nueva sucursal
 exports.crearSucursal = async (req, res) => {
   try {
+    // Genera un nuevo ID secuencial para la sucursal    
     const _id = await getNextSequenceValue('sucursalId');
+    // Extrae los datos del cuerpo de la solicitud
     const { nombreSucursal, telefonoSucursal, direccionSucursal, paisSucursal, provinciaSucursal, ciudadSucursal, horaAperturaSucursal, horaCierreSucursal, trabajadores, autos } = req.body;
 
+    // Crea una nueva instancia de la sucursal con los datos recibidos
     let sucursal = new Sucursal({
       _id,
       nombreSucursal,
@@ -22,11 +25,13 @@ exports.crearSucursal = async (req, res) => {
       autos
     });
 
+    // Guarda la sucursal en la base de datos
     await sucursal.save();
     res.json(sucursal);
   } catch (error) {
     console.log(error);
 
+    // Manejo de errores para campos duplicados del nombre de la sucursal
     if (error.code === 11000 && error.keyValue) {
       const field = Object.keys(error.keyValue)[0];
       const errorMsg = field === 'nombreSucursal'
@@ -43,6 +48,7 @@ exports.crearSucursal = async (req, res) => {
 // Obtener todas las sucursales
 exports.obtenerSucursales = async (req, res) => {
   try {
+    // Busca todas las sucursales en la base de datos
     const sucursales = await Sucursal.find();
     res.json(sucursales);
   } catch (error) {
@@ -54,8 +60,10 @@ exports.obtenerSucursales = async (req, res) => {
 // Obtener una sucursal por ID
 exports.obtenerSucursal = async (req, res) => {
   try {
+    // Busca una sucursal por ID y popula los trabajadores asignados
     const sucursal = await Sucursal.findById(req.params.id).populate('trabajadores');
 
+    // Si la sucursal no existe, envía un error 404
     if (!sucursal) {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
     }
@@ -70,14 +78,18 @@ exports.obtenerSucursal = async (req, res) => {
 // Actualizar una sucursal
 exports.actualizarSucursal = async (req, res) => {
   try {
+    // Extrae los datos a actualizar del cuerpo de la solicitud
     const { nombreSucursal, telefonoSucursal, direccionSucursal, paisSucursal, provinciaSucursal, ciudadSucursal, horaAperturaSucursal, horaCierreSucursal, trabajadores, autos } = req.body;
 
+    // Busca la sucursal por ID
     let sucursal = await Sucursal.findById(req.params.id);
 
+    // Verifica si la sucursal existe
     if (!sucursal) {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
     }
 
+    // Actualiza los campos de la sucursal con los nuevos datos
     sucursal.nombreSucursal = nombreSucursal;
     sucursal.telefonoSucursal = telefonoSucursal;
     sucursal.direccionSucursal = direccionSucursal;
@@ -89,11 +101,13 @@ exports.actualizarSucursal = async (req, res) => {
     sucursal.trabajadores = trabajadores;
     sucursal.autos = autos;
 
+    // Guarda los cambios y envía la sucursal actualizada
     sucursal = await Sucursal.findOneAndUpdate({ _id: req.params.id }, sucursal, { new: true });
     res.json(sucursal);
   } catch (error) {
     console.log(error);
 
+    // Manejo de errores para campos duplicados
     if (error.code === 11000 && error.keyValue) {
       const field = Object.keys(error.keyValue)[0];
       const errorMsg = field === 'nombreSucursal'
@@ -110,12 +124,15 @@ exports.actualizarSucursal = async (req, res) => {
 // Eliminar una sucursal
 exports.eliminarSucursal = async (req, res) => {
   try {
+    // Busca la sucursal por ID
     const sucursal = await Sucursal.findById(req.params.id);
 
+    // Verifica si la sucursal existe antes de eliminar
     if (!sucursal) {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
     }
 
+    // Elimina la sucursal de la base de datos
     await Sucursal.findOneAndDelete({ _id: req.params.id });
     res.json({ msg: 'Sucursal eliminada con éxito' });
   } catch (error) {
@@ -129,18 +146,19 @@ exports.obtenerTrabajadoresParaAsignacion = async (req, res) => {
   try {
     const idSucursal = req.params.idSucursal;
 
-    // Obtener la sucursal con los trabajadores asignados
+    // Busca la sucursal por ID y popula los trabajadores asignados
     const sucursal = await Sucursal.findById(idSucursal).populate('trabajadores');
     if (!sucursal) return res.status(404).json({ msg: 'No existe esa sucursal' });
 
     const trabajadoresAsignados = sucursal.trabajadores;
 
-    // Obtener los trabajadores sin asignación a sucursal
+    // Busca los trabajadores sin asignación a una sucursal
     const trabajadoresNoAsignados = await Usuario.find({
       rol: 'trabajador',
       sucursalId: { $exists: false }
     });
 
+    // Devuelve tanto los trabajadores asignados como los no asignados
     res.json({ trabajadoresAsignados, trabajadoresNoAsignados });
   } catch (error) {
     console.error(error);
@@ -154,13 +172,13 @@ exports.asignarTrabajadores = async (req, res) => {
     const { idSucursal } = req.params;
     const { trabajadoresAsignados, trabajadoresNoAsignados } = req.body;
 
-    // Desasignar trabajadores seleccionados
+    // Desasigna trabajadores, eliminando el ID de sucursal de los trabajadores
     await Usuario.updateMany(
       { _id: { $in: trabajadoresNoAsignados } },
       { $unset: { sucursalId: "" } }
     );
 
-    // Asignar nuevos trabajadores a la sucursal
+    // Asigna la sucursal a los trabajadores especificados
     await Usuario.updateMany(
       { _id: { $in: trabajadoresAsignados } },
       { $set: { sucursalId: idSucursal } }
