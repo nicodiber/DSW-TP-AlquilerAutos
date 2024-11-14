@@ -1,5 +1,6 @@
 const Sucursal = require("../models/sucursal");
 const Usuario = require("../models/usuario");
+const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear una nueva sucursal
@@ -127,9 +128,14 @@ exports.eliminarSucursal = async (req, res) => {
     // Busca la sucursal por ID
     const sucursal = await Sucursal.findById(req.params.id);
 
-    // Verifica si la sucursal existe antes de eliminar
+    // Verifica si la sucursal existe
     if (!sucursal) {
       return res.status(404).json({ msg: 'No existe esa sucursal' });
+    }
+
+    // Verifica si la sucursal tiene trabajadores o autos asociados
+    if (sucursal.trabajadores.length > 0 || sucursal.autos.length > 0) {
+      return res.status(400).json({ msg: 'No se puede eliminar la sucursal porque tiene trabajadores o autos asignados' });
     }
 
     // Elimina la sucursal de la base de datos
@@ -200,5 +206,64 @@ exports.asignarTrabajadores = async (req, res) => {
     console.error(error);
     res.status(500).json({ msg: 'Error al actualizar la asignación' });
   }
+}
+
+// Obtener autos para asignación a una sucursal específica
+exports.obtenerAutosParaAsignacion = async (req, res) => {
+  try {
+    const idSucursal = req.params.id;
+    const sucursal = await Sucursal.findById(idSucursal).populate('autos');
+    if (!sucursal) return res.status(404).json({ msg: 'No existe esa sucursal' });
+    
+    const idAutosDeEstaSucursal = (sucursal.autos || []).map(auto => auto._id.toString());
+    const autosDeEstaSucursal = await Auto.find({ _id: { $in: idAutosDeEstaSucursal } }).populate('modeloAuto');
+
+    const todasLasSucursales = await Sucursal.find().select('autos');
+    const idsAutosAsignados = todasLasSucursales.reduce((acc, suc) => {
+      return acc.concat(suc.autos.map(id => id.toString()));
+    }, []);
+
+    const autosNoAsignados = await Auto.find({ _id: { $nin: idsAutosAsignados } }).populate('modeloAuto');
+
+    res.json({ autosDeEstaSucursal, autosNoAsignados });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Hubo un error al obtener los autos' });
+  }
 };
 
+// Asignar o desasignar autos a una sucursal
+exports.asignarAutos = async (req, res) => {
+  try {
+    const idSucursal = req.params.id;
+    const { autosAsignados, autosNoAsignados } = req.body;
+
+    const autosAsignadosNumeros = autosAsignados.map(id => Number(id));
+    const autosNoAsignadosNumeros = autosNoAsignados.map(id => Number(id));
+
+    await Sucursal.updateOne(
+      { _id: idSucursal },
+      { $pull: { autos: { $in: autosNoAsignadosNumeros } } }
+    );
+
+    await Sucursal.updateOne(
+      { _id: idSucursal },
+      { $addToSet: { autos: { $each: autosAsignadosNumeros } } }
+    );
+
+    await Auto.updateMany(
+      { _id: { $in: autosAsignadosNumeros } },
+      { $set: { sucursalAuto: idSucursal } }
+    );
+
+    await Auto.updateMany(
+      { _id: { $in: autosNoAsignadosNumeros } },
+      { $set: { sucursalAuto: null } }
+    );
+
+    res.json({ msg: 'Asignación de autos actualizada correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Error al actualizar la asignación de autos' });
+  }
+};

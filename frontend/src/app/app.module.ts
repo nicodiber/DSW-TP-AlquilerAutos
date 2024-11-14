@@ -44,7 +44,8 @@ import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.c
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
 import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
-import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';             // Componente para asignar trabajadores a sucursales
+import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
+import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -77,7 +78,8 @@ import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trab
     AutoListarComponent,
     EditarDatosUsuarioComponent,
     ModelosListarComponent,
-    AsignarTrabajadoresComponent        // Componente para asignar trabajadores a una sucursal
+    AsignarTrabajadoresComponent,
+    AsignarAutosComponent
   ],
 
   // Importación de otros módulos necesarios para la aplicación
