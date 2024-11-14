@@ -14,6 +14,8 @@ export class usuario {
     fechaRegistro?: Date;
     alquileres?: alquiler []; 
 
+    mostrarDetalles?: boolean = false; // Propiedad opcional para controlar la expansión de detalles en el frontend
+
     constructor(nombre: string, apellido: string, email: string, password: string, rol: string, telefono: string, dni: number, direccion: string, licenciaConductor: string, fechaRegistro: Date, alquileres?: alquiler[], _id?: number) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -30,5 +32,7 @@ export class usuario {
         if (_id !== undefined) {
             this._id = _id;
         }
+
+        this.mostrarDetalles = false;
     }
 }

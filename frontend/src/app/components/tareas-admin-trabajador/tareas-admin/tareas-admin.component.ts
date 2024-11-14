@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
+
 @Component({
   selector: 'app-tareas-admin',
   templateUrl: './tareas-admin.component.html',
@@ -20,9 +21,23 @@ export class TareasAdminComponent implements OnInit {
     window.location.href = '/loginUsuario';  // Redirigir al login si no hay usuario
   } else {
     this.usuario = usuarioLogueado;
+    this.getAlquileres();
+    };
+    
   }
- }
-
+ 
+    getAlquileres() {
+    this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
+      next: (alquileresDeUser) => {
+        
+        this.usuario = alquileresDeUser;
+        console.log("hola",this.usuario); 
+      },
+      error: (error) => {
+        console.error('Error al obtener alquileres:', error);
+      }
+    });
+  }
   irAGestionarUsuarios() {
     window.location.href = '/listarUsuarios';
     //this.router.navigate(['/listarUsuarios']);
@@ -35,13 +50,13 @@ export class TareasAdminComponent implements OnInit {
     window.location.href = '/modelos-listar';    
   }
   irAGestionarMarcas() {
-    window.location.href = '/';    
+    window.location.href = '/marca-listar';    
   }
   irAGestionarCategorias() {
-    window.location.href = '/';    
+    window.location.href = '/categoria-listar';    
   }
   irAGestionarAlquileres() {
-    window.location.href = '/';    
+    window.location.href = '/alquiler-listar';    
   }
   editarMisDatos() {
     window.location.href = '/editar-datos-usuario';

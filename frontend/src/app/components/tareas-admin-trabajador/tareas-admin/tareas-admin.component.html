@@ -56,15 +56,51 @@
                                 <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3">
                                     <i class="fa-solid fa-car"></i> Gestión de Modelos
                                 </a>
+                                <table *ngIf="usuario.alquileres.length > 0" class="table table-striped mt-3">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Auto</th>
+                                            <th scope="col">Fecha de Inicio</th>
+                                            <th scope="col">Fecha de Fin</th>
+                                            <th scope="col">Precio Total</th>
+                                            <th scope="col">Sucursal de Entrega</th>
+                                            <th scope="col">Sucursal de Devolucion</th>
+                                            <th scope="col">Estado del Alquiler</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let alquileres of usuario.alquileres">
+                                            <td>{{ alquileres._id }}
+                                            <td>{{ alquileres.auto.modeloAuto?.nombreModelo}}
+                                            <td>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                            <td>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                            <td>$ {{ alquileres.precioTotalAlquiler | number: '1.0-0'}}
+                                            <td>{{ alquileres.sucursalEntrega.nombreSucursal}}
+                                            <td>{{ alquileres.sucursalDevolucion.nombreSucursal }}
+                                            <td>{{ alquileres.estadoAlquiler}}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <label *ngIf="usuario.alquileres.length == 0">No hay alquileres para mostrar></label>                              
                             </div>
                         </div>
-                        
-                        
+                                                
                         <div *ngIf="usuario.rol === 'trabajador'" class="col-lg-8">
                             <div class="card p-4 rounded-5 mb25">
                                 <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3">
                                     <i class="fa-solid fa-car"></i> Gestión de Modelos
                                 </a>
+                            </div>
+                        </div>
+
+                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-8">
+                            <div class="card p-4 rounded-5 mb25">
+                                <tr *ngFor="let alquileres of usuario.alquileres">
+                                    <td>{{ alquileres.auto }} 
+                                    <td>{{ alquileres.sucursalEntrega }}</td>
+                                </tr>
                             </div>
                         </div>
 

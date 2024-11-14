@@ -46,7 +46,19 @@ exports.crearUsuario = async (req, res) => {
 
 exports.obtenerUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.find();
+    const usuarios = await Usuario.find().populate({
+      path: 'alquileres',
+      populate: [
+        {
+          path: 'auto',
+          populate: {
+            path: 'modeloAuto' 
+          }
+        },
+        { path: 'sucursalEntrega'},
+        { path: 'sucursalDevolucion'},
+         ]
+    });
     res.json(usuarios);
   } catch (error) {
     console.log(error);
@@ -263,6 +275,33 @@ exports.actualizarEstadoAlquilerUsuario = async (req, res) => {
   } catch (error) {
     console.error('Error al actualizar el estado del alquiler en el usuario:', error);
     res.status(500).json({ message: 'Error al actualizar el estado del alquiler', error });
+  }
+};
+
+exports.obtenerAlquileresLogueado = async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.params.id).populate({
+      path: 'alquileres',
+      populate: [
+        {
+          path: 'auto',
+          populate: {
+            path: 'modeloAuto'
+          }
+        },
+        { path: 'sucursalEntrega'},
+        { path: 'sucursalDevolucion'},
+         ]
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ msg: 'No existe ese usuario' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener el usuario');
   }
 };
 

@@ -187,3 +187,23 @@ exports.buscarModelosDisponibles = async (req, res) => {
     res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
+
+
+/*exports.obtenerAlquileresPorUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const alquileres = await Alquiler.find({ usuario: id })
+      .populate('auto').populate('modelo')
+      .populate('sucursal') 
+      .populate('trabajadorAsignado') ;
+      
+    console.log(alquileres);
+    res.status(200).json(alquileres);
+    
+  } catch (error) {
+    console.error('Error obteniendo alquileres por usuario:', error);
+    res.status(500).json({ mensaje: 'Error obteniendo alquileres por usuario' });
+  }
+};*/
+
