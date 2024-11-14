@@ -43,20 +43,31 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-8">
-                            <div class="card p-4 rounded-5 mb25">                               
+                        
+                        
+                        <div *ngIf="usuario.rol === 'administrador'" class="col-lg-8">
+                            <div class="card p-4 rounded-5 mb25">
                                 <a (click)="irAGestionarUsuarios()" class="btn-main btn-fullwidth rounded-3 mb-3">
                                     <i class="fa-solid fa-users"></i> Gestión de Usuarios
-                                </a>       
+                                </a>
                                 <a (click)="irAGestionarSucursales()" class="btn-main btn-fullwidth rounded-3 mb-3">
                                     <i class="fa-solid fa-store"></i> Gestión de Sucursales
                                 </a>
-                                <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3 ">
+                                <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3">
                                     <i class="fa-solid fa-car"></i> Gestión de Modelos
                                 </a>
-                                
                             </div>
                         </div>
+                        
+                        
+                        <div *ngIf="usuario.rol === 'trabajador'" class="col-lg-8">
+                            <div class="card p-4 rounded-5 mb25">
+                                <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3">
+                                    <i class="fa-solid fa-car"></i> Gestión de Modelos
+                                </a>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>

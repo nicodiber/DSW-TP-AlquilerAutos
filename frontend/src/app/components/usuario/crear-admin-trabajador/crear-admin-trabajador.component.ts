@@ -74,6 +74,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       }
     });
     this.usuarioForm.markAllAsTouched();
+    this.agregarUsuario();
     return;
   }
 
