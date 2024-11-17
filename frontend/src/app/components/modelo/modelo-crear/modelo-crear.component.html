@@ -139,7 +139,7 @@
                         <div class="mb-3">
                             <!-- Input para cargar nuevas imágenes -->
                             <label class="form-label">Cargar nuevas imágenes:</label>
-                            <input type="file" (change)="onFileSelected($event)" multiple>
+                            <input type="file" (change)="onFileSelected($event)" class="form-control" multiple>
                         
                             <!-- Validación de carga de imágenes -->
                             <div class="text-danger" *ngIf="selectedFiles.length === 0 && existingImages.length === 0 && modeloForm.touched">

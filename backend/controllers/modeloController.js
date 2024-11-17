@@ -171,3 +171,14 @@ exports.buscarAutoAleatorioDisponible = async (req, res) => {
     res.status(500).json({ message: "Error al buscar auto aleatorio disponible" });
   }
 };
+exports.verificarAutosPorModelo = async (req, res) => {
+  try {
+    const idModelo = req.params.idModelo;
+    const autos = await Auto.find({ modeloAuto: idModelo });
+    const existenAutos = autos.length > 0;
+    res.json(existenAutos);
+  } catch (error) {
+    console.error('Error al verificar autos para la modelo AAAAAAA:', error);
+    res.status(500).send('Hubo un error');
+  }
+};

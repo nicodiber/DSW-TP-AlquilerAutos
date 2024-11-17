@@ -181,7 +181,7 @@ export class CrearModeloComponent implements OnInit {
     if (this.id !== null) {
       this.titulo = 'Editar Modelo';
       this._modeloService.obtenerModelo(this.id).subscribe(data => {
-        console.log(data.images);
+        
         this.modeloForm.patchValue({
           nombreModelo: data.nombreModelo,
           categoriaModelo: data.categoriaModelo._id,

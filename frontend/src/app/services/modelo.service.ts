@@ -34,4 +34,9 @@ export class ModeloService {
   buscarAutoAleatorioDisponible(idModelo: string, idSucursal: string): Observable<any> {
     return this.http.post<any>(this.url + 'buscarAutoAleatorioDisponible', {idModelo, idSucursal});
   }
+
+  verificarAutosPorModelo(idModelo: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.url}${idModelo}/existe-autos`);
+  }
+
 }

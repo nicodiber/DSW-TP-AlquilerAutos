@@ -75,7 +75,7 @@ export class LoginPageComponent implements OnInit {
             window.location.href = '/tareas-admin';
             //this.router.navigate(['/tareas-trabajador']);
           } else {
-            window.location.href = '/user';
+            window.location.href = '/tareas-admin';
             //this.router.navigate(['/user']);
           }
         }

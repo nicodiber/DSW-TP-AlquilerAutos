@@ -58,6 +58,10 @@ export class TareasAdminComponent implements OnInit {
   irAGestionarAlquileres() {
     window.location.href = '/alquiler-listar';    
   }
+  irAGestionarAutos() {
+    window.location.href = '/auto-listar';    
+  }
+  
   editarMisDatos() {
     window.location.href = '/editar-datos-usuario';
     //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión

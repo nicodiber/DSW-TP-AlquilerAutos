@@ -10,3 +10,19 @@
 .btn-main i{
    margin-right: 2px;
 }
+
+.row.d-flex {
+    flex-wrap: nowrap;
+}
+
+#doblegestion {
+    text-align: center;
+    display: flex;
+    justify-content: space-between ;
+    gap: 10px;
+}
+
+.bg-success {
+    background-color: #00b74a !important;
+    /* Cambia a tu color preferido */
+}

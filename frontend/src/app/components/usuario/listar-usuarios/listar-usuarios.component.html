@@ -42,8 +42,9 @@
                                 <td>
                                     <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'"
                                         [routerLink]="['/editar-admin-trabajador', usuario._id]" class="fas fa-edit text-primary"></i>
-                                    <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'" (click)="deleteUsuario(usuario._id)"
-                                        class="fas fa-trash text-danger"></i>
+                                    <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'" (click)="abrirDeleteModal(usuario._id)"
+                                        class="fas fa-trash text-danger">
+                                    </i>
                                 </td>
                             </tr>
                             <tr *ngIf="usuario.mostrarDetalles">
@@ -94,6 +95,24 @@
                     <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaUsuarios.length == 0">No hay usuarios
                         para mostrar</h5>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este usuario?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarDelete()">Sí, eliminar</button>
             </div>
         </div>
     </div>
