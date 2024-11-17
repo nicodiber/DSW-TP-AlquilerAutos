@@ -48,4 +48,9 @@ export class MarcaService {
   verificarModelosPorMarca(idMarca: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.url}${idMarca}/existe-modelos`);
   }
+  obtenerModelosPorMarca2(marcaId: number): Observable<modelo[]> {
+    return this.http.get<modelo[]>(`/api/modelos/marca/${marcaId}`);
+  }
+  
+  
 }

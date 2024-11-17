@@ -2,25 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { marca } from '../../../models/marca';
 import { MarcaService } from '../../../services/marca.service';
 import { ToastrService } from 'ngx-toastr';
+import { modelo } from '../../../models/modelo';
 
 @Component({
   selector: 'app-marca-listar',
   templateUrl: './marca-listar.component.html',
-  styleUrls: ['./marca-listar.component.css'] // Corregido el nombre del atributo
+  styleUrls: ['./marca-listar.component.css']
 })
 export class ListarMarcaComponent implements OnInit {
   listaMarcas: marca[] = [];
+  marcasConModelos: { [key: number]: boolean } = {}; // Aquí guardamos si la marca tiene modelos
 
   constructor(private _marcaService: MarcaService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.getMarcas(); // Carga inicial de marcas
+    this.getMarcas();
   }
 
   getMarcas(): void {
     this._marcaService.obtenerMarcas().subscribe({
       next: (data: marca[]) => {
         this.listaMarcas = data;
+        this.checkModelos(); // Verificar modelos de cada marca después de cargar las marcas
       },
       error: (error) => {
         console.error('Error al obtener marcas:', error);
@@ -29,16 +32,28 @@ export class ListarMarcaComponent implements OnInit {
     });
   }
 
+  // Verificar si cada marca tiene modelos asociados
+  checkModelos(): void {
+    this.listaMarcas.forEach(marca => {
+      if (marca._id !== undefined) {
+        this._marcaService.obtenerModelosPorMarca(marca._id.toString()).subscribe({
+          next: (modelos: modelo[]) => {
+            this.marcasConModelos[marca._id!] = modelos.length > 0; // Almacena si tiene modelos
+          },
+          error: (error) => {
+            console.error('Error al verificar modelos:', error);
+          }
+        });
+      }
+    });
+  }
 
   eliminarMarca(marcaId: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar esta marca?')) {
       this._marcaService.verificarModelosPorMarca(marcaId).subscribe({
         next: (existenModelos: boolean) => {
           if (existenModelos) {
-            this.toastr.error(
-              'No se puede eliminar la marca porque tiene modelos asociados',
-              'Operación no permitida'
-            );
+            this.toastr.error('No se puede eliminar la marca porque tiene modelos asociados', 'Operación no permitida');
           } else {
             this._marcaService.eliminarMarca(marcaId).subscribe({
               next: () => {
@@ -46,32 +61,21 @@ export class ListarMarcaComponent implements OnInit {
                 this.getMarcas(); // Refresca la lista de marcas
               },
               error: (err) => {
-                if (err.status === 400) {
-                  this.toastr.error(err.error.msg, 'Error');
-                } else {
-                  console.error('Error al eliminar la marca:', err);
-                  this.toastr.error(
-                    'Ocurrió un error inesperado al intentar eliminar la marca',
-                    'Error'
-                  );
-                }
+                console.error('Error al eliminar la marca:', err);
+                this.toastr.error('Ocurrió un error inesperado al intentar eliminar la marca', 'Error');
               }
             });
           }
         },
         error: (err) => {
           console.error('Error al verificar modelos por marca:', err);
-          this.toastr.error(
-            'Error al verificar si la marca tiene modelos asociados',
-            'Error'
-          );
+          this.toastr.error('Error al verificar si la marca tiene modelos asociados', 'Error');
         }
       });
     }
   }
 
-trackByMarca(index: number, marca: marca): string {
-  return String(marca._id ?? ''); 
-}
-
+  trackByMarca(index: number, marca: marca): string {
+    return String(marca._id ?? ''); // Asegúrate de usar el id correctamente
+  }
 }

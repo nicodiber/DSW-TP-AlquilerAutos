@@ -21,13 +21,27 @@
                 <tr>
                   <td>{{ marca._id }}</td>
                   <td>{{ marca.nombreMarca }}</td>
-                  <td> <button class="btn-main btn-black" [routerLink]="['/marca-modelos', marca._id]" title="Ver Modelos">Ver Modelos</button></td>
+                  <!-- Mostrar el botón de 'Ver Modelos' solo si tiene modelos -->
                   <td>
-                   
-                    <i class="fas fa-edit text-primary clickable me-3" [routerLink]="['/marca-editar', marca._id]" title="Editar"></i>
-                      <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
-                      (click)="marca._id ? eliminarMarca(marca._id) : null"></i>
-                   
+                    <button class="btn-main btn-black" 
+                            [routerLink]="['/marca-modelos', marca._id]" 
+                            title="Ver Modelos"
+                            *ngIf="marcasConModelos[marca._id] !== undefined && marcasConModelos[marca._id]">
+                      Ver Modelos
+                    </button>
+                  </td>
+                  <td>
+                    <!-- Editar y Eliminar solo si no tiene modelos asociados -->
+                    <i class="fas fa-edit text-primary clickable me-3" 
+                       [routerLink]="['/marca-editar', marca._id]" 
+                       title="Editar" 
+                       *ngIf="marcasConModelos[marca._id] === undefined || !marcasConModelos[marca._id]"></i>
+                    
+                    <i class="fas fa-trash text-danger" 
+                       style="cursor: pointer;" 
+                       title="Eliminar" 
+                       *ngIf="marcasConModelos[marca._id] === undefined || !marcasConModelos[marca._id]" 
+                       (click)="marca._id ? eliminarMarca(marca._id) : null"></i>
                   </td>
                 </tr>
               </ng-container>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { modelo } from '../models/modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class ModeloService {
   // Funciones especificas
   buscarAutoAleatorioDisponible(idModelo: string, idSucursal: string): Observable<any> {
     return this.http.post<any>(this.url + 'buscarAutoAleatorioDisponible', {idModelo, idSucursal});
+  }
+  
+  obtenerModelosPorMarca(marcaId: number): Observable<modelo[]> {
+    return this.http.get<modelo[]>(`/api/modelos/marca/${marcaId}`);
   }
 }
