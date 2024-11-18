@@ -45,5 +45,6 @@ router.put('/:id', upload, modeloController.actualizarModelo); ///porq con el ot
 router.delete('/:id', modeloController.eliminarModelo);
 
 router.post('/buscarAutoAleatorioDisponible', modeloController.buscarAutoAleatorioDisponible);
+router.get('/:idModelo/existe-autos', modeloController.verificarAutosPorModelo);
 
 module.exports = router;

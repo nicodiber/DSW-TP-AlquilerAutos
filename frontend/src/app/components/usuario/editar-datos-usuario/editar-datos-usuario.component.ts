@@ -69,7 +69,7 @@ export class EditarDatosUsuarioComponent implements OnInit {
         this.authService.setUsuarioLogueado(data);
         this.toastr.info('Usuario actualizado con éxito');
         setTimeout(() => {
-          window.location.href = '/tareas-admin';
+          window.location.href = '/escritorio';
           }, 1000); // 2000 ms = 2 segundos 
       },
       error: (error) => {

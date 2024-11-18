@@ -1,37 +1,34 @@
-// tareas-admin.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
-  selector: 'app-tareas-admin',
-  templateUrl: './tareas-admin.component.html',
-  styleUrls: ['./tareas-admin.component.css']
+  selector: 'app-escritorio',
+  templateUrl: './escritorio.component.html',
+  styleUrls: ['./escritorio.component.css']
 })
-export class TareasAdminComponent implements OnInit {
+export class EscritorioComponent implements OnInit {
   usuario: any;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   const usuarioLogueado = this.authService.getUsuarioLogueado();
-  if (!usuarioLogueado) {
-    window.location.href = '/loginUsuario';  // Redirigir al login si no hay usuario
-  } else {
-    this.usuario = usuarioLogueado;
-    this.getAlquileres();
+    if (!usuarioLogueado) {
+      this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
+    } else {
+      this.usuario = usuarioLogueado;
+      this.getAlquileres();
     };
-    
+      
   }
  
-    getAlquileres() {
+  getAlquileres() {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
         
         this.usuario = alquileresDeUser;
-        console.log("hola",this.usuario); 
       },
       error: (error) => {
         console.error('Error al obtener alquileres:', error);
@@ -39,8 +36,8 @@ export class TareasAdminComponent implements OnInit {
     });
   }
   irAGestionarUsuarios() {
-    window.location.href = '/listarUsuarios';
-    //this.router.navigate(['/listarUsuarios']);
+    window.location.href = '/usuario-listar';
+    //this.router.navigate(['/usuario-listar']);
   }
   irAGestionarSucursales() {
     window.location.href = '/sucursal-listar';    
@@ -58,6 +55,10 @@ export class TareasAdminComponent implements OnInit {
   irAGestionarAlquileres() {
     window.location.href = '/alquiler-listar';    
   }
+  irAGestionarAutos() {
+    window.location.href = '/auto-listar';    
+  }
+  
   editarMisDatos() {
     window.location.href = '/editar-datos-usuario';
     //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión

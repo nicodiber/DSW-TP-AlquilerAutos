@@ -44,7 +44,7 @@ export class LoginPageComponent implements OnInit {
     localStorage.removeItem('passwordRegistrado');
   }
   if (usuarioLogueado) {
-    window.location.href = '/tareas-admin';  // Redirigir al login si no hay usuario
+    window.location.href = '/escritorio';  // Redirigir al login si no hay usuario
   } 
 
   }
@@ -69,13 +69,13 @@ export class LoginPageComponent implements OnInit {
           }
 
           if (response.usuario.rol === 'administrador') {
-             window.location.href = '/tareas-admin';
-            //this.router.navigate(['/tareas-admin']);
+             window.location.href = '/escritorio';
+            //this.router.navigate(['/escritorio']);
           } else if (response.usuario.rol === 'trabajador') {
-            window.location.href = '/tareas-admin';
+            window.location.href = '/escritorio';
             //this.router.navigate(['/tareas-trabajador']);
           } else {
-            window.location.href = '/user';
+            window.location.href = '/escritorio';
             //this.router.navigate(['/user']);
           }
         }

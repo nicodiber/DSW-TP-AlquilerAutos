@@ -104,7 +104,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
         data => {
           this.toastr.info('El Usuario fue actualizado con éxito!', 'Usuario Actualizado!');
           setTimeout(() => {
-          window.location.href = '/listarUsuarios';
+          window.location.href = '/usuario-listar';
           }, 1000);
         },
         error => {
@@ -124,7 +124,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
         data => {
           this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
           setTimeout(() => {
-          window.location.href = '/listarUsuarios';
+          window.location.href = '/usuario-listar';
           }, 1000);
         },
         error => {

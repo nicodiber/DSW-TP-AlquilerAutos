@@ -3,13 +3,14 @@ import { NgModule } from '@angular/core';  // NgModule se usa para definir un m�
 import { RouterModule, Routes } from '@angular/router';  // RouterModule y Routes son necesarios para definir las rutas en la aplicación
 
 // Importa los componentes necesarios para las rutas
-import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutComponent } from './components/layout/layout/layout.component';
+import { LayoutAdminComponent } from './components/layout/layout-admin/layout-admin.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
 import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
-import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
+import { EscritorioComponent } from './components/escritorio/escritorio.component';
 import { RegisterPageComponent } from './components/usuario/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
@@ -46,40 +47,42 @@ const routes: Routes = [
       { path: 'alquiler-revision', component: AlquilerRevisionComponent },
       { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
       { path: 'buscador', component: BuscadorComponent },
-      { path: 'tareas-admin', component: TareasAdminComponent },
+      { path: 'escritorio', component: EscritorioComponent },
       { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
     ]
   },
 
-  { path: 'modelos-listar', component: ModelosListarComponent },
-  { path: 'modelo-crear', component: CrearModeloComponent },
-  { path: 'modelo-editar/:id', component: CrearModeloComponent },
+  {
+    path: '', component: LayoutAdminComponent, children: [
+      { path: 'modelos-listar', component: ModelosListarComponent },
+      { path: 'modelo-crear', component: CrearModeloComponent },
+      { path: 'modelo-editar/:id', component: CrearModeloComponent },
 
-  { path: 'listarUsuarios', component: ListarUsuariosComponent },
-  { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
-  { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
+      { path: 'usuario-listar', component: ListarUsuariosComponent },
+      { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
+      { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
 
-  { path: 'sucursal-crear', component: SucursalCrearComponent },
-  { path: 'sucursal-listar', component: SucursalListarComponent },
-  { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
-  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
-  { path: 'asignar-autos/:id', component: AsignarAutosComponent },
+      { path: 'sucursal-crear', component: SucursalCrearComponent },
+      { path: 'sucursal-listar', component: SucursalListarComponent },
+      { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
+      { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },
 
-  { path: 'alquiler-listar', component: AlquilerListarComponent },
+      { path: 'alquiler-listar', component: AlquilerListarComponent },
 
-  { path: 'marca-crear', component: CrearMarcaComponent },
-  { path: 'marca-listar', component: ListarMarcaComponent },
-  { path: 'marca-editar/:id', component: CrearMarcaComponent },
-  { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent },
+      { path: 'marca-crear', component:CrearMarcaComponent},
+      { path: 'marca-listar', component: ListarMarcaComponent},
+      { path: 'marca-editar/:id', component: CrearMarcaComponent },
+      { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
 
-  { path: 'categoria-listar', component: ListarCategoriaComponent },
-  { path: 'categoria-crear', component: CrearCategoriaComponent },
-  { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
-  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent },
-
-  { path: 'auto-listar', component: AutoListarComponent },
-  { path: 'auto-crear', component: AutoCrearComponent },
-  { path: 'auto-editar/:id', component: AutoCrearComponent },
+      { path: 'categoria-listar', component: ListarCategoriaComponent},
+      { path: 'categoria-crear', component: CrearCategoriaComponent },
+      { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
+      { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent },
+      { path: 'auto-listar', component: AutoListarComponent },
+      { path: 'auto-crear', component: AutoCrearComponent },
+      { path: 'auto-editar/:id', component: AutoCrearComponent },
+    ]
+  },
 
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
