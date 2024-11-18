@@ -18804,3 +18804,34 @@ img {
 .owl-carousel div:not(.owl-thumbs) img {
     height: 500px !important;
 }
+
+/* Ajustes Listados Admin */
+
+body:has(.sidebar) .card{
+    border: none !important;
+}
+body:has(.sidebar) .card table{
+    border: 1px solid #dee2e6;
+}
+
+body:has(.sidebar) .container {
+    margin-left: 300px;
+    max-width: calc(100vw - 340px);
+}
+
+@media(max-width: 768px) {
+    body:has(.sidebar) .container {
+        margin-left: 0px !important;
+        max-width: 100vw !important;
+        margin: 20px 0px !important;
+    }
+    body:has(.sidebar) .container .card-body span{
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+    body:has(.sidebar) .container .card-body button {
+        display: block !important;
+        margin: 20px 0px !important;
+    }
+}

@@ -17,6 +17,7 @@ registerLocaleData(localeEs, 'es');
 // Componentes
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutAdminComponent } from './components/layout/layout-admin/layout-admin.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
 import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
@@ -47,6 +48,7 @@ import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.comp
   declarations: [
     AppComponent,
     LayoutComponent,
+    LayoutAdminComponent,
     BuscadorComponent,
     ListarModelosComponent,
     DetalleModeloComponent,

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Componentes
 import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutAdminComponent } from './components/layout/layout-admin/layout-admin.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
 import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
@@ -61,10 +62,16 @@ const routes: Routes = [
   { path: 'categoria-listar', component: ListarCategoriaComponent},
   { path: 'categoria-crear', component: CrearCategoriaComponent },
   { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
-  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent},
-  { path: 'auto-listar', component: AutoListarComponent },
-  { path: 'auto-crear', component:AutoCrearComponent},
-  { path: 'auto-editar/:id', component:AutoCrearComponent},
+  { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent },
+
+  {
+    path: '', component: LayoutAdminComponent, children: [
+      { path: 'auto-listar', component: AutoListarComponent },
+    ]
+  },
+  { path: 'auto-crear', component: AutoCrearComponent },
+  { path: 'auto-editar/:id', component: AutoCrearComponent },
+
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

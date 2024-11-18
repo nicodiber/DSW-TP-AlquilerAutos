@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+    <body>
+        <div class="sidebar">
+            <div class="spacer-20"></div>
+            <div class="encabezado-sidebar">                
+                <a href="/escritorio"><i class="fa fa-angle-left volver-atras" href="/escritorio"></i></a>
+                <a href="/escritorio"><img class="logo-1" src="../../../images/logo-light.png"></a>
+            </div>
+            <div class="spacer-20"></div>
+            <div class="divider"></div>
+            <div class="spacer-20"></div>
+            <div class="botones">
+                <a href="usuarios-listar" class="btn-main btn-fullwidth rounded-3 mb-3"><i class="fa-solid fa-users"></i> Gestión de Usuarios</a>
+                <a href="sucursales-listar" class="btn-main btn-fullwidth rounded-3 mb-3"><i class="fa-solid fa-store"></i> Gestión de Sucursales</a>
+                <a href="modelos-listar" class="btn-main btn-fullwidth rounded-3"><i class="fa-solid fa-car"></i> Gestión de Modelos</a>
+            </div>
+        </div>
+
+        <router-outlet></router-outlet>
+    </body>
+</html>

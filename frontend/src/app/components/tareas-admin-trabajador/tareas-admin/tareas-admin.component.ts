@@ -16,12 +16,26 @@ export class TareasAdminComponent implements OnInit {
 
   ngOnInit(): void {
   const usuarioLogueado = this.authService.getUsuarioLogueado();
-  if (!usuarioLogueado) {
-    this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
-  } else {
-    this.usuario = usuarioLogueado;
+    if (!usuarioLogueado) {
+      this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
+    } else {
+      this.usuario = usuarioLogueado;
+      this.getAlquileres();
+    };
+      
   }
- }
+ 
+  getAlquileres() {
+    this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
+      next: (alquileresDeUser) => {
+        
+        this.usuario = alquileresDeUser;
+      },
+      error: (error) => {
+        console.error('Error al obtener alquileres:', error);
+      }
+    });
+  }
 
   irAGestionarUsuarios() {
     this.router.navigate(['/listarUsuarios']);
