@@ -17,14 +17,14 @@ registerLocaleData(localeEs, 'es');  // Registra el formato español como idioma
 
 // Componentes
 import { AppComponent } from './app.component';
-import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutComponent } from './components/layout/layout/layout.component';
 import { LayoutAdminComponent } from './components/layout/layout-admin/layout-admin.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ListarModelosComponent } from './components/modelo/modelo-listar/modelo-listar.component';
 import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detalle-modelo.component';
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
-import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
+import { EscritorioComponent } from './components/escritorio/escritorio.component';
 import { RegisterPageComponent } from './components/usuario/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
@@ -58,7 +58,7 @@ import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trab
     DetalleModeloComponent,
     CrearModeloComponent,
     LoginPageComponent,
-    TareasAdminComponent,
+    EscritorioComponent,
     RegisterPageComponent,
     ListarUsuariosComponent,
     CrearAdminTrabajadorComponent,

@@ -1,16 +1,14 @@
-// tareas-admin.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
-  selector: 'app-tareas-admin',
-  templateUrl: './tareas-admin.component.html',
-  styleUrls: ['./tareas-admin.component.css']
+  selector: 'app-escritorio',
+  templateUrl: './escritorio.component.html',
+  styleUrls: ['./escritorio.component.css']
 })
-export class TareasAdminComponent implements OnInit {
+export class EscritorioComponent implements OnInit {
   usuario: any;
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -38,8 +36,8 @@ export class TareasAdminComponent implements OnInit {
     });
   }
   irAGestionarUsuarios() {
-    window.location.href = '/listarUsuarios';
-    //this.router.navigate(['/listarUsuarios']);
+    window.location.href = '/usuario-listar';
+    //this.router.navigate(['/usuario-listar']);
   }
   irAGestionarSucursales() {
     window.location.href = '/sucursal-listar';    

@@ -47,3 +47,10 @@
   margin: 0px 20px;
 }
 
+.btn-main.btn-fullwidth.rounded-3.mb-3{
+  padding: 5px 15px;
+}
+.btn-main.btn-fullwidth.rounded-3.mb-3 i{
+  margin-right: 3px;
+}
+

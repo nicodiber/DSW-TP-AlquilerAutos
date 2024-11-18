@@ -30,7 +30,6 @@ export class ListarUsuariosComponent implements OnInit {
 
   getUsuarios() {
     this._usuarioService.obtenerUsuarios().subscribe(data => {
-      console.log(data);
       this.listaUsuarios = data;
     }, error => {
       console.log(error);
@@ -48,34 +47,34 @@ export class ListarUsuariosComponent implements OnInit {
 
   confirmarDelete() {
     if (this.usuarioIdToDelete === this.usuarioLogueado._id) {
-        this.toastr.error('No puedes eliminar tu propia cuenta.', 'Error');
-        this.usuarioIdToDelete = null; // Reiniciamos el ID del usuario
-        
-        // Cierra el modal en caso de error
-        const modal = document.getElementById('deleteModal');
-        if (modal) {
-            const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
-            bootstrapModal.hide(); // Ocultar el modal
-        }
+      this.toastr.error('No puedes eliminar tu propia cuenta.', 'Error');
+      this.usuarioIdToDelete = null; // Reiniciamos el ID del usuario
+      
+      // Cierra el modal en caso de error
+      const modal = document.getElementById('deleteModal');
+      if (modal) {
+          const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+          bootstrapModal.hide(); // Ocultar el modal
+      }
 
-        return;
+      return;
     }
 
     this._usuarioService.eliminarUsuario(this.usuarioIdToDelete).subscribe(
-        (data) => {
-            this.toastr.success('El usuario fue eliminado con éxito', 'Usuario Eliminado');
-            this.getUsuarios();
-            
-            // Cierra el modal manualmente después de eliminar al usuario
-            const modal = document.getElementById('deleteModal');
-            if (modal) {
-                const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
-                bootstrapModal.hide(); // Ocultar el modal
-            }
-        },
-        (error) => {
-            console.log(error);
+      (data) => {
+        this.toastr.success('El usuario fue eliminado con éxito', 'Usuario Eliminado');
+        this.getUsuarios();
+          
+        // Cierra el modal manualmente después de eliminar al usuario
+        const modal = document.getElementById('deleteModal');
+        if (modal) {
+          const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+          bootstrapModal.hide(); // Ocultar el modal
         }
+      },
+      (error) => {
+        console.log(error);
+      }
     );
     this.usuarioIdToDelete = null; // Reiniciamos el ID del usuario
 }
