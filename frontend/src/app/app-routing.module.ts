@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+// Importa los módulos necesarios de Angular
+import { NgModule } from '@angular/core';  // NgModule se usa para definir un módulo de Angular
+import { RouterModule, Routes } from '@angular/router';  // RouterModule y Routes son necesarios para definir las rutas en la aplicación
 
-// Componentes
+// Importa los componentes necesarios para las rutas
 import { LayoutComponent } from './components/layout/layout.component';
 import { LayoutAdminComponent } from './components/layout/layout-admin/layout-admin.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
@@ -10,7 +11,6 @@ import { DetalleModeloComponent } from './components/modelo/detalle-modelo/detal
 import { CrearModeloComponent } from './components/modelo/modelo-crear/modelo-crear.component';
 import { LoginPageComponent } from './components/usuario/login-page/login-page.component';
 import { TareasAdminComponent } from './components/tareas-admin-trabajador/tareas-admin/tareas-admin.component';
-import { TareasTrabajadorComponent } from './components/tareas-admin-trabajador/tareas-trabajador/tareas-trabajador.component';
 import { RegisterPageComponent } from './components/usuario/register-page/register-page.component';
 import { ListarUsuariosComponent } from './components/usuario/listar-usuarios/listar-usuarios.component';
 import { CrearAdminTrabajadorComponent } from './components/usuario/crear-admin-trabajador/crear-admin-trabajador.component';
@@ -29,36 +29,48 @@ import { ListarCategoriaModeloComponent } from './components/categoria/categoria
 import { CrearCategoriaComponent } from './components/categoria/categoria-crear/categoria-crear.component';
 import { AutoListarComponent } from './components/auto/auto-listar/auto-listar.component';
 import { AutoCrearComponent } from './components/auto/auto-crear/auto-crear.component';
+import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-usuario/editar-datos-usuario.component';
+import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
+import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 
+
+// Define las rutas de la aplicación
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
       { path: 'modelo/:id', component: DetalleModeloComponent },
-      { path: 'modelo-crear', component: CrearModeloComponent },
-      { path: 'modelo-editar/:id', component: CrearModeloComponent },
       { path: 'loginUsuario', component: LoginPageComponent },
       { path: 'registrar', component: RegisterPageComponent },
       { path: 'contacto', component: FormularioContactoComponent },
       { path: 'alquiler-revision', component: AlquilerRevisionComponent },
       { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
       { path: 'buscador', component: BuscadorComponent },
+      { path: 'tareas-admin', component: TareasAdminComponent },
+      { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
     ]
   },
 
-  { path: 'tareas-admin', component: TareasAdminComponent },
+  { path: 'modelos-listar', component: ModelosListarComponent },
+  { path: 'modelo-crear', component: CrearModeloComponent },
+  { path: 'modelo-editar/:id', component: CrearModeloComponent },
+
   { path: 'listarUsuarios', component: ListarUsuariosComponent },
   { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
   { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
+
   { path: 'sucursal-crear', component: SucursalCrearComponent },
   { path: 'sucursal-listar', component: SucursalListarComponent },
   { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
-  { path: 'sucursal-eliminar', component: SucursalCrearComponent },
+  { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },                // Ruta para asignar trabajadores a una sucursal
+
   { path: 'alquiler-listar', component: AlquilerListarComponent },
+
   { path: 'marca-crear', component:CrearMarcaComponent},
   { path: 'marca-listar', component: ListarMarcaComponent},
   { path: 'marca-editar/:id', component: CrearMarcaComponent },
   { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
+
   { path: 'categoria-listar', component: ListarCategoriaComponent},
   { path: 'categoria-crear', component: CrearCategoriaComponent },
   { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
@@ -75,8 +87,9 @@ const routes: Routes = [
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
+// Configura el RouterModule con las rutas definidas
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],  // Inicializa el enrutador con las rutas definidas
+  exports: [RouterModule]  // Exporta el RouterModule para que se pueda utilizar en toda la aplicación
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { }  // Define el módulo de enrutamiento

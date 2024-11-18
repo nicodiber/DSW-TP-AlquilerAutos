@@ -1,0 +1,31 @@
+.col-lg-6{
+font-family: Outfit, Helvetica, Arial, sans-serif;
+font-weight: 600;
+}
+.no-underline {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 45%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: grey;
+}
+
+.text-danger {
+    font-size: 0.9em;
+}

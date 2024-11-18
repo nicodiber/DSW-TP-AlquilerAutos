@@ -22,6 +22,7 @@ export class modelo {
     capacidadBaul: number; 
     images: string[] = [];
     
+    mostrarDetalles?: boolean = false; // Propiedad opcional para controlar la expansión de detalles en el frontend
 
     constructor(nombreModelo: string, categoriaModelo: categoria, marcaModelo: marca, precioXdia: number, anio: number, color: string, dimensiones: string, cantidadAsientos: number, cantidadPuertas: number, motor: string, cajaTransmision: string, tipoCombustible: string, capacidadTanqueCombustible: number, capacidadBaul: number, _id?: number, images: string[] = []) {
         this.nombreModelo = nombreModelo;
@@ -43,5 +44,7 @@ export class modelo {
         if (_id !== undefined) {
             this._id = _id;
         }
+
+        this.mostrarDetalles = false; 
     }
 }

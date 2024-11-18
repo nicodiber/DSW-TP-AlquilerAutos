@@ -12,6 +12,9 @@ router.get('/:id', usuarioController.obtenerUsuario);
 router.put('/:id', usuarioController.actualizarUsuario);
 router.delete('/:id', usuarioController.eliminarUsuario);
 router.post('/loginUsuario', usuarioController.loginUsuario);
+router.put('/editar-datos-usuario/:email', usuarioController.actualizarUsuarioPrueba);
+router.get('/datos/:id', usuarioController.obtenerAlquileresLogueado);
+
 // Usado en el listado alquiler para obtener por rol
 router.get('/rol/:rol', usuarioController.obtenerUsuariosPorRol);
 // Usado en el listado alquiler para meter el alquiler en el array

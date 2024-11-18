@@ -1,5 +1,6 @@
 const Usuario = require("../models/usuario");
 const { getNextSequenceValue } = require('../config/db');
+const usuario = require("../models/usuario");
 
 exports.crearUsuario = async (req, res) => {
   try {
@@ -45,7 +46,19 @@ exports.crearUsuario = async (req, res) => {
 
 exports.obtenerUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.find();
+    const usuarios = await Usuario.find().populate({
+      path: 'alquileres',
+      populate: [
+        {
+          path: 'auto',
+          populate: {
+            path: 'modeloAuto' 
+          }
+        },
+        { path: 'sucursalEntrega'},
+        { path: 'sucursalDevolucion'},
+         ]
+    });
     res.json(usuarios);
   } catch (error) {
     console.log(error);
@@ -155,7 +168,7 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).send('Hubo un error al iniciar sesión');
   }
 };
-
+  //este ya no se usa
 exports.obtenerUsuarioPorEmail = async (req, res) => {
     try {
         const email = req.params.email;  // Tomamos el email de los parámetros de la URL
@@ -173,6 +186,39 @@ exports.obtenerUsuarioPorEmail = async (req, res) => {
     }
 };
 
+exports.actualizarUsuarioPrueba = async (req, res) => {
+  try {
+    const usuarioActualizado = await usuario.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true }  // Para que devuelva el usuario actualizado
+    );
+    
+    if (!usuarioActualizado) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(usuarioActualizado);
+  } catch (error) {
+    console.log(error);
+
+    if (error.code === 11000 && error.keyValue) {
+      
+      const field = Object.keys(error.keyValue)[0];
+      const errorMsg = field === 'email'
+        ? 'El Correo Electronico ya está en uso. Intenta con uno diferente.'
+        : field === 'dni'
+        ? 'El DNI ya está registrado. Verifica los datos ingresados.'
+        : field === 'licenciaConductor'
+        ? 'La licencia de conductor ya está en uso. Verifica los datos ingresados.'
+        : 'Valor duplicado en un campo único.';
+
+      return res.status(409).json({ msg: errorMsg });
+    }else {
+    res.status(500).send('Hubo un error al actualizar el usuario');
+    }}
+  }
+  
 exports.obtenerUsuariosPorRol = async (req, res) => {
   const { rol } = req.params; // Obtiene el rol desde el parámetro de ruta
   try {
@@ -229,6 +275,33 @@ exports.actualizarEstadoAlquilerUsuario = async (req, res) => {
   } catch (error) {
     console.error('Error al actualizar el estado del alquiler en el usuario:', error);
     res.status(500).json({ message: 'Error al actualizar el estado del alquiler', error });
+  }
+};
+
+exports.obtenerAlquileresLogueado = async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.params.id).populate({
+      path: 'alquileres',
+      populate: [
+        {
+          path: 'auto',
+          populate: {
+            path: 'modeloAuto'
+          }
+        },
+        { path: 'sucursalEntrega'},
+        { path: 'sucursalDevolucion'},
+         ]
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ msg: 'No existe ese usuario' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener el usuario');
   }
 };
 

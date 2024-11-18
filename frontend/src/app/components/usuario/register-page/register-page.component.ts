@@ -40,19 +40,32 @@ export class RegisterPageComponent implements OnInit {
         const control = this.registerForm.get(key);
         
         if (control?.invalid) {
-          if (control.errors?.['required']) {
-            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-          }
-          if (control.errors?.['pattern']) {
-            this.toastr.error(`El campo ${key} tiene un formato incorrecto.`, 'Error en el formulario');
-          }
-          if (control.errors?.['minlength']) {
-            this.toastr.error(`El campo ${key} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
-          }
-          if (control.errors?.['email']) {
-            this.toastr.error(`El email posee un formato inválido.`, 'Error en el formulario');
-          }
+        const friendlyFieldNames: { [key: string]: string } = {
+          nombre: 'Nombre',
+          apellido: 'Apellido',
+          email: 'Correo Electrónico',
+          licenciaConductor: 'Licencia de Conductor',
+          password: 'Contraseña',
+          telefono: 'Teléfono',
+          dni: 'DNI',
+          direccion: 'Dirección'
+        };
+        
+        const fieldName = friendlyFieldNames[key] || key;
+
+        if (control.errors?.['required']) {
+          this.toastr.error(`El campo ${fieldName} es obligatorio.`, 'Error en el formulario');
         }
+        if (control.errors?.['pattern']) {
+          this.toastr.error(`El campo ${fieldName} tiene un formato incorrecto.`, 'Error en el formulario');
+        }
+        if (control.errors?.['minlength']) {
+          this.toastr.error(`El campo ${fieldName} debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`, 'Error en el formulario');
+        }
+        if (control.errors?.['email']) {
+          this.toastr.error(`El correo electrónico posee un formato inválido.`, 'Error en el formulario');
+        }
+      }
       });
       this.registerForm.markAllAsTouched();
       return;
@@ -67,7 +80,14 @@ export class RegisterPageComponent implements OnInit {
     this.authService.register(newUser).subscribe(
       response => {
         this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-        this.router.navigate(['/loginUsuario']);
+
+
+      localStorage.setItem('emailRegistrado', newUser.email);
+      localStorage.setItem('passwordRegistrado', newUser.password);
+
+
+        window.location.href = '/loginUsuario';
+        //this.router.navigate(['/loginUsuario']);
       },
       error => {
         let errorMsg = 'Ocurrió un error al intentar registrar el usuario';

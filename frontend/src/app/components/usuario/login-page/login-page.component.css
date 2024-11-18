@@ -1,14 +1,32 @@
 .position-relative {
     position: relative;
 }
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
 .btn-toggle-password {
     position: absolute;
     right: 10px;
-    top: 50%;
+    top: 42%;
     transform: translateY(-50%);
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 1em;
+    color: #404040;
+}
+
+.text-danger{
+    font-size: 0.9em;
+}
+
+.col-lg-4{
+    font-family: Outfit, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+}
+.title-line{
     font-size: 1em;
 }

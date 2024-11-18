@@ -25,6 +25,7 @@ const UsuarioSchema = new mongoose.Schema({
   },
   licenciaConductor: {
       type: String,
+      required: true,
       unique: true,
     },
   telefono: {

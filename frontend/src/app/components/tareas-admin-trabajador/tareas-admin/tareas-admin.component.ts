@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
+
 @Component({
   selector: 'app-tareas-admin',
   templateUrl: './tareas-admin.component.html',
@@ -36,15 +37,37 @@ export class TareasAdminComponent implements OnInit {
       }
     });
   }
-
   irAGestionarUsuarios() {
-    this.router.navigate(['/listarUsuarios']);
+    window.location.href = '/listarUsuarios';
+    //this.router.navigate(['/listarUsuarios']);
   }
   irAGestionarSucursales() {
-    this.router.navigate(['/sucursal-listar']);
+    window.location.href = '/sucursal-listar';    
+    //this.router.navigate(['/sucursal-listar']);
+  }
+  irAGestionarModelos() {
+    window.location.href = '/modelos-listar';    
+  }
+  irAGestionarMarcas() {
+    window.location.href = '/marca-listar';    
+  }
+  irAGestionarCategorias() {
+    window.location.href = '/categoria-listar';    
+  }
+  irAGestionarAlquileres() {
+    window.location.href = '/alquiler-listar';    
+  }
+  irAGestionarAutos() {
+    window.location.href = '/auto-listar';    
+  }
+  
+  editarMisDatos() {
+    window.location.href = '/editar-datos-usuario';
+    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }
   cerrarSesion() {
-    this.authService.logout();  // Llamar al método logout
-    this.router.navigate(['/loginUsuario']);  // Redirigir al login después de cerrar sesión
+    this.authService.logout(); 
+    window.location.href = '/loginUsuario';
+    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { gestionCookiesService } from '../../../services/gestionCookies.service';
 
 @Component({
   selector: 'app-loginUsuario',
@@ -16,37 +17,43 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private gestionCoockies: gestionCookiesService,
     private router: Router,
     private toastr: ToastrService 
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
     });
   }
 
   ngOnInit(): void {
-    // this.authService.logout(); // Para asegurar que no haya nadie conectado
+   //datos que trae al finalizar el registrarse
+   const usuarioLogueado = this.authService.getUsuarioLogueado();
+  
+  const emailRegistrado = localStorage.getItem('emailRegistrado');
+  const passwordRegistrado = localStorage.getItem('passwordRegistrado');
+
+  if (emailRegistrado && passwordRegistrado) {
+    this.loginForm.patchValue({
+      email: emailRegistrado,
+      password: passwordRegistrado,
+    });
+    // limpia los valores del localstorage
+    localStorage.removeItem('emailRegistrado');
+    localStorage.removeItem('passwordRegistrado');
+  }
+  if (usuarioLogueado) {
+    window.location.href = '/tareas-admin';  // Redirigir al login si no hay usuario
+  } 
+
   }
 
   onLogin() {
     if (this.loginForm.invalid) {
-      // Recorre los controles del formulario y muestra mensajes de error con toastr
-      Object.keys(this.loginForm.controls).forEach(key => {
-        const control = this.loginForm.get(key);
-        
-        if (control?.invalid) {
-          if (control.errors?.['required']) {
-            this.toastr.error(`El campo ${key} es obligatorio.`, 'Error en el formulario');
-          }
-          if (control.errors?.['email']) {
-            this.toastr.error('El email posee un formato inválido.', 'Error en el formulario');
-          }
-        }
-      });
-      this.loginForm.markAllAsTouched();
       return;
     }
+    
 
     // Llama a la función de login si el formulario es válido
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
@@ -55,26 +62,37 @@ export class LoginPageComponent implements OnInit {
           // Guardar el usuario logueado en sessionStorage
           this.authService.setUsuarioLogueado(response.usuario);
 
-          // Redirigir según el rol del usuario
+          const datosBusqueda = this.gestionCoockies.getDatosBusqueda();
+            if (Object.keys(datosBusqueda).length > 0) {            
+            this.router.navigate(['/alquiler-revision']); // lo manda a /alquiler-revision si hay datos en la cookie
+            return;
+          }
+
           if (response.usuario.rol === 'administrador') {
-            this.router.navigate(['/tareas-admin']);
+             window.location.href = '/tareas-admin';
+            //this.router.navigate(['/tareas-admin']);
           } else if (response.usuario.rol === 'trabajador') {
-            this.router.navigate(['/tareas-trabajador']);
+            window.location.href = '/tareas-admin';
+            //this.router.navigate(['/tareas-trabajador']);
           } else {
-            this.router.navigate(['/user']);
+            window.location.href = '/tareas-admin';
+            //this.router.navigate(['/user']);
           }
         }
       },
       error => {
         console.error('Error de login:', error);
-        this.toastr.error('Error al iniciar sesión. Verifique sus credenciales.', 'Error de Login');
+        this.toastr.warning('Correo electronico o contraseña incorrectos', 'Error de Login');
       }
     );
   }
 
-  navigateToRegister() {
-    this.router.navigate(['/registrar']);
-  }
+ navigateToRegister() {
+  window.location.href = '/registrar';
+}
+
+
+
 
   toggleContrasena() {
     this.mostrarContrasena = !this.mostrarContrasena;
