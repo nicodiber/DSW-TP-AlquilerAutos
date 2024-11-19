@@ -3,35 +3,59 @@
     <div class="col-lg-8 offset-lg-2">
       <div class="card">
         <div class="card-body text-center">
+          <!-- Botón para volver -->
+          <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
+
+          <!-- Título de la sección -->
           <span class="titulo">LISTADO DE CATEGORÍAS</span>
-          <button class="btn btn-success float-end" routerLink="/categoria-crear">NUEVA CATEGORIA</button>
-          <table class="table table-striped mt-3" *ngIf="listaCategorias.length > 0">
+
+          <!-- Botón para crear nueva categoría -->
+          <button class="btn btn-success float-end" routerLink="/categoria-crear">NUEVA CATEGORÍA</button>
+
+          <!-- Tabla que muestra las categorías si hay alguna -->
+          <table *ngIf="listaCategorias.length > 0" class="table table-striped mt-3">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nombre de la Categoria</th>
-                <th></th>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre de la Categoría</th>
+                <th scope="col">Modelos</th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let categoria of listaCategorias">
-                <td>{{ categoria._id }}</td>
-                <td>{{ categoria.nombreCategoria }}</td>
-                <td>
-                  <i class="fa-solid fa-car-side" [routerLink]="['/categoria-modelos', categoria._id]"
-                    title="Ver Modelos"></i>
-                    &nbsp;&nbsp;
-                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
-                    (click)="categoria._id ? eliminarCategoria(categoria._id) : null"></i>
-                    &nbsp;&nbsp;
-                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar"
-                    [routerLink]="['/categoria-editar', categoria._id]"></i>
-                </td>
-              </tr>
+              <ng-container *ngFor="let categoria of listaCategorias; trackBy: trackByCategoria">
+                <tr>
+                  <td>{{ categoria._id }}</td>
+                  <td>{{ categoria.nombreCategoria }}</td>
+                  <!-- Mostrar botón 'Ver Modelos' solo si la categoría tiene modelos -->
+                  <td>
+<!-- Botón "Ver Modelos" -->
+                      <button class="btn-main btn-black" [routerLink]="['/categoria-modelos', categoria._id]" title="Ver Modelos"
+                      *ngIf="categoria._id !== undefined && categoriasConModelos[categoria._id!]">  Ver Modelos</button>
+                  </td>
+<!-- Íconos de "Editar" y "Eliminar" -->
+                    <td>                
+                      <i class="fas fa-edit text-primary clickable me-3" 
+                        [routerLink]="['/categoria-editar', categoria._id]" 
+                        title="Editar" 
+                        *ngIf="categoria._id !== undefined && !categoriasConModelos[categoria._id!]"></i>
+
+                      <i class="fas fa-trash text-danger" 
+                        style="cursor: pointer;" 
+                        title="Eliminar" 
+                        *ngIf="categoria._id !== undefined && !categoriasConModelos[categoria._id!]" 
+                        (click)="categoria._id ? eliminarCategoria(categoria._id) : null"></i>
+                    </td> 
+                
+                </tr>
+              </ng-container>
             </tbody>
           </table>
-          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaCategorias.length == 0">No hay
-            Categorías para mostrar</h5>
+
+          <!-- Mensaje si no hay categorías -->
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaCategorias.length == 0">
+            No hay categorías para mostrar
+          </h5>
         </div>
       </div>
     </div>
