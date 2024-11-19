@@ -11,7 +11,7 @@ import { modelo } from '../../../models/modelo';
 })
 export class ListarMarcaComponent implements OnInit {
   listaMarcas: marca[] = [];
-  marcasConModelos: { [key: number]: boolean } = {}; // Aquí guardamos si la marca tiene modelos
+  marcasConModelos: { [key: number]: boolean } = {}; // Cambiar clave a número
 
   constructor(private _marcaService: MarcaService, private toastr: ToastrService) {}
 
@@ -23,7 +23,7 @@ export class ListarMarcaComponent implements OnInit {
     this._marcaService.obtenerMarcas().subscribe({
       next: (data: marca[]) => {
         this.listaMarcas = data;
-        this.checkModelos(); // Verificar modelos de cada marca después de cargar las marcas
+        this.checkModelos();
       },
       error: (error) => {
         console.error('Error al obtener marcas:', error);
@@ -32,13 +32,12 @@ export class ListarMarcaComponent implements OnInit {
     });
   }
 
-  // Verificar si cada marca tiene modelos asociados
   checkModelos(): void {
     this.listaMarcas.forEach(marca => {
       if (marca._id !== undefined) {
         this._marcaService.obtenerModelosPorMarca(marca._id.toString()).subscribe({
           next: (modelos: modelo[]) => {
-            this.marcasConModelos[marca._id!] = modelos.length > 0; // Almacena si tiene modelos
+            this.marcasConModelos[marca._id!] = modelos.length > 0;
           },
           error: (error) => {
             console.error('Error al verificar modelos:', error);
@@ -58,7 +57,7 @@ export class ListarMarcaComponent implements OnInit {
             this._marcaService.eliminarMarca(marcaId).subscribe({
               next: () => {
                 this.toastr.success('Marca eliminada con éxito', 'Éxito');
-                this.getMarcas(); // Refresca la lista de marcas
+                this.getMarcas();
               },
               error: (err) => {
                 console.error('Error al eliminar la marca:', err);
@@ -75,7 +74,7 @@ export class ListarMarcaComponent implements OnInit {
     }
   }
 
-  trackByMarca(index: number, marca: marca): string {
-    return String(marca._id ?? ''); // Asegúrate de usar el id correctamente
+  trackByMarca(index: number, marca: marca): number {
+    return marca._id!;
   }
 }

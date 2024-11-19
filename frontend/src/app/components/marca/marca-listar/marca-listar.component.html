@@ -23,26 +23,30 @@
                   <td>{{ marca.nombreMarca }}</td>
                   <!-- Mostrar el botón de 'Ver Modelos' solo si tiene modelos -->
                   <td>
-                    <button class="btn-main btn-black" 
-                            [routerLink]="['/marca-modelos', marca._id]" 
-                            title="Ver Modelos"
-                            *ngIf="marcasConModelos[marca._id] !== undefined && marcasConModelos[marca._id]">
+                    <button
+                      class="btn-main btn-black"
+                      [routerLink]="['/marca-modelos', marca._id]"
+                      title="Ver Modelos"
+                      *ngIf="marca._id && marcasConModelos[marca._id]">
                       Ver Modelos
                     </button>
                   </td>
                   <td>
-                    <!-- Editar y Eliminar solo si no tiene modelos asociados -->
-                    <i class="fas fa-edit text-primary clickable me-3" 
-                       [routerLink]="['/marca-editar', marca._id]" 
-                       title="Editar" 
-                       *ngIf="marcasConModelos[marca._id] === undefined || !marcasConModelos[marca._id]"></i>
-                    
-                    <i class="fas fa-trash text-danger" 
-                       style="cursor: pointer;" 
-                       title="Eliminar" 
-                       *ngIf="marcasConModelos[marca._id] === undefined || !marcasConModelos[marca._id]" 
-                       (click)="marca._id ? eliminarMarca(marca._id) : null"></i>
+                    <i
+                      class="fas fa-edit text-primary clickable me-3"
+                      [routerLink]="['/marca-editar', marca._id]"
+                      title="Editar"
+                      *ngIf="marca._id && (!marcasConModelos[marca._id])">
+                    </i>
+                    <i
+                    class="fas fa-trash text-danger"
+                    style="cursor: pointer;"
+                    title="Eliminar"
+                    *ngIf="marca._id && (!marcasConModelos[marca._id])"
+                    (click)="eliminarMarca(marca._id)">
+                  </i>                  
                   </td>
+                  
                 </tr>
               </ng-container>
             </tbody>
