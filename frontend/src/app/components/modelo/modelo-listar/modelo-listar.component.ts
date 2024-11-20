@@ -90,6 +90,7 @@ export class ListarModelosComponent implements OnInit {
 
   resetFiltros() {
     this.categoriasSeleccionadas = null;
+    
     this.marcasSeleccionadas = [];
     this.filtrarModelos();
   }
