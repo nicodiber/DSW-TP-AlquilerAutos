@@ -4,6 +4,7 @@ import { CategoriaService } from '../../../services/categoria.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { categoria } from '../../../models/categoria';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-categoria-crear',
@@ -14,8 +15,9 @@ export class CrearCategoriaComponent implements OnInit {
   categoriaForm: FormGroup;
   titulo = 'Agregar Categoría';
   id: string | null;
+  usuarioLogueado: any;
 
-  constructor(private fb: FormBuilder, private _categoriaService: CategoriaService, private toastr: ToastrService, private router: Router, private aRouter: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private _categoriaService: CategoriaService, private _authservice: AuthService, private toastr: ToastrService, private router: Router, private aRouter: ActivatedRoute) {
     this.categoriaForm = this.fb.group({
       idCategoria: [''], // No es obligatorio, lo establecemos en controller
       nombreCategoria: ['', Validators.required]
@@ -24,9 +26,14 @@ export class CrearCategoriaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     if (this.id !== null) {
       this.esEditar();
     }
+  }
   }
 
 

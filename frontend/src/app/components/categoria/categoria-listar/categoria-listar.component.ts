@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from '../../../services/categoria.service';
 import { categoria } from '../../../models/categoria';
 import { modelo } from '../../../models/modelo';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-categoria-listar',
@@ -12,14 +13,21 @@ import { modelo } from '../../../models/modelo';
 export class ListarCategoriaComponent implements OnInit {
   listaCategorias: categoria[] = [];
   categoriasConModelos: { [key: number]: boolean } = {}; // Verificar si cada categoría tiene modelos asociados
+  usuarioLogueado: any;
 
   constructor(
     private _categoriaService: CategoriaService,
+    private _authservice: AuthService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.getCategorias();
+    }
   }
 
   getCategorias(): void {

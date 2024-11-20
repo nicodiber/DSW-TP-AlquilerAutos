@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ModeloService } from '../../../services/modelo.service';
 import { CategoriaService } from '../../../services/categoria.service';
 import { MarcaService } from '../../../services/marca.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-modelo-crear',
@@ -19,11 +20,13 @@ export class CrearModeloComponent implements OnInit {
   existingImages: string[] = []; // Nueva propiedad para imágenes existentes
   categorias: any[] = [];
   marcas: any[] = [];
+  usuarioLogueado: any;
 
   constructor(private fb: FormBuilder,
               private router: Router,
               private toastr: ToastrService,
               private _modeloService: ModeloService,
+              private _authservice: AuthService,
               private _categoriaService: CategoriaService,
               private _marcaService: MarcaService,
               private aRouter: ActivatedRoute) {
@@ -47,6 +50,10 @@ export class CrearModeloComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.esEditar();
     this._categoriaService.obtenerCategorias().subscribe((data: any[]) => {
       this.categorias = data;
@@ -54,6 +61,7 @@ export class CrearModeloComponent implements OnInit {
     this._marcaService.obtenerMarcas().subscribe((data: any[]) => {
       this.marcas = data;
     });
+    }
   }
   submitForm() {
     if (this.modeloForm.invalid) {

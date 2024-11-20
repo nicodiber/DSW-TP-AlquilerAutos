@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AutoService } from '../../../services/auto.service';
 import { auto } from '../../../models/auto';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-auto-listar',
@@ -10,11 +11,17 @@ import { auto } from '../../../models/auto';
 })
 export class AutoListarComponent implements OnInit {
   listaAutos: auto[] = [];
+  usuarioLogueado: any;
 
-  constructor(private autoService: AutoService, private toastr: ToastrService) {}
+  constructor(private autoService: AutoService, private _authservice: AuthService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.obtenerAutos();
+    }
   }
 
   obtenerAutos() {

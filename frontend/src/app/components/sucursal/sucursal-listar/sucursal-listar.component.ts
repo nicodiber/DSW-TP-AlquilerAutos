@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';  // Importamos el servicio para mostrar notificaciones (toasts)
 import { sucursal } from '../../../models/sucursal';  // Importamos el modelo de datos para la sucursal
 import { SucursalService } from '../../../services/sucursal.service';  // Importamos el servicio que gestiona las sucursales
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-sucursal-listar',
@@ -10,14 +11,20 @@ import { SucursalService } from '../../../services/sucursal.service';  // Import
 })
 export class SucursalListarComponent implements OnInit {
   listaSucursales: sucursal[] = [];  // Lista que almacenará las sucursales obtenidas desde el servicio
+  usuarioLogueado: any;
 
   // El constructor recibe los servicios necesarios para gestionar las sucursales y las notificaciones
-  constructor(private _sucursalService: SucursalService,
+  constructor(private _sucursalService: SucursalService, private _authservice: AuthService,
     private toastr: ToastrService) { }
 
   // ngOnInit es un ciclo de vida de Angular que se ejecuta cuando el componente se inicializa
   ngOnInit(): void {
-    this.getSucursales();  // Llamamos al método que obtiene las sucursales al inicializar el componente
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' ) {
+      window.location.href = '/loginUsuario'; 
+    } else {
+    this.getSucursales();
+    }  // Llamamos al método que obtiene las sucursales al inicializar el componente
   }
 
   // Método que obtiene la lista de sucursales desde el servicio

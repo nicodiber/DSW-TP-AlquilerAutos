@@ -3,6 +3,7 @@ import { marca } from '../../../models/marca';
 import { MarcaService } from '../../../services/marca.service';
 import { ToastrService } from 'ngx-toastr';
 import { modelo } from '../../../models/modelo';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-marca-listar',
@@ -12,11 +13,17 @@ import { modelo } from '../../../models/modelo';
 export class ListarMarcaComponent implements OnInit {
   listaMarcas: marca[] = [];
   marcasConModelos: { [key: number]: boolean } = {}; // Cambiar clave a número
+  usuarioLogueado: any;
 
-  constructor(private _marcaService: MarcaService, private toastr: ToastrService) {}
+  constructor(private _marcaService: MarcaService, private _authservice: AuthService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.getMarcas();
+    }
   }
 
   getMarcas(): void {

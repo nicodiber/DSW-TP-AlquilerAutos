@@ -4,6 +4,7 @@ import { MarcaService } from '../../../services/marca.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marca } from '../../../models/marca';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-marca-crear',
@@ -14,8 +15,9 @@ export class CrearMarcaComponent implements OnInit {
   marcaForm: FormGroup;
   titulo = 'Agregar Marca';
   id: string | null;
+  usuarioLogueado: any;
 
-  constructor(private fb: FormBuilder, private _marcaService: MarcaService, private toastr: ToastrService, private router: Router, private aRouter: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private _marcaService: MarcaService, private _authservice: AuthService, private toastr: ToastrService, private router: Router, private aRouter: ActivatedRoute) {
     this.marcaForm = this.fb.group({
       idMarca: [''], // No es obligatorio, lo establecemos en controller
       nombreMarca: ['', Validators.required]
@@ -24,9 +26,14 @@ export class CrearMarcaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     if (this.id !== null) {
       this.esEditar();
     }
+  }
   }
 
 

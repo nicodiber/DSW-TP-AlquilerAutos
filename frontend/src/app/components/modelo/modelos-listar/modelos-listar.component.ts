@@ -18,7 +18,7 @@ export class ModelosListarComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado) {
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
       window.location.href = '/loginUsuario'; 
     } else {
       this.getModelos(); 

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SucursalService } from '../../../services/sucursal.service';
 import { sucursal } from '../../../models/sucursal';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-sucursal-crear',
@@ -14,11 +15,13 @@ export class SucursalCrearComponent implements OnInit {
   sucursalForm: FormGroup; // Formulario reactivo para la sucursal
   titulo = 'Crear Sucursal'; // Título de la página, se cambia si es para editar
   id: string | null; // ID de la sucursal, utilizado para editar
+  usuarioLogueado: any;
 
   constructor(
     private fb: FormBuilder,                    // Servicio para crear el formulario reactivo
     private router: Router,                     // Para redirigir a otras rutas
     private toastr: ToastrService,              // Para mostrar mensajes tipo "toast"
+    private _authservice: AuthService,
     private _sucursalService: SucursalService,  // Servicio para interactuar con el backend de sucursales
     private route: ActivatedRoute               // Para obtener parámetros de la URL
   ) {
@@ -39,8 +42,13 @@ export class SucursalCrearComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' ) {
+      window.location.href = '/loginUsuario'; 
+    } else {
     // Si el ID existe, se debe cargar la sucursal para editar
     this.esEditar();
+    }
   }
 
   // Método para manejar el envío del formulario

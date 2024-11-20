@@ -20,7 +20,7 @@ export class ListarUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado) {
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' ) {
       window.location.href = '/loginUsuario'; 
     } else {
       this.getUsuarios(); 

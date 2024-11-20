@@ -5,6 +5,7 @@ import { UsuarioService } from '../../../services/usuario.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-alquiler-listar',
@@ -27,12 +28,18 @@ export class AlquilerListarComponent implements OnInit {
   horaInput: string = '';  // Usado solo para 'fecha' y 'fechaFinReal'
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
+  usuarioLogueado: any;
 
-  constructor(private _alquilerService: AlquilerService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
+  constructor(private _alquilerService: AlquilerService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.getAlquileres();
     this.getTrabajadores();
+    }
   }
 
   getAlquileres() {

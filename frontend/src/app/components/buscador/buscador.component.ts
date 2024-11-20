@@ -5,6 +5,7 @@ import { AlquilerService } from '../../services/alquiler.service';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-buscador',
@@ -24,10 +25,15 @@ export class BuscadorComponent implements OnInit {
   horariosDevolucionDisponibles: string[] = [];
   isFormValid: boolean = false;
   isDateValid: boolean = false;
+  usuarioLogueado: any;
 
-  constructor(private sucursalService: SucursalService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService, private toastr: ToastrService) {}
+  constructor(private sucursalService: SucursalService, private _authservice: AuthService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
+      window.location.href = '/escritorio'; 
+    } else {
     // Obtener las Sucursales
     this.sucursalService.obtenerSucursales().subscribe(
       (data) => {
@@ -44,6 +50,7 @@ export class BuscadorComponent implements OnInit {
       },
       (error) => console.error('Error al obtener sucursales:', error)
     );
+  };
   }
 
   // Método para generar intervalos de media hora entre el horario de apertura y cierre

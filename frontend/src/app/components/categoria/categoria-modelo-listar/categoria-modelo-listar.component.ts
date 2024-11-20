@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriaService } from '../../../services/categoria.service';
 import { modelo } from '../../../models/modelo';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-categoria-modelo-listar',
@@ -12,13 +13,19 @@ export class ListarCategoriaModeloComponent {
   modelos: modelo[] = [];
   idCategoria!: string;
   nombreCategoria!: string;
+  usuarioLogueado: any;
 
-  constructor(private route: ActivatedRoute, private categoriaService: CategoriaService) { }
+  constructor(private route: ActivatedRoute, private _authservice: AuthService, private categoriaService: CategoriaService) { }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.idCategoria = this.route.snapshot.paramMap.get('idCategoria')!;
     this.nombreCategoria = this.route.snapshot.paramMap.get('nombreCategoria')!;
     this.getModelosByCategoria(this.idCategoria);
+    }
   }
 
   getModelosByCategoria(idCategoria: string): void {

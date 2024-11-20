@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MarcaService } from '../../../services/marca.service';
 import { modelo } from '../../../models/modelo';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-marca-modelo-listar',
@@ -12,13 +13,19 @@ export class ListarMarcaModeloComponent {
   modelos: modelo[] = [];
   idMarca!: string;
   nombreMarca!: string;
+  usuarioLogueado: any;
 
-  constructor(private route: ActivatedRoute, private marcaService: MarcaService) { }
+  constructor(private route: ActivatedRoute, private _authservice: AuthService, private marcaService: MarcaService) { }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.idMarca = this.route.snapshot.paramMap.get('idMarca')!;
     this.nombreMarca = this.route.snapshot.paramMap.get('nombreMarca')!;
     this.getModelosByMarca(this.idMarca);
+    }
   }
 
   getModelosByMarca(idMarca: string): void {

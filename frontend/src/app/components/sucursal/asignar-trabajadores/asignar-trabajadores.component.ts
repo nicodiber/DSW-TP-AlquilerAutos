@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                       // Para obtener parámetros de la ruta
 import { SucursalService } from '../../../services/sucursal.service';   // Servicio para manejar operaciones relacionadas con las sucursales
 import { ToastrService } from 'ngx-toastr';                             // Para mostrar mensajes de notificación
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-asignar-trabajadores',
@@ -16,14 +17,20 @@ export class AsignarTrabajadoresComponent implements OnInit {
   trabajadoresNoAsignados: any[] = [];                    // Lista de trabajadores que aún no están asignados
   trabajadoresParaAsignar: Set<string> = new Set();       // Trabajadores a asignar, almacenados en un Set para evitar duplicados
   trabajadoresParaDesasignar: Set<string> = new Set();    // Trabajadores a desasignar, almacenados en un Set para evitar duplicados
+  usuarioLogueado: any;
 
   constructor(
     private _sucursalService: SucursalService,  // Inyección del servicio de sucursal
     private toastr: ToastrService,              // Inyección del servicio para mostrar mensajes
+    private _authservice: AuthService,
     private route: ActivatedRoute               // Inyección del servicio para obtener los parámetros de la ruta
   ) { }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     // Obtener el ID de la sucursal desde los parámetros de la ruta y cargar los datos
     this.idSucursal = this.route.snapshot.paramMap.get('id') || '';  // Extraer el parámetro 'id' de la URL
     if (this.idSucursal) {
@@ -31,6 +38,7 @@ export class AsignarTrabajadoresComponent implements OnInit {
       this.getSucursal();
       this.cargarTrabajadores();
     }
+  }
   }
 
   // Método para obtener los detalles de la sucursal

@@ -6,6 +6,7 @@ import { AutoService } from '../../../services/auto.service';
 import { ModeloService } from '../../../services/modelo.service';
 import { SucursalService } from '../../../services/sucursal.service';
 import { auto } from '../../../models/auto';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-auto-crear',
@@ -18,8 +19,9 @@ export class AutoCrearComponent implements OnInit {
   id: string | null;
   modelos: any[] = [];
   sucursales: any[] = [];
+  usuarioLogueado: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private toastr: ToastrService, private autoService: AutoService, private modeloService: ModeloService, private sucursalService: SucursalService, private aRouter: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private router: Router, private _authservice: AuthService, private toastr: ToastrService, private autoService: AutoService, private modeloService: ModeloService, private sucursalService: SucursalService, private aRouter: ActivatedRoute) {
     this.autoForm = this.fb.group({
       modeloAuto: ['', Validators.required],
       sucursalAuto: ['', Validators.required],
@@ -30,6 +32,10 @@ export class AutoCrearComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.cargarModelos();
     this.cargarSucursales();
     if (this.id === null) {
@@ -38,6 +44,7 @@ export class AutoCrearComponent implements OnInit {
     } else {
       this.esEditar();
     }
+  }
   }
 
   cargarModelos() {

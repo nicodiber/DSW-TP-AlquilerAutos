@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { usuario } from '../../../models/usuario';
 import { UsuarioService } from '../../../services/usuario.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-crear-admin-trabajador',
@@ -15,12 +16,14 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   titulo = 'Crear Admin / Trabajador';
   id: string | null;
   mostrarContrasena: boolean = false;
+  usuarioLogueado: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
     private _usuarioService: UsuarioService,
+    private _authservice: AuthService,
     private aRouter: ActivatedRoute
   ) { 
     this.usuarioForm = this.fb.group({
@@ -38,7 +41,12 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' ) {
+      window.location.href = '/loginUsuario'; 
+    } else {
     this.esEditar();
+    }
   }
 
   submitForm() {
