@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { modelo } from '../models/modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +40,8 @@ export class ModeloService {
     return this.http.get<boolean>(`${this.url}${idModelo}/existe-autos`);
   }
 
+  
+  obtenerModelosPorMarca(marcaId: number): Observable<modelo[]> {
+    return this.http.get<modelo[]>(`/api/modelos/marca/${marcaId}`);
+  }
 }

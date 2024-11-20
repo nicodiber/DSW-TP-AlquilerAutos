@@ -3,35 +3,58 @@
     <div class="col-lg-8 offset-lg-2">
       <div class="card">
         <div class="card-body text-center">
+          <a href="/tareas-admin" class="btn btn-link float-start">Volver</a>
           <span class="titulo">LISTADO DE MARCAS</span>
           <button class="btn btn-success float-end" routerLink="/marca-crear">NUEVA MARCA</button>
-          <table class="table table-striped mt-3" *ngIf="listaMarcas.length > 0">
+
+          <table *ngIf="listaMarcas.length > 0" class="table table-striped mt-3">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nombre de la Marca</th>
-                <th></th>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre de la Marca</th>
+                <th scope="col">Modelos</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let marca of listaMarcas">
-                <td>{{ marca._id }}</td>
-                <td>{{ marca.nombreMarca }}</td>
-                <td>
-                  <i class="fa-solid fa-car-side" [routerLink]="['/marca-modelos', marca._id]"
-                    title="Ver Modelos"></i>
-                    &nbsp;&nbsp;
-                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
-                    (click)="marca._id ? eliminarMarca(marca._id) : null"></i>
-                    &nbsp;&nbsp;
-                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar"
-                    [routerLink]="['/marca-editar', marca._id]"></i>
-                </td>
-              </tr>
+              <ng-container *ngFor="let marca of listaMarcas; trackBy: trackByMarca">
+                <tr>
+                  <td>{{ marca._id }}</td>
+                  <td>{{ marca.nombreMarca }}</td>
+                  <!-- Mostrar el botón de 'Ver Modelos' solo si tiene modelos -->
+                  <td>
+                    <button
+                      class="btn-main btn-black"
+                      [routerLink]="['/marca-modelos', marca._id]"
+                      title="Ver Modelos"
+                      *ngIf="marca._id && marcasConModelos[marca._id]">
+                      Ver Modelos
+                    </button>
+                  </td>
+                  <td>
+                    <i
+                      class="fas fa-edit text-primary clickable me-3"
+                      [routerLink]="['/marca-editar', marca._id]"
+                      title="Editar"
+                      *ngIf="marca._id && (!marcasConModelos[marca._id])">
+                    </i>
+                    <i
+                    class="fas fa-trash text-danger"
+                    style="cursor: pointer;"
+                    title="Eliminar"
+                    *ngIf="marca._id && (!marcasConModelos[marca._id])"
+                    (click)="eliminarMarca(marca._id)">
+                  </i>                  
+                  </td>
+                  
+                </tr>
+              </ng-container>
             </tbody>
           </table>
-          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaMarcas.length == 0">No hay
-            Marcas para mostrar</h5>
+
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaMarcas.length == 0">
+            No hay marcas para mostrar
+          </h5>
         </div>
       </div>
     </div>

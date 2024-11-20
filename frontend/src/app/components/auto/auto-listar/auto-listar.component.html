@@ -1,36 +1,38 @@
 <div class="container mt-5">
   <div class="row">
-    <div class="card">
-      <div class="card-body text-center">
-        <span class="titulo">LISTADO DE TODOS LOS AUTOS</span>
-        <button class="btn btn-success float-end" routerLink="/auto-crear">NUEVO AUTO</button>
-        <table class="table table-striped mt-3" *ngIf="listaAutos.length > 0">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Modelo</th>
-              <th>Sucursal</th>
-              <th>Patente</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let auto of listaAutos">
-              <td>{{ auto._id }}</td>
-              <td>{{ auto.modeloAuto.nombreModelo }}</td>
-              <td>{{ auto.sucursalAuto.nombreSucursal }}</td>
-              <td>{{ auto.matricula }}</td>
-              <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
-              <td>
-                <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? eliminarAuto(auto._id) : null"></i><br>
-                <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAutos.length == 0">No hay
-          sucursales para mostrar</h5>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo">LISTADO DE TODOS LOS AUTOS</span>
+          <button class="btn btn-success float-end" routerLink="/auto-crear">NUEVO AUTO</button>
+          <table class="table table-striped mt-3" *ngIf="listaAutos.length > 0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th>Sucursal</th>
+                <th>Patente</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auto of listaAutos">
+                <td>{{ auto._id }}</td>
+                <td>{{ auto.modeloAuto.nombreModelo }}</td>
+                <td>{{ auto.sucursalAuto.nombreSucursal }}</td>
+                <td>{{ auto.matricula }}</td>
+                <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
+                <td>
+                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? eliminarAuto(auto._id) : null"></i>
+                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAutos.length == 0">No hay
+            sucursales para mostrar</h5>
+        </div>
       </div>
     </div>
   </div>
