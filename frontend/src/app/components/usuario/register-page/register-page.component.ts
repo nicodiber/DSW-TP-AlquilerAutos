@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';  // Cambia la ruta según tu estructura
+import { AuthService } from '../../../services/auth.service'; // Cambia la ruta según tu estructura
+import { EmailService } from '../../../services/email.service'; // Servicio para validar el correo
 
 @Component({
   selector: 'app-registrarse',
@@ -12,10 +13,12 @@ import { AuthService } from '../../../services/auth.service';  // Cambia la ruta
 export class RegisterPageComponent implements OnInit {
   registerForm!: FormGroup;
   mostrarContrasena: boolean = false;
+  emailValidationMessage: string | null = null; // Mensaje de validación del correo
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private emailValidationService: EmailService, // Inyecta el servicio
     private router: Router,
     private toastr: ToastrService,
   ) {}
@@ -35,11 +38,56 @@ export class RegisterPageComponent implements OnInit {
 
   onRegister(): void {
     if (this.registerForm.invalid) {
-      // Recorre los controles del formulario y muestra mensajes de error con toastr
-      Object.keys(this.registerForm.controls).forEach(key => {
-        const control = this.registerForm.get(key);
-        
-        if (control?.invalid) {
+      this.showValidationErrors();
+      return;
+    }
+
+    // Validar el correo antes de continuar
+    const email = this.registerForm.get('email')?.value;
+
+    this.emailValidationService.validateEmail(email).subscribe(
+      (response: any) => {
+        if (response.valid) {
+          this.registerUser(); // Llama al método para registrar al usuario si el correo es válido
+        } else {
+          this.emailValidationMessage = 'El correo electrónico no es válido.'; // Mensaje cuando el correo no es válido
+          this.toastr.error(this.emailValidationMessage, 'Error de Validación');
+        }
+      },
+      error => {
+        this.emailValidationMessage = 'Error al validar el correo electrónico.'; // Mensaje cuando ocurre un error en la validación
+        this.toastr.error(this.emailValidationMessage, 'Error de Validación');
+      }
+    );
+  }
+
+  registerUser(): void {
+    const newUser = {
+      ...this.registerForm.value,
+      rol: 'usuario', // Asigna el rol de "usuario" directamente
+    };
+
+    this.authService.register(newUser).subscribe(
+      response => {
+        this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
+        localStorage.setItem('emailRegistrado', newUser.email);
+        localStorage.setItem('passwordRegistrado', newUser.password);
+        window.location.href = '/loginUsuario';
+      },
+      error => {
+        let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
+        if (error.status === 409 && error.error && error.error.msg) {
+          errorMsg = error.error.msg;
+        }
+        this.toastr.error(errorMsg, 'Error de Registro');
+      }
+    );
+  }
+
+  showValidationErrors(): void {
+    Object.keys(this.registerForm.controls).forEach(key => {
+      const control = this.registerForm.get(key);
+      if (control?.invalid) {
         const friendlyFieldNames: { [key: string]: string } = {
           nombre: 'Nombre',
           apellido: 'Apellido',
@@ -50,7 +98,7 @@ export class RegisterPageComponent implements OnInit {
           dni: 'DNI',
           direccion: 'Dirección'
         };
-        
+
         const fieldName = friendlyFieldNames[key] || key;
 
         if (control.errors?.['required']) {
@@ -66,42 +114,11 @@ export class RegisterPageComponent implements OnInit {
           this.toastr.error(`El correo electrónico posee un formato inválido.`, 'Error en el formulario');
         }
       }
-      });
-      this.registerForm.markAllAsTouched();
-      return;
-    }
-
-    // Llama al servicio de registro si el formulario es válido
-    const newUser = {
-      ...this.registerForm.value,
-      rol: 'usuario',  // Asigna el rol de "usuario" directamente
-    };
-
-    this.authService.register(newUser).subscribe(
-      response => {
-        this.toastr.success('El Usuario fue registrado con éxito!', 'Usuario Registrado!');
-
-
-      localStorage.setItem('emailRegistrado', newUser.email);
-      localStorage.setItem('passwordRegistrado', newUser.password);
-
-
-        window.location.href = '/loginUsuario';
-        //this.router.navigate(['/loginUsuario']);
-      },
-      error => {
-        let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
-        
-        // Verificar si es error de conflicto 409
-        if (error.status === 409 && error.error && error.error.msg) {
-          errorMsg = error.error.msg;
-        }
-
-        this.toastr.error(errorMsg, 'Error de Registro');
-      }
-    );
+    });
+    this.registerForm.markAllAsTouched();
   }
+
   toggleContrasena() {
-        this.mostrarContrasena = !this.mostrarContrasena;
-    }
+    this.mostrarContrasena = !this.mostrarContrasena;
+  }
 }

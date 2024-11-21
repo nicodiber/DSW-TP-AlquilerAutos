@@ -2,6 +2,7 @@ const express = require('express');
 const { conectarDB } = require('./config/db'); // Importamos usando destructuring
 const cors = require('cors'); // Middleware que permite que el servidor permita solicitudes si el frontend y el backend están en distintos dominios o puertos
 const path = require('path');
+const emailRoutes = require('./routes/emailRoutes');  // Importar las rutas de validación de correo electrónico
 
 // Creamos el servidor
 const app = express();
@@ -29,7 +30,7 @@ app.use('/api/alquileres', require('./routes/alquiler'));
 app.use('/api/incidentes', require('./routes/incidente'));
 app.use('/api/mantenimientos', require('./routes/mantenimiento'));
 app.use('/api/formulario-contacto', require('./routes/contact'));
-
+app.use('/api/email', emailRoutes); 
 // Puerto donde corre el servidor
 app.listen(4000, () => {
     console.log('El servidor está corriendo perfectamente');
