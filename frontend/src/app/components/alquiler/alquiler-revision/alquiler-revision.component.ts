@@ -38,6 +38,10 @@ export class AlquilerRevisionComponent implements OnInit {
     this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
 
     this.usuario = this.authService.getUsuarioLogueado();
+    
+    if ( this.usuario.rol == 'administrador' || this.usuario.rol == 'trabajador') {
+      window.location.href = '/escritorio'; 
+    }
   }
   
   // Botón Cancelar

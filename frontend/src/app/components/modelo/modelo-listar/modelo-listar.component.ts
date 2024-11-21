@@ -8,6 +8,7 @@ import { modelo } from '../../../models/modelo';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-modelo-listar',
@@ -23,8 +24,9 @@ export class ListarModelosComponent implements OnInit {
   marcasSeleccionadas: number[] = [];
   modelosDisponibles: modelo[] = [];
   datosBusqueda: any;
+  usuarioLogueado: any;
 
-  constructor(private router: Router, private toastr: ToastrService, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
+  constructor(private router: Router, private toastr: ToastrService, private _authservice: AuthService, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
 
@@ -49,6 +51,11 @@ export class ListarModelosComponent implements OnInit {
     // Inicializamos modelosFiltrados con modelosDisponibles
     this.modelosDisponibles = this.gestionCookiesService.getDatosModelosDisponibles(); // Necesitamos modelosDisponibles como una referencia constante (para tener siempre el conjunto completo de modelos sin filtrado o modificaciones)
     this.modelosFiltrados = [...(this.modelosDisponibles)]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
+    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    
+    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
+      window.location.href = '/escritorio'; 
+    }
   }
 
   obtenerCategorias() {

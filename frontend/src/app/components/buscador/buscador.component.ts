@@ -30,10 +30,6 @@ export class BuscadorComponent implements OnInit {
   constructor(private sucursalService: SucursalService, private _authservice: AuthService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
-      window.location.href = '/escritorio'; 
-    } else {
     // Obtener las Sucursales
     this.sucursalService.obtenerSucursales().subscribe(
       (data) => {
@@ -50,7 +46,11 @@ export class BuscadorComponent implements OnInit {
       },
       (error) => console.error('Error al obtener sucursales:', error)
     );
-  };
+    //quito el permiso para que el admin o trabajador haga esto
+  this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
+    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
+      window.location.href = '/escritorio'; 
+    }
   }
 
   // Método para generar intervalos de media hora entre el horario de apertura y cierre

@@ -17,6 +17,7 @@ export class DetalleModeloComponent implements OnInit {
   isAuthenticated: boolean = false;
   idModelo: string = '' ;
   idAutoAleatorio: string = '';
+  usuarioLogueado: any;
 
   constructor(private route: ActivatedRoute, private toastr: ToastrService, private authService: AuthService, private router: Router, private modeloService: ModeloService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
   ngOnInit(): void {
@@ -40,6 +41,10 @@ export class DetalleModeloComponent implements OnInit {
         });
       }
     });
+    this.usuarioLogueado = this.authService.getUsuarioLogueado(); 
+    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
+      window.location.href = '/escritorio'; 
+    };
   }
 
   elegirModelo(): void {
