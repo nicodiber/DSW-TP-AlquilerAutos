@@ -3,13 +3,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body text-center">
+                    <!-- Título de la página -->
                     <span class="titulo">LISTADO DE TODAS LAS SUCURSALES</span>
 
+                    <!-- Botón para agregar una nueva sucursal, redirige a la página de creación de sucursal -->
                     <button class="btn btn-success float-end" routerLink="/sucursal-crear">NUEVA SUCURSAL</button>
 
+                    <!-- Tabla que se muestra solo si hay sucursales en la lista -->
                     <table *ngIf="listaSucursales.length > 0" class="table table-striped mt-3">
                         <thead>
                             <tr>
+                                <!-- Encabezados de la tabla que describen las columnas -->
                                 <th scope="col">Nombre Sucursal</th>
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Dirección</th>
@@ -20,10 +24,11 @@
                                 <th scope="col">Hora Cierre</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
-                                <th scope="col"></th>
+                                <th scope="col"></th> <!-- Columna vacía para acciones de editar y eliminar -->
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Recorre la lista de sucursales y muestra el contenido de cada una en una fila de la tabla -->
                             <tr *ngFor="let sucursal of listaSucursales">
                                 <td>{{ sucursal.nombreSucursal }}</td>
                                 <td>{{ sucursal.telefonoSucursal }}</td>
@@ -34,7 +39,7 @@
                                 <td>{{ sucursal.horaAperturaSucursal }}</td>
                                 <td>{{ sucursal.horaCierreSucursal }}</td>
 
-                                <!-- Enlace para gestionar trabajadores -->
+                                <!-- Columna para gestionar los trabajadores de la sucursal -->
                                 <td>
                                     <a [routerLink]="['/asignar-trabajadores', sucursal._id]" class="btn-main btn-sm"
                                         style="padding: 5px 10px;">
@@ -42,14 +47,14 @@
                                     </a>
                                 </td>
 
-                                <!-- Enlace para gestionar autos -->
+                                <!-- Columna para gestionar los autos de la sucursal -->
                                 <td>
                                     <a [routerLink]="['/asignar-autos', sucursal._id]" class="btn-main btn-black">
                                         Autos
                                     </a>
                                 </td>
 
-                                <!-- Íconos para editar y eliminar -->
+                                <!-- Columna con los íconos para editar o eliminar la sucursal -->
                                 <td>
                                     <i [routerLink]="['/sucursal-editar', sucursal._id]"
                                         class="fas fa-edit text-primary"></i>
