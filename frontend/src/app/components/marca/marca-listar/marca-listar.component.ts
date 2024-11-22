@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListarMarcaComponent {
   listaMarcas: marca[] = [];
+  marcaIdToDelete: any | null = null;
 
   constructor(private _marcaService: MarcaService, private toastr: ToastrService) { }
 
@@ -33,7 +34,11 @@ export class ListarMarcaComponent {
         } else {
           this._marcaService.eliminarMarca(marcaId).subscribe({
             next: () => {
-              this.toastr.success('Categoría eliminada con éxito', 'Éxito');
+              this.toastr.success('Marca eliminada con éxito', 'Éxito');
+              const backdrop = document.querySelector('.modal-backdrop.show');
+              if (backdrop) {
+                backdrop.remove();
+              }
               this.getMarcas(); // Actualiza la lista después de eliminar
             },
             error: (err) => {
@@ -54,5 +59,13 @@ export class ListarMarcaComponent {
     });
   }
   
+  abrirDeleteModal(id: any) {
+    this.marcaIdToDelete = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
+  }
 }
 

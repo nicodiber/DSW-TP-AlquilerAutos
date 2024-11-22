@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListarCategoriaComponent {
   listaCategorias: categoria[] = [];
+  categoriaIdToDelete: any | null = null;
 
   constructor(private _categoriaService: CategoriaService, private toastr: ToastrService) { }
 
@@ -34,6 +35,12 @@ export class ListarCategoriaComponent {
           this._categoriaService.eliminarCategoria(categoriaId).subscribe({
             next: () => {
               this.toastr.success('Categoría eliminada con éxito', 'Éxito');
+
+              const backdrop = document.querySelector('.modal-backdrop.show');
+              if (backdrop) {
+                backdrop.remove();
+              }
+
               this.getCategorias(); // Actualiza la lista después de eliminar
             },
             error: (err) => {
@@ -52,6 +59,15 @@ export class ListarCategoriaComponent {
         this.toastr.error('Error al verificar si la categoría tiene modelos asociados', 'Error');
       }
     });
+  }
+
+  abrirDeleteModal(id: any) {
+    this.categoriaIdToDelete = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
   }
   
 }

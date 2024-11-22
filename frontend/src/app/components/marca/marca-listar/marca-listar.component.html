@@ -22,10 +22,31 @@
                     title="Ver Modelos"></i>
                     &nbsp;&nbsp;
                   <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
-                    (click)="marca._id ? eliminarMarca(marca._id) : null"></i>
+                    (click)="marca._id ? abrirDeleteModal(marca._id) : null"></i>
                     &nbsp;&nbsp;
                   <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar"
                     [routerLink]="['/marca-editar', marca._id]"></i>
+                  
+                  <!-- Modal -->
+                  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+                    style="background-color: transparent;">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          ¿Estás seguro de que deseas eliminar esta Marca?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                          <button type="button" class="btn btn-danger" (click)="eliminarMarca(marcaIdToDelete)">Sí,
+                            eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>

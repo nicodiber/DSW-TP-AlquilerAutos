@@ -10,6 +10,7 @@ import { SucursalService } from '../../../services/sucursal.service';  // Import
 })
 export class SucursalListarComponent implements OnInit {
   listaSucursales: sucursal[] = [];  // Lista que almacenará las sucursales obtenidas desde el servicio
+  sucursalIdToDelete: any | null = null;
 
   // El constructor recibe los servicios necesarios para gestionar las sucursales y las notificaciones
   constructor(private _sucursalService: SucursalService,
@@ -42,13 +43,29 @@ export class SucursalListarComponent implements OnInit {
       data => {
         // Si la eliminación es exitosa, mostramos una notificación de éxito
         this.toastr.success('La sucursal fue eliminada con éxito', 'Sucursal Eliminada');
+        
+        const backdrop = document.querySelector('.modal-backdrop.show');
+        if (backdrop) {
+          backdrop.remove();
+        }
+
         // Luego, actualizamos la lista de sucursales para reflejar los cambios
         this.getSucursales();
       },
       error => {
         // Si ocurre un error, se imprime en consola
+        this.toastr.error('No se puede eliminar la sucursal ya que posee Trabajadores o Autos asignados.', 'Error');
         console.log(error);
       }
     );
+  }
+
+  abrirDeleteModal(id: any) {
+    this.sucursalIdToDelete = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
   }
 }

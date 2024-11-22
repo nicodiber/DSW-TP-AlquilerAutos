@@ -70,8 +70,8 @@
                         <div style="display: inline-grid; gap: 15px">
                           <button (click)="abrirModal('fecha', alquiler)" *ngIf="!alquiler.fechaInicioReal" class="boton-acciones">Establecer Fecha Inicio Real</button>
                           <button (click)="abrirModal('fechaFinReal', alquiler)" *ngIf="!alquiler.fechaFinReal" class="boton-acciones">Establecer Fecha Fin Real</button>
-                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="alquiler.trabajadorAsignado" class="boton-acciones">Modificar Trabajador</button>
-                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="!alquiler.trabajadorAsignado" class="boton-acciones">Asignar Trabajador</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="alquiler.trabajadorAsignado && usuario.rol === 'administrador'" class="boton-acciones">Modificar Trabajador</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="!alquiler.trabajadorAsignado && usuario.rol === 'administrador'" class="boton-acciones">Asignar Trabajador</button>
                           <button (click)="abrirModal('estado', alquiler)" class="boton-acciones">Cambiar Estado</button>
 
                           <!-- Modal -->

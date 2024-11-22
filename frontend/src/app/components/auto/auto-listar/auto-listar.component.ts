@@ -10,6 +10,7 @@ import { auto } from '../../../models/auto';
 })
 export class AutoListarComponent implements OnInit {
   listaAutos: auto[] = [];
+  autoIdToDelete: any | null = null;
 
   constructor(private autoService: AutoService, private toastr: ToastrService) {}
 
@@ -30,6 +31,10 @@ export class AutoListarComponent implements OnInit {
     this.autoService.eliminarAuto(autoId).subscribe({
       next: () => {
         this.toastr.success('Auto eliminado con éxito');
+        const backdrop = document.querySelector('.modal-backdrop.show');
+        if (backdrop) {
+          backdrop.remove();
+        }
         this.obtenerAutos(); // Actualiza la lista después de eliminar
       },
       error: (err) => {
@@ -42,4 +47,12 @@ export class AutoListarComponent implements OnInit {
     });
   }
 
+  abrirDeleteModal(id: any) {
+    this.autoIdToDelete = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
+  }
 }

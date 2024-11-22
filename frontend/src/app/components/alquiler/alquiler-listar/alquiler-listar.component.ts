@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AlquilerService } from '../../../services/alquiler.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { AuthService } from '../../../services/auth.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
@@ -27,12 +28,18 @@ export class AlquilerListarComponent implements OnInit {
   horaInput: string = '';  // Usado solo para 'fecha' y 'fechaFinReal'
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
+  usuario: any;
 
-  constructor(private _alquilerService: AlquilerService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
+  constructor(private _alquilerService: AlquilerService, private _usuarioService: UsuarioService, private toastr: ToastrService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.getAlquileres();
     this.getTrabajadores();
+
+    const usuarioLogueado = this.authService.getUsuarioLogueado();
+    if (usuarioLogueado.rol !== 'usuario') {
+      this.usuario = usuarioLogueado; 
+    };
   }
 
   getAlquileres() {
