@@ -170,16 +170,35 @@ exports.cambiarEstado = async (req, res) => {
 // Usado en el buscador
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
-    const { sucursalRetiro } = req.body;
+    const { sucursalRetiro, fechaRetiro } = req.body;
 
     // Paso 1: Filtrar autos disponibles en la sucursal de retiro elegida
-    const autosCoincidentes = await Auto.find({ sucursalAuto: sucursalRetiro._id, estadoAuto: 'disponible' });
+    const autosDisponibles = await Auto.find({ sucursalAuto: sucursalRetiro._id, estadoAuto: 'disponible' });
 
-    // Paso 2: Obtener modelos de autos coincidentes
+    // Paso 2: Filtrar autos reservados y/o alquilado pero cuyo alquiler en el que esta involucrado tiene fecha fin anterior a fecha retiro del buscador 
+    // y cuya id sucursal devolución sea igual al id sucursal retiro del buscador
+    const autosReservadosOAlquilados = await Auto.find({ estadoAuto: { $in: ['reservado', 'alquilado'] } });
+    const autoIdsReservadosOAlquilados = autosReservadosOAlquilados.map(auto => auto._id);
+    console.log("autoIdsReservadosOAlquilados", autoIdsReservadosOAlquilados);
+    const AlquileresValidos = await Alquiler.find({
+      auto: { $in: autoIdsReservadosOAlquilados }, fechaFin: { $lt: new Date(fechaRetiro) }, sucursalDevolucion: sucursalRetiro._id
+    });
+
+    const autosValidosIds = AlquileresValidos.map(alquiler => alquiler.auto); // Aca tengo los ids de los autos validos según condicion anterior
+    console.log("autosValidosIds", autosValidosIds);
+    const autosCoincidentesIds = [
+      ...autosDisponibles.map(auto => auto._id),
+      ...autosValidosIds
+    ]
+    console.log("autosCoincidentesIds", autosCoincidentesIds);
+
+    const autosCoincidentes = await Auto.find({ _id: { $in: autosCoincidentesIds } });  // Aca tengo los autos coincidentes (objetos)
+
+    // Paso 3: Obtener modelos de autos coincidentes
     const modeloIds = autosCoincidentes.map(auto => auto.modeloAuto);
+    console.log("modeloIds", modeloIds);
 
     const modelosDisponibles = await Modelo.find({ _id: { $in: modeloIds } });
-
     res.json(modelosDisponibles);
 
   } catch (error) {
@@ -187,23 +206,3 @@ exports.buscarModelosDisponibles = async (req, res) => {
     res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
-
-
-/*exports.obtenerAlquileresPorUsuario = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const alquileres = await Alquiler.find({ usuario: id })
-      .populate('auto').populate('modelo')
-      .populate('sucursal') 
-      .populate('trabajadorAsignado') ;
-      
-    console.log(alquileres);
-    res.status(200).json(alquileres);
-    
-  } catch (error) {
-    console.error('Error obteniendo alquileres por usuario:', error);
-    res.status(500).json({ mensaje: 'Error obteniendo alquileres por usuario' });
-  }
-};*/
-

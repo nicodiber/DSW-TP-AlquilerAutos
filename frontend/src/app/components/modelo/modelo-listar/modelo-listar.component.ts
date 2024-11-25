@@ -53,7 +53,7 @@ export class ListarModelosComponent implements OnInit {
     this.modelosFiltrados = [...(this.modelosDisponibles)]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
     this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
     
-    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
+    if ( this.usuarioLogueado?.rol == 'administrador' || this.usuarioLogueado?.rol == 'trabajador') {
       window.location.href = '/escritorio'; 
     }
   }
@@ -115,5 +115,12 @@ export class ListarModelosComponent implements OnInit {
     });
   }
 
+  // Botón Cancelar
+  cancelarProceso(){
+    this.gestionCookiesService.borrarCookie('datosBusqueda');
+    this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
+    this.gestionCookiesService.borrarCookie('modelosDisponibles');
+    window.location.href = '/buscador';
+  }
 }
 

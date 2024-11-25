@@ -73,8 +73,11 @@ export class DetalleModeloComponent implements OnInit {
       this.isAuthenticated = this.authService.getUsuarioLogueado();
 
       if (!this.isAuthenticated) {
-        window.location.href = '/loginUsuario';
         this.toastr.warning('Por favor, inicie sesión para continuar');
+        setTimeout(() => {
+          window.location.href = '/loginUsuario';
+        }, 1000);
+        
       } else {
         window.location.href = '/alquiler-revision';
       }
