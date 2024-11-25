@@ -55,10 +55,14 @@
                         <div class="mb-3">
                             <input type="text" formControlName="paisSucursal" class="form-control form-control-lg"
                                 placeholder="País de la Sucursal">
-                            <!-- Mensaje de error si el campo es obligatorio -->
+                            <!-- Mensaje de error si el campo es obligatorio o tiene formato incorrecto -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('paisSucursal')?.hasError('required') && sucursalForm.get('paisSucursal')?.touched">
                                 <span>El país <strong>es obligatorio</strong></span>
+                            </div>
+                            <div class="text-danger"
+                                *ngIf="sucursalForm.get('paisSucursal')?.hasError('pattern') && sucursalForm.get('paisSucursal')?.touched">
+                                <span>El país de la sucursal <strong>tiene un formato incorrecto</strong></span>
                             </div>
                         </div>
 
@@ -66,10 +70,14 @@
                         <div class="mb-3">
                             <input type="text" formControlName="provinciaSucursal" class="form-control form-control-lg"
                                 placeholder="Provincia de la Sucursal">
-                            <!-- Mensaje de error si el campo es obligatorio -->
+                            <!-- Mensaje de error si el campo es obligatorio o tiene formato incorrecto -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('provinciaSucursal')?.hasError('required') && sucursalForm.get('provinciaSucursal')?.touched">
                                 <span>La provincia <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger"
+                                *ngIf="sucursalForm.get('provinciaSucursal')?.hasError('pattern') && sucursalForm.get('provinciaSucursal')?.touched">
+                                <span>La provincia de la sucursal <strong>tiene un formato incorrecto</strong></span>
                             </div>
                         </div>
 
@@ -77,15 +85,20 @@
                         <div class="mb-3">
                             <input type="text" formControlName="ciudadSucursal" class="form-control form-control-lg"
                                 placeholder="Ciudad de la Sucursal">
-                            <!-- Mensaje de error si el campo es obligatorio -->
+                            <!-- Mensaje de error si el campo es obligatorio o tiene formato incorrecto -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('ciudadSucursal')?.hasError('required') && sucursalForm.get('ciudadSucursal')?.touched">
                                 <span>La ciudad <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger"
+                                *ngIf="sucursalForm.get('ciudadSucursal')?.hasError('pattern') && sucursalForm.get('ciudadSucursal')?.touched">
+                                <span>La ciudad de la sucursal <strong>tiene un formato incorrecto</strong></span>
                             </div>
                         </div>
 
                         <!-- Campo para seleccionar la hora de apertura de la sucursal -->
                         <div class="mb-3">
+                            <label style="float:left; margin-bottom: 5px;">Horario de apertura</label>
                             <input type="time" formControlName="horaAperturaSucursal"
                                 class="form-control form-control-lg" placeholder="Hora de Apertura">
                             <!-- Mensaje de error si el campo es obligatorio -->
@@ -97,12 +110,18 @@
 
                         <!-- Campo para seleccionar la hora de cierre de la sucursal -->
                         <div class="mb-3">
+                            <label style="float:left; margin-bottom: 5px;">Horario de cierre</label>
                             <input type="time" formControlName="horaCierreSucursal" class="form-control form-control-lg"
                                 placeholder="Hora de Cierre">
                             <!-- Mensaje de error si el campo es obligatorio -->
                             <div class="text-danger"
                                 *ngIf="sucursalForm.get('horaCierreSucursal')?.hasError('required') && sucursalForm.get('horaCierreSucursal')?.touched">
                                 <span>La hora de cierre <strong>es obligatoria</strong></span>
+                            </div>
+                            <!-- Mensaje de error si la hora de cierre es menor o igual a la hora de apertura -->
+                            <div class="text-danger"
+                                *ngIf="sucursalForm.get('horaCierreSucursal')?.touched && sucursalForm.get('horaAperturaSucursal')?.value != '' && sucursalForm.get('horaAperturaSucursal')?.value >= sucursalForm.get('horaCierreSucursal')?.value">
+                                <span>La hora de cierre <strong>debe ser posterior a la hora de apertura</strong></span>
                             </div>
                         </div>
 

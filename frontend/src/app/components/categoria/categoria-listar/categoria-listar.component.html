@@ -20,32 +20,41 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let categoria of listaCategorias; trackBy: trackByCategoria">
-                <tr>
-                  <td>{{ categoria._id }}</td>
-                  <td>{{ categoria.nombreCategoria }}</td>
-                  <!-- Mostrar botón 'Ver Modelos' solo si la categoría tiene modelos -->
-                  <td>
-<!-- Botón "Ver Modelos" -->
-                      <button class="btn-main btn-black" [routerLink]="['/categoria-modelos', categoria._id]" title="Ver Modelos"
-                      *ngIf="categoria._id !== undefined && categoriasConModelos[categoria._id!]">  Ver Modelos</button>
-                  </td>
-<!-- Íconos de "Editar" y "Eliminar" -->
-                    <td>                
-                      <i class="fas fa-edit text-primary clickable me-3" 
-                        [routerLink]="['/categoria-editar', categoria._id]" 
-                        title="Editar" 
-                        *ngIf="categoria._id !== undefined && !categoriasConModelos[categoria._id!]"></i>
+              <tr *ngFor="let categoria of listaCategorias">
+                <td>{{ categoria._id }}</td>
+                <td>{{ categoria.nombreCategoria }}</td>
+                <td>
+                  <i class="fa-solid fa-car-side" [routerLink]="['/categoria-modelos', categoria._id]"
+                    title="Ver Modelos"></i>
+                    &nbsp;&nbsp;
+                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar"
+                    (click)="categoria._id ? abrirDeleteModal(categoria._id) : null"></i>
+                    &nbsp;&nbsp;
+                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar"
+                    [routerLink]="['/categoria-editar', categoria._id]"></i>
 
-                      <i class="fas fa-trash text-danger" 
-                        style="cursor: pointer;" 
-                        title="Eliminar" 
-                        *ngIf="categoria._id !== undefined && !categoriasConModelos[categoria._id!]" 
-                        (click)="categoria._id ? eliminarCategoria(categoria._id) : null"></i>
-                    </td> 
-                
-                </tr>
-              </ng-container>
+                  <!-- Modal -->
+                  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+                    style="background-color: transparent;">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          ¿Estás seguro de que deseas eliminar esta Categoría?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                          <button type="button" class="btn btn-danger" (click)="eliminarCategoria(categoriaIdToDelete)">Sí,
+                            eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
 

@@ -49,7 +49,7 @@
             <!-- Matrícula del Auto -->
             <div class="mb-3">
               <input type="text" formControlName="matricula" class="form-control form-control-lg"
-                placeholder="Patente del Auto">
+                placeholder="Patente del Auto" oninput="this.value = this.value.toUpperCase()">
               <div class="text-danger"
                 *ngIf="autoForm.get('matricula')?.hasError('required') && autoForm.get('matricula')?.touched">
                 <span>La patente <strong>es obligatoria</strong></span>

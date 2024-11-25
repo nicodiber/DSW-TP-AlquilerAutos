@@ -14,6 +14,7 @@ export class ListarCategoriaComponent implements OnInit {
   listaCategorias: categoria[] = [];
   categoriasConModelos: { [key: number]: boolean } = {}; // Verificar si cada categoría tiene modelos asociados
   usuarioLogueado: any;
+  categoriaIdToDelete: any | null = null;
 
   constructor(
     private _categoriaService: CategoriaService,
@@ -30,11 +31,41 @@ export class ListarCategoriaComponent implements OnInit {
     }
   }
 
-  getCategorias(): void {
-    this._categoriaService.obtenerCategorias().subscribe({
-      next: (data: categoria[]) => {
-        this.listaCategorias = data;
-        this.checkModelos(); // Verificar modelos por cada categoría
+  getCategorias() { 
+    this._categoriaService.obtenerCategorias().subscribe(data => {
+      this.listaCategorias = data;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  eliminarCategoria(categoriaId: number) {
+    this._categoriaService.verificarModelosPorCategoria(categoriaId).subscribe({
+      next: (existenModelos) => {
+        if (existenModelos) {
+          this.toastr.error('No se puede eliminar la categoría porque tiene modelos asociados', 'Error');
+        } else {
+          this._categoriaService.eliminarCategoria(categoriaId).subscribe({
+            next: () => {
+              this.toastr.success('Categoría eliminada con éxito', 'Éxito');
+
+              const backdrop = document.querySelector('.modal-backdrop.show');
+              if (backdrop) {
+                backdrop.remove();
+              }
+
+              this.getCategorias(); // Actualiza la lista después de eliminar
+            },
+            error: (err) => {
+              if (err.status === 400) {
+                this.toastr.error(err.error.msg, 'Error');
+              } else {
+                console.error('Error al eliminar Categoría:', err);
+                this.toastr.error('Error inesperado al eliminar la categoría', 'Error');
+              }
+            }
+          });
+        }
       },
       error: (error) => {
         console.error('Error al obtener categorías:', error);
@@ -42,6 +73,16 @@ export class ListarCategoriaComponent implements OnInit {
       }
     });
   }
+
+  abrirDeleteModal(id: any) {
+    this.categoriaIdToDelete = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
+  }
+  
 
   // Verificar si cada categoría tiene modelos asociados
   checkModelos(): void {
@@ -57,33 +98,6 @@ export class ListarCategoriaComponent implements OnInit {
         });
       }
     });
-  }
-
-  eliminarCategoria(categoriaId: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
-      this._categoriaService.verificarModelosPorCategoria(categoriaId).subscribe({
-        next: (existenModelos: boolean) => {
-          if (existenModelos) {
-            this.toastr.error('No se puede eliminar la categoría porque tiene modelos asociados', 'Operación no permitida');
-          } else {
-            this._categoriaService.eliminarCategoria(categoriaId).subscribe({
-              next: () => {
-                this.toastr.success('Categoría eliminada con éxito', 'Éxito');
-                this.getCategorias(); // Refrescar la lista
-              },
-              error: (err) => {
-                console.error('Error al eliminar la categoría:', err);
-                this.toastr.error('Ocurrió un error inesperado al intentar eliminar la categoría', 'Error');
-              }
-            });
-          }
-        },
-        error: (err) => {
-          console.error('Error al verificar modelos por categoría:', err);
-          this.toastr.error('Error al verificar si la categoría tiene modelos asociados', 'Error');
-        }
-      });
-    }
   }
 
   trackByCategoria(index: number, categoria: categoria): number | undefined {

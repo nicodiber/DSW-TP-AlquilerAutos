@@ -1,38 +1,58 @@
 <div class="container mt-5">
   <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-body text-center">
-          <span class="titulo">LISTADO DE TODOS LOS AUTOS</span>
-          <button class="btn btn-success float-end" routerLink="/auto-crear">NUEVO AUTO</button>
-          <table class="table table-striped mt-3" *ngIf="listaAutos.length > 0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Modelo</th>
-                <th>Sucursal</th>
-                <th>Patente</th>
-                <th>Estado</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let auto of listaAutos">
-                <td>{{ auto._id }}</td>
-                <td>{{ auto.modeloAuto.nombreModelo }}</td>
-                <td>{{ auto.sucursalAuto.nombreSucursal }}</td>
-                <td>{{ auto.matricula }}</td>
-                <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
-                <td>
-                  <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? eliminarAuto(auto._id) : null"></i>
-                  <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAutos.length == 0">No hay
-            sucursales para mostrar</h5>
-        </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <span class="titulo">LISTADO DE TODOS LOS AUTOS</span>
+        <button class="btn btn-success float-end" routerLink="/auto-crear">NUEVO AUTO</button>
+        <table class="table table-striped mt-3" *ngIf="listaAutos.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Modelo</th>
+              <th>Sucursal</th>
+              <th>Patente</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let auto of listaAutos">
+              <td>{{ auto._id }}</td>
+              <td>{{ auto.modeloAuto.nombreModelo }}</td>
+              <td *ngIf="auto.sucursalAuto">{{ auto.sucursalAuto.nombreSucursal }}</td>
+              <td *ngIf="!auto.sucursalAuto">N/A</td>
+              <td>{{ auto.matricula }}</td>
+              <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
+              <td>
+                <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? abrirDeleteModal(auto._id) : null"></i><br>
+                <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
+
+                <!-- Modal -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+                  style="background-color: transparent;">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar este Auto?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger" (click)="eliminarAuto(autoIdToDelete)">Sí,
+                          eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaAutos.length == 0">No hay
+          sucursales para mostrar</h5>
       </div>
     </div>
   </div>

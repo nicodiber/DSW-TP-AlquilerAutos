@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ModeloService } from '../../../services/modelo.service';
 import { modelo } from '../../../models/modelo';
 import { AuthService } from '../../../services/auth.service';
-
+ 
 @Component({
   selector: 'app-modelos-listar',
   templateUrl: './modelos-listar.component.html',

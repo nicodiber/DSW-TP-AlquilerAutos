@@ -19,7 +19,7 @@
             <!-- section close -->
 
             <section id="section-cars" class="bg-gray-100">
-                <div class="container" style="margin-top: -50px">
+                <div class="container menos-offset" style="margin-top: -50px">
                     <div class="row d-flex">
                         <div class="col-lg-3 mb30">
                             <div class="card p-4 rounded-5">
@@ -95,7 +95,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-9">
+                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-11">
                             <div class="card p-4 rounded-5 mb25">
                                 <h4>Alquileres recientes</h4>
                                 <table *ngIf="usuario.alquileres.length > 0" class="table de-table">

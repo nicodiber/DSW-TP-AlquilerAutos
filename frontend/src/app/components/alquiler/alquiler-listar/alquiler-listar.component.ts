@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AlquilerService } from '../../../services/alquiler.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { AuthService } from '../../../services/auth.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
-import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-alquiler-listar',

@@ -82,7 +82,7 @@ exports.eliminarCategoria = async (req, res) => {
 exports.obtenerCategoriaPorNombre = async (req, res) => {
   try {
     const nombreCategoria = req.params.nombreCategoria;
-    const categoria = await Categoria.find({ nombreCategoria: nombreCategoria });
+    const categoria = await Categoria.find({nombreCategoria: { $regex: new RegExp(`^${nombreCategoria}$`, 'i') } });
 
     if (categoria.length > 0) {
       res.status(200).json(categoria);

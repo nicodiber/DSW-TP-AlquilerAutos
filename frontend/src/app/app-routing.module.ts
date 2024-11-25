@@ -65,6 +65,7 @@ const routes: Routes = [
       { path: 'sucursal-crear', component: SucursalCrearComponent },
       { path: 'sucursal-listar', component: SucursalListarComponent },
       { path: 'sucursal-editar/:id', component: SucursalCrearComponent },
+      { path: 'asignar-autos/:id', component: AsignarAutosComponent },
       { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },
 
       { path: 'alquiler-listar', component: AlquilerListarComponent },
