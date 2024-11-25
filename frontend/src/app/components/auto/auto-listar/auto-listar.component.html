@@ -19,7 +19,8 @@
             <tr *ngFor="let auto of listaAutos">
               <td>{{ auto._id }}</td>
               <td>{{ auto.modeloAuto.nombreModelo }}</td>
-              <td>{{ auto.sucursalAuto.nombreSucursal }}</td>
+              <td *ngIf="auto.sucursalAuto">{{ auto.sucursalAuto.nombreSucursal }}</td>
+              <td *ngIf="!auto.sucursalAuto">N/A</td>
               <td>{{ auto.matricula }}</td>
               <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
               <td>

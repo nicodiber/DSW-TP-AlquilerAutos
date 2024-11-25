@@ -82,7 +82,7 @@ exports.eliminarMarca = async (req, res) => {
 exports.obtenerMarcaPorNombre = async (req, res) => {
   try {
     const nombreMarca = req.params.nombreMarca;
-    const marca = await Marca.find({ nombreMarca: nombreMarca });
+    const marca = await Marca.find({ nombreMarca: { $regex: new RegExp(`^${nombreMarca}$`, 'i') } });
 
     if (marca.length > 0) {
       res.status(200).json(marca);

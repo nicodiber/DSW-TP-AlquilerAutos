@@ -1581,7 +1581,7 @@ header.header-mobile {
 }
 
 header.header-mobile.menu-open{
-    background: #ddd;
+    background: #ffffff;
 }
 
 header.header-mobile .container{
@@ -1589,6 +1589,7 @@ header.header-mobile .container{
     padding-left: 20px;
     padding-right: 20px;
 }
+
 
 .dark-scheme header.header-mobile{
      background: #121212;
@@ -17612,6 +17613,8 @@ img {
 
     .sm-pt10 {
         padding-top: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     #menu-btn {
@@ -17620,7 +17623,8 @@ img {
         z-index: 1000;
         top: 0;
         right: 0;
-        background: #333;
+        color: #000000;
+        background: #ffffff;
     }
 
     .inner-padding {

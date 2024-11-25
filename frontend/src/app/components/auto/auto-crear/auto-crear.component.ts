@@ -24,7 +24,7 @@ export class AutoCrearComponent implements OnInit {
       modeloAuto: ['', Validators.required],
       sucursalAuto: ['', Validators.required],
       estadoAuto: ['', Validators.required],
-      matricula: ['', [Validators.required, Validators.pattern('^[A-Z0-9-]+$')]]
+      matricula: ['', [Validators.required, Validators.pattern('^[A-Z]{3}[0-9]{3}$|^[A-Z]{2}[0-9]{3}[A-Z]{2}$')]]
     });
     this.id = this.aRouter.snapshot.paramMap.get('id');
   }

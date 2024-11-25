@@ -30,6 +30,12 @@ section {
   width: 70%;
 }
 
+@media (max-width: 768px) {
+  .form-section {
+    width: 100%;
+  }
+}
+
 .info-text {
   font-size: 0.9rem;
   color: #666;
@@ -69,6 +75,15 @@ select {
   gap: 1rem;
 }
 
+.dos-columnas {
+  display: flex;
+}
+@media (max-width: 768px){
+  .dos-columnas {
+    display: block;
+  }
+}
+
 .terms {
   margin-top: 1rem;
   font-size: 0.9rem;
@@ -87,6 +102,11 @@ select {
   flex-direction: column;
   justify-content: space-between;
   padding-top: 20px;
+}
+@media (max-width: 768px) {
+  .reservation-summary {
+    width: 90%;
+  }
 }
 
 .reservation-summary-top{
@@ -120,3 +140,10 @@ select {
   margin: 5vh auto !important;
 }
 
+@media (max-width: 768px) {
+  .btn-main {
+    width: 100% !important;
+    margin: 0px !important;
+    margin-bottom: 10px !important;
+  }
+}

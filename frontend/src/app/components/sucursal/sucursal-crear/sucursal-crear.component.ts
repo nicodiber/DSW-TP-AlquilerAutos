@@ -27,9 +27,9 @@ export class SucursalCrearComponent implements OnInit {
       nombreSucursal: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],      // Solo letras y espacios
       telefonoSucursal: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],   // Solo números, 7-15 dígitos
       direccionSucursal: ['', [Validators.required]],                                       // Campo obligatorio
-      paisSucursal: ['', [Validators.required]],
-      provinciaSucursal: ['', [Validators.required]],
-      ciudadSucursal: ['', [Validators.required]],
+      paisSucursal: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
+      provinciaSucursal: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
+      ciudadSucursal: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       horaAperturaSucursal: ['', [Validators.required]],
       horaCierreSucursal: ['', [Validators.required]],
     });
