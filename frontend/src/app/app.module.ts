@@ -47,6 +47,7 @@ import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-u
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
+import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -81,7 +82,8 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
     EditarDatosUsuarioComponent,
     ModelosListarComponent,
     AsignarTrabajadoresComponent,
-    AsignarAutosComponent
+    AsignarAutosComponent,
+    CambiarPasswordComponent
   ],
 
   // Importación de otros módulos necesarios para la aplicación

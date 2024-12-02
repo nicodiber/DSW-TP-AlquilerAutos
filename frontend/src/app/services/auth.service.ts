@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,19 +7,33 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   [x: string]: any;
-  url = 'http://localhost:4000/api/usuarios';
+  url = 'http://localhost:4000/api/auth';
 
   constructor(private http: HttpClient) { }
 
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.url}/loginUsuario`, { email, password });
+    return this.http.post(`${this.url}/login`, { email, password });
   }
 
   register(userData: any): Observable<any> {
     return this.http.post(`${this.url}/registrar`, userData);
   }
 
-  
+  setToken(token: string): void {
+    sessionStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem('token');
+  }
+
   // Guardar usuario en sessionStorage
   setUsuarioLogueado(usuario: any): void {
     sessionStorage.setItem('usuario', JSON.stringify(usuario));  // Guardar el objeto completo como string
@@ -30,14 +44,12 @@ export class AuthService {
     return usuario ? JSON.parse(usuario) : null;  // Parsear el objeto de nuevo a JSON
   }
 
-  // Eliminar usuario de sessionStorage al cerrar sesión
+  
   logout(): void {
-    sessionStorage.removeItem('usuario');  // Eliminar el usuario de sessionStorage
+    sessionStorage.removeItem('usuario');  
+    sessionStorage.removeItem('token'); 
   }
 
-  actualizarUsuario(usuario: any): Observable<any> {
-    return this.http.put(`${this.url}/editar-datos-usuario/${usuario.email}`, usuario);
-  }
 
   obtenerAlquileresLogueado(usuarioid: number): Observable<any>{
     return this.http.get(`${this.url}/datos/${usuarioid}`);

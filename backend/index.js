@@ -20,6 +20,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../assets/uploads')));
 
 // Rutas de API
 app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/sucursales', require('./routes/sucursal'));
 app.use('/api/categorias', require('./routes/categoria'));
 app.use('/api/marcas', require('./routes/marca'));

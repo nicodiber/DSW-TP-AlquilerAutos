@@ -99,13 +99,18 @@ export class CrearAdminTrabajadorComponent implements OnInit {
       nombre: this.usuarioForm.get('nombre')?.value,
       apellido: this.usuarioForm.get('apellido')?.value,
       email: this.usuarioForm.get('email')?.value,
-      password: this.usuarioForm.get('password')?.value,
+      password: "",
       licenciaConductor: licenciaConductor,
       telefono: this.usuarioForm.get('telefono')?.value,
       dni: this.usuarioForm.get('dni')?.value,
       direccion: this.usuarioForm.get('direccion')?.value,
       rol: this.usuarioForm.get('rol')?.value,
     };
+
+    if (!this.id) {
+    // Agregar contraseña solo al crear
+    USUARIO.password = this.usuarioForm.get('password')?.value;
+    }
 
     if (this.id !== null) {
       this._usuarioService.editarUsuario(this.id, USUARIO).subscribe(
@@ -138,7 +143,7 @@ export class CrearAdminTrabajadorComponent implements OnInit {
         error => {
           let errorMsg = 'Ocurrió un error al intentar registrar el usuario';
         
-        // Verificar si es error de conflicto 409
+        
         if (error.status === 409 && error.error && error.error.msg) {
           errorMsg = error.error.msg;
         }
@@ -151,23 +156,25 @@ export class CrearAdminTrabajadorComponent implements OnInit {
   }
 
   esEditar() {
-    if (this.id !== null) {
-      this.titulo = 'Editar Usuario';
-      this._usuarioService.obtenerUsuario(this.id).subscribe(data => {
-        this.usuarioForm.setValue({
-          nombre: data.nombre,
-          apellido: data.apellido,
-          email: data.email,
-          password: data.password,
-          licenciaConductor: data.licenciaConductor,
-          telefono: data.telefono,
-          dni: data.dni,
-          direccion: data.direccion,
-          rol: data.rol
-        });
+  if (this.id !== null) {
+    this.titulo = 'Editar Usuario';
+    this._usuarioService.obtenerUsuario(this.id).subscribe(data => {
+      // Remueve el control de contraseña en modo edición
+      this.usuarioForm.removeControl('password');
+      this.usuarioForm.setValue({
+        nombre: data.nombre,
+        apellido: data.apellido,
+        email: data.email,
+        licenciaConductor: data.licenciaConductor,
+        telefono: data.telefono,
+        dni: data.dni,
+        direccion: data.direccion,
+        rol: data.rol
       });
-    }
+    });
   }
+}
+
   toggleContrasena() {
         this.mostrarContrasena = !this.mostrarContrasena;
     }

@@ -3,16 +3,20 @@ const express = require('express');
 const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 
+const auth = require('../middlewares/auth'); // Middleware de autenticación
+const validarRol = require('../middlewares/validarRol'); // Middleware para validar rol
+
 // api/usuarios
-router.post('/', usuarioController.crearUsuario);
-router.post('/registrar', usuarioController.crearUsuario);
-router.get('/', usuarioController.obtenerUsuarios);
-router.get('/email/:email', usuarioController.obtenerUsuarioPorEmail);
-router.get('/:id', usuarioController.obtenerUsuario);
-router.put('/:id', usuarioController.actualizarUsuario);
-router.delete('/:id', usuarioController.eliminarUsuario);
-router.post('/loginUsuario', usuarioController.loginUsuario);
-router.put('/editar-datos-usuario/:email', usuarioController.actualizarUsuarioPrueba);
+router.post('/', auth.authMiddleware, validarRol.validarRolAdmin, usuarioController.crearUsuario);
+router.get('/', auth.authMiddleware, validarRol.validarRolAdmin, usuarioController.obtenerUsuarios);
+router.get('/:id', auth.authMiddleware, validarRol.validarRolAdmin, usuarioController.obtenerUsuario);
+router.put('/:id', auth.authMiddleware, validarRol.validarRolAdmin, usuarioController.actualizarUsuario);
+router.delete('/:id', auth.authMiddleware, validarRol.validarRolAdmin, usuarioController.eliminarUsuario);
+
+router.put('/editar-datos-usuario/:email', auth.authMiddleware, validarRol.validarRolTodos, usuarioController.actualizarUsuarioPrueba);
+router.put('/cambiar-password/:email', auth.authMiddleware, validarRol.validarRolTodos, usuarioController.cambiarPassword);
+
+
 router.get('/datos/:id', usuarioController.obtenerAlquileresLogueado);
 
 // Usado en el listado alquiler para obtener por rol

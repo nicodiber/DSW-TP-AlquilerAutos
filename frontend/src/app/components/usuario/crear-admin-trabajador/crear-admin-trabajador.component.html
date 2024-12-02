@@ -44,14 +44,14 @@
                                     <span>El Correo Electrónico <strong>tiene un formato incorrecto</strong></span>
                                 </div>
                         </div>
-                        <div class="mb-3 input-container">
+                        <div class="mb-3 input-container" *ngIf="!id">
                             <label for="password" class="form-label">Contraseña:</label>
                             <div class="input-wrapper">
                                 <input [type]="mostrarContrasena ? 'text' : 'password'" id="password" formControlName="password"
-                                    class="form-control form-control-lg pr-5" placeholder="Contraseña" required />
+                                    class="form-control form-control-lg pr-5" placeholder="Contraseña" />
                                 <i [ngClass]="mostrarContrasena ? 'fas fa-eye-slash' : 'fas fa-eye'" (click)="toggleContrasena()"
                                     class="toggle-icon"></i>
-                            </div> 
+                            </div>
                             <div class="text-danger"
                                 *ngIf="usuarioForm.get('password')?.hasError('required') && usuarioForm.get('password')?.touched">
                                 <span>La Contraseña <strong>es obligatoria</strong></span>

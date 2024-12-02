@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { usuario } from '../models/usuario';
@@ -28,41 +28,52 @@ export class AlquilerService {
 
   constructor(private http: HttpClient) { }
   
+   private getToken(): string | null {
+    return sessionStorage.getItem('token'); 
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+  
   crearAlquiler(alquiler: AlquilerData): Observable<any>{
-    return this.http.post(this.url, alquiler);
+    return this.http.post(this.url, alquiler, { headers: this.getHeaders() });
   }
 
   obtenerAlquileres(): Observable<any>{
-    return this.http.get(this.url);
+    return this.http.get(this.url,{ headers: this.getHeaders() });
   }
 
   obtenerAlquiler(_id: string): Observable<any> {
-    return this.http.get(this.url + _id);
+    return this.http.get(this.url + _id, { headers: this.getHeaders() });
   }
 
   // Funciones especificas - Listar Alquiler
   establecerFechaInicioReal(_id: string, fecha: string | Date) {
-    return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha });
+    return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha }, { headers: this.getHeaders() });
   }
 
   establecerFechaFinReal(_id: string, fecha: string | Date) {
-    return this.http.put(`${this.url}${_id}/fechaFinReal`, { fechaFinReal: fecha });
+    return this.http.put(`${this.url}${_id}/fechaFinReal`, { fechaFinReal: fecha }, { headers: this.getHeaders() });
   }
 
   modificarNotas(_id: string, notas: string) {
-    return this.http.put(`${this.url}${_id}/notas`, { notas });
+    return this.http.put(`${this.url}${_id}/notas`, { notas }, { headers: this.getHeaders() });
   }
 
   obtenerUsuariosPorRol(rol: string): Observable<usuario[]> {
-    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/rol/${rol}`);
+    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/rol/${rol}`, { headers: this.getHeaders() });
   }
 
   modificarTrabajador(_id: string, trabajadorId: number) {
-    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorAsignado: trabajadorId });
+    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorAsignado: trabajadorId }, { headers: this.getHeaders() });
   }
 
   cambiarEstado(_id: string, estado: string) {
-    return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado });
+    return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado }, { headers: this.getHeaders() });
   }
 
   // Funciones especificas - Buscador

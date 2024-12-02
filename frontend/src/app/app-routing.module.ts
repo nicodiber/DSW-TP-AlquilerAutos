@@ -33,7 +33,7 @@ import { EditarDatosUsuarioComponent } from './components/usuario/editar-datos-u
 import { ModelosListarComponent } from './components/modelo/modelos-listar/modelos-listar.component';
 import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
-
+import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -49,6 +49,7 @@ const routes: Routes = [
       { path: 'buscador', component: BuscadorComponent },
       { path: 'escritorio', component: EscritorioComponent },
       { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
+      { path: 'cambiar-password', component: CambiarPasswordComponent },
     ]
   },
 

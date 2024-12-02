@@ -60,6 +60,7 @@ export class LoginPageComponent implements OnInit {
       response => {
         if (response && response.usuario) {
           // Guardar el usuario logueado en sessionStorage
+          this.authService.setToken(response.token);
           this.authService.setUsuarioLogueado(response.usuario);
 
           const datosBusqueda = this.gestionCoockies.getDatosBusqueda();

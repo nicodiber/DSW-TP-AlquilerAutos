@@ -19,7 +19,9 @@ export class EscritorioComponent implements OnInit {
       this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
     } else {
       this.usuario = usuarioLogueado;
-      this.getAlquileres();
+      if (this.usuario.rol != 'administrador' && this.usuario.rol !=  'trabajador'){
+        this.getAlquileres();
+      }
     };
       
   }
