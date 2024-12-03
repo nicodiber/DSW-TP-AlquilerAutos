@@ -48,6 +48,8 @@ import { ModelosListarComponent } from './components/modelo/modelos-listar/model
 import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
+import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -83,7 +85,10 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
     ModelosListarComponent,
     AsignarTrabajadoresComponent,
     AsignarAutosComponent,
-    CambiarPasswordComponent
+    CambiarPasswordComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    
   ],
 
   // Importación de otros módulos necesarios para la aplicación

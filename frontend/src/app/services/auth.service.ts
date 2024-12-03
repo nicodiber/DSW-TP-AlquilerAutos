@@ -26,6 +26,14 @@ export class AuthService {
     return this.http.post(`${this.url}/registrar`, userData);
   }
 
+  enviarEmail(email: string): Observable<any> {
+     return this.http.post(`${this.url}/enviar-email`, {email: email});
+  }
+
+  resetPassword(resetObj: any): Observable<any> {
+     return this.http.post(`${this.url}/reset-password`, resetObj);
+  }
+
   setToken(token: string): void {
     sessionStorage.setItem('token', token);
   }

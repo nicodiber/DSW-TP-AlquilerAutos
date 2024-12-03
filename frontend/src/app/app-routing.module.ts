@@ -34,6 +34,8 @@ import { ModelosListarComponent } from './components/modelo/modelos-listar/model
 import { AsignarTrabajadoresComponent } from './components/sucursal/asignar-trabajadores/asignar-trabajadores.component';
 import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asignar-autos.component';
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
+import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -50,6 +52,8 @@ const routes: Routes = [
       { path: 'escritorio', component: EscritorioComponent },
       { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
       { path: 'cambiar-password', component: CambiarPasswordComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset/:token', component: ResetPasswordComponent },
     ]
   },
 
