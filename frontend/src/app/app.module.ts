@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';                                      
 import { provideHttpClient } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
 import { RouterModule } from '@angular/router';                                                                                       // Necesario para manejar rutas y enrutamiento
 import { CookieService } from 'ngx-cookie-service';                                                                                   // Para trabajar con cookies
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 // Configuración regional para fechas en español
 import localeEs from '@angular/common/locales/es';                                                                                    // Importa los datos locales de España
@@ -94,6 +95,7 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
     FormsModule,                        // Módulo necesario para formularios con ngModel
     BrowserAnimationsModule,            // Habilita animaciones de Angular
     ToastrModule.forRoot(),             // Configura Toastr como el servicio de notificaciones
+    CarouselModule
   ],
 
   // Proveedores de servicios que estarán disponibles en toda la aplicación

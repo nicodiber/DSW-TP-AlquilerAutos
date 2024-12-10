@@ -138,7 +138,7 @@
                         </div>
                         <div class="mb-3">
                             <!-- Input para cargar nuevas imágenes -->
-                            <label class="form-label">Cargar nuevas imágenes:</label>
+                            <label class="form-label">Cargar nuevas imágenes (máx. 4) (".jpg" o ".png"):</label>
                             <input type="file" (change)="onFileSelected($event)" class="form-control" multiple>
                         
                             <!-- Validación de carga de imágenes -->
@@ -146,20 +146,25 @@
                                 <span>Debes cargar al menos una imagen</span>
                             </div>
                         </div>
+                        <div style="text-align: left;">
+                            <span *ngIf="selectedFiles.length === 1">Has seleccionado 1 imagen</span>
+                            <span *ngIf="selectedFiles.length === 2">Has seleccionado 2 imagenes</span>
+                            <span *ngIf="selectedFiles.length === 3">Has seleccionado 3 imagenes</span>
+                            <span *ngIf="selectedFiles.length === 4">Has seleccionado 4 imagenes</span>
+                        </div>
                         
                         <!-- Vista previa de imágenes existentes (solo en modo de edición) -->
                         <div *ngIf="existingImages.length > 0" class="mb-3">
-                            <label class="form-label">Imágenes actuales:</label>
-                            <div *ngFor="let img of existingImages; let i = index" class="mb-2">
-                                <span>Posición: {{ i }}</span>
-                                <img [src]="'http://localhost:4000' + img" alt="Imagen actual" style="max-width: 100px; max-height: 100px;">
+                            <label style="width: 100%;" class="form-label">Imágenes actuales:</label>
+                            <div style="display: inline-flex; align-items: center; float: left;">
+                                <div *ngFor="let img of existingImages; let i = index" style="display: block; margin-right: 8px; padding: 5px; border: 1px solid #121212; border-radius: 5px;">
+                                    <span>Posición {{ i }}:&nbsp;&nbsp;</span>
+                                    <img [src]="img" alt="Imagen actual" style="max-width: 100px; height: 70px; object-fit: contain;">
+                                </div>
                             </div>
                         </div>
-                        <div *ngFor="let file of selectedFiles; let i = index">
-                            <img [src]="file" alt="imagen {{ i }}" />
-                        </div>
-
-                        <div class="mb-3">
+                        
+                        <div class="mb-3" style="width: 100%; display: inline-block; margin-top: 20px;">
                             <button routerLink="/modelos-listar" class="btn btn-secondary btn-lg float-start">VOLVER</button>
                             <button type="submit" (click)="submitForm()" class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>

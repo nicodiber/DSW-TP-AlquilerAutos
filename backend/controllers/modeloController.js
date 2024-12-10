@@ -1,7 +1,8 @@
 const Modelo = require("../models/modelo");
 const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
-
+const axios = require('axios'); // Asegúrate de tener axios instalado
+const imgbbApiKey = '22070980960663c3868c652641d96ab5'; // Reemplaza con tu API key de ImgBB
 
 exports.crearModelo = async (req, res) => {
   try {
@@ -16,15 +17,40 @@ exports.crearModelo = async (req, res) => {
   }
 };
 
+// Nueva función para subir imágenes a ImgBB
+const subirImagenAImgBB = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file.buffer.toString('base64'));
+
+  try {
+    const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data.data.url; // Devuelve la URL pública de la imagen
+  } catch (error) {
+    console.error('Error al subir imagen a ImgBB:', error);
+    throw new Error('No se pudo subir la imagen a ImgBB');
+  }
+};
+
 // Nueva función para crear un modelo con imágenes
 exports.crearModeloConImagenes = async (req, res) => {
   try {
-    console.log('req.body:', req.body); // Verifica que `req.body` contenga los campos de texto
-    console.log('req.files:', req.files); // Verifica que `req.files` contenga las imágenes
+    console.log('req.body:', req.body);
+    console.log('req.files:', req.files);
 
     const _id = await getNextSequenceValue('modeloId');
 
-    // Dado que los campos de texto de `req.body` vienen como strings, necesitamos convertir algunos a su tipo correcto
+    // Subir imágenes a ImgBB y obtener sus URLs
+    const imagenes = [];
+    if (req.files['images']) {
+      for (const file of req.files['images']) {
+        const url = await subirImagenAImgBB(file);
+        imagenes.push(url);
+      }
+    }
+
+    // Procesar datos del modelo
     const modeloData = {
       nombreModelo: req.body.nombreModelo,
       categoriaModelo: req.body.categoriaModelo,
@@ -40,16 +66,16 @@ exports.crearModeloConImagenes = async (req, res) => {
       tipoCombustible: req.body.tipoCombustible,
       capacidadTanqueCombustible: parseFloat(req.body.capacidadTanqueCombustible),
       capacidadBaul: parseFloat(req.body.capacidadBaul),
-      images: req.files['images'] ? req.files['images'].map(file => `/uploads/${file.filename}`) : []
+      images: imagenes,
     };
 
-    // Crea el modelo con los datos procesados
+    // Crear el modelo
     const nuevoModelo = new Modelo({ ...modeloData, _id });
     await nuevoModelo.save();
 
     res.status(201).json(nuevoModelo);
   } catch (error) {
-    console.log('Error al crear el modelo:', error);
+    console.error('Error al crear el modelo:', error);
     res.status(500).json({ message: 'Hubo un error', error: error.message });
   }
 };

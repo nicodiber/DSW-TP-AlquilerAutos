@@ -1,23 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ModeloService } from '../../../services/modelo.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import { AuthService } from '../../../services/auth.service';
+import { OwlOptions, CarouselComponent } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-detalle-modelo',
   templateUrl: './detalle-modelo.component.html',
   styleUrls: ['./detalle-modelo.component.css']
 })
-export class DetalleModeloComponent implements OnInit {
+export class DetalleModeloComponent implements OnInit  {
   modelo: any;
   datosBusqueda: any;
   isAuthenticated: boolean = false;
   idModelo: string = '' ;
   idAutoAleatorio: string = '';
   usuarioLogueado: any;
+
+  // Carousel personalizado
+  @ViewChild('mainCarousel', { static: false }) mainCarousel!: CarouselComponent;
+  mainCarouselOptions: OwlOptions = {
+    loop: true,
+    items: 1,
+    dots: true,
+    nav: false,
+    autoHeight: true,
+    autoplay: true
+  };
+  thumbnailCarouselOptions: OwlOptions = {
+    loop: false,
+    items: 4,
+    dots: false, 
+    nav: false,
+    margin: 10,
+    autoHeight: true,
+    autoplay: false,
+    mouseDrag: false,
+    touchDrag: false,
+    pullDrag: false
+  };
+  goToSlide(index: number): void {
+    if (this.mainCarousel && this.modelo && this.modelo.images && this.modelo.images.length > 0) {
+      if (index < this.modelo.images.length) {
+        this.mainCarousel.to("owl-slide-" + index.toString());
+      }
+    }
+  }
 
   constructor(private route: ActivatedRoute, private toastr: ToastrService, private authService: AuthService, private router: Router, private modeloService: ModeloService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
   ngOnInit(): void {

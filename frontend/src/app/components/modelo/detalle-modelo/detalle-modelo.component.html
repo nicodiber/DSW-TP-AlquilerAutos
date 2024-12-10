@@ -19,20 +19,38 @@
         <div class="container">
             <div class="row g-6" *ngIf="modelo">
                 <div class="col-lg-6">
+                    <owl-carousel-o [options]="mainCarouselOptions" #mainCarousel>
+                        <ng-container *ngFor="let image of modelo.images" class="carousel-principal-personalizado">
+                            <ng-template carouselSlide>
+                                <img [src]="image" alt="Imagen del modelo" class="carousel-principal-image" />
+                            </ng-template>
+                        </ng-container>
+                    </owl-carousel-o>
+                    <div class="spacer-30"></div>
+                    <owl-carousel-o [options]="thumbnailCarouselOptions">
+                        <ng-container *ngFor="let image of modelo.images; let i = index">
+                            <ng-template carouselSlide>
+                                <img [src]="image" alt="Thumbnail del modelo" class="thumbnail-image" (click)="goToSlide(i)" />
+                            </ng-template>
+                        </ng-container>
+                    </owl-carousel-o>
+
+                    <!--
                     <div id="slider-carousel" class="owl-carousel" style="display: block;">
                         <div class="item" *ngIf="modelo.images[0]">
-                            <img [src]="'http://localhost:4000' + modelo.images[0]" alt="">
+                            <img [src]="modelo.images[0]" alt="">
                         </div>
                         <div class="item" *ngIf="modelo.images[1]">
-                            <img [src]="'http://localhost:4000' + modelo.images[1]" alt="">
+                            <img [src]="modelo.images[1]" alt="">
                         </div>
                         <div class="item" *ngIf="modelo.images[2]">
-                            <img [src]="'http://localhost:4000' + modelo.images[2]" alt="">
+                            <img [src]="modelo.images[2]" alt="">
                         </div>
                         <div class="item" *ngIf="modelo.images[3]">
-                            <img [src]="'http://localhost:4000' + modelo.images[3]" alt="">
+                            <img [src]="modelo.images[3]" alt="">
                         </div>
                     </div>
+                    -->
                 </div> 
 
                 <div class="col-lg-6">
@@ -43,19 +61,19 @@
                             <div class="categoria-marca">
                                 <div>
                                     <div style="display: flex !important;">
-                                        <div style="width: 130px !important;">
+                                        <div style="width: 200px !important;">
                                             <span class="d-value"> Categoría: </span><span class="d-value">{{ modelo.categoriaModelo.nombreCategoria }}</span>
                                         </div>
-                                        <div style="width: 130px !important;">
+                                        <div style="width: 200px !important;">
                                             <span class="d-value"> Marca: </span><span class="d-value">{{ modelo.marcaModelo.nombreMarca }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="spacer-10"></div>
+                            
 
-                            <p style="color: rgba(0,0,0,.5);">El precio expuesto se utiliza para calcular el precio total de alquiler.</p>
+                            <p style="color: rgba(0,0,0,.5);">El precio expuesto se utiliza para calcular el total final.</p>
                         </div>
 
                         <div class="col-lg-3 de-price text-center" style="align-content: center !important; margin-left: 15px !important;">
