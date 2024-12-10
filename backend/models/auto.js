@@ -25,7 +25,7 @@ const AutoSchema = new mongoose.Schema({
     },
     estadoAuto: {
         type: String,
-        enum: ['disponible', 'alquilado', 'mantenimiento'],  // Definir los estados permitidos
+        enum: ['disponible', 'reservado', 'alquilado', 'mantenimiento'],  // Definir los estados permitidos
         required: true
     },
     matricula: {

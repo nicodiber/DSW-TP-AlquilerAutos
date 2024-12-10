@@ -1,8 +1,8 @@
 const Modelo = require("../models/modelo");
 const Auto = require("../models/auto");
 const { getNextSequenceValue } = require('../config/db');
-const axios = require('axios'); // Asegúrate de tener axios instalado
-const imgbbApiKey = '22070980960663c3868c652641d96ab5'; // Reemplaza con tu API key de ImgBB
+const axios = require('axios');
+const imgbbApiKey = '22070980960663c3868c652641d96ab5';
 
 exports.crearModelo = async (req, res) => {
   try {

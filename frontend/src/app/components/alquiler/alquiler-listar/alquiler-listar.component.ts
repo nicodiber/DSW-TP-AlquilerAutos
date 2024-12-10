@@ -18,7 +18,7 @@ export class AlquilerListarComponent implements OnInit {
   trabajadores: usuario[] = [];
   campoOrden: string = '';
   direccionOrdenAsc: boolean = true;
-  estados = ['reservado', 'activo', 'cancelado', 'completado'];
+  estados = ['reservado', 'activo', 'mantenimiento', 'cancelado', 'completado'];
   modalInstance: any;
   modalTitle: string = '';
   modalPlaceholder: string = '';
