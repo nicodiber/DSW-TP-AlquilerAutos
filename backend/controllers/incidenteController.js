@@ -35,7 +35,7 @@ exports.obtenerIncidentes = async (req, res) => {
 
 exports.actualizarIncidente = async (req, res) => {
   try {
-    const { alquiler, descripcion, costoIncidente, fechaIncidente } = req.body;
+    const { idAlquiler, descripcion, costoIncidente, fechaIncidente, estadoIncidente } = req.body;
 
     let incidente = await Incidente.findById(req.params.id);
 
@@ -43,10 +43,11 @@ exports.actualizarIncidente = async (req, res) => {
       return res.status(404).json({ msg: 'No existe ese incidente' });
     }
 
-    incidente.alquiler = alquiler;
+    incidente.idAlquiler = idAlquiler;
     incidente.descripcion = descripcion;
     incidente.costoIncidente = costoIncidente;
     incidente.fechaIncidente = fechaIncidente;
+    incidente.estadoIncidente = estadoIncidente;
 
     incidente = await Incidente.findOneAndUpdate({ _id: req.params.id }, incidente, { new: true });
     res.json(incidente);
