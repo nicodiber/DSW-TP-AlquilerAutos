@@ -38,19 +38,12 @@ export class AlquilerListarComponent implements OnInit {
       window.location.href = '/loginUsuario'; 
     } else {
     this.getAlquileres();
-    this.getTrabajadores();
     }
   }
 
   getAlquileres() {
     this._alquilerService.obtenerAlquileres().subscribe((data) => {
       this.listaAlquileres = data;
-    });
-  }
-
-  getTrabajadores() {
-    this._alquilerService.obtenerUsuariosPorRol('trabajador').subscribe((trabajadores: usuario[]) => {
-      this.trabajadores = trabajadores;
     });
   }
 
@@ -98,12 +91,23 @@ export class AlquilerListarComponent implements OnInit {
     this.modalType = tipo;
 
     if (tipo === 'fecha' || tipo === 'fechaFinReal') {
-      this.modalTitle = tipo === 'fecha' ? 'Establecer Fecha de Inicio Real' : 'Establecer Fecha de Fin Real';
-      this.modalPlaceholder = 'Ingrese fecha y hora según los formatos indicados';
-      this.fechaInput = '';  // Limpiar la fecha antes de abrir el modal
-      this.horaInput = '';   // Limpiar la hora antes de abrir el modal
+      if (this.alquilerActual.trabajadorAsignado == null){
+        this.toastr.warning('Por favor, establezca un trabajador asignado.');
+        return; // Detener la ejecución antes de intentar abrir el modal
+      } else if ((tipo === 'fechaFinReal') && (this.alquilerActual.fechaInicioReal == null)) { 
+        this.toastr.warning('Por favor, establezca primero la Fecha de Inicio Real.');
+        return; // Detener la ejecución antes de intentar abrir el modal
+      } else {
+        this.modalTitle = tipo === 'fecha' ? 'Establecer Fecha de Inicio Real' : 'Establecer Fecha de Fin Real';
+        this.modalPlaceholder = 'Ingrese fecha y hora según los formatos indicados';
+        this.fechaInput = '';  // Limpiar la fecha antes de abrir el modal
+        this.horaInput = '';   // Limpiar la hora antes de abrir el modal
+      }
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Modificar Trabajador';
+      this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.alquilerActual.sucursalEntrega._id)).subscribe((trabajadores: usuario[]) => {
+        this.trabajadores = trabajadores;
+      });
       this.modalInput = String(alquiler.trabajadorAsignado?._id) || '';
     } else if (tipo === 'estado') {
       this.modalTitle = 'Cambiar Estado';
@@ -169,6 +173,11 @@ export class AlquilerListarComponent implements OnInit {
         });
       }
     } else if (this.modalType === 'trabajador' && typeof this.modalInput === 'string') {
+      const trabajadorId = parseInt(this.modalInput, 10); // Convierte el ID a número
+      if (isNaN(trabajadorId)) {
+        this.toastr.error('Error: Selección de trabajador inválida.');
+        return;
+      }
         this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), Number(this.modalInput)).subscribe(() => {
             this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
               this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;

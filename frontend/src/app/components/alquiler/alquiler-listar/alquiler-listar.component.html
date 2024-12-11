@@ -95,11 +95,20 @@
                                   </div>
                                   
                                   <!-- Dropdown para trabajador -->
-                                  <div *ngIf="modalType === 'trabajador'">
-                                    <label>Seleccione un Trabajador</label>
+                                  <div *ngIf="modalType === 'trabajador' && trabajadores.length > 0">
+                                    <label>Seleccione un Trabajador de la Sucursal de Entrega</label>
                                     <select [(ngModel)]="modalInput" class="form-select">
-                                      <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }} {{
-                                        trabajador.apellido }}</option>
+                                      <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">
+                                        {{ trabajador.nombre }} {{ trabajador.apellido }}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div *ngIf="modalType === 'trabajador' && trabajadores.length === 0">
+                                    <label>Seleccione un Trabajador de la Sucursal de Entrega</label>
+                                    <select [(ngModel)]=" modalInput" class="form-select">
+                                      <option disabled>
+                                        No hay trabajadores disponibles
+                                      </option>
                                     </select>
                                   </div>
                                   

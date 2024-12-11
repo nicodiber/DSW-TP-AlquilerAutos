@@ -57,6 +57,10 @@ export class AlquilerService {
     return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/rol/${rol}`);
   }
 
+  obtenerTrabajadoresPorSucursal(sucursalId: string): Observable<usuario[]> {
+    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/trabajadores-sucursal/${sucursalId}`);
+  }
+
   modificarTrabajador(_id: string, trabajadorId: number) {
     return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorAsignado: trabajadorId });
   }

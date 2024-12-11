@@ -1,4 +1,5 @@
 const Usuario = require("../models/usuario");
+const Sucursal = require("../models/sucursal");
 const { getNextSequenceValue } = require('../config/db');
 const usuario = require("../models/usuario");
 
@@ -168,22 +169,23 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).send('Hubo un error al iniciar sesión');
   }
 };
-  //este ya no se usa
+
+//este ya no se usa
 exports.obtenerUsuarioPorEmail = async (req, res) => {
-    try {
-        const email = req.params.email;  // Tomamos el email de los parámetros de la URL
-        const usuario = await Usuario.findOne({ email: email });
+  try {
+      const email = req.params.email;  // Tomamos el email de los parámetros de la URL
+      const usuario = await Usuario.findOne({ email: email });
 
-        if (!usuario) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+      if (!usuario) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
 
-        // Devolvemos los datos del usuario
-        return res.json({ usuario });
-    } catch (error) {
-        console.error('Error al obtener usuario por email:', error);
-        return res.status(500).json({ message: 'Error en el servidor' });
-    }
+      // Devolvemos los datos del usuario
+      return res.json({ usuario });
+  } catch (error) {
+      console.error('Error al obtener usuario por email:', error);
+      return res.status(500).json({ message: 'Error en el servidor' });
+  }
 };
 
 exports.actualizarUsuarioPrueba = async (req, res) => {
@@ -214,11 +216,13 @@ exports.actualizarUsuarioPrueba = async (req, res) => {
         : 'Valor duplicado en un campo único.';
 
       return res.status(409).json({ msg: errorMsg });
-    }else {
-    res.status(500).send('Hubo un error al actualizar el usuario');
-    }}
+    } else {
+      res.status(500).send('Hubo un error al actualizar el usuario');
+    }
   }
-  
+};
+
+//este ya no se usa 
 exports.obtenerUsuariosPorRol = async (req, res) => {
   const { rol } = req.params; // Obtiene el rol desde el parámetro de ruta
   try {
@@ -226,6 +230,17 @@ exports.obtenerUsuariosPorRol = async (req, res) => {
     res.json(usuarios);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener usuarios' });
+  }
+};
+
+exports.obtenerTrabajadoresPorSucursal = async (req, res) => {
+  const sucursalId = parseInt(req.params.sucursalId, 10); // Pasamos el id a number
+  try {
+    const sucursal = await Sucursal.findOne({ _id: sucursalId }).populate('trabajadores');
+    const trabajadoresId = sucursal.trabajadores;
+    res.json(trabajadoresId);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener trabajadores para la sucursal' });
   }
 };
 

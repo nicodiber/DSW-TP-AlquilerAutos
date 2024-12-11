@@ -17,6 +17,7 @@ router.get('/datos/:id', usuarioController.obtenerAlquileresLogueado);
 
 // Usado en el listado alquiler para obtener por rol
 router.get('/rol/:rol', usuarioController.obtenerUsuariosPorRol);
+router.get('/trabajadores-sucursal/:sucursalId', usuarioController.obtenerTrabajadoresPorSucursal);
 // Usado en el listado alquiler para meter el alquiler en el array
 router.put('/:id/alquileres', usuarioController.actualizarAlquileresUsuario);
 router.put('/:id/alquileres/:alquilerId/estado', usuarioController.actualizarEstadoAlquilerUsuario);
