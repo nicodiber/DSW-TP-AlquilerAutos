@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-lg-12">
       <div class="card">
         <div class="card-body text-center">
           <span class="titulo">LISTADO DE MARCAS</span>
@@ -16,8 +16,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let marca of listaMarcas">
-                <td>{{ marca._id }}</td>
-                <td>{{ marca.nombreMarca }}</td>
+                <td data-label="ID">{{ marca._id }}</td>
+                <td data-label="Nombre de la Marca">{{ marca.nombreMarca }}</td>
                 <td>
                   <i class="fa-solid fa-car-side" [routerLink]="['/marca-modelos', marca._id]"
                     title="Ver Modelos"></i>

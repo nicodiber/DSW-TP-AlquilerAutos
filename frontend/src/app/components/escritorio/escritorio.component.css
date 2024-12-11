@@ -27,6 +27,13 @@
     /* Cambia a tu color preferido */
 }
 
+.btn-main:hover {
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: none !important;
+    transition: .3s ease !important;
+}
+
 .menos-offset {
     margin: auto !important;
     margin-left: 10% !important;

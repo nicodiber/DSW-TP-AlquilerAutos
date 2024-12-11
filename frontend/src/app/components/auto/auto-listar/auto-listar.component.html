@@ -17,14 +17,14 @@
           </thead>
           <tbody>
             <tr *ngFor="let auto of listaAutos">
-              <td>{{ auto._id }}</td>
-              <td>{{ auto.modeloAuto.nombreModelo }}</td>
-              <td *ngIf="auto.sucursalAuto">{{ auto.sucursalAuto.nombreSucursal }}</td>
-              <td *ngIf="!auto.sucursalAuto">N/A</td>
-              <td>{{ auto.matricula }}</td>
-              <td style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
+              <td data-label="ID">{{ auto._id }}</td>
+              <td data-label="Modelo">{{ auto.modeloAuto.nombreModelo }}</td>
+              <td data-label="Sucursal" *ngIf="auto.sucursalAuto">{{ auto.sucursalAuto.nombreSucursal }}</td>
+              <td data-label="Sucursal" *ngIf="!auto.sucursalAuto">N/A</td>
+              <td data-label="Patente">{{ auto.matricula }}</td>
+              <td data-label="Estado" style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
               <td>
-                <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? abrirDeleteModal(auto._id) : null"></i><br>
+                <i class="fas fa-trash text-danger" style="cursor: pointer;" title="Eliminar" (click)="auto._id ? abrirDeleteModal(auto._id) : null"></i>
                 <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
 
                 <!-- Modal -->

@@ -2,6 +2,7 @@
     cursor: pointer;
     margin-left: 7px;
 }
+
 .titulo {
     font-size: 1.5rem;
     font-family: "Outfit", sans-serif;
@@ -11,4 +12,133 @@
 
 .btn-main, .btn-black{
     background-color: #dbb700
+}
+
+.btn-main.btn-black {
+    background-color: #f2f2f2;
+    color: #000000;
+    transition: .3s ease !important;
+    border: 1px solid #dee2e6;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    padding: 5px 12px;
+}
+
+.btn-main.btn-black:hover {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    transition: .3s ease !important;
+}
+
+/* --- MOBILE --- */
+
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    thead {
+        display: none;
+        /* Ocultar encabezado original */
+    }
+
+    tbody {
+        display: block;
+    }
+
+    tbody tr td {
+        width: 86vw !important;
+    }
+
+    tbody tr td span {
+        text-align: right !important;
+    }
+
+    /* Para cada celda, mostramos un encabezado con el atributo data-label */
+    td {
+        display: block;
+        width: 100%;
+        text-align: right;
+        padding: 8px;
+        position: relative;
+    }
+
+    td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-size: 12px;
+        color: #000000;
+    }
+
+    [data-label="Estado"] {
+        text-transform: uppercase !important;
+    }
+
+    table {
+        border: none !important;
+    }
+
+    table tr {
+        border-top: 1px solid #bfbfbf !important;
+    }
+
+    table tr td {
+        border-left: 1px solid !important;
+        border-right: 1px solid !important;
+        border-bottom: 1px solid !important;
+        border-color: #bfbfbf !important;
+    }
+
+    table tbody tr td:last-child, table tbody td:has(button) {
+        margin-bottom: 20px !important;
+    }
+
+    [data-label="Licencia Conductor"]:not(:has(span)), [data-label="Alquileres"]:not(:has(button)), [data-label="Acciones"]:not(:has(i)){
+        display: none !important;
+    }
+    [data-label="Alquileres"]:has(button):before, [data-label="Acciones"]:has(i):before{
+        visibility: hidden !important;
+    }
+
+    /* Estilo para los botones */
+    table tbody td button {
+        margin: 0px !important;
+        width: 100%;
+        padding: 5px;
+    }
+
+    /* Seccion adicional desplegable */
+    .expandible td[colspan="10"] {
+        margin-top: -20px !important;
+    }
+    
+    .expandible table{
+        width: 100% !important;
+    }
+    .expandible table tr, .expandible table tr td {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .expandible td div {
+        display: block !important;
+    }
+
+    .expandible td div div {
+        display: block !important;
+        width: 100% !important;
+        margin-top: 10px !important;
+        border: none !important;
+    }
+
+    .expandible td div div button {
+        margin-bottom: 10px !important;
+    }
+
 }

@@ -22,20 +22,20 @@
               <ng-container *ngFor="let alquiler of listaAlquileres">
                 <!-- Fila principal: Datos Generales del alquiler -->
                 <tr>
-                  <td>{{ alquiler._id }}</td>
-                  <td>{{ alquiler.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
-                  <td>{{ alquiler.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
-                  <td>
+                  <td data-label="ID">{{ alquiler._id }}</td>
+                  <td data-label="Fecha Inicio">{{ alquiler.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
+                  <td data-label="Fecha Fin">{{ alquiler.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</td>
+                  <td data-label="Fecha Inicio Real">
                     <span *ngIf="alquiler.fechaInicioReal">{{ alquiler.fechaInicioReal | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</span>
                     <span *ngIf="!alquiler.fechaInicioReal"> N/A </span>
                   </td>
-                  <td>
+                  <td data-label="Fecha Fin Real">
                     <span *ngIf="alquiler.fechaFinReal">{{ alquiler.fechaFinReal | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}</span>
                     <span *ngIf="!alquiler.fechaFinReal"> N/A </span>
                   </td>
-                  <td style="text-transform: capitalize;" [ngClass]="{'estado-reservado': alquiler.estadoAlquiler === 'reservado', 'estado-activo': alquiler.estadoAlquiler === 'activo', 'estado-cancelado': alquiler.estadoAlquiler === 'cancelado', 'estado-completado': alquiler.estadoAlquiler === 'completado'}"><strong>{{ alquiler.estadoAlquiler }}</strong></td>
-                  <td>${{ alquiler.precioTotalAlquiler | number: '1.0-0' }}</td>
-                  <td>{{ alquiler.auto.matricula }}</td>
+                  <td data-label="Estado" style="text-transform: capitalize;" [ngClass]="{'estado-reservado': alquiler.estadoAlquiler === 'reservado', 'estado-activo': alquiler.estadoAlquiler === 'activo', 'estado-cancelado': alquiler.estadoAlquiler === 'cancelado', 'estado-completado': alquiler.estadoAlquiler === 'completado'}"><strong>{{ alquiler.estadoAlquiler }}</strong></td>
+                  <td data-label="Precio Total">${{ alquiler.precioTotalAlquiler | number: '1.0-0' }}</td>
+                  <td data-label="Patente Auto">{{ alquiler.auto.matricula }}</td>
                   
                   <td>
                     <!-- Botón para expandir Datos Adicionales y Notas -->
@@ -46,7 +46,7 @@
                 </tr>
               
                 <!-- Fila expandible: Datos Adicionales y Notas -->
-                <tr *ngIf="alquiler.mostrarDetalles">
+                <tr *ngIf="alquiler.mostrarDetalles" class="expandible">
                   <td colspan="10" style="padding: 30px;">
                     <div style="display: flex;">
                       <div style="width: 40%;">

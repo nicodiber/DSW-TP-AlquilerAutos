@@ -23,22 +23,22 @@
                         <tbody>
                             <ng-container *ngFor="let usuario of listaUsuarios">
                                 <tr>
-                                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
-                                <td>{{ usuario.email }}</td>
-                                <td>{{ usuario.rol }}</td>
-                                <td>{{ usuario.telefono }}</td>
-                                <td>{{ usuario.dni }}</td>
-                                <td>{{ usuario.direccion }}</td>
-                                <td>
-                                    <span *ngIf="usuario.rol === 'usuario'" >{{usuario.licenciaConductor}}</span> 
+                                <td data-label="Nombre y Apellido">{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                                <td data-label="Email">{{ usuario.email }}</td>
+                                <td data-label="Rol">{{ usuario.rol }}</td>
+                                <td data-label="Teléfono">{{ usuario.telefono }}</td>
+                                <td data-label="DNI">{{ usuario.dni }}</td>
+                                <td data-label="Dirección">{{ usuario.direccion }}</td>
+                                <td data-label="Licencia Conductor">
+                                    <span *ngIf="usuario.rol === 'usuario'">{{usuario.licenciaConductor}}</span> 
                                 </td>
-                                <td>{{ usuario.fechaRegistro | date: 'dd/MM/yyyy ' : '-00:00' }}</td>
-                                <td>
+                                <td data-label="Fecha Registro">{{ usuario.fechaRegistro | date: 'dd/MM/yyyy ' : '-00:00' }}</td>
+                                <td data-label="Alquileres">
                                     <button *ngIf="usuario.rol === 'usuario'" (click)="usuario.mostrarDetalles = !usuario.mostrarDetalles" class="btn-main btn-black">
-                                        {{ usuario.mostrarDetalles ? 'Ocultar' : 'Ver Alquileres' }}
+                                        {{ usuario.mostrarDetalles ? 'Ocultar' : 'Mostrar' }}
                                     </button>
                                 </td>
-                                <td>
+                                <td data-label="Acciones">
                                     <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'"
                                         [routerLink]="['/editar-admin-trabajador', usuario._id]" class="fas fa-edit text-primary"></i>
                                     <i *ngIf="usuario.rol === 'administrador' || usuario.rol === 'trabajador'" (click)="abrirDeleteModal(usuario._id)"
@@ -46,7 +46,7 @@
                                     </i>
                                 </td>
                             </tr>
-                            <tr *ngIf="usuario.mostrarDetalles">
+                            <tr *ngIf="usuario.mostrarDetalles" class="expandible">
                                 <td colspan="10" style="padding: 20px;">
                                     <h6>Alquileres</h6>
                             

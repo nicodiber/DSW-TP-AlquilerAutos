@@ -30,14 +30,14 @@
                         <tbody>
                             <!-- Recorre la lista de sucursales y muestra el contenido de cada una en una fila de la tabla -->
                             <tr *ngFor="let sucursal of listaSucursales">
-                                <td>{{ sucursal.nombreSucursal }}</td>
-                                <td>{{ sucursal.telefonoSucursal }}</td>
-                                <td>{{ sucursal.direccionSucursal }}</td>
-                                <td>{{ sucursal.ciudadSucursal }}</td>
-                                <td>{{ sucursal.provinciaSucursal }}</td>
-                                <td>{{ sucursal.paisSucursal }}</td>
-                                <td>{{ sucursal.horaAperturaSucursal }}</td>
-                                <td>{{ sucursal.horaCierreSucursal }}</td>
+                                <td data-label="Nombre Sucursal">{{ sucursal.nombreSucursal }}</td>
+                                <td data-label="Teléfono">{{ sucursal.telefonoSucursal }}</td>
+                                <td data-label="Dirección">{{ sucursal.direccionSucursal }}</td>
+                                <td data-label="Ciudad">{{ sucursal.ciudadSucursal }}</td>
+                                <td data-label="Provincia">{{ sucursal.provinciaSucursal }}</td>
+                                <td data-label="País">{{ sucursal.paisSucursal }}</td>
+                                <td data-label="Hora Apertura">{{ sucursal.horaAperturaSucursal }}</td>
+                                <td data-label="Hora Cierre">{{ sucursal.horaCierreSucursal }}</td>
 
                                 <!-- Columna para gestionar los trabajadores de la sucursal -->
                                 <td>
