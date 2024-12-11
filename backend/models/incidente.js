@@ -5,7 +5,7 @@ const IncidenteSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  alquilerDelIncidente: {
+  idAlquiler: {
     type: mongoose.Schema.Types.Number,
     ref: 'Alquiler'                                     // Referencia a la tabla de alquiler
   },
@@ -20,7 +20,12 @@ const IncidenteSchema = new mongoose.Schema({
   fechaIncidente: {
     type: Date,
     required: true
-    },
+  },
+  estadoIncidente: {
+    type: String,
+    enum: ['impago', 'pago'],
+    required: true
+  }
   
 }, { collection: 'incidentes' });
 

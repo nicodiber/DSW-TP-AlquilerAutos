@@ -1,22 +1,30 @@
 const mongoose = require('mongoose');
 
 const MantenimientoSchema = new mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true
+  },
   auto: {
     type: mongoose.Schema.Types.Number,
     ref: 'Auto',
     required: true
   },
-  fechaMantenimiento: {
+  trabajadorAcargo: {
+    type: mongoose.Schema.Types.Number,
+    ref: 'Usuario',
+    required: true
+  },
+  fechaInicioMantenimiento: {
+    type: Date,
+    required: true
+  },
+  fechaFinMantenimiento: {
     type: Date,
     required: true
   },
   descripcion: {
     type: String,
-    required: true
-  },
-  trabajadorAcargo: {
-    type: mongoose.Schema.Types.Number,
-    ref: 'Usuario',
     required: true
   },
   costoMantenimiento: {
