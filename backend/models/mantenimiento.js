@@ -30,6 +30,11 @@ const MantenimientoSchema = new mongoose.Schema({
   costoMantenimiento: {
     type: Number,
     required: true
+  },
+  estadoMantenimiento: {
+    type: String,
+    enum: ['pendiente', 'en curso', 'finalizado'],
+    required: true
   }
 }, { collection: 'mantenimientos' });
 

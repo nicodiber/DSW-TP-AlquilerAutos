@@ -4,14 +4,15 @@ const { getNextSequenceValue } = require('../config/db');
 exports.crearIncidente = async (req, res) => {
   try {
     const _id = await getNextSequenceValue('incidenteId');
-    const { alquiler, descripcion, costoIncidente, fechaIncidente } = req.body;
+    const { idAlquiler, descripcion, costoIncidente, fechaIncidente, estadoIncidente } = req.body;
 
     let incidente = new Incidente({
       _id,
-      alquiler,
+      idAlquiler,
       descripcion,
       costoIncidente,
-      fechaIncidente
+      fechaIncidente,
+      estadoIncidente
     });
 
     await incidente.save();
