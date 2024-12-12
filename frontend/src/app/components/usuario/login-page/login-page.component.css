@@ -30,3 +30,19 @@
 .title-line{
     font-size: 1em;
 }
+.forgot-password-container {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+.forgot-password-link {
+    font-size: 14px;
+    text-decoration: underline;
+    color: blue;
+    display: inline-block;
+}
+
+.forgot-password-link:hover {
+    color: darkblue;
+}

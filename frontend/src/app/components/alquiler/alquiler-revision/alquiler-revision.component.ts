@@ -22,6 +22,7 @@ export class AlquilerRevisionComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private gestionCookiesService: gestionCookiesService, private alquilerService: AlquilerService, private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
+    this.isAdminTrabajador();
     // Obtener datos de datosBusqueda desde el servicio
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
     console.log("Datos búsqueda:", this.datosBusqueda);
@@ -39,11 +40,41 @@ export class AlquilerRevisionComponent implements OnInit {
 
     this.usuario = this.authService.getUsuarioLogueado();
     
-    if ( this.usuario.rol == 'administrador' || this.usuario.rol == 'trabajador') {
-      window.location.href = '/escritorio'; 
-    }
+    
   }
   
+  isAdminTrabajador() {
+  this.authService.verificarToken().subscribe(
+    (response) => {
+      if (!response.existe) {
+        // No hay ningun usuario logueado, se permite el acceso
+      } else {
+        // Si hay un token, se verifica que sea de rol usuario
+        this.authService.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              this.router.navigate(['/loginUsuario']);
+            } else if (user.rol === 'usuario') {
+              this.usuario = user
+            } else {
+              // Caso para roles desconocidos (opcional)
+              this.router.navigate(['/loginUsuario']);
+            }
+          },
+          (error) => {
+            this.router.navigate(['/loginUsuario']);
+          }
+        );
+      }
+    },
+    (error) => {
+      
+      this.router.navigate(['/loginUsuario']);
+    }
+  );
+}
+
+
   // Botón Cancelar
   cancelarProceso(){
     this.gestionCookiesService.borrarCookie('datosBusqueda');

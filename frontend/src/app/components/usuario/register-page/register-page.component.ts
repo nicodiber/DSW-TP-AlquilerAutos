@@ -21,6 +21,7 @@ export class RegisterPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLogueado();
     this.registerForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
@@ -30,6 +31,19 @@ export class RegisterPageComponent implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
       direccion: ['', [Validators.required]],
+    });
+  }
+
+  isLogueado() {
+    this.authService.verificarToken().subscribe(response => {
+      if (response.existe) {
+        console.log("El usuario está autenticado.");
+        window.location.href = '/escritorio';
+      } else {
+        console.log("El usuario no está autenticado.");
+      }
+    }, error => {
+    console.error("Hubo un error al verificar el usuario", error);
     });
   }
 

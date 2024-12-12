@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const alquilerController = require('../controllers/alquilerController'); 
-const autoController = require('../controllers/autoController'); 
+const autoController = require('../controllers/autoController');
 
 router.post('/', alquilerController.crearAlquiler);
 router.get('/', alquilerController.obtenerAlquileres);

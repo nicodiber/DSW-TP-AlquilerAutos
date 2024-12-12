@@ -42,15 +42,26 @@ export class SucursalCrearComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' ) {
-      window.location.href = '/loginUsuario'; 
-    } else {
     // Si el ID existe, se debe cargar la sucursal para editar
+    this.isNotAdmin();
     this.esEditar();
-    }
   }
 
+  isNotAdmin() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
   // Método para manejar el envío del formulario
   submitForm(): void {
     // Si el formulario es inválido, mostramos los errores

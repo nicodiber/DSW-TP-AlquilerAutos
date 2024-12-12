@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AlquilerService } from '../../services/alquiler.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
@@ -10,25 +13,37 @@ import { AuthService } from '../../services/auth.service';
 })
 export class EscritorioComponent implements OnInit {
   usuario: any;
+  alquilerIdToCancel: any | null = null;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,
+              private alquilerService: AlquilerService, 
+              private usuarioService: UsuarioService, 
+              private router: Router,
+              private toastr: ToastrService) { }
 
-  ngOnInit(): void {
-  const usuarioLogueado = this.authService.getUsuarioLogueado();
-    if (!usuarioLogueado) {
-      this.router.navigate(['/loginUsuario']);  // Redirigir al login si no hay usuario
-    } else {
-      this.usuario = usuarioLogueado;
-      this.getAlquileres();
-    };
-      
-  }
+ ngOnInit(): void {
+  this.authService.getAuthenticatedUser().subscribe({
+    next: (usuario) => {
+      if (usuario) {
+        this.usuario = usuario;
+        if (usuario.rol === 'usuario') {
+          this.getAlquileres();
+        }
+      } else {
+        this.router.navigate(['/loginUsuario']);
+      }
+    },
+    error: () => {
+      this.router.navigate(['/loginUsuario']);
+    },
+  });
+}
  
   getAlquileres() {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
-        
         this.usuario = alquileresDeUser;
+        console.log(this.usuario);
       },
       error: (error) => {
         console.error('Error al obtener alquileres:', error);
@@ -64,8 +79,56 @@ export class EscritorioComponent implements OnInit {
     //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
   }
   cerrarSesion() {
-    this.authService.logout(); 
-    window.location.href = '/loginUsuario';
-    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
+    this.authService.logout().subscribe({
+    next: () => {
+      window.location.href = '/loginUsuario';
+    },
+    error: (err) => {
+      console.error('Error al cerrar sesión:', err);
+    }
+  });
+  }
+
+
+  abrirCancelacionModal(id: any) {
+    this.alquilerIdToCancel = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
+  }
+
+  confirmarCancelacion() {
+
+    this.alquilerService.cambiarEstado(this.alquilerIdToCancel, 'cancelado').subscribe(
+        (data) => {
+            
+            this.usuarioService.cancelarAlquilerUsuario(this.usuario._id, this.alquilerIdToCancel, 'cancelado').subscribe(
+                (data) => {
+                    this.toastr.success('El alquiler del usuario fue cancelado con éxito', 'Alquiler Cancelado');
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 1000);              
+                },
+                (error) => {
+                    this.toastr.error('Error al cancelar el alquiler del usuario', 'Error');
+                    console.log(error);
+                }
+            );
+
+            const modal = document.getElementById('deleteModal');
+            if (modal) {
+                const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide(); 
+            }
+
+            this.alquilerIdToCancel = null;
+        },
+        (error) => {
+            this.toastr.error('Error al cambiar el estado del alquiler', 'Error');
+            console.log(error);
+        }
+    );
   }
 }

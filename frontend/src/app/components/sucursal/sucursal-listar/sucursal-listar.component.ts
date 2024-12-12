@@ -23,14 +23,26 @@ export class SucursalListarComponent implements OnInit {
 
   // ngOnInit es un ciclo de vida de Angular que se ejecuta cuando el componente se inicializa
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado();
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador') {
-      window.location.href = '/loginUsuario';
-    } else {
-      this.getSucursales();
-    }  // Llamamos al método que obtiene las sucursales al inicializar el componente
+    this.isNotAdmin();
+    this.getSucursales();
+     // Llamamos al método que obtiene las sucursales al inicializar el componente
   }
 
+  isNotAdmin() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
   // Método que obtiene la lista de sucursales desde el servicio
   getSucursales() {
     // Llamamos al servicio obtenerSucursales, que devuelve un observable

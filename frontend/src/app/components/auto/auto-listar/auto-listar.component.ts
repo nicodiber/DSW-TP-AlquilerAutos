@@ -17,12 +17,8 @@ export class AutoListarComponent implements OnInit {
   constructor(private autoService: AutoService, private _authservice: AuthService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.obtenerAutos();
-    }
   }
 
   obtenerAutos() {
@@ -33,6 +29,22 @@ export class AutoListarComponent implements OnInit {
       error: (err) => console.error('Error al obtener los autos:', err)
     });
   }
+
+  isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   eliminarAuto(autoId: number) {
     this.autoService.eliminarAuto(autoId).subscribe({

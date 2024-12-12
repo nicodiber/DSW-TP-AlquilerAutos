@@ -13,6 +13,8 @@ import { gestionCookiesService } from '../../../services/gestionCookies.service'
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
   mostrarContrasena: boolean = false;
+  usuario: any;
+  usuarioLogueado: any;
 
   constructor(
     private fb: FormBuilder,
@@ -28,9 +30,55 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   //datos que trae al finalizar el registrarse
-   const usuarioLogueado = this.authService.getUsuarioLogueado();
-  
+  this.isLogueado()
+  this.datosDelRegister();
+    
+  }
+
+  isLogueado() {
+    this.authService.verificarToken().subscribe(response => {
+      if (response.existe) {
+        console.log("El usuario está autenticado.");
+        window.location.href = '/escritorio';
+      } else {
+        console.log("El usuario no está autenticado.");
+      }
+    }, error => {
+    console.error("Hubo un error al verificar el usuario", error);
+    });
+  }
+
+  onLogin() {
+    if (this.loginForm.invalid) {
+      return;
+    }
+    
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login exitoso', response);
+          const datosBusqueda = this.gestionCoockies.getDatosBusqueda();
+            if (Object.keys(datosBusqueda).length > 0) {            
+            this.router.navigate(['/alquiler-revision']); // lo manda a /alquiler-revision si hay datos en la cookie
+            return;
+          }
+          this.authService.redirigirEnBaseAlRol(response.usuario.rol);
+        },
+        error: (err) => {
+          console.error('Error de login:', err);
+          this.toastr.warning('Correo electronico o contraseña incorrectos', 'Error de Login');
+        },
+      });
+    }
+    
+  }
+
+ navigateToRegister() {
+  window.location.href = '/registrar';
+}
+
+
+  datosDelRegister() {
   const emailRegistrado = localStorage.getItem('emailRegistrado');
   const passwordRegistrado = localStorage.getItem('passwordRegistrado');
 
@@ -43,56 +91,7 @@ export class LoginPageComponent implements OnInit {
     localStorage.removeItem('emailRegistrado');
     localStorage.removeItem('passwordRegistrado');
   }
-  if (usuarioLogueado) {
-    window.location.href = '/escritorio';  // Redirigir al login si no hay usuario
-  } 
-
   }
-
-  onLogin() {
-    if (this.loginForm.invalid) {
-      return;
-    }
-    
-
-    // Llama a la función de login si el formulario es válido
-    this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
-      response => {
-        if (response && response.usuario) {
-          // Guardar el usuario logueado en sessionStorage
-          this.authService.setUsuarioLogueado(response.usuario);
-
-          const datosBusqueda = this.gestionCoockies.getDatosBusqueda();
-            if (Object.keys(datosBusqueda).length > 0) {            
-            this.router.navigate(['/alquiler-revision']); // lo manda a /alquiler-revision si hay datos en la cookie
-            return;
-          }
-
-          if (response.usuario.rol === 'administrador') {
-             window.location.href = '/escritorio';
-            //this.router.navigate(['/escritorio']);
-          } else if (response.usuario.rol === 'trabajador') {
-            window.location.href = '/escritorio';
-            //this.router.navigate(['/tareas-trabajador']);
-          } else {
-            window.location.href = '/escritorio';
-            //this.router.navigate(['/user']);
-          }
-        }
-      },
-      error => {
-        console.error('Error de login:', error);
-        this.toastr.warning('Correo electronico o contraseña incorrectos', 'Error de Login');
-      }
-    );
-  }
-
- navigateToRegister() {
-  window.location.href = '/registrar';
-}
-
-
-
 
   toggleContrasena() {
     this.mostrarContrasena = !this.mostrarContrasena;

@@ -23,12 +23,8 @@ export class ListarCategoriaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.getCategorias();
-    }
   }
 
   getCategorias() { 
@@ -66,12 +62,24 @@ export class ListarCategoriaComponent implements OnInit {
             }
           });
         }
-      },
-      error: (error) => {
-        console.error('Error al obtener categorías:', error);
-        this.toastr.error('Error al cargar las categorías', 'Error');
       }
     });
+  }
+
+  isNotAdminTrabajador() {
+    this._authservice.getAuthenticatedUser().subscribe(
+      (user) => {
+        if (user.rol === 'administrador' || user.rol === 'trabajador') {
+          // Si el rol es admin o trabajador, se permite el acceso
+        } else {
+          // Otros roles, patea a login
+          window.location.href = '/loginUsuario';
+        }
+      },
+      (error) => {
+        window.location.href = '/loginUsuario';
+      }
+    );
   }
 
   abrirDeleteModal(id: any) {

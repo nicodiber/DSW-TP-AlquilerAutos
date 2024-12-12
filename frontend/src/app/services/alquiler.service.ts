@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { usuario } from '../models/usuario';
@@ -27,6 +27,7 @@ export class AlquilerService {
   url = 'http://localhost:4000/api/alquileres/';
 
   constructor(private http: HttpClient) { }
+  
   
   crearAlquiler(alquiler: AlquilerData): Observable<any>{
     return this.http.post(this.url, alquiler);

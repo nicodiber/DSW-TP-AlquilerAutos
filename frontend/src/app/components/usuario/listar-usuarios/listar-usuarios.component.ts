@@ -19,14 +19,38 @@ export class ListarUsuariosComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado();
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador') {
-      window.location.href = '/loginUsuario';
-    } else {
+      this.isNotAdmin();
+      this.obtenerUsuarioLogueado();
       this.getUsuarios();
-    }
+    
   }
 
+  isNotAdmin() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
+
+  obtenerUsuarioLogueado() {
+  this._authservice.getAuthenticatedUser().subscribe(
+    (data) => {
+      this.usuarioLogueado = data; // Asigna el usuario autenticado
+    },
+    (error) => {
+      console.log('Error al obtener usuario autenticado:', error);
+    }
+  );
+}
 
   getUsuarios() {
     this._usuarioService.obtenerUsuarios().subscribe(data => {

@@ -2,6 +2,8 @@ const express = require('express');
 const { conectarDB } = require('./config/db'); // Importamos usando destructuring
 const cors = require('cors'); // Middleware que permite que el servidor permita solicitudes si el frontend y el backend están en distintos dominios o puertos
 const path = require('path');
+const cookieParser = require('cookie-parser');
+require('dotenv').config({ path: 'variables.env' });
 
 // Creamos el servidor
 const app = express();
@@ -10,16 +12,25 @@ const app = express();
 conectarDB();
 
 // Middleware para habilitar CORS
-app.use(cors());
+app.use(cors({
+  origin: process.env.LIVE_URL, // Reemplaza con el dominio del frontend
+  credentials: true, // Permitir envío de cookies y encabezados de autorización
+  //methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  //allowedHeaders: ['Content-Type', 'Authorization'], // Headers permitidos
+}));
 
 // Middleware para interpretar JSON
 app.use(express.json());
+
+// Middleware para poder modificar las cookies
+app.use(cookieParser());
 
 // Hacer la carpeta de uploads accesible
 app.use('/uploads', express.static(path.join(__dirname, '../assets/uploads')));
 
 // Rutas de API
 app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/sucursales', require('./routes/sucursal'));
 app.use('/api/categorias', require('./routes/categoria'));
 app.use('/api/marcas', require('./routes/marca'));

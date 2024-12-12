@@ -29,7 +29,7 @@ export class ListarModelosComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private _authservice: AuthService, private _categoriaService: CategoriaService, private _marcaService: MarcaService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
 
   ngOnInit(): void {
-
+    this.isAdminTrabajador();
     if (this.gestionCookiesService.getDatosBusquedaExpiration() !== 0) {
       if (this.gestionCookiesService.getDatosBusqueda() === 0) {
         this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
@@ -53,10 +53,41 @@ export class ListarModelosComponent implements OnInit {
     this.modelosFiltrados = [...(this.modelosDisponibles)]; // El operador ... toma todos los elementos del array modelosDisponibles y los mete dentro de modelosFiltrados. Así, cualquier modificación en modelosFiltrados no afectará a modelosDisponibles (y no se rompe todo al filtrar)
     this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
     
-    if ( this.usuarioLogueado?.rol == 'administrador' || this.usuarioLogueado?.rol == 'trabajador') {
-      window.location.href = '/escritorio'; 
-    }
   }
+
+  isAdminTrabajador() {
+  this._authservice.verificarToken().subscribe(
+    (response) => {
+      if (!response.existe) {
+        // No hay ningún usuario logueado, se permite el acceso
+      } else {
+        // Si hay token, verificar el rol del usuario
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              this.toastr.error('No tienes permiso para acceder a esta página.', '');
+              this.router.navigate(['/loginUsuario']);
+            } else if (user.rol === 'usuario') {
+               // Si el rol es usuario, se permite el acceso
+            } else {
+              // Caso para roles desconocidos (opcional)
+              this.toastr.warning('Rol no reconocido, acceso restringido.', '');
+              this.router.navigate(['/loginUsuario']);
+            }
+          },
+          (error) => {
+            this.toastr.error('Error al obtener información del usuario.', '');
+            this.router.navigate(['/loginUsuario']);
+          }
+        );
+      }
+    },
+    (error) => {
+      this.toastr.error('Error al verificar la sesión.', '');
+      this.router.navigate(['/loginUsuario']);
+    }
+  );
+}
 
   obtenerCategorias() {
     this._categoriaService.obtenerCategorias().subscribe(data => {

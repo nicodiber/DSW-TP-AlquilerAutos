@@ -52,6 +52,7 @@ export class DetalleModeloComponent implements OnInit  {
 
   constructor(private route: ActivatedRoute, private toastr: ToastrService, private authService: AuthService, private router: Router, private modeloService: ModeloService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
   ngOnInit(): void {
+    this.isAdminTrabajador();
     this.cookieService.delete('datosBusqueda', '/modelo');
     this.cookieService.delete('modelosDisponibles', '/modelo');
     this.cookieService.delete('reload', '/modelo');
@@ -72,11 +73,42 @@ export class DetalleModeloComponent implements OnInit  {
         });
       }
     });
-    this.usuarioLogueado = this.authService.getUsuarioLogueado(); 
-    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
-      window.location.href = '/escritorio'; 
-    };
   }
+
+  isAdminTrabajador() {
+  this.authService.verificarToken().subscribe(
+    (response) => {
+      if (!response.existe) {
+        // No hay ningun usuario logueado, se permite el acceso
+      } else {
+        // Si hay un token, se verifica que sea de rol usuario
+        this.authService.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              this.toastr.error('No tienes permiso para acceder a esta página.', '');
+              this.router.navigate(['/loginUsuario']);
+            } else if (user.rol === 'usuario') {
+              this.toastr.success('Acceso permitido para el rol usuario.', '');
+            } else {
+              // Caso para roles desconocidos (opcional)
+              this.toastr.warning('Rol no reconocido, acceso restringido.', '');
+              this.router.navigate(['/loginUsuario']);
+            }
+          },
+          (error) => {
+            this.toastr.error('Error al obtener información del usuario.', '');
+            this.router.navigate(['/loginUsuario']);
+          }
+        );
+      }
+    },
+    (error) => {
+      this.toastr.error('Error al verificar la sesión.', '');
+      this.router.navigate(['/loginUsuario']);
+    }
+  );
+}
+  
 
   elegirModelo(): void {
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
@@ -101,17 +133,21 @@ export class DetalleModeloComponent implements OnInit  {
       this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, this.modelo, this.idAutoAleatorio);
 
       // Verificar si el usuario está autenticado
-      this.isAuthenticated = this.authService.getUsuarioLogueado();
-
-      if (!this.isAuthenticated) {
+      this.authService.verificarToken().subscribe(response => {
+      if (response.existe) {
+        console.log("El usuario está autenticado.");
+        window.location.href = '/alquiler-revision';
+      } else {
         this.toastr.warning('Por favor, inicie sesión para continuar');
         setTimeout(() => {
           window.location.href = '/loginUsuario';
-        }, 1000);
-        
-      } else {
-        window.location.href = '/alquiler-revision';
+          }, 1000);
+        console.log("El usuario no está autenticado.");
       }
+      }, error => {
+      console.error("Hubo un error al verificar el usuario", error);
+      });
+      
       
     } catch (error) {
       console.error('Error al elegir modelo:', error);

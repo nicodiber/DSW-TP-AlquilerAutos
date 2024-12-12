@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-editar-datos-usuario',
@@ -18,7 +19,8 @@ export class EditarDatosUsuarioComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private usuarioSerice: UsuarioService
   ) { 
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
@@ -34,21 +36,26 @@ export class EditarDatosUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuarioLogueado = this.authService.getUsuarioLogueado();
-    if (!usuarioLogueado) {
-      window.location.href ='/loginUsuario'; // Redirigir al login si no hay usuario
-    } else {
-      this.usuario = usuarioLogueado;
-      this.cargarDatosUsuario();
-    }
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+         this.cargarDatosUsuario();
+      },
+      error: () => {
+        // Redirigir al login si ocurre un error
+        this.router.navigate(['/loginUsuario']);
+      }
+    });
+    
   }
 
   cargarDatosUsuario() {
+    this.usuarioForm.removeControl('password');
     this.usuarioForm.setValue({
       nombre: this.usuario.nombre,
       apellido: this.usuario.apellido,
       email: this.usuario.email,
-      password: this.usuario.password,
+      
       licenciaConductor: this.usuario.licenciaConductor,
       telefono: this.usuario.telefono,
       dni: this.usuario.dni,
@@ -63,7 +70,7 @@ export class EditarDatosUsuarioComponent implements OnInit {
       return;
     }
     // Actualiza el usuario en el backend
-    this.authService.actualizarUsuario(this.usuarioForm.value).subscribe({
+    this.usuarioSerice.actualizarUsuario(this.usuarioForm.value).subscribe({
       next: (data) => {
         // Si la actualizacion por back salio joya, actualizamos el usuario en sessionStorage
         this.authService.setUsuarioLogueado(data);
@@ -74,24 +81,28 @@ export class EditarDatosUsuarioComponent implements OnInit {
       },
       error: (error) => {
         let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
-        
-        
         if (error.status === 409 && error.error && error.error.msg) {
           errorMsg = error.error.msg;
         }
-
         this.toastr.error(errorMsg, 'Error de Actualización');
-        
-        
       }
     });
   }
   cerrarSesion() {
-    this.authService.logout(); 
-    window.location.href = '/loginUsuario';
-    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
+    this.authService.logout().subscribe({
+    next: () => {
+      window.location.href = '/loginUsuario';
+    },
+    error: (err) => {
+      console.error('Error al cerrar sesión:', err);
+    }
+  });
   }
   toggleContrasena() {
     this.mostrarContrasena = !this.mostrarContrasena;
+  }
+
+  cambiarPassword() {
+    window.location.href = '/cambiar-password';    
   }
 }
