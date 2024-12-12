@@ -95,7 +95,7 @@ import { FooterComponent } from './components/layout/componentesLayout/footer/fo
     ResetPasswordComponent,
     HeaderComponent,
     FooterComponent,
-    
+
   ],
 
   // Importación de otros módulos necesarios para la aplicación
