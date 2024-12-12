@@ -33,14 +33,27 @@ export class AlquilerListarComponent implements OnInit {
   constructor(private _alquilerService: AlquilerService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.getAlquileres();
     this.getTrabajadores();
-    }
+    
   }
+
+  isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (usuarioLogueado) => {
+            if (usuarioLogueado.rol === 'administrador' || usuarioLogueado.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   getAlquileres() {
     this._alquilerService.obtenerAlquileres().subscribe((data) => {

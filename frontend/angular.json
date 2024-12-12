@@ -34,10 +34,20 @@
               "src"
             ],
             "styles": [
+              "src/css/bootstrap.min.css",
+              "src/css/mdb.min.css",
+              "src/css/plugins.css",
+              "src/css/style.css",
+              "src/css/coloring.css",
+              "src/css/colors/scheme-01.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [ ]
+            "scripts": [
+              
+              "src/js/plugins.js",
+              "src/js/designesia.js"
+             ]
           },
           "configurations": {
             "production": {

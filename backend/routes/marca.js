@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const marcaController = require('../controllers/marcaController');
+const middleware = require('../middlewares/autorizaciones');
 
 router.post('/', marcaController.crearMarca);
 router.get('/', marcaController.obtenerMarcas);

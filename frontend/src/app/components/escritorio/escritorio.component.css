@@ -26,3 +26,9 @@
     background-color: #00b74a !important;
     /* Cambia a tu color preferido */
 }
+
+.fas {
+    cursor: pointer;
+    margin-left: 7px;
+    color: #a50000;
+}

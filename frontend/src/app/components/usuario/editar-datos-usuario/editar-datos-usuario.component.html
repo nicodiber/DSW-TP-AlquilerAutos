@@ -27,7 +27,7 @@
                                 <img src="">
                             </div>
                             <div class="profile_name">
-                                <h4>
+                                <h4 *ngIf="usuario">
                                     {{ usuario.nombre }} {{ usuario.apellido }}
                                     <span class="profile_username text-gray">{{ usuario.email }}</span>
                                 </h4>

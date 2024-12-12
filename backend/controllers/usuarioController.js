@@ -250,32 +250,7 @@ exports.actualizarEstadoAlquilerUsuario = async (req, res) => {
   }
 };
 
-exports.obtenerAlquileresLogueado = async (req, res) => {
-  try {
-    const usuario = await Usuario.findById(req.params.id).populate({
-      path: 'alquileres',
-      populate: [
-        {
-          path: 'auto',
-          populate: {
-            path: 'modeloAuto'
-          }
-        },
-        { path: 'sucursalEntrega'},
-        { path: 'sucursalDevolucion'},
-         ]
-    });
 
-    if (!usuario) {
-      return res.status(404).json({ msg: 'No existe ese usuario' });
-    }
-
-    res.json(usuario);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al obtener el usuario');
-  }
-};
 
 
 exports.cambiarPassword = async (req, res) => {
@@ -309,3 +284,27 @@ exports.cambiarPassword = async (req, res) => {
 };
 
 
+exports.cancelarAlquiler = async (req, res) => {
+  const userId = req.params.id;
+  const alquilerId = req.params.alquilerId;
+  const nuevoEstado = req.body.nuevoEstado; // El nuevo estado del alquiler
+  
+  try {
+    // Busca el usuario y actualiza el estado del alquiler en el array
+    const usuario = await Usuario.findOneAndUpdate(
+      { _id: userId, 'alquileres._id': alquilerId },
+      { $set: { 'alquileres.$.estadoAlquiler': nuevoEstado } }, // `$` apunta al alquiler coincidente en el array
+      { new: true }
+      
+    );
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario o alquiler no encontrado' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.error('Error al actualizar el estado del alquiler en el usuario:', error);
+    res.status(500).json({ message: 'Error al actualizar el estado del alquiler', error });
+  }
+};

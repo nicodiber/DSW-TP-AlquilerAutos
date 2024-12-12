@@ -4,12 +4,12 @@
             
             <!-- section begin -->
             <section id="subheader" class="jarallax text-light">
-                <img src="images/background/14.jpg" class="jarallax-img" alt="">
+                <img src="images/background/14.jpg" class="jarallax-img" alt="pepe">
                     <div class="center-y relative text-center">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <h1 style="font-size: 52px ;">Bienvenido, {{ usuario.rol.charAt(0).toUpperCase() + usuario.rol.slice(1).toLowerCase() }}</h1>
+                                    <h1 style="font-size: 52px ;">Bienvenido, {{ usuario?.rol.charAt(0).toUpperCase() + usuario?.rol.slice(1).toLowerCase() }}</h1>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -29,8 +29,8 @@
                                     </div>
                                     <div class="profile_name">
                                         <h4>
-                                            {{ usuario.nombre }} {{ usuario.apellido }}
-                                            <span class="profile_username text-gray">{{ usuario.email }}</span>
+                                            {{ usuario?.nombre }} {{ usuario?.apellido }}
+                                            <span class="profile_username text-gray">{{ usuario?.email }}</span>
                                         </h4>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
 
                         
                         
-                        <div *ngIf="usuario.rol === 'administrador'" class="col-lg-8">
+                        <div *ngIf="usuario?.rol === 'administrador'" class="col-lg-8">
                             <div class="card p-4 rounded-5 mb25">
                                 <a (click)="irAGestionarUsuarios()" class="btn-main btn-fullwidth rounded-3 mb-3">
                                     <i class="fa-solid fa-users"></i> Gestión de Usuarios
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                                                 
-                        <div *ngIf="usuario.rol === 'trabajador'" class="col-lg-8">
+                        <div *ngIf="usuario?.rol === 'trabajador'" class="col-lg-8">
                             <div class="card p-4 rounded-5 mb25">
                                 <a (click)="irAGestionarAutos()" class="btn-main btn-fullwidth rounded-3 mb-3">
                                     <i class="fa-solid fa-car-side"></i> Gestión de Autos
@@ -95,7 +95,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-9">
+                        <div *ngIf="usuario?.rol === 'usuario'" class="col-lg-9">
                             <div class="card p-4 rounded-5 mb25">
                                 <h4>Alquileres recientes</h4>
                                 <table *ngIf="usuario.alquileres.length > 0" class="table de-table">
@@ -109,6 +109,7 @@
                                             <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha de Devolucion</span></th>
                                             <th scope="col"><span class="text-uppercase fs-12 text-gray">Precio Total</span></th>
                                             <th scope="col"><span class="text-uppercase fs-12 text-gray">Estado</span></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -132,10 +133,16 @@
                                                   'bg-warning ': alquileres.estadoAlquiler === 'reservado',
                                                   'bg-primary ': alquileres.estadoAlquiler === 'completado',
                                                   'bg-danger ': alquileres.estadoAlquiler === 'cancelado'
-                                                }">
+                                                }"> 
                                                     {{ alquileres.estadoAlquiler }}
-                                                </div>
+                                                </div> 
                                             </td>
+                                            <td>
+                                                <i *ngIf="alquileres.estadoAlquiler === 'reservado'" 
+                                                (click)="abrirCancelacionModal(alquileres._id)" 
+                                                class="fas fa-times-circle-o"></i>
+                                            </td>
+                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -151,3 +158,21 @@
 			
         </div>
         <!-- content close -->
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Cancelación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar este alquiler?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarCancelacion()">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

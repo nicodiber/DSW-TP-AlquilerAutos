@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const usuarioToken = require("../models/usuarioToken");
 require('dotenv').config({ path: 'variables.env' });
 const nodemailer = require('nodemailer');
+const cookieParser = require("cookie-parser");
 
 exports.registrarse = async (req, res) => {
   try {
@@ -55,31 +56,61 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    
     const usuario = await Usuario.findOne({ email });
     if (!usuario) {
       return res.status(404).json({ msg: 'Usuario no encontrado' });
     }
+
     const validPassword = await bcrypt.compare(password, usuario.password);
     if (!validPassword) {
-      return res.status(401).json({ msg: 'Contraseña incorrecta' });
+      return res.status(404).json({ msg: 'Contraseña incorrecta' });
     }
 
     const token = jwt.sign(
-      { id: usuario._id, rol: usuario.rol },
-      process.env.JWT_SECRET, 
+      { _id: usuario._id, rol: usuario.rol }, 
+      process.env.JWT_SECRET,
       { expiresIn: '1h' } 
     );
 
-    res.json({
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', 
+      sameSite: 'strict',
+      maxAge: 1 * 60 * 60 * 1000, // 1 hora 
+      //expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 día
+    };
+
+    res.cookie('access_token', token, cookieOptions);
+    
+    return res.status(200).json({
       msg: 'Inicio de sesión exitoso',
-      token,
-      usuario,
+      usuario: { _id: usuario._id, nombre: usuario.nombre, rol: usuario.rol }, 
     });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Hubo un error al iniciar sesión' });
+  }
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie('access_token', { path: '/' }); 
+  return res.status(200).json({ msg: 'Sesión cerrada exitosamente' });
+};
+
+exports.obtenerUsuarioAutenticado = async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.user._id); 
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    // Retornar los datos del usuario
+    res.json(usuario);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
   }
 };
 
@@ -187,3 +218,40 @@ exports.resetPassword = async (req, res) => {
   });
 };
 
+exports.verificarToken = async (req, res) => {
+  const token = req.cookies.access_token;
+  if (token) {
+    return res.json({ existe: true });
+  }
+  else{
+  return res.json({ existe: false });
+  }
+ 
+};
+
+exports.obtenerAlquileresLogueado = async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.params.id).populate({
+      path: 'alquileres',
+      populate: [
+        {
+          path: 'auto',
+          populate: {
+            path: 'modeloAuto'
+          }
+        },
+        { path: 'sucursalEntrega'},
+        { path: 'sucursalDevolucion'},
+         ]
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ msg: 'No existe ese usuario' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener el usuario');
+  }
+};

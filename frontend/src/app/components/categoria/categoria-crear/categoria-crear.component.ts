@@ -26,16 +26,27 @@ export class CrearCategoriaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     if (this.id !== null) {
       this.esEditar();
     }
   }
-  }
 
+  isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   agregarCategoria() {
     const MARCA: categoria = {

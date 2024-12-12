@@ -18,15 +18,28 @@ export class ListarMarcaModeloComponent {
   constructor(private route: ActivatedRoute, private _authservice: AuthService, private marcaService: MarcaService) { }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.idMarca = this.route.snapshot.paramMap.get('idMarca')!;
     this.nombreMarca = this.route.snapshot.paramMap.get('nombreMarca')!;
     this.getModelosByMarca(this.idMarca);
-    }
+    
   }
+
+  isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   getModelosByMarca(idMarca: string): void {
     this.marcaService.obtenerModelosPorMarca(idMarca).subscribe(

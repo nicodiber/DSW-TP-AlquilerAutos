@@ -25,12 +25,13 @@ export class BuscadorComponent implements OnInit {
   horariosDevolucionDisponibles: string[] = [];
   isFormValid: boolean = false;
   isDateValid: boolean = false;
-  usuarioLogueado: any;
+  usuario: any;
 
   constructor(private sucursalService: SucursalService, private _authservice: AuthService, private alquilerService: AlquilerService, private router: Router, private cookieService: CookieService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     // Obtener las Sucursales
+    this.isAdminTrabajador();
     this.sucursalService.obtenerSucursales().subscribe(
       (data) => {
         this.sucursales = data;
@@ -46,12 +47,43 @@ export class BuscadorComponent implements OnInit {
       },
       (error) => console.error('Error al obtener sucursales:', error)
     );
-    //quito el permiso para que el admin o trabajador haga esto
-  this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if ( this.usuarioLogueado.rol == 'administrador' || this.usuarioLogueado.rol == 'trabajador') {
-      window.location.href = '/escritorio'; 
-    }
+ 
   }
+
+  isAdminTrabajador() {
+  this._authservice.verificarToken().subscribe(
+    (response) => {
+      if (!response.existe) {
+        // No hay ningun usuario logueado, se permite el acceso
+      } else {
+        // Si hay un token, se verifica que sea de rol usuario
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              this.toastr.error('No tienes permiso para acceder a esta página.', '');
+              this.router.navigate(['/loginUsuario']);
+            } else if (user.rol === 'usuario') {
+              // Si el rol es usuario, se permite el acceso
+            } else {
+              // Caso para roles desconocidos (opcional)
+              this.toastr.warning('Rol no reconocido, acceso restringido.', '');
+              this.router.navigate(['/loginUsuario']);
+            }
+          },
+          (error) => {
+            this.toastr.error('Error al obtener información del usuario.', '');
+            this.router.navigate(['/loginUsuario']);
+          }
+        );
+      }
+    },
+    (error) => {
+      this.toastr.error('Error al verificar la sesión.', '');
+      this.router.navigate(['/loginUsuario']);
+    }
+  );
+}
+
 
   // Método para generar intervalos de media hora entre el horario de apertura y cierre
   generarHorariosRetiroDisponibles(apertura: string, cierre: string): void {

@@ -11,6 +11,7 @@ import { UsuarioService } from '../../../services/usuario.service';
 })
 export class CambiarPasswordComponent {
   cambiarContrasenaForm: FormGroup;
+  usuario: any;
 
 constructor(
   private fb: FormBuilder,
@@ -38,22 +39,32 @@ cambiarContrasena() {
     return;
   }
 
-  const usuarioLogueado = this.authService.getUsuarioLogueado();
+  
+  this.authService.getAuthenticatedUser().subscribe({
+    next: (usuario) => {
+      this.usuario = usuario; 
 
-  this.usuarioService.cambiarPassword(usuarioLogueado.email, { contrasenaActual, nuevaContrasena }).subscribe({
-    next: () => {
-      this.toastr.success('Contraseña actualizada con éxito, Regresando a la cuenta...');
-      this.cambiarContrasenaForm.reset();
-      setTimeout(() => {
-          window.location.href = '/editar-datos-usuario';
-          }, 1000);
       
+      this.usuarioService.cambiarPassword(this.usuario.email, { contrasenaActual, nuevaContrasena }).subscribe({
+        next: () => {
+          this.toastr.success('Contraseña actualizada con éxito. Regresando a la cuenta...');
+          this.cambiarContrasenaForm.reset();
+          setTimeout(() => {
+            window.location.href = '/editar-datos-usuario';
+          }, 1000);
+        },
+        error: (err) => {
+          const mensajeError = err.error?.message || 'Error al cambiar la contraseña';
+          this.toastr.error(mensajeError, 'Error');
+        }
+      });
     },
-    error: (err) => {
-      const mensajeError = err.error?.message || 'Error al cambiar la contraseña';
-      this.toastr.error(mensajeError, 'Error');
+    error: () => {
+      
+      window.location.href = '/escritorio';
     }
   });
 }
+
 }
 

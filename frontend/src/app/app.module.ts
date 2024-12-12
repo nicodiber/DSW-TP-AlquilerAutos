@@ -6,10 +6,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';              
 import { AppRoutingModule } from './app-routing.module';                                                                              // Módulo de enrutamiento de la aplicación
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';                                                       // Necesario para habilitar animaciones en Angular, en este caso usado por Toastr
 import { ToastrModule } from 'ngx-toastr';                                                                                            // Módulo para mostrar notificaciones de Toastr
-import { provideHttpClient } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
 import { RouterModule } from '@angular/router';                                                                                       // Necesario para manejar rutas y enrutamiento
 import { CookieService } from 'ngx-cookie-service';                                                                                   // Para trabajar con cookies
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // Configuración regional para fechas en español
 import localeEs from '@angular/common/locales/es';                                                                                    // Importa los datos locales de España
 import { registerLocaleData } from '@angular/common';                                                                                 // Función para registrar la configuración regional
@@ -50,6 +50,9 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { HeaderComponent } from './components/layout/componentesLayout/header/header/header.component';
+import { FooterComponent } from './components/layout/componentesLayout/footer/footer/footer.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -88,6 +91,8 @@ import { ResetPasswordComponent } from './components/usuario/reset-password/rese
     CambiarPasswordComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    HeaderComponent,
+    FooterComponent,
     
   ],
 

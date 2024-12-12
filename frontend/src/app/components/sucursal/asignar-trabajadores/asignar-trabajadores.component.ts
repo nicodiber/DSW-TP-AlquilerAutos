@@ -27,10 +27,7 @@ export class AsignarTrabajadoresComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdmin();
     // Obtener el ID de la sucursal desde los parámetros de la ruta y cargar los datos
     this.idSucursal = this.route.snapshot.paramMap.get('id') || '';  // Extraer el parámetro 'id' de la URL
     if (this.idSucursal) {
@@ -38,8 +35,24 @@ export class AsignarTrabajadoresComponent implements OnInit {
       this.getSucursal();
       this.cargarTrabajadores();
     }
+  
   }
-  }
+
+  isNotAdmin() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   // Método para obtener los detalles de la sucursal
   getSucursal(): void {

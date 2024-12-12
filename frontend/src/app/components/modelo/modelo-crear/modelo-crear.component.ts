@@ -50,10 +50,7 @@ export class CrearModeloComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.esEditar();
     this._categoriaService.obtenerCategorias().subscribe((data: any[]) => {
       this.categorias = data;
@@ -61,8 +58,25 @@ export class CrearModeloComponent implements OnInit {
     this._marcaService.obtenerMarcas().subscribe((data: any[]) => {
       this.marcas = data;
     });
-    }
+    
   }
+
+  isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
+
   submitForm() {
     if (this.modeloForm.invalid) {
     // Recorre los controles del formulario y muestra mensajes de error con toastr

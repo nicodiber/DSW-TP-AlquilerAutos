@@ -14,27 +14,27 @@ export class SucursalService {
 
   // Método para obtener todas las sucursales desde la API
   obtenerSucursales(): Observable<any> {
-    return this.http.get(this.url);  // Realiza una solicitud GET a la URL base y devuelve un observable con la respuesta
+    return this.http.get(this.url, { withCredentials: true,});  // Realiza una solicitud GET a la URL base y devuelve un observable con la respuesta
   }
 
   // Método para obtener una sucursal específica utilizando su ID
   obtenerSucursal(id: string): Observable<any> {
-    return this.http.get(`${this.url}${id}`);  // Realiza una solicitud GET a la URL base concatenando el ID de la sucursal
+    return this.http.get(`${this.url}${id}`, { withCredentials: true,});  // Realiza una solicitud GET a la URL base concatenando el ID de la sucursal
   }
 
   // Método para guardar una nueva sucursal en la base de datos
   guardarSucursal(sucursal: sucursal): Observable<any> {
-    return this.http.post(this.url, sucursal);  // Realiza una solicitud POST con el objeto sucursal al servidor
+    return this.http.post(this.url, sucursal, { withCredentials: true,});  // Realiza una solicitud POST con el objeto sucursal al servidor
   }
 
   // Método para editar una sucursal existente
   editarSucursal(id: string, sucursal: sucursal): Observable<any> {
-    return this.http.put(`${this.url}${id}`, sucursal);  // Realiza una solicitud PUT a la URL de la sucursal con el ID y el objeto actualizado
+    return this.http.put(`${this.url}${id}`, sucursal, { withCredentials: true,});  // Realiza una solicitud PUT a la URL de la sucursal con el ID y el objeto actualizado
   }
 
   // Método para eliminar una sucursal especificada por su ID
   eliminarSucursal(id: number): Observable<any> {
-    return this.http.delete(`${this.url}${id}`);  // Realiza una solicitud DELETE a la URL de la sucursal especificando el ID
+    return this.http.delete(`${this.url}${id}`, { withCredentials: true,});  // Realiza una solicitud DELETE a la URL de la sucursal especificando el ID
   }
 
   // Método para asignar o desasignar trabajadores a una sucursal
@@ -43,17 +43,17 @@ export class SucursalService {
     return this.http.post(`${this.url}${idSucursal}/asignar-trabajadores`, {
       trabajadoresAsignados,
       trabajadoresNoAsignados
-    });
+    }, { withCredentials: true,});
   }
 
   // Método para obtener los trabajadores asignados y no asignados para una sucursal
   obtenerTrabajadoresParaAsignacion(idSucursal: string): Observable<any> {
-    return this.http.get(`${this.url}${idSucursal}/obtener-trabajadores`);  // Realiza una solicitud GET para obtener la lista de trabajadores para asignación
+    return this.http.get(`${this.url}${idSucursal}/obtener-trabajadores`, { withCredentials: true,});  // Realiza una solicitud GET para obtener la lista de trabajadores para asignación
   }
 
   // Método para obtener autos asignados y no asignados para una sucursal específica
   obtenerAutosParaAsignacion(idSucursal: string): Observable<any> {
-    return this.http.get(`${this.url}${idSucursal}/obtener-autos`);  // Realiza una solicitud GET para obtener la lista de autos asignados y no asignados para la sucursal especificada por su ID
+    return this.http.get(`${this.url}${idSucursal}/obtener-autos`, { withCredentials: true,});  // Realiza una solicitud GET para obtener la lista de autos asignados y no asignados para la sucursal especificada por su ID
   }
 
   // Método para asignar o desasignar autos a una sucursal específica
@@ -62,6 +62,6 @@ export class SucursalService {
     return this.http.post(`${this.url}${idSucursal}/asignar-autos`, {
       autosAsignados,
       autosNoAsignados
-    });
+    }, { withCredentials: true,});
   }
 }

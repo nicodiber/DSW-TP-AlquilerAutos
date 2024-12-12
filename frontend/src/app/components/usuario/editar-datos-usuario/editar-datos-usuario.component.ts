@@ -36,13 +36,17 @@ export class EditarDatosUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuarioLogueado = this.authService.getUsuarioLogueado();
-    if (!usuarioLogueado) {
-      window.location.href ='/loginUsuario'; // Redirigir al login si no hay usuario
-    } else {
-      this.usuario = usuarioLogueado;
-      this.cargarDatosUsuario();
-    }
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+         this.cargarDatosUsuario();
+      },
+      error: () => {
+        // Redirigir al login si ocurre un error
+        this.router.navigate(['/loginUsuario']);
+      }
+    });
+    
   }
 
   cargarDatosUsuario() {
@@ -85,9 +89,14 @@ export class EditarDatosUsuarioComponent implements OnInit {
     });
   }
   cerrarSesion() {
-    this.authService.logout(); 
-    window.location.href = '/loginUsuario';
-    //this.router.navigate(['/loginUsuario']);   Redirigir al login después de cerrar sesión
+    this.authService.logout().subscribe({
+    next: () => {
+      window.location.href = '/loginUsuario';
+    },
+    error: (err) => {
+      console.error('Error al cerrar sesión:', err);
+    }
+  });
   }
   toggleContrasena() {
     this.mostrarContrasena = !this.mostrarContrasena;

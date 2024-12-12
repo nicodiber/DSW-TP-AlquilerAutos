@@ -18,15 +18,28 @@ export class ListarCategoriaModeloComponent {
   constructor(private route: ActivatedRoute, private _authservice: AuthService, private categoriaService: CategoriaService) { }
 
   ngOnInit(): void {
-    this.usuarioLogueado = this._authservice.getUsuarioLogueado(); 
-    if (!this.usuarioLogueado || this.usuarioLogueado.rol != 'administrador' && this.usuarioLogueado.rol != 'trabajador') {
-      window.location.href = '/loginUsuario'; 
-    } else {
+    this.isNotAdminTrabajador();
     this.idCategoria = this.route.snapshot.paramMap.get('idCategoria')!;
     this.nombreCategoria = this.route.snapshot.paramMap.get('nombreCategoria')!;
     this.getModelosByCategoria(this.idCategoria);
-    }
+    
   }
+
+    isNotAdminTrabajador() {
+        this._authservice.getAuthenticatedUser().subscribe(
+          (user) => {
+            if (user.rol === 'administrador' || user.rol === 'trabajador') {
+              // Si el rol es admin o trabajador, se permite el acceso
+            } else {
+              // Otros roles, patea a login
+              window.location.href = '/loginUsuario';
+            }
+          },
+          (error) => {
+            window.location.href = '/loginUsuario';
+          }
+        );
+    }
 
   getModelosByCategoria(idCategoria: string): void {
     this.categoriaService.obtenerModelosPorCategoria(idCategoria).subscribe(
