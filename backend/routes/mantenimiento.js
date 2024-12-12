@@ -8,4 +8,5 @@ router.get('/:id', imantenimientoController.obtenerMantenimiento);
 router.put('/:id', imantenimientoController.actualizarMantenimiento);
 router.delete('/:id', imantenimientoController.eliminarMantenimiento);
 
+router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
 module.exports = router;

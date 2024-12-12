@@ -34,10 +34,7 @@
     transition: .3s ease !important;
 }
 
-.menos-offset {
-    margin: auto !important;
-    margin-left: 10% !important;
-}
+
 @media (min-width: 968px) and (max-width: 1450px){
     .menos-offset {
         margin-left: 2% !important;

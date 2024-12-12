@@ -20,5 +20,5 @@ router.patch('/autos/:id/sucursal', autoController.actualizarSucursalAuto);
 // Usado por Buscador
 router.post('/buscarModelosDisponibles', alquilerController.buscarModelosDisponibles);
 
-
+router.put('/cancelar/:id', alquilerController.cancelarAlquiler);
 module.exports = router;

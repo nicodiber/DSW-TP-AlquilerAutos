@@ -228,3 +228,42 @@ exports.buscarModelosDisponibles = async (req, res) => {
     res.status(500).json({ message: "Error al buscar modelos disponibles" });
   }
 };
+
+exports.cancelarAlquiler = async (req, res) => {
+  try {
+    const { id } = req.params; 
+
+    const alquiler = await Alquiler.findById(id);
+
+    if (!alquiler) {
+      return res.status(404).json({ message: 'Alquiler no encontrado' });
+    }
+
+    alquiler.estadoAlquiler = 'cancelado';
+    await alquiler.save();
+
+    // Verificar si existen alquileres futuros para el mismo auto
+    const alquileresFuturos = await Alquiler.find({
+      auto: alquiler.auto,
+      estadoAlquiler: { $in: ['reservado', 'activo'] },
+      fechaInicio: { $gte: new Date() } // Filtrar alquileres con fecha de inicio en el futuro
+    });
+
+    if (alquileresFuturos.length === 0) {
+      // Si no hay alquileres futuros con ese auto se actualiza el estado del auto a disponible
+      const auto = await Auto.findById(alquiler.auto);
+
+      if (!auto) {
+        return res.status(404).json({ message: 'Auto asociado no encontrado' });
+      }
+
+      auto.estadoAuto = 'disponible';
+      await auto.save();
+    }
+
+    res.json({ message: 'Alquiler cancelado y estado del auto actualizado si segun corresponga' });
+  } catch (error) {
+    console.error('Error al cancelar el alquiler:', error);
+    res.status(500).json({ message: 'Hubo un error al cancelar el alquiler', error });
+  }
+};

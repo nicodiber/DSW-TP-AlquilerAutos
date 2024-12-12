@@ -55,6 +55,7 @@ import { ResetPasswordComponent } from './components/usuario/reset-password/rese
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { HeaderComponent } from './components/layout/componentesLayout/header/header/header.component';
 import { FooterComponent } from './components/layout/componentesLayout/footer/footer/footer.component';
+import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -95,6 +96,7 @@ import { FooterComponent } from './components/layout/componentesLayout/footer/fo
     ResetPasswordComponent,
     HeaderComponent,
     FooterComponent,
+    IncidentesUsuarioComponent,
     
   ],
 
