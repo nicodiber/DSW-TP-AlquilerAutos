@@ -170,22 +170,44 @@ exports.cambiarEstado = async (req, res) => {
 // Usado en el buscador
 exports.buscarModelosDisponibles = async (req, res) => {
   try {
-    const { sucursalRetiro, fechaRetiro } = req.body;
+    const { sucursalRetiro, sucursalDevolucion, fechaRetiro, fechaDevolucion } = req.body;
 
     // Paso 1: Filtrar autos disponibles en la sucursal de retiro elegida
     const autosDisponibles = await Auto.find({ sucursalAuto: sucursalRetiro._id, estadoAuto: 'disponible' });
 
-    // Paso 2: Filtrar autos reservados y/o alquilado pero cuyo alquiler en el que esta involucrado tiene fecha fin anterior a fecha retiro del buscador 
+    // Paso 2: Filtrar autos reservados
+    const autosReservados = await Auto.find({ estadoAuto: { $in: ['reservado'] } });
+    const autoIdsReservados = autosReservados.map(auto => auto._id);
+
+    // Paso 2.1: Filtrar autos reservados pero cuyo alquiler en el que esta involucrado tiene fecha inicio posterior a fecha devolucion del buscador 
+    // y cuya id sucursal entrega sea igual al id sucursal devolucion del buscador
+    const AlquileresReservadosPreviosValidos = await Alquiler.find({
+      auto: { $in: autoIdsReservados }, fechaInicio: { $gt: new Date(fechaDevolucion) }, sucursalEntrega: sucursalDevolucion._id
+    });
+    // Paso 2.2: Filtrar autos reservados pero cuyo alquiler en el que esta involucrado tiene fecha fin anterior a fecha retiro del buscador 
     // y cuya id sucursal devolución sea igual al id sucursal retiro del buscador
-    const autosReservadosOAlquilados = await Auto.find({ estadoAuto: { $in: ['reservado', 'alquilado'] } });
-    const autoIdsReservadosOAlquilados = autosReservadosOAlquilados.map(auto => auto._id);
-    console.log("autoIdsReservadosOAlquilados", autoIdsReservadosOAlquilados);
-    const AlquileresValidos = await Alquiler.find({
-      auto: { $in: autoIdsReservadosOAlquilados }, fechaFin: { $lt: new Date(fechaRetiro) }, sucursalDevolucion: sucursalRetiro._id
+    const AlquileresReservadosPosterioresValidos = await Alquiler.find({
+      auto: { $in: autoIdsReservados }, fechaFin: { $lt: new Date(fechaRetiro) }, sucursalDevolucion: sucursalRetiro._id
     });
 
+    // Paso 3: Filtrar autos alquilados pero cuyo alquiler en el que esta involucrado tiene fecha fin anterior a fecha retiro del buscador 
+    // y cuya id sucursal devolución sea igual al id sucursal retiro del buscador
+    const autosAlquilados = await Auto.find({ estadoAuto: { $in: ['alquilado'] } });
+    const autoIdsAlquilados = autosAlquilados.map(auto => auto._id);
+
+    const AlquileresAlquiladosValidos = await Alquiler.find({
+      auto: { $in: autoIdsAlquilados }, fechaFin: { $lt: new Date(fechaRetiro) }, sucursalDevolucion: sucursalRetiro._id
+    });
+
+    // Paso 4: Obtener los autos coincidentes
+    const AlquileresValidos = [
+      ...AlquileresReservadosPreviosValidos,
+      ...AlquileresReservadosPosterioresValidos,
+      ...AlquileresAlquiladosValidos
+    ]
+    
     const autosValidosIds = AlquileresValidos.map(alquiler => alquiler.auto); // Aca tengo los ids de los autos validos según condicion anterior
-    console.log("autosValidosIds", autosValidosIds);
+    
     const autosCoincidentesIds = [
       ...autosDisponibles.map(auto => auto._id),
       ...autosValidosIds
@@ -194,7 +216,7 @@ exports.buscarModelosDisponibles = async (req, res) => {
 
     const autosCoincidentes = await Auto.find({ _id: { $in: autosCoincidentesIds } });  // Aca tengo los autos coincidentes (objetos)
 
-    // Paso 3: Obtener modelos de autos coincidentes
+    // Paso 5: Obtener modelos de autos coincidentes
     const modeloIds = autosCoincidentes.map(auto => auto.modeloAuto);
     console.log("modeloIds", modeloIds);
 
