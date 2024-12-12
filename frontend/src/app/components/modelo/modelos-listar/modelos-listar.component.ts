@@ -18,7 +18,7 @@ export class ModelosListarComponent implements OnInit {
 
   ngOnInit(): void {
     this.isNotAdminTrabajador();
-      this.getModelos(); 
+    this.getModelos(); 
   }
 
   getModelos() {
