@@ -17,6 +17,7 @@ export class DetalleModeloComponent implements OnInit  {
   datosBusqueda: any;
   isAuthenticated: boolean = false;
   idModelo: string = '' ;
+  autosCoincidentesIds: number[] = [];
   idAutoAleatorio: string = '';
   usuarioLogueado: any;
 
@@ -53,10 +54,6 @@ export class DetalleModeloComponent implements OnInit  {
   constructor(private route: ActivatedRoute, private toastr: ToastrService, private authService: AuthService, private router: Router, private modeloService: ModeloService, private cookieService: CookieService, private gestionCookiesService: gestionCookiesService) {}
   ngOnInit(): void {
     this.isAdminTrabajador();
-    this.cookieService.delete('datosBusqueda', '/modelo');
-    this.cookieService.delete('modelosDisponibles', '/modelo');
-    this.cookieService.delete('reload', '/modelo');
-
     if ((Object.keys(this.gestionCookiesService.getDatosBusqueda()).length === 0)) {
       window.location.href = '/buscador';
       this.toastr.warning('Sus parámetros de búsqueda han expirado, complételos de nuevo');
@@ -112,7 +109,8 @@ export class DetalleModeloComponent implements OnInit  {
 
   elegirModelo(): void {
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    this.modeloService.buscarAutoAleatorioDisponible(this.idModelo, this.datosBusqueda.sucursalRetiro._id).subscribe(
+    this.autosCoincidentesIds = this.gestionCookiesService.getautosCoincidentesIds()
+    this.modeloService.buscarAutoAleatorioDisponible(this.autosCoincidentesIds, Number(this.idModelo)).subscribe(
       (data) => {
         if (data && data._id) {
           this.idAutoAleatorio = data._id;

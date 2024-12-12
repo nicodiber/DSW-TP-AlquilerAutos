@@ -56,6 +56,10 @@ export class gestionCookiesService {
     return JSON.parse(this.cookieService.get('modelosDisponibles') || '[]');  // No hace falta el chequeo de error de las otras porque no la usamos con ese proposito
   }
 
+  getautosCoincidentesIds(): [] {
+    return JSON.parse(this.cookieService.get('autosCoincidentesIds') || '[]');  // No hace falta el chequeo de error de las otras porque no la usamos con ese proposito
+  }
+
   borrarCookie(nombreCookie: string){
     this.cookieService.delete(nombreCookie, '/');
   }

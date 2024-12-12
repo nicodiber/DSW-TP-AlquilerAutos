@@ -176,21 +176,20 @@ exports.eliminarModelo = async (req, res) => {
 // Usado en el alquiler
 exports.buscarAutoAleatorioDisponible = async (req, res) => {
   try {
-    const { idModelo, idSucursal } = req.body;
+    const { idAutos, idModelo } = req.body;
 
-    // Buscar autos que coincidan con el modelo, estén en la sucursal indicada y estén disponibles
-    const autosDisponibles = await Auto.find({
-      modeloAuto: idModelo,
-      sucursalAuto: idSucursal,
-      estadoAuto: 'disponible'
-    });
+    const autosPosibles = await Auto.find({ _id: { $in: idAutos }, modeloAuto: idModelo })
+      .populate('modeloAuto') 
+      .populate('sucursalAuto') 
+      .populate('estadoAuto')
+      .populate('matricula');
 
-    if (autosDisponibles.length === 0) {
+    if (autosPosibles.length === 0) {
       return res.status(404).json({ message: 'No se encontraron autos disponibles para el modelo y sucursal especificados.' });
     }
 
     // Seleccionar un auto aleatorio de la lista de autos disponibles
-    const autoAleatorio = autosDisponibles[Math.floor(Math.random() * autosDisponibles.length)];  // Si hay más de uno, agarro uno aleatorio
+    const autoAleatorio = autosPosibles[Math.floor(Math.random() * autosPosibles.length)];  // Si hay más de uno, agarro uno aleatorio
     res.json(autoAleatorio);
   } catch (error) {
     console.error("Error al buscar auto aleatorio disponible:", error);
