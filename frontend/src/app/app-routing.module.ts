@@ -38,6 +38,7 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { AuthClienteGuard } from './guards/authCliente.guard';
+import { MantenimientoComponent } from './components/mantenimiento/mantenimiento.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -45,14 +46,14 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       { path: 'modelo-listar', component: ListarModelosComponent },
       { path: 'modelo/:id', component: DetalleModeloComponent },
-      { path: 'loginUsuario', component: LoginPageComponent},
-      { path: 'registrar', component: RegisterPageComponent},
-      { path: 'contacto', component: FormularioContactoComponent},
+      { path: 'loginUsuario', component: LoginPageComponent },
+      { path: 'registrar', component: RegisterPageComponent },
+      { path: 'contacto', component: FormularioContactoComponent },
       { path: 'alquiler-revision', component: AlquilerRevisionComponent },
       { path: 'alquiler-completado', component: AlquilerCompletadoComponent },
       { path: 'buscador', component: BuscadorComponent },
       { path: 'escritorio', component: EscritorioComponent },
-      { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent},
+      { path: 'editar-datos-usuario', component: EditarDatosUsuarioComponent },
       { path: 'cambiar-password', component: CambiarPasswordComponent },
       { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: 'reset/:token', component: ResetPasswordComponent },
@@ -61,13 +62,13 @@ const routes: Routes = [
 
   {
     path: '', component: LayoutAdminComponent, children: [
-      { path: 'modelos-listar', component: ModelosListarComponent},
-      { path: 'modelo-crear', component: CrearModeloComponent},
+      { path: 'modelos-listar', component: ModelosListarComponent },
+      { path: 'modelo-crear', component: CrearModeloComponent },
       { path: 'modelo-editar/:id', component: CrearModeloComponent },
 
-      { path: 'usuario-listar', component: ListarUsuariosComponent},
-      { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent},
-      { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent},
+      { path: 'usuario-listar', component: ListarUsuariosComponent },
+      { path: 'crear-admin-trabajador', component: CrearAdminTrabajadorComponent },
+      { path: 'editar-admin-trabajador/:id', component: CrearAdminTrabajadorComponent },
 
       { path: 'sucursal-crear', component: SucursalCrearComponent },
       { path: 'sucursal-listar', component: SucursalListarComponent },
@@ -75,22 +76,24 @@ const routes: Routes = [
       { path: 'asignar-autos/:id', component: AsignarAutosComponent },
       { path: 'asignar-trabajadores/:id', component: AsignarTrabajadoresComponent },
 
-      { path: 'alquiler-listar', component: AlquilerListarComponent},
+      { path: 'alquiler-listar', component: AlquilerListarComponent },
 
-      { path: 'marca-crear', component:CrearMarcaComponent},
-      { path: 'marca-listar', component: ListarMarcaComponent},
-      { path: 'marca-editar/:id', component: CrearMarcaComponent},
-      { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent},
+      { path: 'marca-crear', component: CrearMarcaComponent },
+      { path: 'marca-listar', component: ListarMarcaComponent },
+      { path: 'marca-editar/:id', component: CrearMarcaComponent },
+      { path: 'marca-modelos/:idMarca', component: ListarMarcaModeloComponent },
 
-      { path: 'categoria-listar', component: ListarCategoriaComponent},
-      { path: 'categoria-crear', component: CrearCategoriaComponent},
+      { path: 'categoria-listar', component: ListarCategoriaComponent },
+      { path: 'categoria-crear', component: CrearCategoriaComponent },
       { path: 'categoria-editar/:id', component: CrearCategoriaComponent },
-      { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent}
-      
+      { path: 'categoria-modelos/:idCategoria', component: ListarCategoriaModeloComponent }
+
       ,
-      { path: 'auto-listar', component: AutoListarComponent},
+      { path: 'auto-listar', component: AutoListarComponent },
       { path: 'auto-crear', component: AutoCrearComponent },
       { path: 'auto-editar/:id', component: AutoCrearComponent },
+
+      { path: 'mantenimiento-listar', component: MantenimientoComponent },
     ]
   },
 
