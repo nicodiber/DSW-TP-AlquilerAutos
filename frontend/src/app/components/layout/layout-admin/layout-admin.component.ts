@@ -13,6 +13,7 @@ export class LayoutAdminComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.usuario = this.usuario || {};
     this.authService.getAuthenticatedUser().subscribe({
     next: (usuario) => {
       if (usuario) {

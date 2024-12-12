@@ -128,7 +128,7 @@ export class AlquilerRevisionComponent implements OnInit {
             () => {
               console.log('Alquiler añadido al usuario actual.');
               this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
-              this.alquilerService.actualizarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
+              this.alquilerService.reservarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
                 () => {
                   console.log('Estado del auto actualizado a "reservado".');
                   window.location.href = '/alquiler-completado';

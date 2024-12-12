@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AlquilerService } from '../../../services/alquiler.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { AuthService } from '../../../services/auth.service';
+import { MantenimientoService } from '../../../services/mantenimiento.service';
 import { alquiler } from '../../../models/alquiler';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
@@ -18,40 +19,46 @@ export class AlquilerListarComponent implements OnInit {
   trabajadores: usuario[] = [];
   campoOrden: string = '';
   direccionOrdenAsc: boolean = true;
-  estados = ['reservado', 'activo', 'mantenimiento', 'cancelado', 'completado'];
   modalInstance: any;
   modalTitle: string = '';
   modalPlaceholder: string = '';
-  modalType: 'fecha' | 'fechaFinReal' | 'trabajador' | 'estado' | 'notas' = 'fecha';
+  modalType: 'fecha' | 'fechaFinReal' | 'trabajador' | 'cancelacion' | 'notas' = 'fecha';
   modalInput: string | undefined; // Usado solo para tipos distintos a 'fecha' y 'fechaFinReal'
   fechaInput: string = ''; // Usado solo para 'fecha' y 'fechaFinReal'
   horaInput: string = '';  // Usado solo para 'fecha' y 'fechaFinReal'
+  fechaISO: string = '';   // Fecha en formato ISO (YYYY-MM-DD)
   alquilerActual: alquiler | null = null;
   fechaValida: boolean = true;
   usuarioLogueado: any;
 
-  constructor(private _alquilerService: AlquilerService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
+  constructor(private _alquilerService: AlquilerService, private _mantenimientoService: MantenimientoService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.isNotAdminTrabajador();
     this.getAlquileres();
+    this._mantenimientoService.obtenerMantenimientos();
   }
 
   isNotAdminTrabajador() {
-        this._authservice.getAuthenticatedUser().subscribe(
-          (usuarioLogueado) => {
-            if (usuarioLogueado.rol === 'administrador' || usuarioLogueado.rol === 'trabajador') {
-              // Si el rol es admin o trabajador, se permite el acceso
-            } else {
-              // Otros roles, patea a login
-              window.location.href = '/loginUsuario';
-            }
-          },
-          (error) => {
-            window.location.href = '/loginUsuario';
-          }
-        );
-    }
+    this._authservice.getAuthenticatedUser().subscribe(
+      (usuarioLogueado) => {
+        this.usuarioLogueado = this.usuarioLogueado || {};
+        // Si el rol es admin o trabajador, se permite el acceso
+        if (usuarioLogueado.rol === 'administrador') {
+          this.usuarioLogueado.rol = 'administrador';
+        } else if (usuarioLogueado.rol === 'trabajador') {
+          this.usuarioLogueado.rol = 'trabajador';
+        } 
+        // Otros roles, patea a login
+        else {
+          window.location.href = '/loginUsuario';
+        }
+      },
+      (error) => {
+        window.location.href = '/loginUsuario';
+      }
+    );
+  }
 
   getAlquileres() {
     this._alquilerService.obtenerAlquileres().subscribe((data) => {
@@ -98,7 +105,7 @@ export class AlquilerListarComponent implements OnInit {
   }
 
   // Funciones que intervienen en los botones de accion
-  abrirModal(tipo: 'fecha' | 'fechaFinReal' | 'trabajador' | 'estado' | 'notas', alquiler: alquiler) {
+  abrirModal(tipo: 'fecha' | 'fechaFinReal' | 'trabajador' | 'cancelacion' | 'notas', alquiler: alquiler) {
     this.alquilerActual = alquiler;
     this.modalType = tipo;
 
@@ -121,8 +128,8 @@ export class AlquilerListarComponent implements OnInit {
         this.trabajadores = trabajadores;
       });
       this.modalInput = String(alquiler.trabajadorAsignado?._id) || '';
-    } else if (tipo === 'estado') {
-      this.modalTitle = 'Cambiar Estado';
+    } else if (tipo === 'cancelacion') {
+      this.modalTitle = 'Cancelar Alquiler';
       this.modalInput = alquiler.estadoAlquiler || '';
     } else if (tipo === 'notas') {
       this.modalTitle = 'Modificar Notas';
@@ -136,12 +143,19 @@ export class AlquilerListarComponent implements OnInit {
     }
   }
 
+  convertirFecha() {
+    if (this.fechaISO) {
+      const partes = this.fechaISO.split('-'); // Separar año, mes, día
+      this.fechaInput = `${partes[2]}/${partes[1]}/${partes[0]}`; // DD/MM/YYYY
+    } else {
+      this.fechaInput = '';
+    }
+  }
+
+  // Validar la fecha (en este caso, siempre válida si se usa el selector de fecha)
   inputValido(): boolean {
     if (this.modalType === 'fecha' || this.modalType === 'fechaFinReal') {
-      const regexFecha = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-      const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      this.fechaValida = regexFecha.test(this.fechaInput) && regexHora.test(this.horaInput);
+      this.fechaValida = !!this.fechaISO; // Validar que se seleccionó una fecha
       return this.fechaValida;
     }
 
@@ -165,12 +179,34 @@ export class AlquilerListarComponent implements OnInit {
     if (this.modalType === 'fecha' || this.modalType === 'fechaFinReal') {
       const fechaISO = this.convertirFechaAFormatoISO(this.fechaInput) + ' ' + this.horaInput;
       const fechaCompleta = moment(fechaISO, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
-
       if (this.modalType === 'fecha') {
         this._alquilerService.establecerFechaInicioReal(String(this.alquilerActual._id), fechaCompleta).subscribe(() => {
           this.alquilerActual!.fechaInicioReal = fechaCompleta;
-          this.toastr.success('Fecha de Inicio Real actualizada');
-          this.modalInstance?.hide();
+          this._alquilerService.cambiarEstado(String(this.alquilerActual?._id), 'activo').subscribe(() => {
+            // Actualizar el estado del Alquiler
+            this.alquilerActual!.estadoAlquiler = 'activo';
+            // Actualizar el estado del Alquiler en el array de alquileres del usuario
+            this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), 'activo').subscribe(
+              () => {
+                console.log('Alquiler actualizado con éxito');
+              },
+              error => {
+                console.error('Error al actualizar el alquiler en el usuario:', error);
+              }
+            );
+            // Actualizar el estado del Auto
+            this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?._id), String(this.alquilerActual?.auto._id), 'alquilado').subscribe(
+              () => {
+                console.log('Estado del auto actualizado');
+              },
+              error => {
+                console.error('Error al actualizar el estado del auto:', error);
+              }
+            );
+            this.fechaISO = ''; // Reseteo la fecha para que no me aparezca después por defecto al establecer la fechaFinReal
+            this.toastr.success('Fecha de Inicio Real actualizada');
+            this.modalInstance?.hide();
+          });
         });
       } else if (this.modalType === 'fechaFinReal') {
         const fechaInicio = new Date(this.alquilerActual.fechaInicioReal || '');
@@ -180,9 +216,50 @@ export class AlquilerListarComponent implements OnInit {
         }
         this._alquilerService.establecerFechaFinReal(String(this.alquilerActual._id), fechaCompleta).subscribe(() => {
           this.alquilerActual!.fechaFinReal = fechaCompleta;
-          this.toastr.success('Fecha de Fin Real actualizada');
-          this.modalInstance?.hide();
+          this._alquilerService.cambiarEstado(String(this.alquilerActual?._id), 'completado').subscribe(() => {
+            // Actualizar el estado del Alquiler
+            this.alquilerActual!.estadoAlquiler = 'completado';
+            // Actualizar el estado del Alquiler en el array de alquileres del usuario
+            this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), 'completado').subscribe(
+              () => {
+                console.log('Alquiler actualizado con éxito');
+              },
+              error => {
+                console.error('Error al actualizar el alquiler en el usuario:', error);
+              }
+            );
+            // Actualizar el estado del Auto
+            this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?._id), String(this.alquilerActual?.auto._id), 'mantenimiento').subscribe(
+              () => {
+                console.log('Estado del auto actualizado');
+
+                const sucursalDevolucionId = this.alquilerActual!.sucursalDevolucion._id;
+                this._alquilerService.actualizarSucursalAuto(String(this.alquilerActual?.auto._id), String(sucursalDevolucionId)).subscribe(
+                  () => {
+                    console.log('Sucursal del auto actualizada a la sucursal de devolución:', sucursalDevolucionId);
+                  },
+                  error => {
+                    console.error('Error al actualizar la sucursal del auto:', error);
+                  }
+                );
+              },
+              error => {
+                console.error('Error al actualizar el estado del auto:', error);
+              }
+            );
+            this.toastr.success('Fecha de Fin Real actualizada');
+            this.modalInstance?.hide();
+          });
         });
+
+        try {
+          console.log("Aqui estoy", String(this.alquilerActual.auto._id));
+          this._mantenimientoService.obtenerMantenimientos();
+          this._mantenimientoService.crearMantenimientoAlquiler(String(this.alquilerActual?.auto._id));
+          console.log("Aca estoy devuelta", String(this.alquilerActual?.auto._id));
+        } catch (error) {
+          console.error('Error al llamar crearMantenimientoAlquiler:', error);
+        }
       }
     } else if (this.modalType === 'trabajador' && typeof this.modalInput === 'string') {
       const trabajadorId = parseInt(this.modalInput, 10); // Convierte el ID a número
@@ -197,45 +274,23 @@ export class AlquilerListarComponent implements OnInit {
               this.modalInstance?.hide();
             });
         });
-    } else if (this.modalType === 'estado' && typeof this.modalInput === 'string') {
-        this._alquilerService.cambiarEstado(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
-          this.alquilerActual!.estadoAlquiler = String(this.modalInput);
-
-          // Llama a actualizarEstadoAlquilerUsuario para reflejar el cambio en el array de alquileres del usuario
-          this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), String(this.modalInput)).subscribe(
+    } else if (this.modalType === 'cancelacion' && typeof this.modalInput === 'string') {
+        this._alquilerService.cambiarEstado(String(this.alquilerActual._id), 'cancelado').subscribe(() => {
+          // Actualizar el estado del Alquiler
+          this.alquilerActual!.estadoAlquiler = 'cancelado';
+          // Actualizar el estado del Alquiler en el array de alquileres del usuario
+          this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), 'cancelado').subscribe(
             () => {
-              console.log('Estado del alquiler actualizado en el usuario');
+              console.log('Alquiler cancelado con éxito');
             },
             error => {
-              console.error('Error al actualizar el estado del alquiler en el usuario:', error);
+              console.error('Error al cancelar el alquiler en el usuario:', error);
             }
           );
-
-          // Llamada para actualizar el estado del auto después de actualizar el estado del alquiler
-          let nuevoEstadoAuto;
-          if (this.alquilerActual!.estadoAlquiler === 'completado' || this.alquilerActual!.estadoAlquiler === 'cancelado') {
-            nuevoEstadoAuto = 'disponible';
-          } else if (this.alquilerActual!.estadoAlquiler === 'activo') {
-            nuevoEstadoAuto = 'alquilado';
-          } else {
-            nuevoEstadoAuto = 'reservado';
-          }
-
-          this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?.auto._id), nuevoEstadoAuto).subscribe(
+          // Actualizar el estado del Auto
+          this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?._id), String(this.alquilerActual?.auto._id), 'disponible').subscribe(
             () => {
-              console.log('Estado del auto actualizado a', nuevoEstadoAuto);
-              if (this.alquilerActual!.estadoAlquiler === 'completado') {
-                // Si el estado es "completado", actualiza la sucursal del auto a la sucursal de devolución del alquiler
-                const sucursalDevolucionId = this.alquilerActual!.sucursalDevolucion._id;
-                this._alquilerService.actualizarSucursalAuto(String(this.alquilerActual?.auto._id), String(sucursalDevolucionId)).subscribe(
-                  () => {
-                    console.log('Sucursal del auto actualizada a la sucursal de devolución:', sucursalDevolucionId);
-                  },
-                  error => {
-                    console.error('Error al actualizar la sucursal del auto:', error);
-                  }
-                );
-              }
+              console.log('Estado del auto actualizado');
             },
             error => {
               console.error('Error al actualizar el estado del auto:', error);

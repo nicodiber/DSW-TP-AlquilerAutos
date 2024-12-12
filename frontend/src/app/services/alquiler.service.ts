@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { usuario } from '../models/usuario';
-// import { alquiler } from '../models/alquiler';
 
 // Voy a redefinir mis Alquiler para almacenar los atributos por el id unicamente
 interface AlquilerData {
@@ -75,13 +74,18 @@ export class AlquilerService {
     return this.http.post<any>(this.url + 'buscarModelosDisponibles', data);
   }
 
-  actualizarEstadoAuto(idAuto: string, estado: string): Observable<any> {
+  reservarEstadoAuto(idAuto: string, estado: string): Observable<any> {
     const url = `${this.url}autos/${idAuto}/estado`;
+    return this.http.patch(url, { estado });
+  }
+
+  actualizarEstadoAuto(idAlquiler: string, idAuto: string, estado: string): Observable<any> {
+    const url = `${this.url}${idAlquiler}/autos/${idAuto}/estado`;
     return this.http.patch(url, { estado });
   }
 
   actualizarSucursalAuto(idAuto: string, sucursalId: string) {
     return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
   }
-  
+
 }

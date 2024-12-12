@@ -68,11 +68,11 @@
                     
                       <div style="width: 30%;">
                         <div style="display: inline-grid; gap: 15px">
-                          <button (click)="abrirModal('fecha', alquiler)" *ngIf="!alquiler.fechaInicioReal" class="boton-acciones">Establecer Fecha Inicio Real</button>
-                          <button (click)="abrirModal('fechaFinReal', alquiler)" *ngIf="!alquiler.fechaFinReal" class="boton-acciones">Establecer Fecha Fin Real</button>
-                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="alquiler.trabajadorAsignado && usuarioLogueado.rol === 'administrador'" class="boton-acciones">Modificar Trabajador</button>
-                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="!alquiler.trabajadorAsignado && usuarioLogueado.rol === 'administrador'" class="boton-acciones">Asignar Trabajador</button>
-                          <button (click)="abrirModal('estado', alquiler)" class="boton-acciones">Cambiar Estado</button>
+                          <button (click)="abrirModal('fecha', alquiler)" *ngIf="(alquiler.estadoAlquiler !== 'cancelado') && (!alquiler.fechaInicioReal)" class="boton-acciones">Establecer Fecha Inicio Real</button>
+                          <button (click)="abrirModal('fechaFinReal', alquiler)" *ngIf="(alquiler.estadoAlquiler !== 'cancelado') && (!alquiler.fechaFinReal)" class="boton-acciones">Establecer Fecha Fin Real</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="(alquiler.estadoAlquiler !== 'cancelado') && (alquiler.estadoAlquiler !== 'completado') && (alquiler.trabajadorAsignado) && (usuarioLogueado.rol === 'administrador')" class="boton-acciones">Modificar Trabajador</button>
+                          <button (click)="abrirModal('trabajador', alquiler)" *ngIf="(alquiler.estadoAlquiler !== 'cancelado') && (alquiler.estadoAlquiler !== 'completado') && (!alquiler.trabajadorAsignado) && (usuarioLogueado.rol === 'administrador')" class="boton-acciones">Asignar Trabajador</button>
+                          <button (click)="abrirModal('cancelacion', alquiler)" *ngIf="alquiler.estadoAlquiler === 'reservado'" class="boton-acciones">Cancelar Alquiler</button>
 
                           <!-- Modal -->
                           <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
@@ -86,9 +86,9 @@
                                   <!-- Modal para fechas y horas -->
                                   <div *ngIf="modalType === 'fecha' || modalType === 'fechaFinReal'">
                                     <label>{{ modalPlaceholder }}</label>
-                                    <input type="text" class="form-control" placeholder="DD/MM/YYYY" [(ngModel)]="fechaInput" />
+                                    <input type="date" class="form-control" [(ngModel)]="fechaISO" (change)="convertirFecha()"  placeholder="Seleccionar Fecha" autocomplete="off">
                                     <div class="spacer-10"></div>
-                                    <input type="text" class="form-control" placeholder="HH:mm" [(ngModel)]="horaInput" />
+                                    <input type="time" class="form-control"[(ngModel)]="horaInput" placeholder="Seleccionar Horario" autocomplete="off">
                                     <div *ngIf="!fechaValida && fechaInput && horaInput" class="text-danger">
                                       Formato de fecha y/o hora inválido o incorrecto
                                     </div>
@@ -112,12 +112,9 @@
                                     </select>
                                   </div>
                                   
-                                  <!-- Dropdown para estado -->
-                                  <div *ngIf="modalType === 'estado'">
-                                    <label>Seleccione un Estado</label>
-                                    <select [(ngModel)]="modalInput" class="form-select" style="text-transform: capitalize;">
-                                      <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
-                                    </select>
+                                  <!-- Dropdown para cancelacion -->
+                                  <div *ngIf="modalType === 'cancelacion'">
+                                    <p>Estás a punto de cancelar este Alquiler. <br><strong>Esta acción es irreversible.</strong> ¿Estás seguro?</p>
                                   </div>
                                   
                                   <!-- Textarea para notas -->

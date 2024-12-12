@@ -36,10 +36,7 @@ export class UsuarioService {
   }
 
   actualizarEstadoAlquilerUsuario(userId: number, alquilerId: number, nuevoEstado: string): Observable<any> {
-    return this.http.put(
-      `${this.url}${userId}/alquileres/${alquilerId}/estado`,
-      { nuevoEstado }
-    );
+    return this.http.put(`${this.url}${userId}/alquileres/${alquilerId}/estado`, { nuevoEstado });
   }
 
   actualizarUsuario(usuario: any): Observable<any> {
