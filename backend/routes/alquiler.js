@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const alquilerController = require('../controllers/alquilerController'); 
 const autoController = require('../controllers/autoController');
+const mantenimientoController = require('../controllers/mantenimientoController');
 
 router.post('/', alquilerController.crearAlquiler);
 router.get('/', alquilerController.obtenerAlquileres);
@@ -14,7 +15,8 @@ router.put('/:id/notas', alquilerController.modificarNotas);
 router.put('/:id/trabajador', alquilerController.modificarTrabajador);
 router.put('/:id/estado', alquilerController.cambiarEstado);
 
-router.patch('/autos/:id/estado', autoController.actualizarEstadoAuto); // PATCH porque se actualiza parcialmente el objeto
+router.patch('/autos/:id/estado', autoController.reservarEstadoAuto); // PATCH porque se actualiza parcialmente el objeto
+router.patch('/:idAlquiler/autos/:idAuto/estado', autoController.actualizarEstadoAuto); // PATCH porque se actualiza parcialmente el objeto
 router.patch('/autos/:id/sucursal', autoController.actualizarSucursalAuto);
 
 // Usado por Buscador

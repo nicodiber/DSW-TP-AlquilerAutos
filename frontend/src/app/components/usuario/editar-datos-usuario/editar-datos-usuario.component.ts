@@ -26,7 +26,7 @@ export class EditarDatosUsuarioComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       email: ['', [Validators.required, Validators.email]],
-      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]+$')]],
+      licenciaConductor: ['', [Validators.required, Validators.pattern('^[A-Z0-9]{7,15}$')]],
       password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],

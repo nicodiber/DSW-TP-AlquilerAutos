@@ -23,15 +23,11 @@ const MantenimientoSchema = new mongoose.Schema({
   },
   descripcion: {
     type: String
-   
   },
   costoMantenimiento: {
     type: Number
-    
-  }
+  },
 }, { collection: 'mantenimientos' });
-
-// Middleware pre-save para validar que el trabajador tiene el rol correcto
 
 
 module.exports = mongoose.model('Mantenimiento', MantenimientoSchema);
