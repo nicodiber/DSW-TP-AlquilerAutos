@@ -87,5 +87,9 @@ export class AlquilerService {
   actualizarSucursalAuto(idAuto: string, sucursalId: string) {
     return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
   }
+  
+  cancelarAlquilerActualizaAuto(_id: string){
+     return this.http.put(`${this.url}cancelar/${_id}`, {});
+  }
 
 }
