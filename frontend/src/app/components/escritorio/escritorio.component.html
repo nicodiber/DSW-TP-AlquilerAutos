@@ -121,11 +121,11 @@
                                             <td><span class="d-lg-none d-sm-block"></span>{{ alquileres.sucursalDevolucion.nombreSucursal}}</td>
                                             <td>
                                                 <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
                                             </td>
                                             <td>
                                                 <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
                                             </td>
                                             <td><span class="d-lg-none d-sm-block"></span>$ {{ alquileres.precioTotalAlquiler | number: '1.0-0'}}</td>
                                             <td>
