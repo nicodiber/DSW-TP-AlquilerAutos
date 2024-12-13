@@ -22,6 +22,10 @@ interface AlquilerData {
 @Injectable({
   providedIn: 'root'
 })
+
+// Cuándo usar Observable<any> : Operaciones asíncronas (HTTP, WebSockets, etc.); Datos que cambian dinámicamente o en tiempo real; Flujos de datos que involucran transformación o combinación
+// Cuándo no usar Observable<any>: si el dato es inmediato, estático o si la función no devuelve nada
+
 export class AlquilerService {
   url = 'http://localhost:4000/api/alquileres/';
 
@@ -69,6 +73,15 @@ export class AlquilerService {
     return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado });
   }
 
+  actualizarEstadoAuto(idAlquiler: string, idAuto: string, estado: string): Observable<any> {
+    const url = `${this.url}${idAlquiler}/autos/${idAuto}/estado`;
+    return this.http.patch(url, { estado });
+  }
+
+  actualizarSucursalAuto(idAuto: string, sucursalId: string) {
+    return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
+  }
+
   // Funciones especificas - Buscador
   buscarModelosDisponibles(data: any): Observable<any> {
     return this.http.post<any>(this.url + 'buscarModelosDisponibles', data);
@@ -79,17 +92,9 @@ export class AlquilerService {
     return this.http.patch(url, { estado });
   }
 
-  actualizarEstadoAuto(idAlquiler: string, idAuto: string, estado: string): Observable<any> {
-    const url = `${this.url}${idAlquiler}/autos/${idAuto}/estado`;
-    return this.http.patch(url, { estado });
-  }
-
-  actualizarSucursalAuto(idAuto: string, sucursalId: string) {
-    return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
-  }
-  
+  // Otras funciones especificas
   cancelarAlquilerActualizaAuto(_id: string){
-     return this.http.put(`${this.url}cancelar/${_id}`, {});
+    return this.http.put(`${this.url}cancelar/${_id}`, {});
   }
 
 }

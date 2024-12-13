@@ -213,17 +213,15 @@ exports.buscarModelosDisponibles = async (req, res) => {
       ...autosDisponibles.map(auto => auto._id),
       ...autosValidosIds
     ]
-    console.log("autosCoincidentesIds", autosCoincidentesIds);
 
     const autosCoincidentes = await Auto.find({ _id: { $in: autosCoincidentesIds } });  // Aca tengo los autos coincidentes (objetos)
 
     // Paso 5: Obtener modelos de autos coincidentes
     const modeloIds = autosCoincidentes.map(auto => auto.modeloAuto);
-    console.log("modeloIds", modeloIds);
-
     const modelosDisponibles = await Modelo.find({ _id: { $in: modeloIds } });
-    res.json( [ modelosDisponibles, autosCoincidentesIds ] );
 
+    res.json( [ modelosDisponibles, autosCoincidentesIds ] );
+    
   } catch (error) {
     console.error("Error al buscar modelos disponibles:", error);
     res.status(500).json({ message: "Error al buscar modelos disponibles" });

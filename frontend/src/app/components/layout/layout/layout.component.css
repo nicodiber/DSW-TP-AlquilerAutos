@@ -1,9 +1,13 @@
 blockquote::before{
   background-color: #dbb700 !important;
   color: #ffffff !important;
-  margin-left: -20px !important;
+  margin-left: 0px !important;
 }
 
 #back-to-top{
   background-color: #dbb700 !important;;
+}
+
+.de_testi{
+  margin-bottom: 25px !important;
 }

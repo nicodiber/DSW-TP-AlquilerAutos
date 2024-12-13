@@ -18,3 +18,16 @@ select option {
   color: black !important;
   background-color: white !important;
 }
+
+@media (max-width: 768px){
+  .jarallax {
+    height: 400px !important;
+  }
+  .jarallax .container{
+    padding-top: 80px !important;
+  }
+  .jarallax .container h1{
+    font-size: 32px !important;
+    text-align: center !important;
+  }
+}

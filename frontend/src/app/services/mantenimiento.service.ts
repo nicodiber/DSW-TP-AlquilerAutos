@@ -33,7 +33,6 @@ export class MantenimientoService {
 
   // Especifico
   crearMantenimientoAlquiler( idAuto: string ): Observable<any> {
-    console.log(`${this.url}mantenimientoAlquiler/${idAuto}`);
     return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, { });
   }
 }

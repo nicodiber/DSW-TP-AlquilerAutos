@@ -9,7 +9,6 @@ router.use((req, res, next) => {
 });
 
 router.post('/', imantenimientoController.crearMantenimiento);
-router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
 router.get('/', imantenimientoController.obtenerMantenimientos);
 router.get('/:id', imantenimientoController.obtenerMantenimiento);
 router.put('/:id', imantenimientoController.actualizarMantenimiento);

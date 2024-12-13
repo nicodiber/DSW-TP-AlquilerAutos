@@ -36,7 +36,6 @@ export class AlquilerListarComponent implements OnInit {
   ngOnInit(): void {
     this.isNotAdminTrabajador();
     this.getAlquileres();
-    this._mantenimientoService.obtenerMantenimientos();
   }
 
   isNotAdminTrabajador() {
@@ -252,14 +251,8 @@ export class AlquilerListarComponent implements OnInit {
           });
         });
 
-        try {
-          console.log("Aqui estoy", String(this.alquilerActual.auto._id));
-          this._mantenimientoService.obtenerMantenimientos();
-          this._mantenimientoService.crearMantenimientoAlquiler(String(this.alquilerActual?.auto._id));
-          console.log("Aca estoy devuelta", String(this.alquilerActual?.auto._id));
-        } catch (error) {
-          console.error('Error al llamar crearMantenimientoAlquiler:', error);
-        }
+        this._mantenimientoService.crearMantenimientoAlquiler(String(this.alquilerActual?.auto._id)).subscribe();
+        // Los Observables son "perezosos": el método HttpClient.get crea un observable que define cómo se recuperarán los datos, pero este no ejecutará ninguna solicitud HTTP hasta que suscribamos al observable con .subscribe()
       }
     } else if (this.modalType === 'trabajador' && typeof this.modalInput === 'string') {
       const trabajadorId = parseInt(this.modalInput, 10); // Convierte el ID a número

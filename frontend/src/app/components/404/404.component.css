@@ -1,0 +1,31 @@
+
+@media (min-width: 768px) and (max-width: 1450px) {
+  h1.s2 span:first-child {
+    font-size: 160px !important;
+    letter-spacing: 0px !important;
+  }
+}
+
+@media (max-width: 768px){
+  .row h1, .row span, .row p{
+    text-align: center !important;
+  }
+  .btn-main{
+    display: block !important;
+    width: 200px !important;
+    margin: auto !important;
+  }
+
+  h1.s2 span:first-child{
+    font-size: 80px !important;
+    letter-spacing: 0px !important;
+  }
+
+  .row .col-lg-6:first-child{
+    order: 2 !important;
+    margin-top: 30px !important;
+  }
+  .row .col-lg-6:last-child{
+    order: 1 !important;
+  }
+}
