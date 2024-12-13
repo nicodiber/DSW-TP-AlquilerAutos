@@ -30,11 +30,11 @@ export class EscritorioComponent implements OnInit {
           this.getAlquileres();
         }
       } else {
-        this.router.navigate(['/loginUsuario']);
+        window.location.href = '/loginUsuario';
       }
     },
     error: () => {
-      this.router.navigate(['/loginUsuario']);
+      window.location.href = '/loginUsuario';
     },
   });
 }
@@ -43,7 +43,6 @@ export class EscritorioComponent implements OnInit {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
         this.usuario = alquileresDeUser;
-        console.log(this.usuario);
       },
       error: (error) => {
         console.error('Error al obtener alquileres:', error);
@@ -51,7 +50,9 @@ export class EscritorioComponent implements OnInit {
     });
   }
 
-  incidentesUsuario(){}
+  incidentesUsuario(){
+    window.location.href = '/incidentes';
+  }
 
   irAGestionarUsuarios() {
     window.location.href = '/usuario-listar';

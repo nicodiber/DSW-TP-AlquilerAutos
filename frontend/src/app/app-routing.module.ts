@@ -36,6 +36,7 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
+import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: 'cambiar-password', component: CambiarPasswordComponent },
       { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: 'reset/:token', component: ResetPasswordComponent },
+      { path: 'incidentes', component: IncidentesUsuarioComponent },
     ]
   },
 
