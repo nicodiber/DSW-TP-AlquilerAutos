@@ -5,6 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: 'variables.env' });
 
+import mercadoPagoRoutes from './routes/mercado-pago.routes.js';
+app.use('/api/mercado-pago', mercadoPagoRoutes);
+
 // Creamos el servidor
 const app = express();
 

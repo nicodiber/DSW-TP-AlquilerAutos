@@ -38,6 +38,7 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { AuthClienteGuard } from './guards/authCliente.guard';
+import { MercadoPagoService } from './services/mercado-pago.service';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -91,9 +92,12 @@ const routes: Routes = [
       { path: 'auto-listar', component: AutoListarComponent},
       { path: 'auto-crear', component: AutoCrearComponent },
       { path: 'auto-editar/:id', component: AutoCrearComponent },
-    ]
-  },
 
+      
+    ]
+    
+  },
+  {path: 'pago', component: MercadoPagoService},
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 
