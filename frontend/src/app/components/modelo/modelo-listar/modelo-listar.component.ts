@@ -151,6 +151,7 @@ export class ListarModelosComponent implements OnInit {
     this.gestionCookiesService.borrarCookie('datosBusqueda');
     this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
     this.gestionCookiesService.borrarCookie('modelosDisponibles');
+    this.gestionCookiesService.borrarCookie('autosCoincidentesIds');
     window.location.href = '/buscador';
   }
 }

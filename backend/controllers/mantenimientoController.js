@@ -24,6 +24,32 @@ exports.crearMantenimiento = async (req, res) => {
   }
 };
 
+exports.crearMantenimientoAlquiler = async (req, res) => {
+  console.log("Holaaaa");
+  try {
+    const _id = await getNextSequenceValue('mantenimientoId');
+    const { idAuto } = req.params; 
+    console.log('ID Auto:', idAuto);
+
+    let mantenimiento = new Mantenimiento({
+      _id,
+      auto: idAuto,
+      trabajadorACargo: null,
+      fechaInicioMantenimiento: new Date().toISOString().replace('Z', '+00:00'),
+      fechaFinMantenimiento: null,
+      descripcion: null,
+      costoMantenimiento: null
+    });
+    console.log('Mantenimiento:', mantenimiento);
+
+    await mantenimiento.save();
+    res.json(mantenimiento);
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).send('Hubo un error al crear el mantenimiento');
+  }
+};
+
 exports.obtenerMantenimientos = async (req, res) => {
   try {
     const mantenimientos = await Mantenimiento.find();
@@ -87,5 +113,30 @@ exports.eliminarMantenimiento = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error al eliminar el mantenimiento');
+  }
+};
+
+exports.crearMantenimientoAlquiler = async (req, res) => {
+  try {
+    const _id = await getNextSequenceValue('mantenimientoId');
+    const { idAuto } = req.params; 
+    console.log('ID Auto:', idAuto);
+
+    let mantenimiento = new Mantenimiento({
+      _id,
+      auto: idAuto,
+      trabajadorACargo: null,
+      fechaInicioMantenimiento: new Date().toISOString().replace('Z', '+00:00'),
+      fechaFinMantenimiento: null,
+      descripcion: null,
+      costoMantenimiento: null
+    });
+    console.log('Mantenimiento:', mantenimiento);
+
+    await mantenimiento.save();
+    res.json(mantenimiento);
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).send('Hubo un error al crear el mantenimiento');
   }
 };

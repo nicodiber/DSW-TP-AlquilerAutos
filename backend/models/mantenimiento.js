@@ -12,24 +12,20 @@ const MantenimientoSchema = new mongoose.Schema({
   },
   trabajadorACargo: {
     type: mongoose.Schema.Types.Number,
-    ref: 'Usuario',
-    required: true
+    ref: 'Usuario'
   },
   fechaInicioMantenimiento: {
     type: Date,
     required: true
   },
   fechaFinMantenimiento: {
-    type: Date,
-    required: true
+    type: Date
   },
   descripcion: {
-    type: String,
-    required: true
+    type: String
   },
   costoMantenimiento: {
-    type: Number,
-    required: true
+    type: Number
   },
 }, { collection: 'mantenimientos' });
 

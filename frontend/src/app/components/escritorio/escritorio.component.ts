@@ -50,6 +50,9 @@ export class EscritorioComponent implements OnInit {
       }
     });
   }
+
+  incidentesUsuario(){}
+
   irAGestionarUsuarios() {
     window.location.href = '/usuario-listar';
     //this.router.navigate(['/usuario-listar']);
@@ -101,7 +104,7 @@ export class EscritorioComponent implements OnInit {
 
   confirmarCancelacion() {
 
-    this.alquilerService.cambiarEstado(this.alquilerIdToCancel, 'cancelado').subscribe(
+    this.alquilerService.cancelarAlquilerActualizaAuto(this.alquilerIdToCancel).subscribe(
         (data) => {
             
             this.usuarioService.cancelarAlquilerUsuario(this.usuario._id, this.alquilerIdToCancel, 'cancelado').subscribe(

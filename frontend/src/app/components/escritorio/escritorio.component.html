@@ -38,6 +38,7 @@
                                 <ul class="menu-col">
                                     <li><a href="/escritorio" class="no-underline active"><i class="fa fa-home"></i>Escritorio</a></li>
                                     <li><a (click)="editarMisDatos()"class="no-underline"><i class="fa fa-user "></i>Perfil</a></li>
+                                    <li><a *ngIf="usuario.rol === 'usuario'" (click)="incidentesUsuario()" class="no-underline"><i class="fa-solid fa-circle-exclamation"></i>Incidentes</a></li>
                                     <li><a (click)="cerrarSesion()" class="no-underline"><i class="fa fa-sign-out"></i>Cerrar Sesión</a></li>
                                 </ul>
                             </div>
@@ -95,7 +96,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-11">
+                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-9">
                             <div class="card p-4 rounded-5 mb25">
                                 <h4>Alquileres recientes</h4>
                                 <table *ngIf="usuario.alquileres.length > 0" class="table de-table">
@@ -120,11 +121,11 @@
                                             <td><span class="d-lg-none d-sm-block"></span>{{ alquileres.sucursalDevolucion.nombreSucursal}}</td>
                                             <td>
                                                 <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
                                             </td>
                                             <td>
                                                 <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-00:00'}}
+                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
                                             </td>
                                             <td><span class="d-lg-none d-sm-block"></span>$ {{ alquileres.precioTotalAlquiler | number: '1.0-0'}}</td>
                                             <td>

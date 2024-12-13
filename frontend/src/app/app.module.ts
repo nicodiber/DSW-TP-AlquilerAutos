@@ -52,10 +52,7 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
-import { authInterceptor } from './interceptors/auth.interceptor';
-import { HeaderComponent } from './components/layout/componentesLayout/header/header/header.component';
-import { FooterComponent } from './components/layout/componentesLayout/footer/footer/footer.component';
-import { MantenimientoComponent } from './components/mantenimiento/mantenimiento.component';
+import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -94,9 +91,7 @@ import { MantenimientoComponent } from './components/mantenimiento/mantenimiento
     CambiarPasswordComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    HeaderComponent,
-    FooterComponent,
-    MantenimientoComponent,
+    IncidentesUsuarioComponent,
 
   ],
 

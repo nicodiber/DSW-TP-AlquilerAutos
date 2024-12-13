@@ -32,8 +32,8 @@ export class ModeloService {
   }
 
   // Funciones especificas
-  buscarAutoAleatorioDisponible(idModelo: string, idSucursal: string): Observable<any> {
-    return this.http.post<any>(this.url + 'buscarAutoAleatorioDisponible', {idModelo, idSucursal});
+  buscarAutoAleatorioDisponible(idAutos: number[], idModelo: number): Observable<any> {
+    return this.http.post<any>(this.url + 'buscarAutoAleatorioDisponible', { idAutos, idModelo});
   }
 
   verificarAutosPorModelo(idModelo: number): Observable<boolean> {

@@ -10,7 +10,7 @@ export class MantenimientoService {
   url = 'http://localhost:4000/api/mantenimientos/';
 
   constructor(private http: HttpClient) { }
-  
+
   obtenerMantenimientos(): Observable<any>{
     return this.http.get(this.url);
   }
@@ -29,5 +29,11 @@ export class MantenimientoService {
 
   obtenerMantenimiento(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
+  }
+
+  // Especifico
+  crearMantenimientoAlquiler( idAuto: string ): Observable<any> {
+    console.log(`${this.url}mantenimientoAlquiler/${idAuto}`);
+    return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, { });
   }
 }
