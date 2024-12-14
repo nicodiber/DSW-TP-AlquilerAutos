@@ -50,8 +50,4 @@ export class UsuarioService {
   cancelarAlquilerUsuario(userId: number, alquilerId: number, nuevoEstado: string): Observable<any> {
     return this.http.put(`${this.url}${userId}/alquileres/${alquilerId}/estado`, { nuevoEstado });
   }
-
-  obtenerTrabajadoresPorSucursal(sucursalId: string): Observable<usuario[]> {
-    return this.http.get<usuario[]>(`${this.url}trabajadores-sucursal/${sucursalId}`);
-  }
 }

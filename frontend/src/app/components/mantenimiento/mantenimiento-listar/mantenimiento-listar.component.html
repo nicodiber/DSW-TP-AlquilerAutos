@@ -93,6 +93,64 @@
                                 class="boton-acciones">
                                 Finalizar Mantenimiento
                             </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title" id="dynamicModalLabel">{{ modalTitle }}</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <!-- Modal para fechas de fin de mantenimiento -->
+                                    <div *ngIf="modalType === 'fechaFinMantenimiento'">
+                                      <label>{{ modalPlaceholder }}</label>
+                                      <input type="date" class="form-control" [(ngModel)]="fechaISO" (change)="convertirFecha()"
+                                        placeholder="Seleccionar Fecha" autocomplete="off">
+                                      <div class="spacer-10"></div>
+                                      <input type="time" class="form-control" [(ngModel)]="horaInput" placeholder="Seleccionar Horario"
+                                        autocomplete="off">
+                                      <div *ngIf="!fechaValida && fechaInput && horaInput" class="text-danger">
+                                        Formato de fecha y/o hora inválido o incorrecto
+                                      </div>
+                                    </div>
+                            
+                                    <!-- Dropdown para trabajador -->
+                                    <div *ngIf="modalType === 'trabajador' && trabajadores.length > 0">
+                                      <label>Seleccione un Trabajador</label>
+                                      <select [(ngModel)]="modalInput" class="form-select">
+                                        <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">
+                                          {{ trabajador.nombre }} {{ trabajador.apellido }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <div *ngIf="modalType === 'trabajador' && trabajadores.length === 0">
+                                      <label>Seleccione un Trabajador de la Sucursal de Entrega</label>
+                                      <select [(ngModel)]=" modalInput" class="form-select">
+                                        <option disabled>
+                                          No hay trabajadores disponibles
+                                        </option>
+                                      </select>
+                                    </div>
+                            
+                                    <!-- Dropdown para costo -->
+                                    <div *ngIf="modalType === 'costo'">
+                                    </div>
+                            
+                                    <!-- Textarea para descripcion -->
+                                    <div *ngIf="modalType === 'descripcion'">
+                                      <textarea [(ngModel)]="modalInput" class="form-control"></textarea>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" [disabled]="!inputValido()"
+                                      (click)="confirmarModal()">Guardar</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         </div>
                       </div>
                     </div>

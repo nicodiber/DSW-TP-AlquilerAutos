@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { MantenimientoService } from '../../../services/mantenimiento.service';
 import { AuthService } from '../../../services/auth.service';
-import { UsuarioService } from '../../../services/usuario.service';
 import { mantenimiento } from '../../../models/mantenimiento';
 import { usuario } from '../../../models/usuario';
 import moment from 'moment';
+import { AlquilerService } from '../../../services/alquiler.service';
 
 @Component({
   selector: 'app-mantenimiento-listar',
@@ -32,7 +32,7 @@ export class MantenimientoListarComponent implements OnInit {
   constructor(
     private _mantenimientoService: MantenimientoService,
     private _authservice: AuthService,
-    private _usuarioService: UsuarioService,
+    private _alquilerService: AlquilerService,
     private toastr: ToastrService
   ) { }
 
@@ -110,8 +110,9 @@ export class MantenimientoListarComponent implements OnInit {
       this.horaInput = '';
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Asignar Trabajador';
-      this._usuarioService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual._id)).subscribe((trabajadores: usuario[]) => {
+      this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual.auto.sucursalAuto)).subscribe((trabajadores: usuario[]) => {
         this.trabajadores = trabajadores;
+        console.log(this.mantenimientoActual?.auto.sucursalAuto);
         console.log('Trabajadores cargados:', trabajadores); // Verifica si los trabajadores se están cargando
       },
         error => {

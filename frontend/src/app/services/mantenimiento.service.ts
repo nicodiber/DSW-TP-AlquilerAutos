@@ -38,10 +38,6 @@ export class MantenimientoService {
     return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, {});
   }
 
-  obtenerTrabajadoresPorSucursal(sucursalId: string): Observable<usuario[]> {
-    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/trabajadores-sucursal/${sucursalId}`);
-  }
-
   establecerFechaFinMantenimiento(_id: string, fechaFin: Date): Observable<any> {
     const body = { fechaFinMantenimiento: fechaFin };
     return this.http.put(`${this.url}${_id}/fechaFin`, body);
