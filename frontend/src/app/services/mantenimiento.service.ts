@@ -11,19 +11,19 @@ export class MantenimientoService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerMantenimientos(): Observable<any>{
+  obtenerMantenimientos(): Observable<any> {
     return this.http.get(this.url);
   }
 
-  eliminarMantenimiento(_id: number): Observable<any>{
+  eliminarMantenimiento(_id: number): Observable<any> {
     return this.http.delete(this.url + _id);
   }
 
-  guardarMantenimiento(mantenimiento: mantenimiento): Observable<any>{
+  guardarMantenimiento(mantenimiento: mantenimiento): Observable<any> {
     return this.http.post(this.url, mantenimiento);
   }
 
-  editarMantenimiento(_id: string, mantenimiento: mantenimiento):Observable<any>{
+  editarMantenimiento(_id: string, mantenimiento: mantenimiento): Observable<any> {
     return this.http.put(this.url + _id, mantenimiento);
   }
 
@@ -32,7 +32,27 @@ export class MantenimientoService {
   }
 
   // Especifico
-  crearMantenimientoAlquiler( idAuto: string ): Observable<any> {
-    return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, { });
+  crearMantenimientoAlquiler(idAuto: string): Observable<any> {
+    return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, {});
+  }
+
+  establecerFechaFinMantenimiento(_id: string, fecha: string | Date) {
+    return this.http.put(`${this.url}${_id}/fechaFinMantenimiento`, { fechaFinMantenimiento: fecha });
+  }
+
+  actualizarEstadoAuto(idAuto: string): Observable<any> {
+    return this.http.patch(`${this.url}autos/${idAuto}/estado`, {});
+  }
+
+  modificarTrabajador(_id: string, trabajadorId: number) {
+    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorACargo: trabajadorId });
+  }
+
+  modificarDescripcion(_id: string, descripcion: string) {
+    return this.http.put(`${this.url}${_id}/descripcion`, { descripcion });
+  }
+
+  modificarCosto(_id: string, costoMantenimiento: number) {
+    return this.http.put(`${this.url}${_id}/costo`, { costoMantenimiento });
   }
 }

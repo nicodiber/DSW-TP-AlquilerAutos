@@ -7,7 +7,7 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './layout-admin.component.html',
   styleUrls: ['./layout-admin.component.css']
 })
-export class LayoutAdminComponent implements OnInit { 
+export class LayoutAdminComponent implements OnInit {
   usuario: any;
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -15,16 +15,16 @@ export class LayoutAdminComponent implements OnInit {
   ngOnInit(): void {
     this.usuario = this.usuario || {};
     this.authService.getAuthenticatedUser().subscribe({
-    next: (usuario) => {
-      if (usuario) {
-        this.usuario = usuario;
-      } else {
+      next: (usuario) => {
+        if (usuario) {
+          this.usuario = usuario;
+        } else {
+          this.router.navigate(['/loginUsuario']);
+        }
+      },
+      error: () => {
         this.router.navigate(['/loginUsuario']);
-      }
-    },
-    error: () => {
-      this.router.navigate(['/loginUsuario']);
-    },
-  });
+      },
+    });
   }
 }

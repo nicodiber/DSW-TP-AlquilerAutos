@@ -16,29 +16,29 @@ export class EscritorioComponent implements OnInit {
   alquilerIdToCancel: any | null = null;
 
   constructor(private authService: AuthService,
-              private alquilerService: AlquilerService, 
-              private usuarioService: UsuarioService, 
-              private router: Router,
-              private toastr: ToastrService) { }
+    private alquilerService: AlquilerService,
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private toastr: ToastrService) { }
 
- ngOnInit(): void {
-  this.authService.getAuthenticatedUser().subscribe({
-    next: (usuario) => {
-      if (usuario) {
-        this.usuario = usuario;
-        if (usuario.rol === 'usuario') {
-          this.getAlquileres();
+  ngOnInit(): void {
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (usuario) => {
+        if (usuario) {
+          this.usuario = usuario;
+          if (usuario.rol === 'usuario') {
+            this.getAlquileres();
+          }
+        } else {
+          window.location.href = '/loginUsuario';
         }
-      } else {
+      },
+      error: () => {
         window.location.href = '/loginUsuario';
-      }
-    },
-    error: () => {
-      window.location.href = '/loginUsuario';
-    },
-  });
-}
- 
+      },
+    });
+  }
+
   getAlquileres() {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
@@ -57,26 +57,24 @@ export class EscritorioComponent implements OnInit {
 
   irAGestionarUsuarios() {
     window.location.href = '/usuario-listar';
-    //this.router.navigate(['/usuario-listar']);
   }
   irAGestionarSucursales() {
-    window.location.href = '/sucursal-listar';    
-    //this.router.navigate(['/sucursal-listar']);
+    window.location.href = '/sucursal-listar';
   }
   irAGestionarModelos() {
-    window.location.href = '/modelos-listar';    
+    window.location.href = '/modelos-listar';
   }
   irAGestionarMarcas() {
-    window.location.href = '/marca-listar';    
+    window.location.href = '/marca-listar';
   }
   irAGestionarCategorias() {
-    window.location.href = '/categoria-listar';    
+    window.location.href = '/categoria-listar';
   }
   irAGestionarAlquileres() {
-    window.location.href = '/alquiler-listar';    
+    window.location.href = '/alquiler-listar';
   }
   irAGestionarAutos() {
-    window.location.href = '/auto-listar';    
+    window.location.href = '/auto-listar';
   }
   irAGestionarIncidentes() {
     window.location.href = '/incidente-listar';    
@@ -91,13 +89,13 @@ export class EscritorioComponent implements OnInit {
   }
   cerrarSesion() {
     this.authService.logout().subscribe({
-    next: () => {
-      window.location.href = '/loginUsuario';
-    },
-    error: (err) => {
-      console.error('Error al cerrar sesión:', err);
-    }
-  });
+      next: () => {
+        window.location.href = '/loginUsuario';
+      },
+      error: (err) => {
+        console.error('Error al cerrar sesión:', err);
+      }
+    });
   }
 
 
@@ -114,11 +112,11 @@ export class EscritorioComponent implements OnInit {
 
     this.alquilerService.cancelarAlquilerActualizaAuto(this.alquilerIdToCancel).subscribe(
         (data) => {
-            
+
             this.usuarioService.cancelarAlquilerUsuario(this.usuario._id, this.alquilerIdToCancel, 'cancelado').subscribe(
                 (data) => {
                     this.toastr.success('El alquiler del usuario fue cancelado con éxito', 'Alquiler Cancelado');
-                    this.getAlquileres();              
+                    this.getAlquileres();
                 },
                 (error) => {
                     this.toastr.error('Error al cancelar el alquiler del usuario', 'Error');

@@ -1,0 +1,166 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo">LISTADO DE TODOS LOS MANTENIMIENTOS</span>
+
+          <!-- Botón de "Crear Mantenimiento" -->
+          <button class="btn btn-success float-end" routerLink="/mantenimiento-crear">CREAR MANTENIMIENTO</button>
+
+          <!-- Tabla de Mantenimientos -->
+          <table *ngIf="listaMantenimientos.length > 0" class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th (click)="ordenarPor('_id')">ID <span [ngClass]="getIconoOrden('_id')"></span></th>
+                <th (click)="ordenarPor('fechaInicioMantenimiento')">Fecha Inicio <span [ngClass]="getIconoOrden('fechaInicioMantenimiento')"></span></th>
+                <th (click)="ordenarPor('fechaFinMantenimiento')">Fecha Fin <span [ngClass]="getIconoOrden('fechaFinMantenimiento')"></span></th>
+                <th (click)="ordenarPor('costoMantenimiento')">Costo <span [ngClass]="getIconoOrden('costoMantenimiento')"></span></th>
+                <th>Matricula Auto</th>
+                <th>Trabajador Asignado</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let mantenimiento of listaMantenimientos">
+                <!-- Fila principal: Datos Generales del mantenimiento -->
+                <tr>
+                  <td data-label="ID">{{ mantenimiento._id }}</td>
+                  <td data-label="Fecha Inicio">{{ mantenimiento.fechaInicioMantenimiento | date: 'dd/MM/yyyy HH:mm' }} </td>
+                  <td data-label="Fecha Fin"> 
+                    <span *ngIf="mantenimiento.fechaFinMantenimiento">{{ mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span *ngIf="!mantenimiento.fechaFinMantenimiento">N/A</span>
+                  </td>
+                  <td data-label="Costo">${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</td>
+                  <td data-label="Matricula Auto">{{ mantenimiento.auto.matricula }}</td>
+                  <td data-label="Trabajador Asignado">
+                    <span *ngIf="mantenimiento.trabajadorACargo">{{ mantenimiento.trabajadorACargo.nombre }} {{mantenimiento.trabajadorACargo.apellido }}</span>
+                    <span *ngIf="!mantenimiento.trabajadorACargo">No asignado</span>
+                  </td>
+                  <td data-label="Estado" style="text-transform: capitalize;" [ngClass]="{'estado-en-progreso': !mantenimiento.fechaFinMantenimiento, 'estado-completado': mantenimiento.fechaFinMantenimiento }">
+                    <strong>{{ !mantenimiento.fechaFinMantenimiento ? 'En Progreso' : 'Completado' }}</strong>
+                  </td>
+                  <td>
+                    <!-- Botón para expandir Detalles -->
+                    <button (click)="mantenimiento.mostrarDetalles = !mantenimiento.mostrarDetalles" class="btn-main btn-black" style="padding: 5px 15px;"> {{ mantenimiento.mostrarDetalles ? 'Ocultar' : 'Ver Más' }} </button>
+                  </td>
+                </tr>
+
+                <!-- Fila expandible: Detalles adicionales -->
+                <tr *ngIf="mantenimiento.mostrarDetalles" class="expandible">
+                  <td colspan="10" style="padding: 30px;">
+                    <div style="display: flex;">
+                      <div style="width: 50%;">
+                        <h6>Detalles del Mantenimiento:</h6>
+                        <div class="datos-adicionales" style="display: grid; gap: 15px">
+                          <span><i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha Inicio:</strong> {{
+                            mantenimiento.fechaInicioMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                          <span *ngIf="mantenimiento.fechaFinMantenimiento"><i
+                              class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha Fin:</strong> {{
+                            mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                          <span *ngIf="!mantenimiento.fechaFinMantenimiento"><i
+                              class="fa fa-clock"></i>&nbsp;&nbsp;<strong>Estado:</strong> En progreso</span>
+                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Trabajador:</strong> {{
+                            mantenimiento.trabajadorACargo?.nombre }} {{ mantenimiento.trabajadorACargo?.apellido
+                            }}</span>
+                          <span><i class="fa fa-comment"></i>&nbsp;&nbsp;<strong>Descripción:</strong> {{
+                            mantenimiento.descripcion }}</span>
+                          <span><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong> ${{
+                            mantenimiento.costoMantenimiento | number: '1.0-0' }}</span>
+                        </div>
+                      </div>
+                      <div style="width: 50%; border-left: 1px solid black; padding-left: 20px;">
+                        <h6>Acciones:</h6>
+                        <div style="display: inline-grid; gap: 15px">
+                          <!-- Botón para abrir el modal de asignar trabajador -->
+                          <button (click)="abrirModal('trabajador', mantenimiento)" class="boton-acciones"
+                            *ngIf="usuarioLogueado.rol === 'administrador'">
+                            Asignar Trabajador
+                          </button>
+
+                          <!-- Botón para abrir el modal de modificar descripción -->
+                          <button (click)="abrirModal('descripcion', mantenimiento)" class="boton-acciones">
+                            Modificar Descripción
+                          </button>
+
+                          <!-- Botón para abrir el modal de modificar costo -->
+                          <button (click)="abrirModal('costo', mantenimiento)" class="boton-acciones">
+                            Modificar Costo
+                          </button>
+
+                          <!-- Botón para abrir el modal de modificar fecha de fin (solo si no está finalizado) -->
+                          <button (click)="abrirModal('fechaFinMantenimiento', mantenimiento)"
+                            *ngIf="!mantenimiento.fechaFinMantenimiento" class="boton-acciones">
+                            Finalizar Mantenimiento
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+
+          <!-- Modal Genérico -->
+          <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="dynamicModalLabel">{{ modalTitle }}</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <ng-container [ngSwitch]="modalType">
+                    <!-- Modal para fechas de fin de mantenimiento -->
+                    <div *ngSwitchCase="'fechaFinMantenimiento'">
+                      <label for="fecha">Fecha</label>
+                      <input id="fecha" type="date" class="form-control" [(ngModel)]="fechaISO"
+                        (change)="convertirFecha()" autocomplete="off">
+                      <label for="hora" class="mt-2">Hora</label>
+                      <input id="hora" type="time" class="form-control" [(ngModel)]="horaInput" autocomplete="off">
+                      <div *ngIf="!fechaValida" class="text-danger mt-2">Formato de fecha y/o hora inválido</div>
+                    </div>
+
+                    <!-- Modal para trabajador -->
+                    <div *ngSwitchCase="'trabajador'">
+                      <label for="trabajador">Seleccione un Trabajador</label>
+                      <select id="trabajador" [(ngModel)]="modalInput" class="form-select">
+                        <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }}
+                          {{ trabajador.apellido }}</option>
+                        <option *ngIf="trabajadores.length === 0" disabled>No hay trabajadores disponibles</option>
+                      </select>
+                    </div>
+
+                    <!-- Modal para descripción -->
+                    <div *ngSwitchCase="'descripcion'">
+                      <label for="descripcion">Modificar Descripción</label>
+                      <textarea id="descripcion" [(ngModel)]="modalInput" class="form-control"></textarea>
+                    </div>
+
+                    <!-- Modal para costo -->
+                    <div *ngSwitchCase="'costo'">
+                      <label for="costo">Costo</label>
+                      <input id="costo" type="text" class="form-control" [(ngModel)]="modalInput" #numeroInput="ngModel" pattern="^\d+$">
+                      <div *ngIf="numeroInput.invalid && numeroInput.touched" class="text-danger">Solo se permiten <strong>números</strong></div>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" [disabled]="!inputValido()"
+                    (click)="confirmarModal()">Guardar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaMantenimientos.length === 0">No hay
+            mantenimientos para mostrar</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

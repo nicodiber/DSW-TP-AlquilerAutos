@@ -55,6 +55,8 @@ import { ResetPasswordComponent } from './components/usuario/reset-password/rese
 import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
 import { IncidenteCrearComponent } from './components/incidente/incidente-crear/incidente-crear.component';
 import { IncidenteListarComponent } from './components/incidente/incidente-listar/incidente-listar.component';
+import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar/mantenimiento-listar.component';
+import { MantenimientoCrearComponent } from './components/mantenimiento/mantenimiento-crear/mantenimiento-crear.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -96,7 +98,9 @@ import { IncidenteListarComponent } from './components/incidente/incidente-lista
     IncidentesUsuarioComponent,
     IncidenteCrearComponent,
     IncidenteListarComponent,
-    
+    MantenimientoListarComponent,
+    MantenimientoCrearComponent,
+
   ],
 
   // Importación de otros módulos necesarios para la aplicación

@@ -204,3 +204,20 @@ exports.actualizarSucursalAuto = async (req, res) => {
     res.status(500).json({ message: "Error al actualizar la sucursal del auto" });
   }
 };
+
+// Obtener autos disponibles
+exports.obtenerAutosDisponibles = (req, res) => {
+  Auto.find({ estadoAuto: 'disponible' })
+    .then(autos => res.json(autos))
+    .catch(err => res.status(500).json({ message: 'Error al obtener autos', error: err }));
+};
+
+// Cambiar estado de un auto
+exports.cambiarEstado = (req, res) => {
+  const { id } = req.params;
+  const { estadoAuto } = req.body;
+
+  Auto.findByIdAndUpdate(id, { estadoAuto: estadoAuto }, { new: true })
+    .then(auto => res.json(auto))
+    .catch(err => res.status(500).json({ message: 'Error al cambiar estado', error: err }));
+};

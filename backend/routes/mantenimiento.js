@@ -1,18 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const imantenimientoController = require('../controllers/mantenimientoController');
+const mantenimientoController = require('../controllers/mantenimientoController');
 
-// Middleware para ver si llega la solicitud
-router.use((req, res, next) => {
-  console.log('Request received:', req.method, req.originalUrl);  // Verifica si se recibe la solicitud
-  next();
-});
+router.post('/', mantenimientoController.crearMantenimiento);
+router.post('/mantenimientoAlquiler/:idAuto', mantenimientoController.crearMantenimientoAlquiler);
+router.get('/', mantenimientoController.obtenerMantenimientos);                                        // Obtiene todos los mantenimientos
+router.get('/:id', mantenimientoController.obtenerMantenimiento);                                      // Obtener un mantenimiento específico
+router.put('/:id', mantenimientoController.actualizarMantenimiento);                                   // Actualizar mantenimiento
+router.delete('/:id', mantenimientoController.eliminarMantenimiento);                                  // Eliminar mantenimiento
 
-router.post('/', imantenimientoController.crearMantenimiento);
-router.get('/', imantenimientoController.obtenerMantenimientos);
-router.get('/:id', imantenimientoController.obtenerMantenimiento);
-router.put('/:id', imantenimientoController.actualizarMantenimiento);
-router.delete('/:id', imantenimientoController.eliminarMantenimiento);
+router.get('/trabajadores-sucursal/:sucursalId', mantenimientoController.obtenerTrabajadoresPorSucursal);
 
-router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
+router.put('/:id/descripcion', mantenimientoController.modificarDescripcion);
+router.put('/:id/costo', mantenimientoController.modificarCosto);
+router.put('/:id/trabajador', mantenimientoController.modificarTrabajador);
+
+router.put('/:id/fechaFinMantenimiento', mantenimientoController.establecerFechaFinMantenimiento);
+
+router.patch('/autos/:idAuto/estado', mantenimientoController.actualizarEstadoAuto);
+
 module.exports = router;

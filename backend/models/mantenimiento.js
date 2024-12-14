@@ -10,7 +10,7 @@ const MantenimientoSchema = new mongoose.Schema({
     ref: 'Auto',
     required: true
   },
-  trabajadorAcargo: {
+  trabajadorACargo: {
     type: mongoose.Schema.Types.Number,
     ref: 'Usuario'
   },
@@ -28,6 +28,5 @@ const MantenimientoSchema = new mongoose.Schema({
     type: Number
   },
 }, { collection: 'mantenimientos' });
-
 
 module.exports = mongoose.model('Mantenimiento', MantenimientoSchema);
