@@ -1,5 +1,5 @@
 // Importa los módulos necesarios de Angular
-import { NgModule } from '@angular/core';  // NgModule se usa para definir un módulo de Angular
+import { Component, NgModule } from '@angular/core';  // NgModule se usa para definir un módulo de Angular
 import { RouterModule, Routes } from '@angular/router';  // RouterModule y Routes son necesarios para definir las rutas en la aplicación
 
 // Importa los componentes necesarios para las rutas
@@ -37,6 +37,7 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar.component';
+import { MantenimientoCrearComponent } from './components/mantenimiento/mantenimiento-crear/mantenimiento-crear.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -92,6 +93,7 @@ const routes: Routes = [
       { path: 'auto-editar/:id', component: AutoCrearComponent },
 
       { path: 'mantenimiento-listar', component: MantenimientoListarComponent },
+      { path: 'mantenimiento-crear', component: MantenimientoCrearComponent },
     ]
   },
 

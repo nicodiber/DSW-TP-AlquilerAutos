@@ -54,6 +54,7 @@ import { ForgotPasswordComponent } from './components/usuario/forgot-password/fo
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
 import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar.component';
+import { MantenimientoCrearComponent } from './components/mantenimiento/mantenimiento-crear/mantenimiento-crear.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -94,6 +95,7 @@ import { MantenimientoListarComponent } from './components/mantenimiento/manteni
     ResetPasswordComponent,
     IncidentesUsuarioComponent,
     MantenimientoListarComponent,
+    MantenimientoCrearComponent,
 
   ],
 
