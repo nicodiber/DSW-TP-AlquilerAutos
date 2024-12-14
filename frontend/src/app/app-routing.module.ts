@@ -36,6 +36,8 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
+import { PaymentComponent } from './components/payment/payment.component';  // Asegúrate de importar el componente
+
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -56,6 +58,7 @@ const routes: Routes = [
       { path: 'reset/:token', component: ResetPasswordComponent },
     ]
   },
+
 
   {
     path: '', component: LayoutAdminComponent, children: [
@@ -91,7 +94,8 @@ const routes: Routes = [
       { path: 'auto-editar/:id', component: AutoCrearComponent },
     ]
   },
-
+  { path: 'payment', component: PaymentComponent },
+  { path: '', redirectTo: '/payment', pathMatch: 'full' },
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

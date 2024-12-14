@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { conectarDB } = require('./config/db'); // Importamos usando destructuring
 const cors = require('cors'); // Middleware que permite que el servidor permita solicitudes si el frontend y el backend están en distintos dominios o puertos
