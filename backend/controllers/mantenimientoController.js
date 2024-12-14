@@ -52,7 +52,7 @@ exports.crearMantenimientoAlquiler = async (req, res) => {
 
 exports.obtenerMantenimientos = async (req, res) => {
   try {
-    const mantenimientos = await Mantenimiento.find();
+    const mantenimientos = await Mantenimiento.find().populate('auto').populate('trabajadorACargo');
     res.json(mantenimientos);
   } catch (error) {
     console.log(error);
@@ -138,5 +138,30 @@ exports.crearMantenimientoAlquiler = async (req, res) => {
   } catch (error) {
     console.log('Error:', error);
     res.status(500).send('Hubo un error al crear el mantenimiento');
+  }
+};
+
+
+
+// Obtener los trabajadores disponibles para un mantenimiento, filtrados por la sucursal del auto
+exports.obtenerTrabajadoresSucursal = async (req, res) => {
+  try {
+    const { idAuto } = req.params;  // Tomamos el id del auto
+    const auto = await Auto.findById(idAuto);  // Supongo que el modelo de Auto está disponible
+
+    if (!auto) {
+      return res.status(404).json({ msg: 'Auto no encontrado' });
+    }
+
+    // Filtramos a los trabajadores por la sucursal del auto
+    const trabajadores = await Usuario.find({ 
+      rol: 'trabajador', 
+      sucursal: auto.sucursal  // Asumiendo que el auto tiene un campo 'sucursal' que refiere a la sucursal
+    });
+
+    res.json(trabajadores);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error al obtener los trabajadores');
   }
 };

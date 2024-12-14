@@ -10,10 +10,11 @@ router.use((req, res, next) => {
 
 router.post('/', imantenimientoController.crearMantenimiento);
 router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
-router.get('/', imantenimientoController.obtenerMantenimientos);
-router.get('/:id', imantenimientoController.obtenerMantenimiento);
-router.put('/:id', imantenimientoController.actualizarMantenimiento);
-router.delete('/:id', imantenimientoController.eliminarMantenimiento);
+router.get('/', imantenimientoController.obtenerMantenimientos);                                        // Obtiene todos los mantenimientos
+router.get('/:id', imantenimientoController.obtenerMantenimiento);                                      // Obtener un mantenimiento específico
+router.put('/:id', imantenimientoController.actualizarMantenimiento);                                   // Actualizar mantenimiento
+router.delete('/:id', imantenimientoController.eliminarMantenimiento);                                  // Eliminar mantenimiento
 
-router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
+router.get('/trabajadoresSucursal/:idAuto', imantenimientoController.obtenerTrabajadoresSucursal);      // Nueva ruta para obtener los trabajadores de una sucursal específica del auto
+
 module.exports = router;
