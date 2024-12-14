@@ -52,6 +52,6 @@ export class UsuarioService {
   }
 
   obtenerTrabajadoresPorSucursal(sucursalId: string): Observable<usuario[]> {
-    return this.http.get<usuario[]>(`http://localhost:4000/api/usuarios/trabajadores-sucursal/${sucursalId}`);
+    return this.http.get<usuario[]>(`${this.url}trabajadores-sucursal/${sucursalId}`);
   }
 }

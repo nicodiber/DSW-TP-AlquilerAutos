@@ -112,7 +112,12 @@ export class MantenimientoListarComponent implements OnInit {
       this.modalTitle = 'Asignar Trabajador';
       this._usuarioService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual._id)).subscribe((trabajadores: usuario[]) => {
         this.trabajadores = trabajadores;
-      });
+        console.log('Trabajadores cargados:', trabajadores); // Verifica si los trabajadores se están cargando
+      },
+        error => {
+          console.error('Error al cargar los trabajadores:', error);
+        }
+      );
       this.modalInput = String(mantenimiento.trabajadorACargo?._id) || '';
     } else if (tipo === 'descripcion') {
       this.modalTitle = 'Modificar Descripcion';
@@ -173,6 +178,7 @@ export class MantenimientoListarComponent implements OnInit {
           },
           error => {
             console.error('Error al actualizar el estado del auto:', error);
+            this.toastr.error('Error al actualizar el estado del auto');
           }
         );
 
