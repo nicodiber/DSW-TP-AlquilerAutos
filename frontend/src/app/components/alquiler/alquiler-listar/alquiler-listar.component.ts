@@ -161,10 +161,6 @@ export class AlquilerListarComponent implements OnInit {
     return typeof this.modalInput === 'string' && this.modalInput.trim() !== '';
   }
 
-  isFechaHoraInput(): boolean {
-    return typeof this.modalInput === 'object' && this.modalInput !== null && 'fecha' in this.modalInput && 'hora' in this.modalInput;
-  }
-
   convertirFechaAFormatoISO(fecha: string): string {
     const [dia, mes, anio] = fecha.split('/');
     return `${anio}-${mes}-${dia}`;
