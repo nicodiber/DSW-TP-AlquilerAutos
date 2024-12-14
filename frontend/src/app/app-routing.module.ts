@@ -42,6 +42,7 @@ import { IncidenteCrearComponent } from './components/incidente/incidente-crear/
 import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar/mantenimiento-listar.component';
 import { MantenimientoCrearComponent } from './components/mantenimiento/mantenimiento-crear/mantenimiento-crear.component';
 
+
 // Define las rutas de la aplicación
 const routes: Routes = [
   {
@@ -62,6 +63,7 @@ const routes: Routes = [
       { path: 'incidentes', component: IncidentesUsuarioComponent },
     ]
   },
+
 
   {
     path: '', component: LayoutAdminComponent, children: [
@@ -103,7 +105,6 @@ const routes: Routes = [
       { path: 'mantenimiento-crear', component: MantenimientoCrearComponent },
     ]
   },
-
   { path: '**', component: Error404Component } // Para rutas inválidas
 ];
 

@@ -6,12 +6,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';              
 import { AppRoutingModule } from './app-routing.module';                                                                              // Módulo de enrutamiento de la aplicación
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';                                                       // Necesario para habilitar animaciones en Angular, en este caso usado por Toastr
 import { ToastrModule } from 'ngx-toastr';                                                                                            // Módulo para mostrar notificaciones de Toastr
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
+import { provideHttpClient } from '@angular/common/http';                                                                             // Para realizar solicitudes HTTP
 import { RouterModule } from '@angular/router';                                                                                       // Necesario para manejar rutas y enrutamiento
 import { CookieService } from 'ngx-cookie-service';                                                                                   // Para trabajar con cookies
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // Configuración regional para fechas en español
 import localeEs from '@angular/common/locales/es';                                                                                    // Importa los datos locales de España
 import { registerLocaleData } from '@angular/common';                                                                                 // Función para registrar la configuración regional

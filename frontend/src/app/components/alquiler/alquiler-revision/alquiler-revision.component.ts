@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlquilerService } from '../../../services/alquiler.service';
-import { UsuarioService } from '../../../services/usuario.service';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
 import { AuthService } from '../../../services/auth.service';
+import { PaymentService } from '../../../services/payment.service'; // 
+import { loadStripe } from '@stripe/stripe-js'; // Importa esta función
+
 
 @Component({
   selector: 'app-alquiler-revision',
@@ -19,7 +20,10 @@ export class AlquilerRevisionComponent implements OnInit {
   precioTotal: number = 0;
   usuario: any;
 
-  constructor(private router: Router, private authService: AuthService, private gestionCookiesService: gestionCookiesService, private alquilerService: AlquilerService, private usuarioService: UsuarioService) {}
+  constructor(private router: Router, 
+    private authService: AuthService, 
+    private gestionCookiesService: gestionCookiesService, 
+    private paymentService: PaymentService,) {}
 
   ngOnInit(): void {
     this.isAdminTrabajador();
@@ -85,72 +89,31 @@ export class AlquilerRevisionComponent implements OnInit {
   }
 
   // Botón de Reservar
-  confirmarReserva(): void {
-    try {
-      // Crear las fechas con horas integradas
-      const fechaInicio = moment(this.datosBusqueda.fechaRetiro + ' ' + this.datosBusqueda.horaRetiro, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
-      const fechaFin = moment(this.datosBusqueda.fechaDevolucion + ' ' + this.datosBusqueda.horaDevolucion, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
+  async confirmarReserva(): Promise<void> {
 
-      // Actualizar datosBusqueda en el servicio y en la cookie con tiempo de expiración
-      this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);  // Le enviamos el precio para que lo sume a las cookies
-      // Volvemos a obtener toda la cookie nuevamente, ya actualizada, y guardamos en misma variable
-      this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-
-      const alquilerData = {
-        usuario: this.usuario._id,
-        auto: this.datosBusqueda.autoAsignado,
-        sucursalEntrega: this.datosBusqueda.sucursalRetiro._id,
-        sucursalDevolucion: this.datosBusqueda.sucursalDevolucion._id,
-        trabajadorAsignado: this.datosBusqueda.trabajadorAsignado || undefined, // No es obligatorio
-        fechaInicio: fechaInicio,
-        fechaFin: fechaFin,
-        fechaInicioReal: undefined,
-        fechaFinReal: undefined,
-        notas: undefined,
-        precioTotalAlquiler: this.datosBusqueda.precioTotal,
-        estadoAlquiler: 'reservado'
-      };
-
-      console.log("Alquiler Data:", alquilerData); // Verifica que todos los datos sean correctos
-
-      // Llamada al servicio para crear el alquiler
-      this.alquilerService.crearAlquiler(alquilerData).subscribe(
-        response => {
-          if (this.usuario.alquileres) {
-            this.usuario.alquileres.push(response);  // Agregar el nuevo alquiler al array
-          } else {
-            this.usuario.alquileres = [response]; // Si no existe el array, crearlo
-          }
-
-          // Enviar solo el alquiler creado en vez del array completo
-          console.log(this.usuario._id);
-          console.log(String(this.usuario._id));
-          this.usuarioService.actualizarAlquileresUsuario(Number(this.usuario._id), response).subscribe(
-            () => {
-              console.log('Alquiler añadido al usuario actual.');
-              this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
-              this.alquilerService.reservarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
-                () => {
-                  console.log('Estado del auto actualizado a "reservado".');
-                  window.location.href = '/alquiler-completado';
-                },
-                error => {
-                  console.error('Error al actualizar el estado del auto:', error);
-                }
-              );
-            },
-            error => {
-              console.error('Error al actualizar el usuario con el nuevo alquiler:', error);
-            }
-          );
-        },
-        error => {
-          console.error('Error al crear el alquiler:', error);
+    try {        
+      const stripe = await loadStripe('pk_test_51QVnALIH5hl8sEK2hK8hsyHarYxOrHId1ken3W42ZPrSdrl5rbeyte7Juosi9NOVrZyNcb5XHda3oiiUdD1TZGBH00IBWtMgSL'); // Usa tu clave pública de Stripe
+      if (!stripe) {
+        throw new Error('Stripe.js no se pudo cargar.');
+      }
+    
+       // Construir el objeto con el formato esperado
+         const paymentData = { amount: Math.round(this.precioTotal) }; // Convertir el monto a centavos
+         console.log(paymentData)
+      // Solicitar la sesión al backend
+            const stripeResponse = await this.paymentService.createCheckoutSession(paymentData).toPromise();
+            console.log(stripeResponse)
+    
+      stripe.redirectToCheckout({ sessionId: String(stripeResponse.sessionId)}).then((result) => {
+        if (result.error) {
+          alert('Error en el pago: ' + result.error.message);
         }
-      );
+      });
     } catch (error) {
-      console.error('Error al realizar reserva:', error);
-      alert("Hubo un error al realizar la reserva. Intente nuevamente.");
+      console.error('Error al procesar la sesión de pago', error);
+      alert('Hubo un error al procesar el pago');
     }
-  }
+
+}
+
 }

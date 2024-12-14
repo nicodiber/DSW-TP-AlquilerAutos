@@ -40,6 +40,7 @@ app.use('/api/alquileres', require('./routes/alquiler'));
 app.use('/api/incidentes', require('./routes/incidente'));
 app.use('/api/mantenimientos', require('./routes/mantenimiento'));
 app.use('/api/formulario-contacto', require('./routes/contact'));
+app.use('/api/payment', require('./routes/payment'));
 
 // Puerto donde corre el servidor
 app.listen(4000, () => {
