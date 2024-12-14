@@ -1,16 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const imantenimientoController = require('../controllers/mantenimientoController');
+const mantenimientoController = require('../controllers/mantenimientoController');
 
-router.post('/', imantenimientoController.crearMantenimiento);
-router.post('/mantenimientoAlquiler/:idAuto', imantenimientoController.crearMantenimientoAlquiler);
-router.get('/', imantenimientoController.obtenerMantenimientos);                                        // Obtiene todos los mantenimientos
-router.get('/:id', imantenimientoController.obtenerMantenimiento);                                      // Obtener un mantenimiento específico
-router.put('/:id', imantenimientoController.actualizarMantenimiento);                                   // Actualizar mantenimiento
-router.delete('/:id', imantenimientoController.eliminarMantenimiento);                                  // Eliminar mantenimiento
+router.post('/', mantenimientoController.crearMantenimiento);
+router.post('/mantenimientoAlquiler/:idAuto', mantenimientoController.crearMantenimientoAlquiler);
+router.get('/', mantenimientoController.obtenerMantenimientos);                                        // Obtiene todos los mantenimientos
+router.get('/:id', mantenimientoController.obtenerMantenimiento);                                      // Obtener un mantenimiento específico
+router.put('/:id', mantenimientoController.actualizarMantenimiento);                                   // Actualizar mantenimiento
+router.delete('/:id', mantenimientoController.eliminarMantenimiento);                                  // Eliminar mantenimiento
 
-//router.get('/trabajadoresSucursal/:idAuto', imantenimientoController.obtenerTrabajadoresSucursal);      // Nueva ruta para obtener los trabajadores de una sucursal específica del auto
+router.get('/trabajadores-sucursal/:sucursalId', mantenimientoController.obtenerTrabajadoresPorSucursal);
 
-router.get('/trabajadores-sucursal/:sucursalId', imantenimientoController.obtenerTrabajadoresPorSucursal);
+router.put('/:id/descripcion', mantenimientoController.modificarDescripcion);
+router.put('/:id/costo', mantenimientoController.modificarCosto);
+router.put('/:id/trabajador', mantenimientoController.modificarTrabajador);
+
+router.put('/:id/fechaFinMantenimiento', mantenimientoController.establecerFechaFinMantenimiento);
+
+router.patch('/autos/:idAuto/estado', mantenimientoController.actualizarEstadoAuto);
 
 module.exports = router;

@@ -124,6 +124,10 @@ export class MantenimientoListarComponent implements OnInit {
       this.modalTitle = 'Modificar Descripcion';
       this.modalInput = mantenimiento.descripcion || '';
     }
+    else if (tipo === 'costo') {
+      this.modalTitle = 'Asignar Costo';
+      this.modalInput = String(mantenimiento.costoMantenimiento || '');
+    }
 
     const modalElement = document.getElementById('dynamicModal');
     if (modalElement) {
@@ -156,9 +160,11 @@ export class MantenimientoListarComponent implements OnInit {
   }
 
   confirmarModal() {
-    if (!this.mantenimientoActual) return;
-
-    if (!this.inputValido()) return;
+    // Validación inicial: aseguramos que hay un mantenimiento seleccionado y la entrada es válida
+    if (!this.mantenimientoActual || !this.inputValido()) {
+      this.toastr.warning('Entrada no válida o mantenimiento no seleccionado.');
+      return;
+    }
 
     if (this.modalType === 'fechaFinMantenimiento') {
       const fechaISO = this.convertirFechaAFormatoISO(this.fechaInput) + ' ' + this.horaInput;
@@ -173,7 +179,7 @@ export class MantenimientoListarComponent implements OnInit {
         this.mantenimientoActual!.fechaFinMantenimiento = fechaCompleta;
 
         // Actualizar el estado del Auto
-        this._mantenimientoService.actualizarEstadoAuto(String(this.mantenimientoActual?._id), String(this.mantenimientoActual?.auto._id), 'disponible').subscribe(
+        this._mantenimientoService.actualizarEstadoAuto(String(this.mantenimientoActual?.auto._id)).subscribe(
           () => {
             console.log('Estado del auto actualizado');
           },

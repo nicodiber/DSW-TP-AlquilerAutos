@@ -38,28 +38,23 @@ export class MantenimientoService {
     return this.http.post(`${this.url}mantenimientoAlquiler/${idAuto}`, {});
   }
 
-  establecerFechaFinMantenimiento(_id: string, fechaFin: Date): Observable<any> {
-    const body = { fechaFinMantenimiento: fechaFin };
-    return this.http.put(`${this.url}${_id}/fechaFin`, body);
+  establecerFechaFinMantenimiento(_id: string, fecha: string | Date) {
+    return this.http.put(`${this.url}${_id}/fechaFinMantenimiento`, { fechaFinMantenimiento: fecha });
   }
 
-  actualizarEstadoAuto(_id: string, autoId: string, estado: string): Observable<any> {
-    const body = { estado };
-    return this.http.put(`${this.url}${_id}/autos/${autoId}/estado`, body);
+  actualizarEstadoAuto(idAuto: string): Observable<any> {
+    return this.http.patch(`${this.url}autos/${idAuto}/estado`, {});
   }
 
-  modificarTrabajador(_id: string, trabajadorId: number): Observable<any> {
-    const body = { trabajadorACargo: trabajadorId };
-    return this.http.put(`${this.url}${_id}/trabajador`, body);
+  modificarTrabajador(_id: string, trabajadorId: number) {
+    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorACargo: trabajadorId });
   }
 
-  modificarCosto(_id: string, costo: number): Observable<any> {
-    const body = { costoMantenimiento: costo };
-    return this.http.put(`${this.url}${_id}/costo`, body);
+  modificarDescripcion(_id: string, descripcion: string) {
+    return this.http.put(`${this.url}${_id}/descripcion`, { descripcion });
   }
 
-  modificarDescripcion(_id: string, descripcion: string): Observable<any> {
-    const body = { descripcion };
-    return this.http.put(`${this.url}${_id}/descripcion`, body);
+  modificarCosto(_id: string, costoMantenimiento: number) {
+    return this.http.put(`${this.url}${_id}/costo`, { costoMantenimiento });
   }
 }
