@@ -141,27 +141,13 @@ exports.crearMantenimientoAlquiler = async (req, res) => {
   }
 };
 
-
-
-// Obtener los trabajadores disponibles para un mantenimiento, filtrados por la sucursal del auto
-exports.obtenerTrabajadoresSucursal = async (req, res) => {
+exports.obtenerTrabajadoresPorSucursal = async (req, res) => {
+  const sucursalId = parseInt(req.params.sucursalId, 10); // Pasamos el id a number
   try {
-    const { idAuto } = req.params;  // Tomamos el id del auto
-    const auto = await Auto.findById(idAuto);  // Supongo que el modelo de Auto está disponible
-
-    if (!auto) {
-      return res.status(404).json({ msg: 'Auto no encontrado' });
-    }
-
-    // Filtramos a los trabajadores por la sucursal del auto
-    const trabajadores = await Usuario.find({ 
-      rol: 'trabajador', 
-      sucursal: auto.sucursal  // Asumiendo que el auto tiene un campo 'sucursal' que refiere a la sucursal
-    });
-
-    res.json(trabajadores);
+    const sucursal = await Sucursal.findOne({ _id: sucursalId }).populate('trabajadores');
+    const trabajadoresId = sucursal.trabajadores;
+    res.json(trabajadoresId);
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error al obtener los trabajadores');
+    res.status(500).json({ mensaje: 'Error al obtener trabajadores para la sucursal' });
   }
 };

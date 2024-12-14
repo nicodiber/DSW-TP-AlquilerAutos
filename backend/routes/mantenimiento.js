@@ -15,6 +15,8 @@ router.get('/:id', imantenimientoController.obtenerMantenimiento);              
 router.put('/:id', imantenimientoController.actualizarMantenimiento);                                   // Actualizar mantenimiento
 router.delete('/:id', imantenimientoController.eliminarMantenimiento);                                  // Eliminar mantenimiento
 
-router.get('/trabajadoresSucursal/:idAuto', imantenimientoController.obtenerTrabajadoresSucursal);      // Nueva ruta para obtener los trabajadores de una sucursal específica del auto
+//router.get('/trabajadoresSucursal/:idAuto', imantenimientoController.obtenerTrabajadoresSucursal);      // Nueva ruta para obtener los trabajadores de una sucursal específica del auto
+
+router.get('/trabajadores-sucursal/:sucursalId', imantenimientoController.obtenerTrabajadoresPorSucursal);
 
 module.exports = router;

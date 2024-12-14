@@ -1,90 +1,104 @@
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titulo">LISTADO DE TODOS LOS MANTENIMIENTOS</span>
-                    <table *ngIf="mantenimientos.length > 0" class="table table-striped mt-3">
-                        <tbody>
-                            <ng-container *ngFor="let mantenimiento of mantenimientos">
-                                <!-- Fila principal: Datos Generales del mantenimiento -->
-                                <tr>
-                                    <td data-label="ID Mantenimiento">{{ mantenimiento.idMantenimiento }}</td>
-                                    <td data-label="Matrícula">{{ mantenimiento.auto?.matricula }}</td>
-                                    <td data-label="Trabajador">
-                                        {{ mantenimiento.trabajadorACargo?.nombre }} {{
-                                        mantenimiento.trabajadorACargo?.apellido }}
-                                    </td>
-                                    <td data-label="Fecha Inicio">{{ mantenimiento.fechaInicioMantenimiento | date:
-                                        'dd/MM/yyyy HH:mm' }}</td>
-                                    <td data-label="Fecha Fin">
-                                        <span *ngIf="mantenimiento.fechaFinMantenimiento">
-                                            {{ mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}
-                                        </span>
-                                        <span *ngIf="!mantenimiento.fechaFinMantenimiento">En progreso</span>
-                                    </td>
-                                    <td data-label="Costo">${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}
-                                    </td>
-                                    <td>
-                                        <!-- Botón para expandir Detalles -->
-                                        <button (click)="mantenimiento.mostrarDetalles = !mantenimiento.mostrarDetalles"
-                                            class="btn-main btn-black" style="padding: 5px 15px;">
-                                            {{ mantenimiento.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <!-- Fila expandible: Detalles adicionales -->
-                                <tr *ngIf="mantenimiento.mostrarDetalles" class="expandible">
-                                    <td colspan="10" style="padding: 30px;">
-                                        <div style="display: flex;">
-                                            <div style="width: 50%;">
-                                                <h6>Detalles del Mantenimiento:</h6>
-                                                <div class="datos-adicionales" style="display: grid; gap: 15px">
-                                                    <span><i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha
-                                                            Inicio:</strong> {{ mantenimiento.fechaInicioMantenimiento |
-                                                        date: 'dd/MM/yyyy HH:mm' }}</span>
-                                                    <span *ngIf="mantenimiento.fechaFinMantenimiento"><i
-                                                            class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha
-                                                            Fin:</strong> {{ mantenimiento.fechaFinMantenimiento | date:
-                                                        'dd/MM/yyyy HH:mm' }}</span>
-                                                    <span *ngIf="!mantenimiento.fechaFinMantenimiento"><i
-                                                            class="fa fa-clock"></i>&nbsp;&nbsp;<strong>Estado:</strong>
-                                                        En progreso</span>
-                                                    <span><i
-                                                            class="fa fa-user"></i>&nbsp;&nbsp;<strong>Trabajador:</strong>
-                                                        {{ mantenimiento.trabajadorACargo?.nombre }} {{
-                                                        mantenimiento.trabajadorACargo?.apellido }}</span>
-                                                    <span><i
-                                                            class="fa fa-comment"></i>&nbsp;&nbsp;<strong>Descripción:</strong>
-                                                        {{ mantenimiento.descripcion }}</span>
-                                                    <span><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong>
-                                                        ${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</span>
-                                                </div>
-                                            </div>
-                                            <div style="width: 50%; border-left: 1px solid black; padding-left: 20px;">
-                                                <h6>Acciones:</h6>
-                                                <div style="display: inline-grid; gap: 15px">
-                                                    <!--
-                                                    <button (click)="abrirModal('editar', mantenimiento)"
-                                                        class="boton-acciones">Editar</button>
-                                                    <button (click)="abrirModal('finalizar', mantenimiento)"
-                                                        *ngIf="!mantenimiento.fechaFinMantenimiento"
-                                                        class="boton-acciones">Finalizar Mantenimiento</button>
-                                                    <button (click)="abrirModal('eliminar', mantenimiento)"
-                                                        class="boton-acciones">Eliminar</button>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="mantenimientos.length === 0">No hay
-                        mantenimientos para mostrar</h5>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo">LISTADO DE TODOS LOS MANTENIMIENTOS</span>
+          <table *ngIf="listaMantenimientos.length > 0" class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th (click)="ordenarPor('_id')">ID <span [ngClass]="getIconoOrden('_id')"></span></th>
+                <th (click)="ordenarPor('fechaInicioMantenimiento')">Fecha Inicio <span [ngClass]="getIconoOrden('fechaInicioMantenimiento')"></span></th>
+                <th (click)="ordenarPor('fechaFinMantenimiento')">Fecha Fin <span [ngClass]="getIconoOrden('fechaFinMantenimiento')"></span></th>
+                <th (click)="ordenarPor('costoMantenimiento')">Costo <span [ngClass]="getIconoOrden('costoMantenimiento')"></span></th>
+                <th>Matricula Auto</th>
+                <th>Trabajador Asignado</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let mantenimiento of listaMantenimientos">
+                <!-- Fila principal: Datos Generales del mantenimiento -->
+                <tr>
+                  <td data-label="ID">{{ mantenimiento._id }}</td>
+                  <td data-label="Fecha Inicio">{{ mantenimiento.fechaInicioMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  <td data-label="Fecha Fin">
+                    <span *ngIf="mantenimiento.fechaFinMantenimiento">{{ mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span *ngIf="!mantenimiento.fechaFinMantenimiento">En progreso</span>
+                  </td>
+                  <td data-label="Costo">${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</td>
+                  <td data-label="Matricula Auto">{{ mantenimiento.auto.matricula }}</td>
+                  <td data-label="Trabajador Asignado">
+                    <span *ngIf="mantenimiento.trabajadorACargo">{{ mantenimiento.trabajadorACargo.nombre }} {{ mantenimiento.trabajadorACargo.apellido }}</span>
+                    <span *ngIf="!mantenimiento.trabajadorACargo">No asignado</span>
+                  </td>
+                  <td data-label="Estado" style="text-transform: capitalize;" 
+                      [ngClass]="{
+                        'estado-en-progreso': !mantenimiento.fechaFinMantenimiento,
+                        'estado-completado': mantenimiento.fechaFinMantenimiento
+                      }">
+                    <strong>{{ !mantenimiento.fechaFinMantenimiento ? 'En Progreso' : 'Completado' }}</strong>
+                  </td>
+                  <td>
+                    <!-- Botón para expandir Detalles -->
+                    <button (click)="mantenimiento.mostrarDetalles = !mantenimiento.mostrarDetalles" 
+                            class="btn-main btn-black" style="padding: 5px 15px;">
+                      {{ mantenimiento.mostrarDetalles ? 'Ocultar' : 'Ver Más' }}
+                    </button>
+                  </td>
+                </tr>
+                
+                <!-- Fila expandible: Detalles adicionales -->
+                <tr *ngIf="mantenimiento.mostrarDetalles" class="expandible">
+                  <td colspan="10" style="padding: 30px;">
+                    <div style="display: flex;">
+                      <div style="width: 50%;">
+                        <h6>Detalles del Mantenimiento:</h6>
+                        <div class="datos-adicionales" style="display: grid; gap: 15px">
+                          <span><i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha Inicio:</strong> {{ mantenimiento.fechaInicioMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                          <span *ngIf="mantenimiento.fechaFinMantenimiento"><i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Fecha Fin:</strong> {{ mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
+                          <span *ngIf="!mantenimiento.fechaFinMantenimiento"><i class="fa fa-clock"></i>&nbsp;&nbsp;<strong>Estado:</strong> En progreso</span>
+                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Trabajador:</strong> {{ mantenimiento.trabajadorACargo?.nombre }} {{ mantenimiento.trabajadorACargo?.apellido }}</span>
+                          <span><i class="fa fa-comment"></i>&nbsp;&nbsp;<strong>Descripción:</strong> {{ mantenimiento.descripcion }}</span>
+                          <span><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong> ${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</span>
+                        </div>
+                      </div>
+                      <div style="width: 50%; border-left: 1px solid black; padding-left: 20px;">
+                        <h6>Acciones:</h6>
+                        <div style="display: inline-grid; gap: 15px">
+                            <!-- Botón para abrir el modal de asignar trabajador -->
+                            <button (click)="abrirModal('trabajador', mantenimiento)" class="boton-acciones"
+                                *ngIf="usuarioLogueado.rol === 'administrador'">
+                                Asignar Trabajador
+                            </button>
+                        
+                            <!-- Botón para abrir el modal de modificar descripción -->
+                            <button (click)="abrirModal('descripcion', mantenimiento)" class="boton-acciones">
+                                Modificar Descripción
+                            </button>
+                        
+                            <!-- Botón para abrir el modal de modificar costo -->
+                            <button (click)="abrirModal('costo', mantenimiento)" class="boton-acciones">
+                                Modificar Costo
+                            </button>
+                        
+                            <!-- Botón para abrir el modal de modificar fecha de fin (solo si no está finalizado) -->
+                            <button (click)="abrirModal('fechaFinMantenimiento', mantenimiento)" *ngIf="!mantenimiento.fechaFinMantenimiento"
+                                class="boton-acciones">
+                                Finalizar Mantenimiento
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaMantenimientos.length === 0">No hay mantenimientos para mostrar</h5>
         </div>
+      </div>
     </div>
+  </div>
 </div>
