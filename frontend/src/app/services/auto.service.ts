@@ -32,10 +32,10 @@ export class AutoService {
   }
 
   obtenerAutosDisponibles(): Observable<auto[]> {
-    return this.http.get<auto[]>(`${this.url}/disponibles`);
+    return this.http.get<auto[]>(`${this.url}disponibles`);
   }
 
   cambiarEstado(autoId: number, nuevoEstado: string): Observable<any> {
-    return this.http.put(`${this.url}/cambiarEstado/${autoId}`, { estadoAuto: nuevoEstado });
+    return this.http.put(`${this.url}cambiarEstado/${autoId}`, { estadoAuto: nuevoEstado });
   }
 }
