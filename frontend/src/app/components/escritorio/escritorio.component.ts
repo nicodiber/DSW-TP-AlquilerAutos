@@ -30,11 +30,11 @@ export class EscritorioComponent implements OnInit {
           this.getAlquileres();
         }
       } else {
-        this.router.navigate(['/loginUsuario']);
+        window.location.href = '/loginUsuario';
       }
     },
     error: () => {
-      this.router.navigate(['/loginUsuario']);
+      window.location.href = '/loginUsuario';
     },
   });
 }
@@ -51,7 +51,9 @@ export class EscritorioComponent implements OnInit {
     });
   }
 
-  incidentesUsuario(){}
+  incidentesUsuario(){
+    window.location.href = '/incidentes';
+  }
 
   irAGestionarUsuarios() {
     window.location.href = '/usuario-listar';
@@ -75,6 +77,12 @@ export class EscritorioComponent implements OnInit {
   }
   irAGestionarAutos() {
     window.location.href = '/auto-listar';    
+  }
+  irAGestionarIncidentes() {
+    window.location.href = '/incidente-listar';    
+  }
+  irAGestionarMantenimientos() {
+    window.location.href = '/mantenimiento-listar';    
   }
   
   editarMisDatos() {
@@ -110,9 +118,7 @@ export class EscritorioComponent implements OnInit {
             this.usuarioService.cancelarAlquilerUsuario(this.usuario._id, this.alquilerIdToCancel, 'cancelado').subscribe(
                 (data) => {
                     this.toastr.success('El alquiler del usuario fue cancelado con éxito', 'Alquiler Cancelado');
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 1000);              
+                    this.getAlquileres();              
                 },
                 (error) => {
                     this.toastr.error('Error al cancelar el alquiler del usuario', 'Error');
@@ -129,7 +135,7 @@ export class EscritorioComponent implements OnInit {
             this.alquilerIdToCancel = null;
         },
         (error) => {
-            this.toastr.error('Error al cambiar el estado del alquiler', 'Error');
+            this.toastr.error('Error al cancelar el alquiler', 'Error');
             console.log(error);
         }
     );

@@ -50,8 +50,20 @@ exports.crearAlquiler = async (req, res) => {
 exports.obtenerAlquileres = async (req, res) => {
   try {
     const alquileres = await Alquiler.find()
-      .populate('usuario') 
-      .populate('auto') 
+      .populate({
+        path: 'usuario',
+        model: 'Usuario',
+        select: 'nombre apellido email' 
+      })
+      .populate({
+        path: 'auto',
+        model: 'Auto',
+        populate: {
+          path: 'modeloAuto',
+          model: 'Modelo',
+          select: 'nombreModelo' // Seleccionar nombre del modelo del auto
+        }
+      })
       .populate('sucursalEntrega')
       .populate('sucursalDevolucion') 
       .populate('trabajadorAsignado');
@@ -241,15 +253,15 @@ exports.cancelarAlquiler = async (req, res) => {
     alquiler.estadoAlquiler = 'cancelado';
     await alquiler.save();
 
-    // Verificar si existen alquileres futuros para el mismo auto
+   
     const alquileresFuturos = await Alquiler.find({
       auto: alquiler.auto,
       estadoAlquiler: { $in: ['reservado', 'activo'] },
-      fechaInicio: { $gte: new Date() } // Filtrar alquileres con fecha de inicio en el futuro
+      fechaInicio: { $gte: new Date() } 
     });
 
     if (alquileresFuturos.length === 0) {
-      // Si no hay alquileres futuros con ese auto se actualiza el estado del auto a disponible
+     
       const auto = await Auto.findById(alquiler.auto);
 
       if (!auto) {

@@ -1,0 +1,66 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo"> {{ titulo | uppercase }}</span>
+                    <form class="mt-3" [formGroup]="incidenteForm" (ngSubmit)="agregarIncidente()">
+                        
+                        <div class="mb-3" *ngIf="!id">
+                            <label for="idAlquiler" class="form-label" >Alquiler Afectado:</label>
+                            <select formControlName="idAlquiler" class="form-control form-control-lg"
+                                placeholder="Alquiler">
+                                <option value="">Seleccione un alquiler afectado:</option>
+                                <option *ngFor="let alquiler of alquileresCompletados" [value]="alquiler._id">
+                                    ID: #{{alquiler._id}}
+                                    | {{alquiler.auto.modeloAuto.nombreModelo }}
+                                    | {{alquiler.auto.matricula }}
+                                    | {{alquiler.usuario.email }}
+                                </option>
+                            </select>
+                            <div class="text-danger"
+                                *ngIf="incidenteForm.get('idAlquiler')?.hasError('required') && incidenteForm.get('idAlquiler')?.touched">
+                                <span><strong>Debe seleccionar un alquiler</strong>para el incidente</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripcion del Incidente:</label>
+                            <input type="text" formControlName="descripcion" class="form-control form-control-lg" placeholder="Descripcion del incidente">
+                            <div class="text-danger"
+                                *ngIf="incidenteForm.get('descripcion')?.hasError('required') && incidenteForm.get('descripcion')?.touched">
+                                <span>La descripcion del incidente<strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="costoIncidente" class="form-label">Costo del Incidente:</label>
+                            <input type="number" formControlName="costoIncidente" class="form-control form-control-lg"
+                                placeholder="Costo del incidente">
+                            <div class="text-danger"
+                                *ngIf="incidenteForm.get('costoIncidente')?.hasError('required') && incidenteForm.get('costoIncidente')?.touched">
+                                <span>El Costo del incidente <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="fechaIncidente" class="form-label">Fecha del Incidente:</label>
+                            <input type="date" formControlName="fechaIncidente" class="form-control form-control-lg"
+                                placeholder="Fecha del Incidente">
+                            <div class="text-danger"
+                                *ngIf="incidenteForm.get('fechaIncidente')?.hasError('required') && incidenteForm.get('fechaIncidente')?.touched">
+                                <span>La fecha del incidente<strong>es obligatoria</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" style="width: 100%; display: inline-block; margin-top: 20px;">
+                            <button routerLink="/incidente-listar"
+                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="submit" (click)="submitForm()"
+                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

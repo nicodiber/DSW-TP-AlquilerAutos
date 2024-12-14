@@ -53,8 +53,8 @@
                                     <div style="display: flex;">
                             
                                         <div style="width: 100%;">
-                            
-                                            <div class="alquilereslist" style="display: grid; gap: 10px">
+                                            <h6 *ngIf="usuario.alquileres?.length == 0">No posee alquileres</h6>
+                                            <div *ngIf="usuario.alquileres?.length != 0" class="alquilereslist" style="display: grid; gap: 10px">
                                                 <table *ngIf="usuario.alquileres" class="table table-striped mt-3">
                                                     <thead>
                                                         <tr>
@@ -82,8 +82,9 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <label *ngIf="!usuario.alquileres">No hay alquileres para mostrar></label>
+                                             
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </td>

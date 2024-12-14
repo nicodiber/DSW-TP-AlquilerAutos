@@ -1,0 +1,95 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo">LISTADO DE TODOS LOS INCIDENTES</span>
+                    <button class="btn btn-success float-end" routerLink="/incidente-crear">NUEVO INCIDENTE</button>
+                    <table *ngIf="listaIncidentes.length > 0" class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ID del Alquiler</th>
+                                <th>Auto</th>
+                                <th>Usuario</th>
+                                <th>Fecha del Incidente</th>
+                                <th>Costo de Incidente</th>                       
+                                <th>Estado</th>
+                                <th>Fecha del Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let incidente of listaIncidentes">
+                                <tr>
+                                    <td data-label="ID">#{{ incidente._id }}</td>
+                                    <td data-label="ID del Alquiler">#{{ incidente.idAlquiler._id}}</td>
+                                    <td data-label="Auto">{{ incidente.idAlquiler.auto.modeloAuto.nombreModelo}} | {{ incidente.idAlquiler.auto.matricula}}</td>
+                                    <td data-label="Usuario">{{ incidente.idAlquiler.usuario.email }}</td>
+                                    <td data-label="Fecha del Incidente">{{ incidente.fechaIncidente | date: 'dd/MM/yyyy' }}</td>
+                                    <td data-label="Costo de Incidente">${{ incidente.costoIncidente | number: '1.0-0'}}</td>
+                                    <td data-label="Estado" style="text-transform: capitalize;"
+                                        [ngClass]="{'estado-pagado': incidente.estadoIncidente === 'pagado', 'estado-impago': incidente.estadoIncidente === 'impago'}">
+                                        <strong>{{ incidente.estadoIncidente }}</strong>
+                                    </td>
+                                    <td *ngIf="incidente.estadoIncidente === 'pagado'">
+                                        {{ incidente.fechaPago | date: 'dd/MM/yyyy | HH:mm' : '-03:00' }}
+                                    </td>
+                                    <td *ngIf="incidente.estadoIncidente === 'impago'">
+                                        <span class="text-danger">Pendiente</span>
+                                    </td>
+
+                                    <td>
+                                        <button (click)="incidente.mostrarDetalles = !incidente.mostrarDetalles"
+                                            class="btn-main btn-black">
+                                            {{ incidente.mostrarDetalles ? 'Ocultar' : 'Ver Detalles' }}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <i [routerLink]="['/incidente-editar', incidente._id]"
+                                            class="fas fa-edit text-primary"></i>
+                                        <i  (click)="abrirDeleteModal(incidente._id)"
+                                                class="fas fa-trash text-danger">
+                                        </i>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="incidente.mostrarDetalles" class="expandible">
+                                    <td colspan="10" style="padding: 20px;">
+                                        <h6>Detalles del Incidente</h6>
+                                        <div style="display: flex;">
+                                            <div style="width: 100%;">
+                                                <div class="datos-adicionales" style="display: grid; gap: 20px">
+                                                    <span>&nbsp;&nbsp;<strong></strong> {{ incidente.descripcion }}</span>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listaIncidentes.length == 0">No hay modelos
+                        para mostrar</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este incidente?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarDelete()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

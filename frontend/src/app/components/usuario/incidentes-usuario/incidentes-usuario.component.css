@@ -1,0 +1,22 @@
+.no-underline {
+    text-decoration: none;
+    cursor: pointer;
+}
+.col-lg-6 {
+    font-family: Outfit, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+}
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.bg-success {
+    background-color: #00b74a !important;
+}
+.fas {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #00b74a;
+    font-size: 20px;
+}

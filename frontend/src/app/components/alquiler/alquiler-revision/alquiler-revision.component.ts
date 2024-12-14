@@ -38,7 +38,7 @@ export class AlquilerRevisionComponent implements OnInit {
     this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
     this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
 
-    this.usuario = this.authService.getUsuarioLogueado();
+    
     
     
   }

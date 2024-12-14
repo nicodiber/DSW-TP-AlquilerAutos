@@ -46,7 +46,6 @@ export class EditarDatosUsuarioComponent implements OnInit {
         this.router.navigate(['/loginUsuario']);
       }
     });
-    
   }
 
   cargarDatosUsuario() {
@@ -88,6 +87,11 @@ export class EditarDatosUsuarioComponent implements OnInit {
       }
     });
   }
+
+  incidentesUsuario(){
+    window.location.href = '/incidentes';
+  }
+
   cerrarSesion() {
     this.authService.logout().subscribe({
     next: () => {
