@@ -1,1 +1,6 @@
-<p>mantenimiento-crear works!</p>
+<div *ngFor="let auto of autosDisponibles">
+    <p>{{ auto.matricula }}</p>
+    <button *ngIf="auto._id !== undefined" (click)="cambiarEstadoAjuste(auto._id)">
+        Cambiar a Mantenimiento
+    </button>
+</div>

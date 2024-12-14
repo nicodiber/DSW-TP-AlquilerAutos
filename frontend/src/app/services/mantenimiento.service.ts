@@ -4,10 +4,6 @@ import { Observable } from 'rxjs';
 import { mantenimiento } from '../models/mantenimiento';
 import { usuario } from '../models/usuario';
 
-interface MantenimientoData {
-  usuario: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
