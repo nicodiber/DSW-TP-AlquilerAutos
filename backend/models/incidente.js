@@ -21,9 +21,13 @@ const IncidenteSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  fechaPago: {
+    type: Date,
+    default: null
+  },
   estadoIncidente: {
     type: String,
-    enum: ['impago', 'pago'],
+    enum: ['impago', 'pagado'],
     required: true
   }
   

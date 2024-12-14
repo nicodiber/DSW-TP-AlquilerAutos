@@ -5,6 +5,7 @@ import { AlquilerService } from '../../../services/alquiler.service';
 import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { incidente } from '../../../models/incidente';
+import { IncidenteService } from '../../../services/incidente.service';
 
 @Component({
   selector: 'app-incidentes-usuario',
@@ -14,10 +15,11 @@ import { incidente } from '../../../models/incidente';
 export class IncidentesUsuarioComponent implements OnInit {
   usuario: any;
   incidentes: any
-  alquilerIdToCancel: any | null = null;
+  IncidenteIdToCancel: any | null = null;
   
     constructor(private authService: AuthService,
-                private alquilerService: AlquilerService, 
+                private alquilerService: AlquilerService,
+                private incidenteService: IncidenteService,  
                 private usuarioService: UsuarioService, 
                 private router: Router,
                 private toastr: ToastrService) { }
@@ -25,7 +27,6 @@ export class IncidentesUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerUsuarioSesion();
   }
-
 
 
 
@@ -63,26 +64,47 @@ obtenerUsuarioSesion(){
     });
   } 
 
-  getIncidentes(){
-    this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
-      next: (alquileresDeUser) => {
-        this.usuario = alquileresDeUser;
-          this.authService.obtenerIncidentesDelAlquilerLogueado(alquileresDeUser._id).subscribe({
-              next: (incidentesDelAlquiler) => {
-                this.usuario = incidentesDelAlquiler;
-                },
-                error: (error) => {
-                console.error('Error al obtener los incidentes de los alquileres:', error);
-              }
-            });
-        },
-      error: (error) => {
-        console.error('Error al obtener alquileres:', error);
-      }
-    });
+  getIncidentes(): void {
+  this.incidenteService.obtenerIncidentesUsuario(this.usuario._id).subscribe({
+    next: (incidentes) => {
+      this.incidentes = incidentes; // Almacena los incidentes obtenidos
+      console.log('Incidentes del usuario:', incidentes);
+    },
+    error: (error) => {
+      console.error('Error al obtener incidentes del usuario:', error);
+    }
+  });
+}
+
+
+  
+  abrirPagarIncidenteModal(id: any) {
+    this.IncidenteIdToCancel = id; // Guardamos el ID del usuario a eliminar
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal); // Crear instancia de modal de Bootstrap
+      bootstrapModal.show(); // Mostrar el modal
+    }
   }
 
-  abrirPagarIncidenteModal(incidentes: any){
-    return incidentes;
+  confirmarPago() {
+
+    this.incidenteService.pagarIncidente(this.IncidenteIdToCancel).subscribe(
+        (data) => {
+            this.toastr.success('El Incidente fue pagado con éxito', 'Incidente Pagado');
+              this.getIncidentes();
+            const modal = document.getElementById('deleteModal');
+            if (modal) {
+                const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide(); 
+            }
+
+            this.IncidenteIdToCancel = null;
+        },
+        (error) => {
+            this.toastr.error('Error al pagar el incidente', 'Error');
+            console.log(error);
+        }
+    );
   }
-  }
+}

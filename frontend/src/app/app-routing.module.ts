@@ -37,6 +37,8 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
+import { IncidenteListarComponent } from './components/incidente/incidente-listar/incidente-listar.component';
+import { IncidenteCrearComponent } from './components/incidente/incidente-crear/incidente-crear.component';
 
 // Define las rutas de la aplicación
 const routes: Routes = [
@@ -91,6 +93,10 @@ const routes: Routes = [
       { path: 'auto-listar', component: AutoListarComponent},
       { path: 'auto-crear', component: AutoCrearComponent },
       { path: 'auto-editar/:id', component: AutoCrearComponent },
+
+      { path: 'incidente-listar', component: IncidenteListarComponent},
+      { path: 'incidente-crear', component: IncidenteCrearComponent},
+      { path: 'incidente-editar/:id', component: IncidenteCrearComponent},
     ]
   },
 

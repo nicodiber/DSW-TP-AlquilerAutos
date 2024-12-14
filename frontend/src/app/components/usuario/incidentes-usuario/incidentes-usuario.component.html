@@ -50,7 +50,7 @@
                 <div class="col-lg-9">
                     <div class="card p-4 rounded-5 mb25">
                         <h4>Incidentes recientes</h4>
-                        <table *ngIf="usuario.alquileres.length > 0" class="table de-table">
+                        <table *ngIf="incidentes.length > 0" class="table de-table">
                             <thead>
                                 <tr>
                                     <th scope="col"><span class="text-uppercase fs-12 text-gray">ID Incidente</span></th>
@@ -59,43 +59,65 @@
                                     <th scope="col"><span class="text-uppercase fs-12 text-gray">Descripcion</span></th>
                                     <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha del Incidente</span></th>
                                     <th scope="col"><span class="text-uppercase fs-12 text-gray">Costo del Incidente</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha del Pago</span></th>
                                     <th scope="col"><span class="text-uppercase fs-12 text-gray">Estado</span></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let incidentes of incidentes.alquiler">
+                                <tr *ngFor="let incidente of incidentes">
                                     <td>
-                                        <div class="badge bg-gray-100 text-dark">#{{ incidentes._id }}</div>
+                                        <div class="badge bg-gray-100 text-dark">#{{incidente._id }}</div>
                                     </td>
                                     <td>
-                                        <div class="badge bg-gray-100 text-dark">#{{ incidentes.alquiler._id }}</div>
+                                        <div class="badge bg-gray-100 text-dark">#{{incidente.idAlquiler._id}}</div>
                                     </td>
-                                    <td><span class="bold">{{ incidentes.alquiler.auto.modeloAuto?.nombreModelo}}</span></td>
-                                    <td><span class="d-lg-none d-sm-block"></span>{{ incidentes.descripcion}}</td>
-                                    <td><span class="d-lg-none d-sm-block"></span>{{ incidentes.fechaIncidente}}</td>
-                                    <td><span class="d-lg-none d-sm-block"></span>$ {{ incidentes.costoIncidente | number:
-                                        '1.0-0'}}</td>
+                                    <td><span class="bold">{{ incidente.idAlquiler.auto.modeloAuto?.nombreModelo}}</span></td>
+                                    <td><span class="d-lg-none d-sm-block"></span>{{incidente.descripcion}}</td>
+                                    <td><span class="d-lg-none d-sm-block"></span>{{incidente.fechaIncidente | date: 'dd/MM/yyyy' }}</td>
+                                    <td><span class="d-lg-none d-sm-block"></span>$ {{incidente.costoIncidente | number: '1.0-0'}}</td>
+                                    <td *ngIf="incidente.estadoIncidente === 'pagado'">
+                                        {{ incidente.fechaPago | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}
+                                    </td>
+                                    <td *ngIf="incidente.estadoIncidente === 'impago'">
+                                        <span class="text-danger">Pendiente</span>
+                                    </td>
                                     <td>
                                         <div class="badge rounded-pill" [ngClass]="{
-                                                                  'bg-success': incidentes.estadoIncidente === 'pago',
-                                                                  'bg-danger ': incidentes.estadoIncidente === 'impago'
+                                                                  'bg-success': incidente.estadoIncidente === 'pagado',
+                                                                  'bg-danger ': incidente.estadoIncidente === 'impago'
                                                                 }">
-                                            {{ incidentes.alquiler.estadoIncidente }}
+                                            {{ incidente.estadoIncidente }}
                                         </div>
                                     </td>
                                     <td>
-                                        <i *ngIf="incidentes.estadoAlquiler === 'impago'"
-                                            (click)="abrirPagarIncidenteModal(incidentes._id)" class="fas fa-solid fa-money-bill"></i>
+                                        <i *ngIf="incidente.estadoIncidente === 'impago'"
+                                            (click)="abrirPagarIncidenteModal(incidente._id)" class="fas fa-solid fa-money-bill"></i>
                                     </td>     
                                 </tr>
                             </tbody>
                         </table>
-                        <label *ngIf="incidentes.length == 0">Usted no posee incidentes pendientes, muy bien 😎</label>
+                        <label *ngIf="!incidentes.length">Usted no posee incidentes pendientes, muy bien 😎</label>
                     </div>
                 </div>
             
             </div>
         </div>
     </section>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Pago de Incidente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas pagar este incidente?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-success" (click)="confirmarPago()">Sí, pagar</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -93,7 +93,7 @@ export class AuthService {
     return this.http.get(`${this.url}/datos/${usuarioid}`);
   }
   
-  obtenerIncidentesDelAlquilerLogueado(alquilerId: number): Observable<any>{
-    return this.http.get(`${this.url}/incidentes#/${alquilerId}`);
+  obtenerIncidentesDelAlquilerLogueado(alquileresId: []): Observable<any>{
+    return this.http.get(`${this.url}/incidentes#/${alquileresId}`);
   }
 }

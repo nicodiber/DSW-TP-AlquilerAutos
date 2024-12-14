@@ -43,6 +43,7 @@ export class EscritorioComponent implements OnInit {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
         this.usuario = alquileresDeUser;
+        console.log(this.usuario);
       },
       error: (error) => {
         console.error('Error al obtener alquileres:', error);
@@ -76,6 +77,12 @@ export class EscritorioComponent implements OnInit {
   }
   irAGestionarAutos() {
     window.location.href = '/auto-listar';    
+  }
+  irAGestionarIncidentes() {
+    window.location.href = '/incidente-listar';    
+  }
+  irAGestionarMantenimientos() {
+    window.location.href = '/mantenimiento-listar';    
   }
   
   editarMisDatos() {
@@ -111,9 +118,7 @@ export class EscritorioComponent implements OnInit {
             this.usuarioService.cancelarAlquilerUsuario(this.usuario._id, this.alquilerIdToCancel, 'cancelado').subscribe(
                 (data) => {
                     this.toastr.success('El alquiler del usuario fue cancelado con éxito', 'Alquiler Cancelado');
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 1000);              
+                    this.getAlquileres();              
                 },
                 (error) => {
                     this.toastr.error('Error al cancelar el alquiler del usuario', 'Error');
@@ -130,7 +135,7 @@ export class EscritorioComponent implements OnInit {
             this.alquilerIdToCancel = null;
         },
         (error) => {
-            this.toastr.error('Error al cambiar el estado del alquiler', 'Error');
+            this.toastr.error('Error al cancelar el alquiler', 'Error');
             console.log(error);
         }
     );

@@ -30,4 +30,12 @@ export class IncidenteService {
   obtenerIncidente(_id: string): Observable<any> {
     return this.http.get(this.url + _id);
   }
+
+  obtenerIncidentesUsuario(id: string): Observable<any> {
+    return this.http.get(`${this.url}usuario/${id}`);
+  }
+
+  pagarIncidente(id: string): Observable<any> {
+    return this.http.put(this.url + 'pay/' + id, {});
+}
 }
