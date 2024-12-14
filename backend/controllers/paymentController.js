@@ -1,10 +1,12 @@
 const Stripe = require('stripe');
-const alquiler = require('../models/alquiler')
-
 const stripe = new Stripe('sk_test_51QVnALIH5hl8sEK2JgueWLOqmomQmQ2d3F9bQluixTIhSGT8h0U1DM4T5YV8kVSGLXAv2ftnETzYPpI3HH88Hmza00jvBJ8bDp');
 
 const createSession = async (req, res) => {
-  const { amount } = req.body;
+  const { amount } = req.body; // Asegúrate de que 'amount' está llegando correctamente desde el frontend
+
+  if (!amount || typeof amount !== 'number') {
+    return res.status(400).json({ message: 'El monto es obligatorio y debe ser un número.' });
+  }
 
   try {
     // Crear la sesión de pago
@@ -13,19 +15,22 @@ const createSession = async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: 'ars',
             product_data: {
-              name: 'Alquiler de auto',
+              name: 'Reserva de alquiler',
             },
-            unit_amount: amount,  // El monto que se pasa en centavos
+            unit_amount: amount * 100, // Stripe usa centavos, así que multiplicamos el monto por 100
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:4200/success?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'http://localhost:4200/cancel',
+      success_url: 'http://localhost:4200/alquiler-completado',
+      cancel_url: 'http://localhost:4200/alquiler-revision',
     });
+
+    // Log para verificar que la sesión se ha creado correctamente
+    console.log('Session ID creado:', session.id);
 
     // Devolver el sessionId
     res.json({ sessionId: session.id });
@@ -34,43 +39,5 @@ const createSession = async (req, res) => {
     res.status(500).json({ message: 'Error al crear la sesión de pago', error: error.message });
   }
 };
-  
-  
 
-// Crear un pago
-const createPayment = async (req, res) => {
-    const { alquilerId, token, amount } = req.body;
-
-    try {
-        // Verificar si existe el alquiler
-        const alquiler = await Alquiler.findById(alquilerId);
-        if (!alquiler) {
-            return res.status(404).json({ message: 'Alquiler no encontrado' });
-        }
-
-        // Crear un cargo en Stripe
-        const charge = await stripe.charges.create({
-            amount: Math.round(amount * 100), // Stripe usa centavos
-            currency: 'usd',
-            source: token, // Token generado en el frontend
-            description: `Pago para el alquiler ID: ${alquilerId}`,
-        });
-
-        // Actualizar el estado del alquiler después del pago exitoso
-        alquiler.estadoAlquiler = 'activo'; // Ajusta según tus necesidades
-        await alquiler.save();
-
-        res.status(200).json({
-            message: 'Pago realizado con éxito',
-            charge,
-        });
-    } catch (error) {
-        console.error('Error en el pago:', error.message);
-        res.status(500).json({
-            message: 'Error al procesar el pago',
-            error: error.message,
-        });
-    }
-};
-
-module.exports = { createSession, createPayment }; // Exporta la función usando CommonJS
+module.exports = { createSession }; // Exporta la función usando CommonJS

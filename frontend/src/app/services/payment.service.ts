@@ -1,4 +1,3 @@
-// src/app/services/payment.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +9,8 @@ export class PaymentService {
 
   constructor(private http: HttpClient) { }
 
-  createCheckoutSession(amount: number): Observable<any> {
-    return this.http.post<any>('http://localhost:4000/api/payment/create-checkout-session', { amount });
+  // Método que llama al backend para crear la sesión de pago
+  createCheckoutSession(data: { amount: number }): Observable<any> {
+    return this.http.post('http://localhost:4000/api/payment/create-checkout-session', data);
   }
 }

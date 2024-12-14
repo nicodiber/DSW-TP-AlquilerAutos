@@ -11,7 +11,6 @@ router.get('/', (req, res) => {  // <-- Función de callback
 });
 
 router.post('/create-checkout-session', createSession);
-router.post('/create',createPayment);
 
 // En tu backend, configura las rutas de éxito y cancelación para que Stripe redirija al usuario después del pago
 

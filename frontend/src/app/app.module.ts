@@ -53,7 +53,6 @@ import { CambiarPasswordComponent } from './components/usuario/cambiar-password/
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
 import { IncidentesUsuarioComponent } from './components/usuario/incidentes-usuario/incidentes-usuario.component';
-import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   // Declaración de componentes que forman parte del módulo
@@ -93,8 +92,7 @@ import { PaymentComponent } from './components/payment/payment.component';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     IncidentesUsuarioComponent,
-    PaymentComponent,
-    
+
   ],
 
   // Importación de otros módulos necesarios para la aplicación
