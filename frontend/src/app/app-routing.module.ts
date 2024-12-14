@@ -36,7 +36,7 @@ import { AsignarAutosComponent } from './components/sucursal/asignar-autos/asign
 import { CambiarPasswordComponent } from './components/usuario/cambiar-password/cambiar-password.component';
 import { ForgotPasswordComponent } from './components/usuario/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/usuario/reset-password/reset-password.component';
-import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar.component';
+import { MantenimientoListarComponent } from './components/mantenimiento/mantenimiento-listar/mantenimiento-listar.component';
 import { MantenimientoCrearComponent } from './components/mantenimiento/mantenimiento-crear/mantenimiento-crear.component';
 
 // Define las rutas de la aplicación

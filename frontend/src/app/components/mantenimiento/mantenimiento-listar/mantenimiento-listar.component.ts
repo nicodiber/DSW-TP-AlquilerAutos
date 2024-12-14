@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { MantenimientoService } from '../../services/mantenimiento.service';
-import { AuthService } from '../../services/auth.service';
-import { UsuarioService } from '../../services/usuario.service';
-import { mantenimiento } from '../../models/mantenimiento';
-import { usuario } from '../../models/usuario';
+import { MantenimientoService } from '../../../services/mantenimiento.service';
+import { AuthService } from '../../../services/auth.service';
+import { UsuarioService } from '../../../services/usuario.service';
+import { mantenimiento } from '../../../models/mantenimiento';
+import { usuario } from '../../../models/usuario';
 import moment from 'moment';
 
 @Component({
