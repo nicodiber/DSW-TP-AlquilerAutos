@@ -1,6 +1,8 @@
 const Sucursal = require("../models/sucursal");
 const Usuario = require("../models/usuario");
 const Auto = require("../models/auto");
+const Mantenimiento = require("../models/mantenimiento");
+const { Alquiler } = require('../models/alquiler');
 const { getNextSequenceValue } = require('../config/db');
 
 // Crear una nueva sucursal
@@ -189,6 +191,16 @@ exports.asignarTrabajadores = async (req, res) => {
     const trabajadoresAsignadosNumeros = trabajadoresAsignados.map(id => Number(id));
     const trabajadoresNoAsignadosNumeros = trabajadoresNoAsignados.map(id => Number(id));
 
+    // Verificar si los autos que se quieren Desasignar están implicados en un Alquiler reservado o activo, o en un Mantenimiento en curso
+    const implicadoMantenimiento = await Mantenimiento.find({ trabajadorACargo: { $in: trabajadoresNoAsignadosNumeros }, fechaFinMantenimiento: null });
+    if (implicadoMantenimiento.length > 0){
+      return res.status(400).json({ msg: 'No se puede eliminar el trabajador porque está asignado a un Mantenimiento en curso' });
+    }
+    const implicadoAlquiler = await Alquiler.find({ trabajadorAsignado: { $in: trabajadoresNoAsignadosNumeros }, estadoAlquiler: { $in: ['reservado', 'activo'] } });
+    if (implicadoAlquiler.length > 0){
+      return res.status(400).json({ msg: 'No se puede eliminar el trabajador porque está asignado a un Alquiler reservado o activo' });
+    }
+
     // Desasigna trabajadores, eliminando el ID de la sucursal de los trabajadores
     await Sucursal.updateOne(
       { _id: idSucursal },
@@ -240,6 +252,16 @@ exports.asignarAutos = async (req, res) => {
 
     const autosAsignadosNumeros = autosAsignados.map(id => Number(id));
     const autosNoAsignadosNumeros = autosNoAsignados.map(id => Number(id));
+
+    // Verificar si los autos que se quieren Desasignar están implicados en un Alquiler reservado o activo, o en un Mantenimiento en curso
+    const implicadoMantenimiento = await Mantenimiento.find({ auto: { $in: autosNoAsignadosNumeros }, fechaFinMantenimiento: null });
+    if (implicadoMantenimiento.length > 0){
+      return res.status(400).json({ msg: 'No se puede eliminar el auto porque está asignado a un Mantenimiento en curso' });
+    }
+    const implicadoAlquiler = await Alquiler.find({ auto: { $in: autosNoAsignadosNumeros }, estadoAlquiler: { $in: ['reservado', 'activo'] } });
+    if (implicadoAlquiler.length > 0){
+      return res.status(400).json({ msg: 'No se puede eliminar el auto porque está asignado a un Alquiler reservado o activo' });
+    }
 
     await Sucursal.updateOne(
       { _id: idSucursal },

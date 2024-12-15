@@ -95,7 +95,7 @@
                                     <span>La Direccion <strong>es obligatoria</strong></span>
                                 </div>
                         </div>
-                        <div class="mb-6">
+                        <div class="mb-6" *ngIf="!id">
                             <label for="rol" class="form-label">Selecciona el Rol de Usuario</label>
                             <div>
                                 <input type="radio" formControlName="rol" id="rolAdmin" value="administrador">

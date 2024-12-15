@@ -97,22 +97,10 @@ export class ListarUsuariosComponent implements OnInit {
         }
       },
       (error) => {
+        this.toastr.error('No podés eliminar un trabajador asignado a una Sucursal.', 'Error');
         console.log(error);
       }
     );
     this.usuarioIdToDelete = null; // Reiniciamos el ID del usuario
-  }
-
-  deleteUsuario(id: any) {
-    if (id === this.usuarioLogueado._id) {
-      this.toastr.error('No puedes eliminar tu propia cuenta.', 'Error');
-      return;
-    }
-    this._usuarioService.eliminarUsuario(id).subscribe(data => {
-      this.toastr.success('El usuario fue eliminado con exito', 'Usuario Eliminado');
-      this.getUsuarios();
-    }, error => {
-      console.log(error);
-    })
   }
 }

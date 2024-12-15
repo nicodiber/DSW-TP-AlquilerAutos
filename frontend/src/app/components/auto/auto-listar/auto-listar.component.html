@@ -25,7 +25,6 @@
               <td data-label="Estado" style="text-transform: capitalize;" [ngClass]="{'estado-disponible': auto.estadoAuto === 'disponible', 'estado-reservado': auto.estadoAuto === 'reservado', 'estado-alquilado': auto.estadoAuto === 'alquilado', 'estado-mantenimiento': auto.estadoAuto === 'mantenimiento'}"><strong>{{ auto.estadoAuto }}</strong></td>
               <td>
                 <i class="fas fa-trash text-danger" style="cursor: pointer;" *ngIf="auto.estadoAuto === 'disponible'" title="Eliminar" (click)="auto._id ? abrirDeleteModal(auto._id) : null"></i>
-                <i class="fas fa-edit text-primary" style="cursor: pointer;" title="Editar" [routerLink]="['/auto-editar', auto._id]"></i>
 
                 <!-- Modal -->
                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"

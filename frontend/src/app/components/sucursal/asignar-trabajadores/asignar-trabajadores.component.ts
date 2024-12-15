@@ -111,7 +111,7 @@ export class AsignarTrabajadoresComponent implements OnInit {
       },
       error => {
         console.error("Error al actualizar asignaciones:", error);
-        this.toastr.error("Error al actualizar asignaciones");  // Mostrar mensaje de error si no se pudieron actualizar las asignaciones
+        this.toastr.error("Error al actualizar asignaciones. Hay trabajadores asignados a un Alquiler reservado o activo, o a un Mantenimiento en curso.");  // Mostrar mensaje de error si no se pudieron actualizar las asignaciones
       }
     );
   }

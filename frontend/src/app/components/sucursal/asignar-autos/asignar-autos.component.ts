@@ -107,7 +107,7 @@ export class AsignarAutosComponent implements OnInit {
       },
       error => {
         console.error("Error al actualizar asignaciones de autos:", error);
-        this.toastr.error("Error al actualizar asignaciones de autos");  // Mostrar mensaje de error si no se pudieron actualizar las asignaciones
+        this.toastr.error("Error al actualizar asignaciones. Hay autos asignados a un Alquiler reservado o activo, o a un Mantenimiento en curso.");  // Mostrar mensaje de error si no se pudieron actualizar las asignaciones
       }
     );
   }

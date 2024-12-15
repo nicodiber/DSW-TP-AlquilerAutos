@@ -38,10 +38,7 @@ export class AutoCrearComponent implements OnInit {
     if (this.id === null) {
       this.autoForm.patchValue({ estadoAuto: 'disponible' });
       this.autoForm.get('estadoAuto')?.disable();
-    } else {
-      this.esEditar();
     }
-  
   }
 
   isNotAdminTrabajador() {
@@ -96,25 +93,14 @@ export class AutoCrearComponent implements OnInit {
       matricula: this.autoForm.get('matricula')?.value
     };
 
-    if (this.id !== null) {
-      // Editar auto
-      this.autoService.editarAuto(this.id, AUTO).subscribe(
-        data => {
-          this.toastr.info('El auto fue actualizado con éxito!', 'Auto Actualizado!');
-          this.router.navigate(['/auto-listar']);
-        },
-        error => this.handleError(error, 'actualizar')
-      );
-    } else {
-      // Crear nuevo auto
-      this.autoService.guardarAuto(AUTO).subscribe(
-        data => {
-          this.toastr.success('El auto fue registrado con éxito!', 'Auto Registrado!');
-          this.router.navigate(['/auto-listar']);
-        },
-        error => this.handleError(error, 'registrar')
-      );
-    }
+    // Crear nuevo auto
+    this.autoService.guardarAuto(AUTO).subscribe(
+      data => {
+        this.toastr.success('El auto fue registrado con éxito!', 'Auto Registrado!');
+        this.router.navigate(['/auto-listar']);
+      },
+      error => this.toastr.error(`Ya existe un auto con esa patente.`, 'Error en el formulario')
+    );
   }
 
   showFormErrors() {
@@ -138,22 +124,6 @@ export class AutoCrearComponent implements OnInit {
     }
     this.toastr.error(errorMsg, `Error de ${action} === 'registrar' ? 'Registro' : 'Actualización'}`);
     this.autoForm.reset();
-  }
-
-  esEditar() {
-    if (this.id !== null) {
-      this.titulo = 'Editar Auto';
-      this.autoService.obtenerAuto(this.id).subscribe(data => {
-        console.log("Estado recibido:", data.estadoAuto);
-        this.autoForm.patchValue({
-          modeloAuto: data.modeloAuto._id,     // Asigna el ID para que coincida con las opciones del select
-          sucursalAuto: data.sucursalAuto._id, // Asigna el ID para que coincida con las opciones del select
-          // historialMantenimiento: data.historialMantenimiento,
-          estadoAuto: data.estadoAuto,
-          matricula: data.matricula
-        });
-      });
-    }
   }
 
 }

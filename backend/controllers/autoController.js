@@ -5,7 +5,6 @@ const { getNextSequenceValue } = require('../config/db');
 
 exports.crearAuto = async (req, res) => {
   try {
-    const _id = await getNextSequenceValue('autoId');
     const {
       modeloAuto,
       sucursalAuto,
@@ -19,6 +18,15 @@ exports.crearAuto = async (req, res) => {
     if (!sucursal) {
       return res.status(404).json({ msg: 'La sucursal no existe' });
     }
+
+    const autoExistente = await Auto.findOne({
+      matricula: matricula
+    });
+    if (autoExistente) {
+      return res.status(404).json({ msg: 'Ya existe un auto con esa patente' });
+    }
+
+    const _id = await getNextSequenceValue('autoId');
 
     let auto = new Auto({
       _id,

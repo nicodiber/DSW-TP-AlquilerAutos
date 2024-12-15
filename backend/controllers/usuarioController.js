@@ -1,7 +1,6 @@
 const Usuario = require("../models/usuario");
 const Sucursal = require("../models/sucursal");
 const { getNextSequenceValue } = require('../config/db');
-const usuario = require("../models/usuario");
 const bcrypt = require('bcryptjs');
 
 exports.crearUsuario = async (req, res) => {
@@ -141,6 +140,11 @@ exports.eliminarUsuario = async (req, res) => {
 
     if (!usuario) {
       return res.status(404).json({ msg: 'No existe ese usuario' });
+    }
+
+    const implicado = await Sucursal.find({ trabajadores: req.params.id });
+    if (implicado.length > 0){
+      return res.status(400).json({ msg: 'No se puede eliminar el trabajador porque está asignado a una Sucursal' });
     }
 
     await Usuario.findOneAndDelete({ _id: req.params.id });

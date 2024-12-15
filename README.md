@@ -40,7 +40,7 @@ El propósito de este proyecto es proporcionar una plataforma integral y fácil 
 - Base de Datos: MongoDB
 - Lenguaje de marcado (Frontend): HTML5
 - Lenguaje de diseño gráfico (Frontend): CSS
-- Otros: Mongoose v8.5.1, Nodemon (cambios en tiempo real), Toastr (animaciones) y Multer (imágenes)
+- Otros: Mongoose v8.5.1, Nodemon (cambios en tiempo real), Toastr (animaciones), Multer (imágenes), Axios (solicitudes HTTP), Bcryptjs (encriptación), Cookie-parser (manejo de cookies), cors v2.8.5 (middleware de Express para solicitudes), Dotenv v16.4.5 (Variables de Environment de archivo .env), Jsonwebtoken (tokens de usuario), Nodemailer (mails), Stripe (pagos).
 
 # Aclaraciones
 
