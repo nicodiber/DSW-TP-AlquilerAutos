@@ -25,10 +25,11 @@ export class ListarMarcaComponent implements OnInit {
   }
 
   getMarcas() { 
-    this._marcaService.obtenerMarcas().subscribe(data => {
-      this.listaMarcas = data;
-    }, error => {
-      console.log(error);
+    this._marcaService.obtenerMarcas().subscribe ({
+      next: (data) => {
+        this.listaMarcas = data;
+      },
+      error: (err) => console.error('Error al obtener marcas:', err)
     });
   }
 
