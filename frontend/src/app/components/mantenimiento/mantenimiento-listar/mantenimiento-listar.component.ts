@@ -155,31 +155,36 @@ export class MantenimientoListarComponent implements OnInit {
   }
 
   confirmarModal() {
-    // Validación inicial: aseguramos que hay un mantenimiento seleccionado y la entrada es válida
-    if (!this.mantenimientoActual || !this.inputValido()) {
-      this.toastr.warning('Entrada no válida o mantenimiento no seleccionado.');
+    // Aseguramos que hay un mantenimiento seleccionado
+    if (!this.mantenimientoActual) {
+      this.toastr.warning('Mantenimiento no seleccionado.');
       return;
     }
 
+    // Validar según el tipo de acción
     if (this.modalType === 'fechaFinMantenimiento') {
+      if (!this.fechaInput || !this.horaInput) {
+        this.toastr.error('Debe ingresar fecha y hora válidas.');
+        return;
+      }
       const fechaISO = this.convertirFechaAFormatoISO(this.fechaInput) + ' ' + this.horaInput;
       const fechaCompleta = moment(fechaISO, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
       const fechaInicio = new Date(this.mantenimientoActual.fechaInicioMantenimiento || '');
+
       if (fechaCompleta <= fechaInicio) {
-        this.toastr.warning('La Fecha de Fin Real debe ser mayor a la Fecha de Inicio Real.');
+        this.toastr.warning('La Fecha de Fin debe ser mayor que la Fecha de Inicio.');
         return;
       }
 
+      // Guardar fecha de fin y actualizar estado del auto
       this._mantenimientoService.establecerFechaFinMantenimiento(String(this.mantenimientoActual._id), fechaCompleta).subscribe(() => {
         this.mantenimientoActual!.fechaFinMantenimiento = fechaCompleta;
 
-        // Actualizar el estado del Auto
         this._mantenimientoService.actualizarEstadoAuto(String(this.mantenimientoActual?.auto._id)).subscribe(
           () => {
-            console.log('Estado del auto actualizado');
+            this.toastr.success('Estado del auto actualizado a disponible');
           },
           error => {
-            console.error('Error al actualizar el estado del auto:', error);
             this.toastr.error('Error al actualizar el estado del auto');
           }
         );
@@ -187,40 +192,44 @@ export class MantenimientoListarComponent implements OnInit {
         this.toastr.success('Fecha de Fin de mantenimiento actualizada');
         this.modalInstance?.hide();
       });
-
     } else if (this.modalType === 'trabajador' && typeof this.modalInput === 'string') {
-      const trabajadorId = parseInt(this.modalInput, 10); // Convierte el ID a número
+      const trabajadorId = parseInt(this.modalInput, 10);
       if (isNaN(trabajadorId)) {
         this.toastr.error('Error: Selección de trabajador inválida.');
         return;
       }
-      this._mantenimientoService.modificarTrabajador(String(this.mantenimientoActual._id), Number(this.modalInput)).subscribe(() => {
+
+      this._mantenimientoService.modificarTrabajador(String(this.mantenimientoActual._id), trabajadorId).subscribe(() => {
         this._mantenimientoService.obtenerMantenimiento(String(this.mantenimientoActual!._id)).subscribe((mantenimientoActualizado) => {
           this.mantenimientoActual!.trabajadorACargo = mantenimientoActualizado.trabajadorACargo;
           this.toastr.success('Trabajador a cargo asignado correctamente');
           this.modalInstance?.hide();
         });
       });
-    }
-    if (this.modalType === 'costo' && typeof this.modalInput === 'string') {
-      const costo = parseFloat(this.modalInput);  // Convierte la cadena a número
+    } else if (this.modalType === 'costo' && typeof this.modalInput === 'string') {
+      const costo = parseFloat(this.modalInput);
       if (isNaN(costo)) {
         this.toastr.error('Error: El costo debe ser un número válido.');
         return;
       }
+
       this._mantenimientoService.modificarCosto(String(this.mantenimientoActual._id), costo).subscribe(() => {
-        this.mantenimientoActual!.costoMantenimiento = costo;  // Asigna el valor numérico
+        this.mantenimientoActual!.costoMantenimiento = costo;
         this.toastr.success('Costo actualizado');
         this.modalInstance?.hide();
       });
-    }
+    } else if (this.modalType === 'descripcion' && typeof this.modalInput === 'string') {
+      if (this.modalInput.trim() === '') {
+        this.toastr.error('La descripción no puede estar vacía.');
+        return;
+      }
 
-    else if (this.modalType === 'descripcion' && typeof this.modalInput === 'string') {
       this._mantenimientoService.modificarDescripcion(String(this.mantenimientoActual._id), this.modalInput).subscribe(() => {
         this.mantenimientoActual!.descripcion = this.modalInput;
-        this.toastr.success('Descripcion actualizada');
+        this.toastr.success('Descripción actualizada');
         this.modalInstance?.hide();
       });
     }
   }
+
 }
