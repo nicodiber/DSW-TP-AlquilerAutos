@@ -85,7 +85,6 @@ export class DetalleModeloComponent implements OnInit  {
               this.toastr.error('No tienes permiso para acceder a esta página.', '');
               this.router.navigate(['/loginUsuario']);
             } else if (user.rol === 'usuario') {
-              this.toastr.success('Acceso permitido para el rol usuario.', '');
             } else {
               // Caso para roles desconocidos (opcional)
               this.toastr.warning('Rol no reconocido, acceso restringido.', '');

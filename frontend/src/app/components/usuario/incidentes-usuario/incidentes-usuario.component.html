@@ -73,10 +73,10 @@
                                     </td>
                                     <td><span class="bold">{{ incidente.idAlquiler.auto.modeloAuto?.nombreModelo}}</span></td>
                                     <td><span class="d-lg-none d-sm-block"></span>{{incidente.descripcion}}</td>
-                                    <td><span class="d-lg-none d-sm-block"></span>{{incidente.fechaIncidente | date: 'dd/MM/yyyy' }}</td>
+                                    <td><span class="d-lg-none d-sm-block"></span>{{incidente.fechaIncidente | date: 'dd/MM/yyyy' : '-00:00' }}</td>
                                     <td><span class="d-lg-none d-sm-block"></span>$ {{incidente.costoIncidente | number: '1.0-0'}}</td>
                                     <td *ngIf="incidente.estadoIncidente === 'pagado'">
-                                        {{ incidente.fechaPago | date: 'dd/MM/yyyy HH:mm' : '-03:00' }}
+                                        {{ incidente.fechaPago | date: 'dd/MM/yyyy HH:mm' : '-00:00' }}
                                     </td>
                                     <td *ngIf="incidente.estadoIncidente === 'impago'">
                                         <span class="text-danger">Pendiente</span>

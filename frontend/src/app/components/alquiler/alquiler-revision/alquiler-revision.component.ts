@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
 import { AuthService } from '../../../services/auth.service';
-import { PaymentService } from '../../../services/payment.service'; // 
-import { loadStripe } from '@stripe/stripe-js'; // Importa esta función
+import { PaymentService } from '../../../services/payment.service';
+import { loadStripe } from '@stripe/stripe-js';
 
 
 @Component({
@@ -23,10 +23,11 @@ export class AlquilerRevisionComponent implements OnInit {
   constructor(private router: Router, 
     private authService: AuthService, 
     private gestionCookiesService: gestionCookiesService, 
-    private paymentService: PaymentService,) {}
+    private paymentService: PaymentService) {}
 
   ngOnInit(): void {
     this.isAdminTrabajador();
+    
     // Obtener datos de datosBusqueda desde el servicio
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
     console.log("Datos búsqueda:", this.datosBusqueda);
@@ -41,10 +42,6 @@ export class AlquilerRevisionComponent implements OnInit {
     this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
     this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
     this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
-
-    
-    
-    
   }
   
   isAdminTrabajador() {
@@ -97,12 +94,11 @@ export class AlquilerRevisionComponent implements OnInit {
         throw new Error('Stripe.js no se pudo cargar.');
       }
     
-       // Construir el objeto con el formato esperado
-         const paymentData = { amount: Math.round(this.precioTotal) }; // Convertir el monto a centavos
-         console.log(paymentData)
+      // Construir el objeto con el formato esperado
+      const paymentData = { amount: Math.round(this.precioTotal) }; // Convertir el monto a centavos
+
       // Solicitar la sesión al backend
-            const stripeResponse = await this.paymentService.createCheckoutSession(paymentData).toPromise();
-            console.log(stripeResponse)
+      const stripeResponse = await this.paymentService.createCheckoutSession(paymentData).toPromise();
     
       stripe.redirectToCheckout({ sessionId: String(stripeResponse.sessionId)}).then((result) => {
         if (result.error) {
