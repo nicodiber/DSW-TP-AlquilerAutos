@@ -123,6 +123,7 @@ export class AlquilerListarComponent implements OnInit {
       }
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Modificar Trabajador';
+      this.trabajadores = [];
       this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.alquilerActual.sucursalEntrega._id)).subscribe((trabajadores: usuario[]) => {
         this.trabajadores = trabajadores;
       });
@@ -256,13 +257,13 @@ export class AlquilerListarComponent implements OnInit {
         this.toastr.error('Error: Selección de trabajador inválida.');
         return;
       }
-        this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), Number(this.modalInput)).subscribe(() => {
-            this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
-              this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
-              this.toastr.success('Trabajador asignado actualizado');
-              this.modalInstance?.hide();
-            });
-        });
+      this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), Number(this.modalInput)).subscribe(() => {
+          this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
+            this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
+            this.toastr.success('Trabajador asignado actualizado');
+            this.modalInstance?.hide();
+          });
+      });    
     } else if (this.modalType === 'cancelacion' && typeof this.modalInput === 'string') {
         this._alquilerService.cambiarEstado(String(this.alquilerActual._id), 'cancelado').subscribe(() => {
           // Actualizar el estado del Alquiler

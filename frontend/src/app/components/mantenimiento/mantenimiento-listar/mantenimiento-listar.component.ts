@@ -110,15 +110,10 @@ export class MantenimientoListarComponent implements OnInit {
       this.horaInput = '';
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Asignar Trabajador';
+      this.trabajadores = [];
       this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual.auto.sucursalAuto)).subscribe((trabajadores: usuario[]) => {
         this.trabajadores = trabajadores;
-        console.log(this.mantenimientoActual?.auto.sucursalAuto);
-        console.log('Trabajadores cargados:', trabajadores); // Verifica si los trabajadores se están cargando
-      },
-        error => {
-          console.error('Error al cargar los trabajadores:', error);
-        }
-      );
+      });
       this.modalInput = String(mantenimiento.trabajadorACargo?._id) || '';
     } else if (tipo === 'descripcion') {
       this.modalTitle = 'Modificar Descripcion';

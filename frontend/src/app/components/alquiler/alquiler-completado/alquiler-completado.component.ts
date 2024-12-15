@@ -26,55 +26,44 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
      private alquilerService: AlquilerService, 
      private usuarioService: UsuarioService,
      private authService: AuthService,
-    ) {}
+  ) {}
  
-
   ngOnInit(): void {
     this.authService.getAuthenticatedUser().subscribe({
       next: (usuario) => {
         this.usuario = usuario;
+
+        // Actualizar datosBusqueda en el servicio y en la cookie con tiempo de expiración
+        this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
+        // Verificar si modeloElegido existe en datosBusqueda
+        if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
+          console.warn("Cookies faltantes. Redirigiendo...");
+          window.location.href = '/escritorio';
+        }
+        
+        this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);  // Le enviamos el precio para que lo sume a las cookies
+
+        // Volvemos a pedir la cookie y actualizamos valores de lo restante
+        this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
+        this.fechaRetiro = this.datosBusqueda.fechaRetiro;
+        this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
+        this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
+        this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
+
+        // Borramos cookies
+        this.gestionCookiesService.borrarCookie('datosBusqueda');
+        this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
+        this.gestionCookiesService.borrarCookie('modelosDisponibles');
+        this.gestionCookiesService.borrarCookie('autosCoincidentesIds');
+
+        // Creamos nuevo alquiler
+        this.confirmarReserva();
       },
       error: () => {
         // Redirigir al login si ocurre un error
         this.router.navigate(['/loginUsuario']);
       }
     });
-
-    console.log(this.usuario);
-
-    this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    this.fechaRetiro = this.datosBusqueda.fechaRetiro;
-        this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
-        this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
-        this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
-      //  this.usuario = this.authService.getUsuarioLogueado();
-
-    
-    this.confirmarReserva();
-
-
-    this.subscription = this.router.events.subscribe(event => {
-      if (event) {
-        // Borrar las cookies al iniciar la navegación hacia otra ruta
-        this.gestionCookiesService.borrarCookie('datosBusqueda');
-        this.gestionCookiesService.borrarCookie('datosBusquedaExpiration');
-        this.gestionCookiesService.borrarCookie('modelosDisponibles');
-        this.gestionCookiesService.borrarCookie('autosCoincidentesIds');
-      }
-    });
-
-    // Obtener datos de datosBusqueda desde el servicio
-    this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    
-    // Verificar si modeloElegido existe en datosBusqueda
-    if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
-      console.warn("Cookies faltantes. Redirigiendo...");
-      window.location.href = '/buscador';
-    }
-
-    this.fechaRetiro = this.datosBusqueda.fechaRetiro;
-    this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
-    this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
   }
 
   ngOnDestroy(): void {
@@ -83,47 +72,11 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
     }
   }
 
-  isAdminTrabajador() {
-    this.authService.verificarToken().subscribe(
-      (response) => {
-        if (!response.existe) {
-          // No hay ningun usuario logueado, se permite el acceso
-        } else {
-          // Si hay un token, se verifica que sea de rol usuario
-          this.authService.getAuthenticatedUser().subscribe(
-            (user) => {
-              if (user.rol === 'administrador' || user.rol === 'trabajador') {
-                this.router.navigate(['/loginUsuario']);
-              } else if (user.rol === 'usuario') {
-                this.usuario = user
-              } else {
-                // Caso para roles desconocidos (opcional)
-                this.router.navigate(['/loginUsuario']);
-              }
-            },
-            (error) => {
-              this.router.navigate(['/loginUsuario']);
-            }
-          );
-        }
-      },
-      (error) => {
-        
-        this.router.navigate(['/loginUsuario']);
-      }
-    );
-  }
-
   confirmarReserva(): void{
     try {
       // Crear las fechas con horas integradas
       const fechaInicio = moment(this.datosBusqueda.fechaRetiro + ' ' + this.datosBusqueda.horaRetiro, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
       const fechaFin = moment(this.datosBusqueda.fechaDevolucion + ' ' + this.datosBusqueda.horaDevolucion, 'YYYY-MM-DD HH:mm').utcOffset('-03:00').toDate();
-
-      // Actualizar datosBusqueda en el servicio y en la cookie con tiempo de expiración
-      this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);  // Le enviamos el precio para que lo sume a las cookies
-      // Volvemos a obtener toda la cookie nuevamente, ya actualizada, y guardamos en misma variable
-      this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
 
       const alquilerData = {
         usuario: this.usuario._id,
@@ -140,9 +93,6 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
         estadoAlquiler: 'reservado'
       };
 
-
-      console.log("Alquiler Data:", alquilerData); // Verifica que todos los datos sean correctos
-
       // Llamada al servicio para crear el alquiler
       this.alquilerService.crearAlquiler(alquilerData).subscribe(
         async (response) => {
@@ -153,17 +103,12 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
           }
 
           // Enviar solo el alquiler creado en vez del array completo
-          console.log(this.usuario._id);
           this.usuarioService.actualizarAlquileresUsuario(Number(this.usuario._id), response).subscribe(
             () => {
               console.log('Alquiler añadido al usuario actual.');
-              this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, undefined, response._id);
               this.alquilerService.reservarEstadoAuto(this.datosBusqueda.autoAsignado, 'reservado').subscribe(
                 async () => {
                   console.log('Estado del auto actualizado a "reservado".');
-                  
-                  // Crear la sesión de pago con Stripe
-               
                 },
                 error => {
                   console.error('Error al actualizar el estado del auto:', error);
@@ -184,6 +129,7 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
       alert("Hubo un error al realizar la reserva. Intente nuevamente.");
     }
   }
+
   generatePDF() {
     const ticket = document.querySelector('.reservation');
     if (ticket) {

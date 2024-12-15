@@ -13,4 +13,10 @@ export class PaymentService {
   createCheckoutSession(data: { amount: number }): Observable<any> {
     return this.http.post('http://localhost:4000/api/payment/create-checkout-session', data);
   }
+
+  createCheckoutSessionIncidente(data: { amount: number }, idIncidente: string): Observable<any> {
+    return this.http.post('http://localhost:4000/api/payment/create-checkout-session-incidente', { amount: data.amount, idIncidente: idIncidente }, {
+      withCredentials: true, 
+    });
+  }
 }

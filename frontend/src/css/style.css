@@ -18813,12 +18813,10 @@ img {
     width: 100% !important;
 }
 
-/*
-.owl-carousel div:not(.owl-thumbs):has(img),
-.owl-carousel div:not(.owl-thumbs) img {
-    height: 500px !important;
+.toast-container .ngx-toastr {
+    background-size: 24px !important;
 }
-*/
+
 
 /* Ajustes Listados Admin */
 

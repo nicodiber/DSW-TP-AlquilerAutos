@@ -46,7 +46,6 @@ export class ListarModelosComponent implements OnInit {
     // Obtenemos Categorias y Marcas
     this.obtenerCategorias();
     this.obtenerMarcas();
-    // console.log(this.gestionCookiesService.getDatosBusqueda());
     
     // Inicializamos modelosFiltrados con modelosDisponibles
     this.modelosDisponibles = this.gestionCookiesService.getDatosModelosDisponibles(); // Necesitamos modelosDisponibles como una referencia constante (para tener siempre el conjunto completo de modelos sin filtrado o modificaciones)

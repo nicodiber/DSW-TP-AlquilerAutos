@@ -36,6 +36,8 @@ export class IncidenteService {
   }
 
   pagarIncidente(id: string): Observable<any> {
-    return this.http.put(this.url + 'pay/' + id, {});
+    return this.http.put(this.url + 'pay/' + id, {}, {
+      withCredentials: true,
+    });
 }
 }

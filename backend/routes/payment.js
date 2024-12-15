@@ -1,18 +1,9 @@
-// payment.js
 const express = require('express');
-const { createSession, createPayment } = require('../controllers/paymentController'); // Importa la función
-
-
+const paymentController = require('../controllers/paymentController');
 const router = express.Router();
+const middleware = require('../middlewares/autorizaciones');
 
-
-router.get('/', (req, res) => {  // <-- Función de callback
-  res.send('Hola desde la ruta de pago'); 
-});
-
-router.post('/create-checkout-session', createSession);
-
-// En tu backend, configura las rutas de éxito y cancelación para que Stripe redirija al usuario después del pago
-
+router.post('/create-checkout-session', middleware.validarToken, paymentController.createSession);
+router.post('/create-checkout-session-incidente', middleware.validarToken, paymentController.createSessionIncidente);
 
 module.exports = router;

@@ -18,7 +18,6 @@
         </div>
     </section>
     <!-- section close -->
-
     <section id="section-cars" class="bg-gray-100">
         <div class="container menos-offset" style="margin-top: -50px">
             <div class="row d-flex">
@@ -35,128 +34,173 @@
                                 </h4>
                             </div>
                         </div>
-                        
-                        <div *ngIf="usuario?.rol === 'administrador'" class="col-lg-8">
-                            <div class="card p-4 rounded-5 mb25">
-                                <a (click)="irAGestionarUsuarios()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-users"></i> Gestión de Usuarios
-                                </a>
-                                <a (click)="irAGestionarSucursales()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-store"></i> Gestión de Sucursales
-                                </a>
-                                <a (click)="irAGestionarAutos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-car-side"></i> Gestión de Autos
-                                </a>
-                                <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-car"></i> Gestión de Modelos
-                                </a>
-                                <div id="doblegestion">
-                                    <a (click)="irAGestionarMarcas()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                        <i class="fa-solid fa-tags"></i> Gestión de Marcas
-                                    </a>
-                                    <a (click)="irAGestionarCategorias()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                        <i class="fa-solid fa-table-cells"></i> Gestión de Categorias
-                                    </a>
-                                </div>
-                                <a (click)="irAGestionarAlquileres()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-key"></i> Gestión de Alquileres
-                                </a>
-                                <a (click)="irAGestionarMantenimientos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-screwdriver-wrench"></i> Gestión de Mantenimientos
-                                </a>
-                                <a (click)="irAGestionarIncidentes()" class="btn-main btn-fullwidth rounded-3 ">
-                                    <i class="fa-solid fa-circle-exclamation"></i> Gestión de Incidentes
-                                </a>
-                            </div>
-                        </div>
-                                                
-                        <div *ngIf="usuario?.rol === 'trabajador'" class="col-lg-8">
-                            <div class="card p-4 rounded-5 mb25">
-                                <a (click)="irAGestionarAutos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-car-side"></i> Gestión de Autos
-                                </a>
-                                <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-car"></i> Gestión de Modelos
-                                </a>
-                                <div id="doblegestion">
-                                    <a (click)="irAGestionarMarcas()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                        <i class="fa-solid fa-tags"></i> Gestión de Marcas
-                                    </a>
-                                    <a (click)="irAGestionarCategorias()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                        <i class="fa-solid fa-table-cells"></i> Gestión de Categorias
-                                    </a>
-                                </div>
-                                <a (click)="irAGestionarAlquileres()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-key"></i> Gestión de Alquileres
-                                </a>
-                                <a (click)="irAGestionarMantenimientos()" class="btn-main btn-fullwidth rounded-3 mb-3">
-                                    <i class="fa-solid fa-screwdriver-wrench"></i> Gestión de Mantenimientos
-                                </a>
-                                <a (click)="irAGestionarIncidentes()" class="btn-main btn-fullwidth rounded-3 ">
-                                    <i class="fa-solid fa-circle-exclamation"></i> Gestión de Incidentes
-                                </a>
-                            </div>
-                        </div>
+                        <div class="spacer-20"></div>
+                        <ul class="menu-col">
+                            <li><a href="/escritorio" class="no-underline active"><i
+                                        class="fa fa-home"></i>Escritorio</a></li>
+                            <li><a (click)="editarMisDatos()" class="no-underline"><i class="fa fa-user "></i>Perfil</a>
+                            </li>
+                            <li><a *ngIf="usuario.rol === 'usuario'" (click)="incidentesUsuario()"
+                                    class="no-underline"><i class="fa-solid fa-circle-exclamation"></i>Incidentes</a>
+                            </li>
+                            <li><a (click)="cerrarSesion()" class="no-underline"><i class="fa fa-sign-out"></i>Cerrar
+                                    Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                        <div *ngIf="usuario.rol === 'usuario'" class="col-lg-9">
-                            <div class="card p-4 rounded-5 mb25">
-                                <h4>Alquileres recientes</h4>
-                                <table *ngIf="usuario.alquileres.length > 0" class="table de-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">ID</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Auto</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Sucursal de Entrega</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Sucursal de Devolucion</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha de Entrega</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha de Devolucion</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Precio Total</span></th>
-                                            <th scope="col"><span class="text-uppercase fs-12 text-gray">Estado</span></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let alquileres of usuario.alquileres">
-                                            <td> <div class="badge bg-gray-100 text-dark">#{{ alquileres._id }}</div></td>
-                                            <td><span class="bold">{{ alquileres.auto.modeloAuto?.nombreModelo}}</span></td>
-                                            <td><span class="d-lg-none d-sm-block"></span>{{ alquileres.sucursalEntrega.nombreSucursal}}</td>
-                                            <td><span class="d-lg-none d-sm-block"></span>{{ alquileres.sucursalDevolucion.nombreSucursal}}</td>
-                                            <td>
-                                                <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
-                                            </td>
-                                            <td>
-                                                <span *ngIf="!alquileres.fechaInicio"> N/A </span>
-                                                <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date: 'dd/MM/yyyy HH:mm' : '-03:00'}}
-                                            </td>
-                                            <td><span class="d-lg-none d-sm-block"></span>$ {{ alquileres.precioTotalAlquiler | number: '1.0-0'}}</td>
-                                            <td>
-                                                <div class="badge rounded-pill" [ngClass]="{
+
+                <div *ngIf="usuario?.rol === 'administrador'" class="col-lg-8">
+                    <div class="card p-4 rounded-5 mb25">
+                        <a (click)="irAGestionarUsuarios()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-users"></i> Gestión de Usuarios
+                        </a>
+                        <a (click)="irAGestionarSucursales()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-store"></i> Gestión de Sucursales
+                        </a>
+                        <a (click)="irAGestionarAutos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-car-side"></i> Gestión de Autos
+                        </a>
+                        <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-car"></i> Gestión de Modelos
+                        </a>
+                        <div id="doblegestion">
+                            <a (click)="irAGestionarMarcas()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-tags"></i> Gestión de Marcas
+                            </a>
+                            <a (click)="irAGestionarCategorias()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-table-cells"></i> Gestión de Categorias
+                            </a>
+                        </div>
+                            <a (click)="irAGestionarAlquileres()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-key"></i> Gestión de Alquileres
+                            </a>
+                            <a (click)="irAGestionarMantenimientos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-screwdriver-wrench"></i> Gestión de Mantenimientos
+                            </a>
+                            <a (click)="irAGestionarIncidentes()" class="btn-main btn-fullwidth rounded-3 ">
+                                <i class="fa-solid fa-circle-exclamation"></i> Gestión de Incidentes
+                            </a>
+                    </div>
+                </div>
+
+                <div *ngIf="usuario?.rol === 'trabajador'" class="col-lg-8">
+                    <div class="card p-4 rounded-5 mb25">
+                        <a (click)="irAGestionarAutos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-car-side"></i> Gestión de Autos
+                        </a>
+                        <a (click)="irAGestionarModelos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                            <i class="fa-solid fa-car"></i> Gestión de Modelos
+                        </a>
+                        <div id="doblegestion">
+                            <a (click)="irAGestionarMarcas()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-tags"></i> Gestión de Marcas
+                            </a>
+                            <a (click)="irAGestionarCategorias()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-table-cells"></i> Gestión de Categorias
+                            </a>
+                        </div>
+                            <a (click)="irAGestionarAlquileres()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-key"></i> Gestión de Alquileres
+                            </a>
+                            <a (click)="irAGestionarMantenimientos()" class="btn-main btn-fullwidth rounded-3 mb-3">
+                                <i class="fa-solid fa-screwdriver-wrench"></i> Gestión de Mantenimientos
+                            </a>
+                            <a (click)="irAGestionarIncidentes()" class="btn-main btn-fullwidth rounded-3 ">
+                                <i class="fa-solid fa-circle-exclamation"></i> Gestión de Incidentes
+                            </a>
+                    </div>
+                </div>
+
+                <div *ngIf="usuario.rol === 'usuario'" class="col-lg-9">
+                    <div class="card p-4 rounded-5 mb25">
+                        <h4>Alquileres recientes</h4>
+                        <table *ngIf="usuario.alquileres.length > 0" class="table de-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">ID</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Auto</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Sucursal de
+                                            Entrega</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Sucursal de
+                                            Devolucion</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha de Entrega</span>
+                                    </th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Fecha de
+                                            Devolucion</span></th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Precio Total</span>
+                                    </th>
+                                    <th scope="col"><span class="text-uppercase fs-12 text-gray">Estado</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let alquileres of usuario.alquileres">
+                                    <td>
+                                        <div class="badge bg-gray-100 text-dark">#{{ alquileres._id }}</div>
+                                    </td>
+                                    <td><span class="bold">{{ alquileres.auto.modeloAuto?.nombreModelo}}</span></td>
+                                    <td><span class="d-lg-none d-sm-block"></span>{{
+                                        alquileres.sucursalEntrega.nombreSucursal}}</td>
+                                    <td><span class="d-lg-none d-sm-block"></span>{{
+                                        alquileres.sucursalDevolucion.nombreSucursal}}</td>
+                                    <td>
+                                        <span *ngIf="!alquileres.fechaInicio"> N/A </span>
+                                        <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaInicio | date:
+                                        'dd/MM/yyyy HH:mm' : '-03:00'}}
+                                    </td>
+                                    <td>
+                                        <span *ngIf="!alquileres.fechaInicio"> N/A </span>
+                                        <span class="d-lg-none d-sm-block"></span>{{ alquileres.fechaFin | date:
+                                        'dd/MM/yyyy HH:mm' : '-03:00'}}
+                                    </td>
+                                    <td><span class="d-lg-none d-sm-block"></span>$ {{ alquileres.precioTotalAlquiler |
+                                        number: '1.0-0'}}</td>
+                                    <td>
+                                        <div class="badge rounded-pill" [ngClass]="{
                                                   'bg-success': alquileres.estadoAlquiler === 'activo',
                                                   'bg-warning ': alquileres.estadoAlquiler === 'reservado',
                                                   'bg-primary ': alquileres.estadoAlquiler === 'completado',
                                                   'bg-danger ': alquileres.estadoAlquiler === 'cancelado'
-                                                }"> 
-                                                    {{ alquileres.estadoAlquiler }}
-                                                </div> 
-                                            </td>
-                                            <td>
-                                                <i *ngIf="alquileres.estadoAlquiler === 'reservado'" 
-                                                (click)="abrirCancelacionModal(alquileres._id)" 
-                                                class="fas fa-times-circle-o"></i>
-                                            </td>
-                                            
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <label *ngIf="usuario.alquileres.length == 0">No hay alquileres para mostrar, anímese y alquile un auto!! 😁🚗</label>
-                            </div>
-                        </div>
+                                                }">
+                                            {{ alquileres.estadoAlquiler }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i *ngIf="alquileres.estadoAlquiler === 'reservado'"
+                                            (click)="abrirCancelacionModal(alquileres._id)"
+                                            class="fas fa-times-circle-o"></i>
+                                    </td>
 
+                                </tr>
+                            </tbody>
+                        </table>
+                        <label *ngIf="usuario.alquileres.length == 0">No hay alquileres para mostrar, anímese y alquile
+                            un auto!! 😁🚗</label>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+
 </div>
 <!-- content close -->
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Cancelación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar este alquiler?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarCancelacion()">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
