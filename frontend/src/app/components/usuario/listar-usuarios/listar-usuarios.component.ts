@@ -56,7 +56,7 @@ export class ListarUsuariosComponent implements OnInit {
     this._usuarioService.obtenerUsuarios().subscribe(data => {
       this.listaUsuarios = data;
     }, error => {
-      console.log(error);
+      console.error('Error al obtener los usuarios:', error);
     })
   }
 
@@ -77,7 +77,7 @@ export class ListarUsuariosComponent implements OnInit {
       // Cierra el modal en caso de error
       const modal = document.getElementById('deleteModal');
       if (modal) {
-        const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+        const bootstrapModal = new (window as any).bootstrap.Modal(modal);
         bootstrapModal.hide(); // Ocultar el modal
       }
 
