@@ -31,7 +31,7 @@ export class AlquilerListarComponent implements OnInit {
   fechaValida: boolean = true;
   usuarioLogueado: any;
 
-  constructor(private _alquilerService: AlquilerService, private _mantenimientoService: MantenimientoService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) {}
+  constructor(private _alquilerService: AlquilerService, private _mantenimientoService: MantenimientoService, private _authservice: AuthService, private _usuarioService: UsuarioService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.isNotAdminTrabajador();
@@ -47,7 +47,7 @@ export class AlquilerListarComponent implements OnInit {
           this.usuarioLogueado.rol = 'administrador';
         } else if (usuarioLogueado.rol === 'trabajador') {
           this.usuarioLogueado.rol = 'trabajador';
-        } 
+        }
         // Otros roles, patea a login
         else {
           window.location.href = '/loginUsuario';
@@ -97,7 +97,7 @@ export class AlquilerListarComponent implements OnInit {
   }
 
   getIconoOrden(campo: string): string {
-      if (this.campoOrden === campo) {
+    if (this.campoOrden === campo) {
       return this.direccionOrdenAsc ? 'fa fa-chevron-up' : 'fa fa-chevron-down';
     }
     return 'fa fa-chevron-down'; // Mostrar flecha hacia abajo por defecto
@@ -109,10 +109,10 @@ export class AlquilerListarComponent implements OnInit {
     this.modalType = tipo;
 
     if (tipo === 'fecha' || tipo === 'fechaFinReal') {
-      if (this.alquilerActual.trabajadorAsignado == null){
+      if (this.alquilerActual.trabajadorAsignado == null) {
         this.toastr.warning('Por favor, establezca un trabajador asignado.');
         return; // Detener la ejecución antes de intentar abrir el modal
-      } else if ((tipo === 'fechaFinReal') && (this.alquilerActual.fechaInicioReal == null)) { 
+      } else if ((tipo === 'fechaFinReal') && (this.alquilerActual.fechaInicioReal == null)) {
         this.toastr.warning('Por favor, establezca primero la Fecha de Inicio Real.');
         return; // Detener la ejecución antes de intentar abrir el modal
       } else {
@@ -258,44 +258,44 @@ export class AlquilerListarComponent implements OnInit {
         return;
       }
       this._alquilerService.modificarTrabajador(String(this.alquilerActual._id), Number(this.modalInput)).subscribe(() => {
-          this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
-            this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
-            this.toastr.success('Trabajador asignado actualizado');
-            this.modalInstance?.hide();
-          });
-      });    
+        this._alquilerService.obtenerAlquiler(String(this.alquilerActual!._id)).subscribe(alquilerActualizado => {
+          this.alquilerActual!.trabajadorAsignado = alquilerActualizado.trabajadorAsignado;
+          this.toastr.success('Trabajador asignado actualizado');
+          this.modalInstance?.hide();
+        });
+      });
     } else if (this.modalType === 'cancelacion' && typeof this.modalInput === 'string') {
-        this._alquilerService.cambiarEstado(String(this.alquilerActual._id), 'cancelado').subscribe(() => {
-          // Actualizar el estado del Alquiler
-          this.alquilerActual!.estadoAlquiler = 'cancelado';
-          // Actualizar el estado del Alquiler en el array de alquileres del usuario
-          this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), 'cancelado').subscribe(
-            () => {
-              console.log('Alquiler cancelado con éxito');
-            },
-            error => {
-              console.error('Error al cancelar el alquiler en el usuario:', error);
-            }
-          );
-          // Actualizar el estado del Auto
-          this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?._id), String(this.alquilerActual?.auto._id), 'disponible').subscribe(
-            () => {
-              console.log('Estado del auto actualizado');
-            },
-            error => {
-              console.error('Error al actualizar el estado del auto:', error);
-            }
-          );
+      this._alquilerService.cambiarEstado(String(this.alquilerActual._id), 'cancelado').subscribe(() => {
+        // Actualizar el estado del Alquiler
+        this.alquilerActual!.estadoAlquiler = 'cancelado';
+        // Actualizar el estado del Alquiler en el array de alquileres del usuario
+        this._usuarioService.actualizarEstadoAlquilerUsuario(Number(this.alquilerActual?.usuario._id), Number(this.alquilerActual?._id), 'cancelado').subscribe(
+          () => {
+            console.log('Alquiler cancelado con éxito');
+          },
+          error => {
+            console.error('Error al cancelar el alquiler en el usuario:', error);
+          }
+        );
+        // Actualizar el estado del Auto
+        this._alquilerService.actualizarEstadoAuto(String(this.alquilerActual?._id), String(this.alquilerActual?.auto._id), 'disponible').subscribe(
+          () => {
+            console.log('Estado del auto actualizado');
+          },
+          error => {
+            console.error('Error al actualizar el estado del auto:', error);
+          }
+        );
 
-          this.toastr.success('Estado actualizado');
-          this.modalInstance?.hide();
-        });
+        this.toastr.success('Estado actualizado');
+        this.modalInstance?.hide();
+      });
     } else if (this.modalType === 'notas' && typeof this.modalInput === 'string') {
-        this._alquilerService.modificarNotas(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
-          this.alquilerActual!.notas = String(this.modalInput);
-          this.toastr.success('Notas actualizadas');
-          this.modalInstance?.hide();
-        });
+      this._alquilerService.modificarNotas(String(this.alquilerActual._id), this.modalInput).subscribe(() => {
+        this.alquilerActual!.notas = String(this.modalInput);
+        this.toastr.success('Notas actualizadas');
+        this.modalInstance?.hide();
+      });
     }
   }
 

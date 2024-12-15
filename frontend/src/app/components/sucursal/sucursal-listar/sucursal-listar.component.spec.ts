@@ -113,7 +113,7 @@ describe('SucursalListarComponent', () => {
         component.getSucursales();
 
         // Verificamos que se haya llamado a console.error con el mensaje adecuado
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error al obtener las sucursales:', expect.anything());
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Error al obtener sucursales:', expect.anything());
 
         consoleErrorSpy.mockRestore();
     });

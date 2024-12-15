@@ -25,24 +25,24 @@ export class SucursalListarComponent implements OnInit {
   ngOnInit(): void {
     this.isNotAdmin();
     this.getSucursales();
-     // Llamamos al método que obtiene las sucursales al inicializar el componente
+    // Llamamos al método que obtiene las sucursales al inicializar el componente
   }
 
   isNotAdmin() {
-        this._authservice.getAuthenticatedUser().subscribe(
-          (user) => {
-            if (user.rol === 'administrador') {
-              // Si el rol es admin o trabajador, se permite el acceso
-            } else {
-              // Otros roles, patea a login
-              window.location.href = '/loginUsuario';
-            }
-          },
-          (error) => {
-            window.location.href = '/loginUsuario';
-          }
-        );
-    }
+    this._authservice.getAuthenticatedUser().subscribe(
+      (user) => {
+        if (user.rol === 'administrador') {
+          // Si el rol es admin o trabajador, se permite el acceso
+        } else {
+          // Otros roles, patea a login
+          window.location.href = '/loginUsuario';
+        }
+      },
+      (error) => {
+        window.location.href = '/loginUsuario';
+      }
+    );
+  }
   // Método que obtiene la lista de sucursales desde el servicio
   getSucursales() {
     // Llamamos al servicio obtenerSucursales, que devuelve un observable
@@ -52,12 +52,13 @@ export class SucursalListarComponent implements OnInit {
         this.listaSucursales = data;  // Asignamos la respuesta a la variable listaSucursales
       },
       error => {
-        // Si ocurre un error, se imprime en consola
-        console.log(error);
+        // Si ocurre un error, mostramos una notificación y registramos el error
+        this.toastr.error('Error al cargar las sucursales. Por favor, intente nuevamente.', 'Error');
+        console.error('Error al obtener sucursales:', error);
       }
     );
   }
-  
+
   // Método para eliminar una sucursal, recibe el ID de la sucursal a eliminar
   deleteSucursal(id: any) {
     // Llamamos al servicio eliminarSucursal, que devuelve un observable
@@ -65,7 +66,7 @@ export class SucursalListarComponent implements OnInit {
       data => {
         // Si la eliminación es exitosa, mostramos una notificación de éxito
         this.toastr.success('La sucursal fue eliminada con éxito', 'Sucursal Eliminada');
-        
+
         const backdrop = document.querySelector('.modal-backdrop.show');
         if (backdrop) {
           backdrop.remove();
