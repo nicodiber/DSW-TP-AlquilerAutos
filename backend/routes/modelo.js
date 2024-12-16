@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const modeloController = require('../controllers/modeloController');
 const multer = require('multer');
+const middleware = require('../middlewares/autorizaciones');
 
 // Configuración de `multer` para almacenar en memoria
 const storage = multer.memoryStorage(); // Cambiado a memoria
@@ -26,13 +27,12 @@ const upload = multer({
   { name: 'capacidadBaul', maxCount: 1 },
 ]);
 // Asegúrate de que esta ruta esté configurada correctamente
-router.post('/', upload, modeloController.crearModeloConImagenes);
+router.post('/', upload, middleware.validarToken, middleware.soloAdminYTrabajador, modeloController.crearModeloConImagenes);
 router.get('/', modeloController.obtenerModelos);
 router.get('/:id', modeloController.obtenerModelo);
-router.put('/:id', upload, modeloController.actualizarModelo); ///porq con el otro no anda xd
+router.put('/:id', upload, middleware.validarToken, middleware.soloAdminYTrabajador, modeloController.actualizarModelo);
 
-//router.put('/:id', modeloController.actualizarModelo);
-router.delete('/:id', modeloController.eliminarModelo);
+router.delete('/:id', middleware.validarToken, middleware.soloAdminYTrabajador, modeloController.eliminarModelo);
 
 router.post('/buscarAutoAleatorioDisponible', modeloController.buscarAutoAleatorioDisponible);
 router.get('/:idModelo/existe-autos', modeloController.verificarAutosPorModelo);

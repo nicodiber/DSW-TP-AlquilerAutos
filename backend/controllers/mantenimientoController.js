@@ -28,7 +28,16 @@ exports.crearMantenimiento = async (req, res) => {
 
 exports.obtenerMantenimientos = async (req, res) => {
   try {
-    const mantenimientos = await Mantenimiento.find().populate('auto').populate('trabajadorACargo');
+    const mantenimientos = await Mantenimiento.find()
+    .populate({
+      path: 'auto',
+      populate: [
+        {
+          path: 'sucursalAuto',
+        },
+      ]
+    })
+    .populate('trabajadorACargo');
     res.json(mantenimientos);
   } catch (error) {
     console.log(error);
@@ -63,7 +72,7 @@ exports.actualizarMantenimiento = async (req, res) => {
 
 exports.obtenerMantenimiento = async (req, res) => {
   try {
-    const mantenimiento = await Mantenimiento.findById(req.params.id);
+    const mantenimiento = await Mantenimiento.findById(req.params.id).populate('trabajadorACargo');
 
     if (!mantenimiento) {
       return res.status(404).json({ msg: 'No existe ese mantenimiento' });
@@ -199,21 +208,17 @@ exports.actualizarEstadoAuto = async (req, res) => {
     if (alquileres.length > 0) {
       // Si hay otros alquileres reservados que lo involucren, pasarlo a 'reservado'
       const auto = await Auto.findByIdAndUpdate(idAuto, { estadoAuto: 'reservado' }, { new: true });
-    if (!auto) {
-      return res.status(404).json({ message: 'Auto no encontrado' });
+      if (!auto) {
+        return res.status(404).json({ message: 'Auto no encontrado' });
+      }
+    } else {
+      // Si no hay otros alquileres reservados que lo involucren, pasarlo a 'disponible'
+      const auto = await Auto.findByIdAndUpdate(idAuto, { estadoAuto: 'disponible' }, { new: true });
+      if (!auto) {
+        return res.status(404).json({ message: 'Auto no encontrado' });
+      }
+      res.json(auto);
     }
-    console.log(auto, "1");
-    }
-    else {
-    // Si no hay otros alquileres reservados que lo involucren, pasarlo a 'disponible'
-    const auto = await Auto.findByIdAndUpdate(idAuto, { estadoAuto: 'disponible' }, { new: true });
-    if (!auto) {
-      return res.status(404).json({ message: 'Auto no encontrado' });
-    }
-    console.log(auto, "2");
-    }
-
-    res.json(auto);
   } catch (error) {
     console.error("Error al actualizar el estado del auto:", error);
     res.status(500).json({ message: "Error al actualizar el estado del auto" });

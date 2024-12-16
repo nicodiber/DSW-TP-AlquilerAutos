@@ -36,9 +36,6 @@ const subirImagenAImgBB = async (file) => {
 // Nueva función para crear un modelo con imágenes
 exports.crearModeloConImagenes = async (req, res) => {
   try {
-    console.log('req.body:', req.body);
-    console.log('req.files:', req.files);
-
     const _id = await getNextSequenceValue('modeloId');
 
     // Subir imágenes a ImgBB y obtener sus URLs

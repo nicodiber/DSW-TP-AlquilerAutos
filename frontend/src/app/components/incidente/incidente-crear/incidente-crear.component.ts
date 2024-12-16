@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr'; 
-import { ModeloService } from '../../../services/modelo.service';
-import { CategoriaService } from '../../../services/categoria.service';
 import { AuthService } from '../../../services/auth.service';
 import { IncidenteService } from '../../../services/incidente.service';
 import { AlquilerService } from '../../../services/alquiler.service';
@@ -19,7 +17,6 @@ export class IncidenteCrearComponent implements OnInit {
   incidenteForm: FormGroup;
   titulo = 'Crear Incidente';
   id: string | null;
-  categorias: any[] = [];
   alquileres: any[] = [];
   alquileresCompletados: any[] = [];
   usuarioLogueado: any;

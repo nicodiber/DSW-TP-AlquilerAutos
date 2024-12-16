@@ -12,16 +12,16 @@ router.put('/:id',middleware.validarToken, middleware.soloAdmin, sucursalControl
 router.delete('/:id',middleware.validarToken, middleware.soloAdmin, sucursalController.eliminarSucursal);          // Eliminar sucursal por ID
 
 // Ruta para obtener los trabajadores asignados y no asignados a una sucursal específica
-router.get('/:id/obtener-trabajadores', sucursalController.obtenerTrabajadoresParaAsignacion);
+router.get('/:id/obtener-trabajadores', middleware.validarToken, middleware.soloAdmin, sucursalController.obtenerTrabajadoresParaAsignacion);
 
 // Ruta para asignar o desasignar trabajadores a una sucursal
-router.post('/:id/asignar-trabajadores', sucursalController.asignarTrabajadores);
+router.post('/:id/asignar-trabajadores', middleware.validarToken, middleware.soloAdmin, sucursalController.asignarTrabajadores);
 
 // Ruta para obtener los autos asignados y no asignados a una sucursal específica
-router.get('/:id/obtener-autos', sucursalController.obtenerAutosParaAsignacion);
+router.get('/:id/obtener-autos', middleware.validarToken, middleware.soloAdmin, sucursalController.obtenerAutosParaAsignacion);
 
 // Ruta para asignar o desasignar autos a una sucursal
-router.post('/:id/asignar-autos', sucursalController.asignarAutos);
+router.post('/:id/asignar-autos', middleware.validarToken, middleware.soloAdmin, sucursalController.asignarAutos);
 
 // Exportar las rutas definidas para que puedan ser utilizadas en otras partes de la aplicación
 module.exports = router;

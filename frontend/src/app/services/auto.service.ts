@@ -16,15 +16,15 @@ export class AutoService {
   }
 
   eliminarAuto(_id: number): Observable<any> {
-    return this.http.delete(this.url + _id);
+    return this.http.delete(this.url + _id, { withCredentials: true,});
   }
 
   guardarAuto(auto: auto): Observable<any> {
-    return this.http.post(this.url, auto);
+    return this.http.post(this.url, auto, { withCredentials: true,});
   }
 
   editarAuto(_id: string, auto: auto): Observable<any> {
-    return this.http.put(this.url + _id, auto);
+    return this.http.put(this.url + _id, auto, { withCredentials: true,});
   }
 
   obtenerAuto(_id: string): Observable<any> {

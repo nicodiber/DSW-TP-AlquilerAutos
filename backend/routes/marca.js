@@ -3,11 +3,11 @@ const router = express.Router();
 const marcaController = require('../controllers/marcaController');
 const middleware = require('../middlewares/autorizaciones');
 
-router.post('/', marcaController.crearMarca);
+router.post('/', middleware.validarToken, middleware.soloAdminYTrabajador, marcaController.crearMarca);
 router.get('/', marcaController.obtenerMarcas);
 router.get('/:id', marcaController.obtenerMarca);
-router.put('/:id', marcaController.actualizarMarca);
-router.delete('/:id', marcaController.eliminarMarca);
+router.put('/:id', middleware.validarToken, middleware.soloAdminYTrabajador, marcaController.actualizarMarca);
+router.delete('/:id', middleware.validarToken, middleware.soloAdminYTrabajador, marcaController.eliminarMarca);
 
 router.get('/existe-nombre/:nombreMarca', marcaController.obtenerMarcaPorNombre);
 

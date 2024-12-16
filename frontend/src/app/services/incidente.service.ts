@@ -16,15 +16,15 @@ export class IncidenteService {
   }
 
   eliminarIncidente(_id: number): Observable<any>{
-    return this.http.delete(this.url + _id);
+    return this.http.delete(this.url + _id, { withCredentials: true,});
   }
 
   guardarIncidente(incidente: incidente): Observable<any>{
-    return this.http.post(this.url, incidente);
+    return this.http.post(this.url, incidente, { withCredentials: true,});
   }
 
   editarIncidente(_id: string, incidente: incidente):Observable<any>{
-    return this.http.put(this.url + _id, incidente);
+    return this.http.put(this.url + _id, incidente, { withCredentials: true,});
   }
 
   obtenerIncidente(_id: string): Observable<any> {
@@ -32,7 +32,7 @@ export class IncidenteService {
   }
 
   obtenerIncidentesUsuario(id: string): Observable<any> {
-    return this.http.get(`${this.url}usuario/${id}`);
+    return this.http.get(`${this.url}usuario/${id}`, { withCredentials: true,});
   }
 
   pagarIncidente(id: string): Observable<any> {

@@ -43,7 +43,6 @@ export class EscritorioComponent implements OnInit {
     this.authService.obtenerAlquileresLogueado(this.usuario._id).subscribe({
       next: (alquileresDeUser) => {
         this.usuario = alquileresDeUser;
-        console.log(this.usuario);
       },
       error: (error) => {
         console.error('Error al obtener alquileres:', error);

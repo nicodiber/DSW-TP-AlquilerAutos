@@ -13,7 +13,7 @@ export class CategoriaService {
   constructor(private http: HttpClient) { }
 
   crearCategoria(categoria: categoria): Observable<categoria> {
-    return this.http.post<categoria>(this.url, categoria);
+    return this.http.post<categoria>(this.url, categoria, { withCredentials: true,});
   }
 
   obtenerCategoriaPorId(id: number): Observable<categoria> {
@@ -21,11 +21,11 @@ export class CategoriaService {
   }
   
   editarCategoria(_id: string, categoria: categoria):Observable<any>{
-    return this.http.put(this.url + _id, categoria);
+    return this.http.put(this.url + _id, categoria, { withCredentials: true,});
   }
   
   eliminarCategoria(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}${id}`);
+    return this.http.delete<void>(`${this.url}${id}`, { withCredentials: true,});
   }
 
   obtenerCategorias(): Observable<any>{

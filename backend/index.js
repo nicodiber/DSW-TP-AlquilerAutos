@@ -15,8 +15,6 @@ conectarDB();
 app.use(cors({
   origin: process.env.LIVE_URL, // Reemplaza con el dominio del frontend
   credentials: true, // Permitir envío de cookies y encabezados de autorización
-  //methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-  //allowedHeaders: ['Content-Type', 'Authorization'], // Headers permitidos
 }));
 
 // Middleware para interpretar JSON

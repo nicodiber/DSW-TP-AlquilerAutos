@@ -16,15 +16,15 @@ export class ModeloService {
   }
 
   eliminarModelo(_id: number): Observable<any>{
-    return this.http.delete(this.url + _id);
+    return this.http.delete(this.url + _id, { withCredentials: true,});
   }
 
   guardarModelo(modeloData: FormData): Observable<any>{
-    return this.http.post(this.url, modeloData);
+    return this.http.post(this.url, modeloData, { withCredentials: true,});
   }
 
   editarModelo(_id: string, modeloData: FormData):Observable<any>{
-    return this.http.put(this.url + _id, modeloData);
+    return this.http.put(this.url + _id, modeloData, { withCredentials: true,});
   }
 
   obtenerModelo(_id: string): Observable<any> {
@@ -40,8 +40,4 @@ export class ModeloService {
     return this.http.get<boolean>(`${this.url}${idModelo}/existe-autos`);
   }
 
-  
-  obtenerModelosPorMarca(marcaId: number): Observable<modelo[]> {
-    return this.http.get<modelo[]>(`/api/modelos/marca/${marcaId}`);
-  }
 }

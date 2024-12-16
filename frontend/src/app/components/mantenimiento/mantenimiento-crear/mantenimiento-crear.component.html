@@ -1,6 +1,37 @@
-<div *ngFor="let auto of autosDisponibles">
-    <p>{{ auto.matricula }}</p>
-    <button *ngIf="auto._id !== undefined" (click)="cambiarEstadoAjuste(auto._id)">
-        Cambiar a Mantenimiento
-    </button>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo"> {{ titulo | uppercase }}</span>
+                    <form class="mt-3" [formGroup]="mantenimientoForm" (ngSubmit)="agregarMantenimiento()">
+
+                        <div class="mb-3" *ngIf="!id">
+                            <label for="auto" class="form-label">Auto Afectado:</label>
+                            <select formControlName="auto" class="form-control form-control-lg"
+                                placeholder="Auto">
+                                <option value="">Seleccione un auto afectado:</option>
+                                <option *ngFor="let auto of autosDisponibles" [value]="auto._id">
+                                    ID: #{{auto._id}}
+                                    | {{auto.modeloAuto.nombreModelo }}
+                                    | {{auto.matricula }}
+                                </option>
+                            </select>
+                            <div class="text-danger"
+                                *ngIf="mantenimientoForm.get('auto')?.hasError('required') && mantenimientoForm.get('auto')?.touched">
+                                <span><strong>Debe seleccionar un auto</strong> para el mantenimiento</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" style="width: 100%; display: inline-block; margin-top: 20px;">
+                            <button routerLink="/mantenimiento-listar"
+                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="submit" (click)="submitForm()"
+                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

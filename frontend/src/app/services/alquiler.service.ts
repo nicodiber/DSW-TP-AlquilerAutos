@@ -46,15 +46,15 @@ export class AlquilerService {
 
   // Funciones especificas - Listar Alquiler
   establecerFechaInicioReal(_id: string, fecha: string | Date) {
-    return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha });
+    return this.http.put(`${this.url}${_id}/fechaInicioReal`, { fechaInicioReal: fecha }, { withCredentials: true,});
   }
 
   establecerFechaFinReal(_id: string, fecha: string | Date) {
-    return this.http.put(`${this.url}${_id}/fechaFinReal`, { fechaFinReal: fecha });
+    return this.http.put(`${this.url}${_id}/fechaFinReal`, { fechaFinReal: fecha }, { withCredentials: true,});
   }
 
   modificarNotas(_id: string, notas: string) {
-    return this.http.put(`${this.url}${_id}/notas`, { notas });
+    return this.http.put(`${this.url}${_id}/notas`, { notas }, { withCredentials: true,});
   }
 
   obtenerUsuariosPorRol(rol: string): Observable<usuario[]> {
@@ -66,11 +66,11 @@ export class AlquilerService {
   }
 
   modificarTrabajador(_id: string, trabajadorId: number) {
-    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorAsignado: trabajadorId });
+    return this.http.put(`${this.url}${_id}/trabajador`, { trabajadorAsignado: trabajadorId }, { withCredentials: true,});
   }
 
   cambiarEstado(_id: string, estado: string) {
-    return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado });
+    return this.http.put(`${this.url}${_id}/estado`, { estadoAlquiler: estado }, { withCredentials: true,});
   }
 
   actualizarEstadoAuto(idAlquiler: string, idAuto: string, estado: string): Observable<any> {
@@ -79,7 +79,7 @@ export class AlquilerService {
   }
 
   actualizarSucursalAuto(idAuto: string, sucursalId: string) {
-    return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId });
+    return this.http.patch(`${this.url}autos/${idAuto}/sucursal`, { sucursalId }, { withCredentials: true,});
   }
 
   // Funciones especificas - Buscador

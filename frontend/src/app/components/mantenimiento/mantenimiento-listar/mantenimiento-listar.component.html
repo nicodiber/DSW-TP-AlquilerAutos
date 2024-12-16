@@ -32,11 +32,12 @@
                     <span *ngIf="mantenimiento.fechaFinMantenimiento">{{ mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
                     <span *ngIf="!mantenimiento.fechaFinMantenimiento">N/A</span>
                   </td>
-                  <td data-label="Costo">${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</td>
+                  <td data-label="Costo" *ngIf="(mantenimiento.costoMantenimiento != null)">${{ mantenimiento.costoMantenimiento | number: '1.0-0' }}</td>
+                  <td data-label="Costo" *ngIf="(mantenimiento.costoMantenimiento == null)">N/A</td>
                   <td data-label="Matricula Auto">{{ mantenimiento.auto.matricula }}</td>
                   <td data-label="Trabajador Asignado">
                     <span *ngIf="mantenimiento.trabajadorACargo">{{ mantenimiento.trabajadorACargo.nombre }} {{mantenimiento.trabajadorACargo.apellido }}</span>
-                    <span *ngIf="!mantenimiento.trabajadorACargo">No asignado</span>
+                    <span *ngIf="!mantenimiento.trabajadorACargo">N/A</span>
                   </td>
                   <td data-label="Estado" style="text-transform: capitalize;" [ngClass]="{'estado-en-progreso': !mantenimiento.fechaFinMantenimiento, 'estado-completado': mantenimiento.fechaFinMantenimiento }">
                     <strong>{{ !mantenimiento.fechaFinMantenimiento ? 'En Progreso' : 'Completado' }}</strong>
@@ -61,13 +62,17 @@
                             mantenimiento.fechaFinMantenimiento | date: 'dd/MM/yyyy HH:mm' }}</span>
                           <span *ngIf="!mantenimiento.fechaFinMantenimiento"><i
                               class="fa fa-clock"></i>&nbsp;&nbsp;<strong>Estado:</strong> En progreso</span>
-                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Trabajador:</strong> {{
-                            mantenimiento.trabajadorACargo?.nombre }} {{ mantenimiento.trabajadorACargo?.apellido
-                            }}</span>
-                          <span><i class="fa fa-comment"></i>&nbsp;&nbsp;<strong>Descripción:</strong> {{
-                            mantenimiento.descripcion }}</span>
-                          <span><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong> ${{
+                          <span><i class="fa fa-home"></i>&nbsp;&nbsp;<strong>Sucursal:</strong> {{
+                            mantenimiento.auto.sucursalAuto.nombreSucursal }}</span>
+                          <span><i class="fa fa-user"></i>&nbsp;&nbsp;<strong>Trabajador:</strong> 
+                            {{ !mantenimiento.trabajadorACargo ? 'N/A' : (mantenimiento.trabajadorACargo.nombre + ' ' + mantenimiento.trabajadorACargo.apellido) }}</span>
+                          <span><i class="fa fa-comment"></i>&nbsp;&nbsp;<strong>Descripción:</strong>
+                            {{ !mantenimiento.descripcion ? 'N/A' : mantenimiento.descripcion }}</span>
+                          <span *ngIf="(mantenimiento.costoMantenimiento != null)"><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong> ${{
                             mantenimiento.costoMantenimiento | number: '1.0-0' }}</span>
+                          <span *ngIf="(mantenimiento.costoMantenimiento == null)"><i class="fa fa-money"></i>&nbsp;&nbsp;<strong>Costo:</strong>
+                            N/A</span>
+
                         </div>
                       </div>
                       <div style="width: 50%; border-left: 1px solid black; padding-left: 20px;">
@@ -75,7 +80,7 @@
                         <div style="display: inline-grid; gap: 15px">
                           <!-- Botón para abrir el modal de asignar trabajador -->
                           <button (click)="abrirModal('trabajador', mantenimiento)" class="boton-acciones"
-                            *ngIf="usuarioLogueado.rol === 'administrador'">
+                            *ngIf="(usuarioLogueado.rol === 'administrador') && (!mantenimiento.trabajadorACargo)">
                             Asignar Trabajador
                           </button>
 
@@ -85,13 +90,13 @@
                           </button>
 
                           <!-- Botón para abrir el modal de modificar costo -->
-                          <button (click)="abrirModal('costo', mantenimiento)" class="boton-acciones">
+                          <button (click)="abrirModal('costo', mantenimiento)" class="boton-acciones" *ngIf="(mantenimiento.costoMantenimiento == null)">
                             Modificar Costo
                           </button>
 
                           <!-- Botón para abrir el modal de modificar fecha de fin (solo si no está finalizado) -->
                           <button (click)="abrirModal('fechaFinMantenimiento', mantenimiento)"
-                            *ngIf="!mantenimiento.fechaFinMantenimiento" class="boton-acciones">
+                            *ngIf="(!mantenimiento.fechaFinMantenimiento)" class="boton-acciones">
                             Finalizar Mantenimiento
                           </button>
                         </div>
@@ -113,35 +118,43 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <ng-container [ngSwitch]="modalType">
+                  <ng-container>
                     <!-- Modal para fechas de fin de mantenimiento -->
-                    <div *ngSwitchCase="'fechaFinMantenimiento'">
+                    <div *ngIf="modalType === 'fechaFinMantenimiento'">
                       <label for="fecha">Fecha</label>
                       <input id="fecha" type="date" class="form-control" [(ngModel)]="fechaISO"
                         (change)="convertirFecha()" autocomplete="off">
                       <label for="hora" class="mt-2">Hora</label>
                       <input id="hora" type="time" class="form-control" [(ngModel)]="horaInput" autocomplete="off">
-                      <div *ngIf="!fechaValida" class="text-danger mt-2">Formato de fecha y/o hora inválido</div>
+                      <div *ngIf="!fechaValida && fechaInput && horaInput" class="text-danger mt-2">Formato de fecha y/o hora inválido</div>
                     </div>
 
                     <!-- Modal para trabajador -->
-                    <div *ngSwitchCase="'trabajador'">
-                      <label for="trabajador">Seleccione un Trabajador</label>
-                      <select id="trabajador" [(ngModel)]="modalInput" class="form-select">
-                        <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">{{ trabajador.nombre }}
-                          {{ trabajador.apellido }}</option>
-                        <option *ngIf="trabajadores.length === 0" disabled>No hay trabajadores disponibles</option>
+                    <div *ngIf="modalType === 'trabajador' && trabajadores.length > 0">
+                      <label>Seleccione un Trabajador de la Sucursal de Entrega</label>
+                      <select [(ngModel)]="modalInput" class="form-select">
+                        <option *ngFor="let trabajador of trabajadores" [value]="trabajador._id">
+                          {{ trabajador.nombre }} {{ trabajador.apellido }}
+                        </option>
+                      </select>
+                    </div>
+                    <div *ngIf="modalType === 'trabajador' && trabajadores.length === 0">
+                      <label>Seleccione un Trabajador de la Sucursal de Entrega</label>
+                      <select [(ngModel)]=" modalInput" class="form-select">
+                        <option disabled>
+                          No hay trabajadores disponibles
+                        </option>
                       </select>
                     </div>
 
                     <!-- Modal para descripción -->
-                    <div *ngSwitchCase="'descripcion'">
+                    <div *ngIf="modalType === 'descripcion'">
                       <label for="descripcion">Modificar Descripción</label>
                       <textarea id="descripcion" [(ngModel)]="modalInput" class="form-control"></textarea>
                     </div>
 
                     <!-- Modal para costo -->
-                    <div *ngSwitchCase="'costo'">
+                    <div *ngIf="modalType === 'costo'">
                       <label for="costo">Costo</label>
                       <input id="costo" type="text" class="form-control" [(ngModel)]="modalInput" #numeroInput="ngModel" pattern="^\d+$">
                       <div *ngIf="numeroInput.invalid && numeroInput.touched" class="text-danger">Solo se permiten <strong>números</strong></div>

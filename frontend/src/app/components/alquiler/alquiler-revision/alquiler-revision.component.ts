@@ -30,7 +30,6 @@ export class AlquilerRevisionComponent implements OnInit {
     
     // Obtener datos de datosBusqueda desde el servicio
     this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
-    console.log("Datos búsqueda:", this.datosBusqueda);
     
     // Verificar si modeloElegido existe en datosBusqueda
     if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
@@ -42,6 +41,9 @@ export class AlquilerRevisionComponent implements OnInit {
     this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
     this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
     this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
+    // Le enviamos el precio total para que lo sume a las cookies
+    this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);
+    this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
   }
   
   isAdminTrabajador() {

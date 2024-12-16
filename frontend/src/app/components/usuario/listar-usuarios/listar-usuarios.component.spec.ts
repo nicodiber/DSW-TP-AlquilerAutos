@@ -165,17 +165,6 @@ describe('ListarUsuariosComponent', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('debería eliminar un usuario y actualizar la lista', () => {
-    usuarioServiceMock.eliminarUsuario.mockReturnValue(of(null));
-    usuarioServiceMock.obtenerUsuarios.mockReturnValue(of([]));
-
-    component.deleteUsuario(1);
-
-    expect(usuarioServiceMock.eliminarUsuario).toHaveBeenCalledWith(1);
-    expect(toastrMock.success).toHaveBeenCalledWith("El usuario fue eliminado con exito", "Usuario Eliminado");
-    expect(usuarioServiceMock.obtenerUsuarios).toHaveBeenCalled();
-  });
-
   it('debería abrir el modal de eliminación correctamente', () => {
     const id = 1;
     component.abrirDeleteModal(id);

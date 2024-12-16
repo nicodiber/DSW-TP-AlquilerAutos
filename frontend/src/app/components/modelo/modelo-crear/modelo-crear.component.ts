@@ -177,7 +177,7 @@ export class CrearModeloComponent implements OnInit {
                 window.location.href = '/modelos-listar';
             }, 1000);
         }, error => {
-            let errorMsg = 'Ocurrió un error al intentar actualizar el usuario';
+            let errorMsg = 'Ocurrió un error al intentar actualizar el modelo';
             if (error.status === 409 && error.error && error.error.msg) {
                 errorMsg = error.error.msg;
             }

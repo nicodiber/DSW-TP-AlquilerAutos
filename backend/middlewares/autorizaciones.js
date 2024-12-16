@@ -22,8 +22,8 @@ exports.soloAdminYTrabajador = async (req, res, next) => {
       return res.status(404).json({ msg: 'Usuario no encontrado' });
     }
 
-    if (['administrador', 'trabajador'].includes(usuarioLogueado.rol)) {
-      next();
+    if ((req.user.rol === 'trabajador') || (req.user.rol === 'administrador')) {
+      return next();
     } else {
     return res.status(403).json({ message: 'Acceso denegado: no tienes permisos suficientes' });
     }

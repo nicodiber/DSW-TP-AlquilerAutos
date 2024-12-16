@@ -104,14 +104,23 @@ export class MantenimientoListarComponent implements OnInit {
     this.modalType = tipo;
 
     if (tipo === 'fechaFinMantenimiento') {
-      this.modalTitle = 'Modificar fecha Fin Mantenimiento';
-      this.modalPlaceholder = 'Ingrese fecha y hora según los formatos indicados';
-      this.fechaInput = '';
-      this.horaInput = '';
+      if (this.mantenimientoActual.trabajadorACargo == null) {
+        this.toastr.warning('Por favor, establezca un trabajador a cargo.');
+        return; // Detener la ejecución antes de intentar abrir el modal
+      } else if (this.mantenimientoActual.costoMantenimiento == null) {
+        this.toastr.warning('Por favor, establezca primero el costo del Mantenimiento (puede ingresar 0).');
+        return; // Detener la ejecución antes de intentar abrir el modal
+      } else {
+        this.modalTitle = 'Modificar fecha Fin Mantenimiento';
+        this.modalPlaceholder = 'Ingrese fecha y hora según los formatos indicados';
+        this.fechaValida = true;
+        this.fechaInput = '';
+        this.horaInput = '';
+      }
     } else if (tipo === 'trabajador') {
       this.modalTitle = 'Asignar Trabajador';
       this.trabajadores = [];
-      this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual.auto.sucursalAuto)).subscribe((trabajadores: usuario[]) => {
+      this._alquilerService.obtenerTrabajadoresPorSucursal(String(this.mantenimientoActual.auto.sucursalAuto._id)).subscribe((trabajadores: usuario[]) => {
         this.trabajadores = trabajadores;
       });
       this.modalInput = String(mantenimiento.trabajadorACargo?._id) || '';
@@ -198,7 +207,6 @@ export class MantenimientoListarComponent implements OnInit {
         this.toastr.error('Error: Selección de trabajador inválida.');
         return;
       }
-
       this._mantenimientoService.modificarTrabajador(String(this.mantenimientoActual._id), trabajadorId).subscribe(() => {
         this._mantenimientoService.obtenerMantenimiento(String(this.mantenimientoActual!._id)).subscribe((mantenimientoActualizado) => {
           this.mantenimientoActual!.trabajadorACargo = mantenimientoActualizado.trabajadorACargo;

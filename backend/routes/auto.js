@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const autoController = require('../controllers/autoController'); 
+const middleware = require('../middlewares/autorizaciones');
 
-router.post('/', autoController.crearAuto);
+router.post('/', middleware.validarToken, middleware.soloAdminYTrabajador, autoController.crearAuto);
 router.get('/', autoController.obtenerAutos);
 router.get('/:id', autoController.obtenerAuto);
-router.put('/:id', autoController.actualizarAuto);
-router.delete('/:id', autoController.eliminarAuto);
+router.put('/:id', middleware.validarToken, middleware.soloAdminYTrabajador, autoController.actualizarAuto);
+router.delete('/:id', middleware.validarToken, middleware.soloAdminYTrabajador, autoController.eliminarAuto);
 
 // Obtener autos disponibles
 router.get('/', autoController.obtenerAutosDisponibles);

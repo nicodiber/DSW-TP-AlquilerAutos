@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 import { gestionCookiesService } from '../../../services/gestionCookies.service';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -35,20 +35,19 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
 
         // Actualizar datosBusqueda en el servicio y en la cookie con tiempo de expiración
         this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
+        console.log("Datos Finales", this.datosBusqueda);
+
         // Verificar si modeloElegido existe en datosBusqueda
         if (!this.datosBusqueda || !this.datosBusqueda.modeloElegido) {
           console.warn("Cookies faltantes. Redirigiendo...");
           window.location.href = '/escritorio';
         }
         
-        this.gestionCookiesService.setDatosBusqueda(this.datosBusqueda, undefined, undefined, this.precioTotal);  // Le enviamos el precio para que lo sume a las cookies
-
         // Volvemos a pedir la cookie y actualizamos valores de lo restante
-        this.datosBusqueda = this.gestionCookiesService.getDatosBusqueda();
         this.fechaRetiro = this.datosBusqueda.fechaRetiro;
         this.fechaDevolucion = this.datosBusqueda.fechaDevolucion;
         this.diasReserva = Number(moment(this.fechaDevolucion, 'YYYY-MM-DD').diff(moment(this.fechaRetiro, 'YYYY-MM-DD'), 'days'));
-        this.precioTotal = this.diasReserva * this.datosBusqueda.modeloElegido.precioXdia * 1.21; // Incluimos el IVA
+        this.precioTotal = this.datosBusqueda.precioTotal;
 
         // Borramos cookies
         this.gestionCookiesService.borrarCookie('datosBusqueda');
@@ -57,7 +56,9 @@ export class AlquilerCompletadoComponent implements OnInit, OnDestroy {
         this.gestionCookiesService.borrarCookie('autosCoincidentesIds');
 
         // Creamos nuevo alquiler
-        this.confirmarReserva();
+        if (this.datosBusqueda && this.datosBusqueda.modeloElegido){
+          this.confirmarReserva();
+        }
       },
       error: () => {
         // Redirigir al login si ocurre un error
