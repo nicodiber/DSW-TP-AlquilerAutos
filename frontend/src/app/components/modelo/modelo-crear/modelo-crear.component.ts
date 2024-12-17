@@ -184,6 +184,9 @@ export class CrearModeloComponent implements OnInit {
             this.toastr.error(errorMsg, 'Error de Actualización');
         });
     } else {
+      this.toastr.info('Aguarde un momento por favor...', 'Cargando modelo', {
+      timeOut: 5000  
+      });
         this._modeloService.guardarModelo(formData).subscribe(data => {
             this.toastr.success('El modelo fue registrado con éxito!', 'Modelo Registrado!');
             setTimeout(() => {
