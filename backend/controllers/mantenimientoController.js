@@ -105,7 +105,6 @@ exports.crearMantenimientoAlquiler = async (req, res) => {
   try {
     const _id = await getNextSequenceValue('mantenimientoId');
     const { idAuto } = req.params; 
-    console.log('ID Auto:', idAuto);
 
     let mantenimiento = new Mantenimiento({
       _id,
@@ -116,7 +115,6 @@ exports.crearMantenimientoAlquiler = async (req, res) => {
       descripcion: null,
       costoMantenimiento: null
     });
-    console.log('Mantenimiento:', mantenimiento);
 
     await mantenimiento.save();
     res.json(mantenimiento);

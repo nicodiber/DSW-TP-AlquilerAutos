@@ -173,8 +173,7 @@ exports.enviarEmail = async (req, res) => {
           return res.status(500).json({ msg: "Ocurrio un error al enviar el email" });
         }else{
           await nuevoToken.save();
-          console.log("funcionó correctamente");
-          return res.status(200).json({ msg: "Email enviado correctamente!!!!" });
+          return res.status(200).json({ msg: "Email enviado correctamente!" });
         }
       })
 
